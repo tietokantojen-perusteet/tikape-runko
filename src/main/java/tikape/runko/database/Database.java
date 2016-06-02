@@ -1,15 +1,24 @@
 package tikape.runko.database;
 
-import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Database {
 
     private String databaseAddress;
-
-    public Database(String databaseAddress) throws ClassNotFoundException {
+    private Connection connection;
+    
+    public Database(String databaseAddress) throws ClassNotFoundException, SQLException {
         this.databaseAddress = databaseAddress;
+        this.connection = getConnection();
+        //init();
     }
 
     public Connection getConnection() throws SQLException {
@@ -33,16 +42,43 @@ public class Database {
             // jos tietokantataulu on jo olemassa, ei komentoja suoriteta
             System.out.println("Error >> " + t.getMessage());
         }
+    }   
+
+    public void update(String sql) throws SQLException {
+        connection.setAutoCommit(false);
+        Statement stmt = connection.createStatement();
+        stmt.executeUpdate(sql);
+        stmt.close();
+        connection.commit();
     }
 
-    private List<String> sqliteLauseet() {
+    
+    private List<String> sqliteLauseet() {        
+
         ArrayList<String> lista = new ArrayList<>();
 
         // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
-        lista.add("CREATE TABLE Opiskelija (id integer PRIMARY KEY, nimi varchar(255));");
-        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Platon');");
-        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Aristoteles');");
-        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Homeros');");
+        lista.add("CREATE TABLE Kayttaja ("
+                + "Id Integer NOT NULL PRIMARY KEY,"
+                + "tunnus varchar(15) NOT NULL UNIQUE,"
+                + "salasana varchar(15) NOT NULL,"
+                + "email varchar(50) "
+                + ");");
+        lista.add("CREATE TABLE Keskustelu ("
+                + "Otsikko varchar(200) PRIMARY KEY,"
+                + "Aihealue varchar(200)"
+                + "email varchar(50) "
+                + ");");
+        lista.add("CREATE TABLE Viesti ("
+                + "KayttajanID Integer NOT NULL,"
+                + "Kayttaja varchar(15) NOT NULL,"
+                + "Keskustelu varchar(200) NOT NULL,"
+                + "paivamaara DATE NOT NULL, "
+                + "kellonaika DATETIME NOT NULL, "   
+                + "sisalto varchar(200) NOT NULL,"
+                + "FOREIGN KEY(kayttajanID) REFERENCES Kayttaja(Id),"
+                + "FOREIGN KEY(keskustelu) REFERENCES Keskustelu(otsikko)"
+                + ");");
 
         return lista;
     }
