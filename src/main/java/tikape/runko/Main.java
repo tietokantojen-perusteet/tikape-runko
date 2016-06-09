@@ -21,10 +21,10 @@ public class Main {
 //        Kayttaja pekka = new Kayttaja(4,"seppo","salasana4","seppo@pekkala.fi");
 //        kayttajaDao.luoKayttaja(pekka);
         
-        Keskustelu harleydavidson = new Keskustelu(1, "harley davidson", "Moottoripyörät");
-        keskusteluDao.luoKeskustelu(harleydavidson);
-        Keskustelu fenderstratocaster = new Keskustelu(2, "Fender Stratocaster", "Kitarat");
-        keskusteluDao.luoKeskustelu(fenderstratocaster);
+//        Keskustelu harleydavidson = new Keskustelu(1, "harley davidson", "Moottoripyörät");
+//        keskusteluDao.luoKeskustelu(harleydavidson);
+//        Keskustelu fenderstratocaster = new Keskustelu(2, "Fender Stratocaster", "Kitarat");
+//        keskusteluDao.luoKeskustelu(fenderstratocaster);
         
         for (Kayttaja kayttaja : kayttajaDao.findAll()) {
             System.out.println(kayttaja);

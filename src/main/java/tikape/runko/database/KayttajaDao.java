@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import tikape.runko.domain.Kayttaja;
-import tikape.runko.domain.Opiskelija;
 import tikape.runko.database.Database;
 
 public class KayttajaDao implements Dao<Kayttaja, Integer> {

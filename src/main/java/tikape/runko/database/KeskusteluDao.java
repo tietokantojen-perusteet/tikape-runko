@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import tikape.runko.domain.Keskustelu;
-import tikape.runko.domain.Opiskelija;
 import tikape.runko.database.Database;
 
 public class KeskusteluDao implements Dao<Keskustelu, Integer> {

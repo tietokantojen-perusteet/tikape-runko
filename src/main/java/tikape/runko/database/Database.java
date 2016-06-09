@@ -18,7 +18,7 @@ public class Database {
     public Database(String databaseAddress) throws ClassNotFoundException, SQLException {
         this.databaseAddress = databaseAddress;
         this.connection = getConnection();
-        //init();
+        init();
     }
 
     public Connection getConnection() throws SQLException {
@@ -55,14 +55,15 @@ public class Database {
     
     private List<String> sqliteLauseet() {        
 
-        ArrayList<String> lista = new ArrayList<>();
+        List<String> lista = new ArrayList<>();
 
         // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
         lista.add("CREATE TABLE Kayttaja ("
                 + "Id Integer NOT NULL PRIMARY KEY,"
                 + "tunnus varchar(15) NOT NULL UNIQUE,"
                 + "salasana varchar(15) NOT NULL,"
-                + "email varchar(50) "
+                + "email varchar(50), "
+                + "onko_super Integer"
                 + ");");
         lista.add("CREATE TABLE Keskustelu ("
                 + "KeskusteluID Integer NOT NULL PRIMARY KEY,"
@@ -79,6 +80,7 @@ public class Database {
                 + "FOREIGN KEY(kayttajanID) REFERENCES Kayttaja(Id),"
                 + "FOREIGN KEY(keskustelu) REFERENCES Keskustelu(otsikko)"
                 + ");");
+
 
         return lista;
     }
