@@ -5,12 +5,21 @@ public class Kayttaja {
     private String tunnus;
     private String salasana;
     private String email;
+    private Integer onko_super;
     
     public Kayttaja(Integer id, String tunnus, String salasana, String email) {
         this.id = id;
         this.tunnus = tunnus;
         this.salasana = salasana;
         this.email = email;
+    }
+    /* Superkäyttäjä(moderaattori) on 1, NULL tai 0 normaali käyttäjä */
+    public Kayttaja(Integer id, String tunnus, String salasana, String email, Integer onko_super) {
+        this.id = id;
+        this.tunnus = tunnus;
+        this.salasana = salasana;
+        this.email = email;
+        this.onko_super = onko_super;
     }
     public String toString() {
         return this.id + " " + this.tunnus + " " + this.salasana + " " + this.email;
