@@ -22,6 +22,8 @@ public class Main {
         for (Kayttaja kayttaja : kayttajaDao.findAll()) {
             System.out.println(kayttaja);
         }
+        
+        System.out.println("hello hello");
     }
 }
         
