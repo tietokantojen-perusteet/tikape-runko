@@ -68,7 +68,6 @@ public class Database {
                 + "KeskusteluID Integer PRIMARY KEY"
                 + "Otsikko varchar(200) NOT NULL"
                 + "Aihealue varchar(200)"
-                + "email varchar(50) "
                 + ");");
         lista.add("CREATE TABLE Viesti ("
                 + "KayttajanID Integer NOT NULL,"
