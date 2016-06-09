@@ -4,7 +4,7 @@ package tikape.runko.database;
 import java.sql.*;
 import java.util.*;
 import tikape.runko.*;
-import tikape.runko.*;
+import tikape.runko.domain.Keskustelu;
 
 public class KeskusteluDao implements Dao<Keskustelu, Integer> {
 

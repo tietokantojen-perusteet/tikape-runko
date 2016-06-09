@@ -3,8 +3,8 @@ package tikape.runko.database;
 
 import java.sql.*;
 import java.util.*;
-import tikape.aneere.Dao;
-import tikape.aneere.Viesti;
+import tikape.runko.*;
+import tikape.runko.domain.Viesti;
 
 public class ViestiDao implements Dao<Viesti, Integer> {
 
