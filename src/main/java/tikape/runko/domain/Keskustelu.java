@@ -11,22 +11,22 @@ package tikape.runko.domain;
  */
 public class Keskustelu {
 
-    private Integer id;
+    private Integer keskusteluid;
     private String otsikko;
     private String aihealue;
 
     public Keskustelu(Integer id, String otsikko, String aihealue) {
-        this.id = id;
+        this.keskusteluid = id;
         this.otsikko = otsikko;
         this.aihealue = aihealue;
     }
 
     public Integer getId() {
-        return id;
+        return keskusteluid;
     }
 
     public void setId(Integer id) {
-        this.id = id;
+        this.keskusteluid = id;
     }
 
     public String getOtsikko() {
@@ -46,7 +46,7 @@ public class Keskustelu {
     }
     
     public String toString(){
-        return this.id + " " + this.otsikko + " " + this.aihealue;
+        return this.keskusteluid + " " + this.otsikko + " " + this.aihealue;
     }
 
 }

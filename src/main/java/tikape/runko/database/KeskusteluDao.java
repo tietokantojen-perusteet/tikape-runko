@@ -53,7 +53,7 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
         ResultSet rs = stmt.executeQuery();
         List<Keskustelu> keskustelut = new ArrayList<>();
         while (rs.next()) {
-            Integer id = rs.getInt("id");
+            Integer id = rs.getInt("KeskusteluID");
             String otsikko = rs.getString("otsikko");
             String aihealue = rs.getString("aihealue");
             
@@ -75,7 +75,7 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
     
     public void luoKeskustelu(Keskustelu keskustelu) throws SQLException {
         String sql = "INSERT INTO Keskustelu "
-                + "(Id, otsikko, aihealue) VALUES ("
+                + "(KeskusteluID, otsikko, aihealue) VALUES ("
                 + (keskustelu.getId()) + ", "
                 + s(keskustelu.getOtsikko()) + ", "
                 + s(keskustelu.getAihealue()) + " );";
