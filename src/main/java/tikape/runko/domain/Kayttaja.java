@@ -1,11 +1,14 @@
 package tikape.runko.domain;
 
+import java.util.*;
+
 public class Kayttaja {
     private Integer id;
     private String tunnus;
     private String salasana;
     private String email;
     private Integer onko_super;
+    private List<Viesti> viestit;
     
     public Kayttaja(Integer id, String tunnus, String salasana, String email) {
         this.id = id;

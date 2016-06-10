@@ -1,19 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tikape.runko.domain;
 
-/**
- *
- * @author Reetta
- */
+import java.util.*;
+
 public class Keskustelu {
 
     private Integer keskusteluid;
     private String otsikko;
     private String aihealue;
+    private List<Viesti> viestit;
 
     public Keskustelu(Integer id, String otsikko, String aihealue) {
         this.keskusteluid = id;

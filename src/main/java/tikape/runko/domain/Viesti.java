@@ -1,19 +1,19 @@
 package tikape.runko.domain;
 
 public class Viesti {
-    private Integer id;
-    private String lahettaja;
+    private int id;
+    private int lahettaja;
     
-    public Viesti(Integer id, String lahettaja) {
+    public Viesti(int id, int lahettaja) {
         this.id = id;
         this.lahettaja = lahettaja;
     }
     
-    public Integer getId() {
+    public int getId() {
         return id;
     }
     
-    public String getLahettaja() {
+    public int getLahettaja() {
         return lahettaja;
     }
 }
