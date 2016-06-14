@@ -5,57 +5,94 @@ import java.util.List;
 import static spark.Spark.get;
 import static spark.Spark.post;
 import tikape.runko.database.*;
+import tikape.runko.domain.*;
 
 public class Kayttoliittyma {
     private Database database;
     private KayttajaDao kayttajaDao;
     private KeskusteluDao keskusteluDao;
     private ViestiDao viestiDao;
-    public Kayttoliittyma(Database database) {
+    private List<Integer> otsikkoIdt;
+    private Kayttaja kayttaja;
+    public Kayttoliittyma(Database database) throws SQLException {
         this.database = database;
         this.kayttajaDao = new KayttajaDao(database);
         this.keskusteluDao = new KeskusteluDao(database);
         this.viestiDao = new ViestiDao(database);
     }
     public void suorita() throws SQLException {
-        get("/", (req, res) -> {
-            List<String> otsikot = keskusteluDao.getAihealueet();            
-            String nakyma = linkkiListaaja(otsikot);         
+        List<String> aihealueet = keskusteluDao.getAihealueet();    
+        get("/", (req, res) -> {                    
+            String nakyma = nakymanLuoja(aihealueet, "Aihealueet");         
             return nakyma;            
-        });
-        
-        get("/Kitarat", (req, res) ->  {
-            List<String> otsikot = keskusteluDao.getOtsikot("Kitarat");
-            String nakyma = linkkiListaaja(otsikot);            
-            return nakyma;
-        });
-        
-        get("/Moottoripyörät", (req, res) ->  {
-            List<String> otsikot = keskusteluDao.getOtsikot("Moottoripyörät");
-            String nakyma = linkkiListaaja(otsikot);            
-            return nakyma;
-        });
+        });       
 
-        get("/Puhelimet", (req, res) ->  {
-            List<String> otsikot = keskusteluDao.getOtsikot("Puhelimet");            
-            String nakyma = linkkiListaaja(otsikot);            
-            return nakyma;
+        for (String aihealue : aihealueet) {
+            get("/" + aihealue, (req,res) -> {
+                List<String> otsikot = keskusteluDao.getOtsikot(aihealue);
+                String nakyma = nakymanLuoja(otsikot, aihealue);            
+                return nakyma;
+            });
+        }       
+        
+        get("/kirjautuminen", (req,res) -> {
+                String nakyma = kirjautumisSivu();
+                return nakyma;
         });
         
-        post("/kitarat", (req, res) -> {
-//            String viesti = req.queryParams("viestit");
-//            sisallot.add(viesti);
-//            database.lisaaViesti(viesti);
-            return "Viesti lähetetty!<br><a href=\"/viestit\">Palaa Vieraskirjaan</a>";
+        get("/logout", (req,res) -> {
+                kayttaja = null;
+                String nakyma = "<a href=\"/\"><H1>Aneereforum</H1></a>"
+                        + "Kirjauduttu ulos";
+                return nakyma;
+        });
+        
+        post("/kirjautuminen", (req, res) -> {
+            String tunnus = req.queryParams("tunnus");
+            String salasana = req.queryParams("salasana");
+            Kayttaja kirjautuva = new Kayttaja(tunnus, salasana);
+            if (kayttajaDao.kirjaudu(kirjautuva)) {
+                kayttaja = kayttajaDao.getKayttaja(tunnus);
+                return "<a href=\"/\"><H1>Aneereforum</H1></a>" 
+                    + "Kirjautuminen onnistui!";
+            } else {
+                return "<a href=\"/\"><H1>Aneereforum</H1></a>" 
+                    + "Väärä tunnus tai salasana!";
+            }
         });
     }
-    private String linkkiListaaja(List<String> lista) {
+    private String nakymanLuoja(List<String> lista, String alue) {
+        
         String nakyma = "";
+
         for (String otsikko : lista) {
             nakyma += "<a href=\"" + otsikko + "\">" + otsikko + "</a><br/>";
         }
-
-        return "<H1>Aneereforum</H1>"
-                + nakyma;
+        
+        String palautettava = "";
+        palautettava += "<a href=\"/\"><H1>Aneereforum</H1></a>";
+        if (kayttaja == null) {
+            palautettava += "<a href=\"/kirjautuminen\">Kirjaudu</a>";
+        } else {
+            palautettava += "<a href=\"/omasivu\">" + kayttaja.getTunnus() + "</a> <a href=\"/logout\">Kirjaudu ulos</a>";
+        }
+        if (alue.equals("Aihealueet")) { //ALOITUSSIVU
+                palautettava += "<H2>" + alue + "</H2></a>";           
+        } else {    // MUUT SIVUT
+                palautettava += "<a href=\"" + alue + "\"><H2>" + alue + "</H2></a>";
+        }
+        palautettava += nakyma;
+        
+        return palautettava;
+    }
+    private String kirjautumisSivu() {
+        return  "<a href=\"/\"><H1>Aneereforum</H1></a>"
+                + "<form method=\"POST\" action=\"/kirjautuminen\">\n"
+                + "Tunnus:<br/>\n"
+                + "<input type=\"text\" name=\"tunnus\"/><br/>\n"
+                + "Salasana:<br/>"
+                + "<input type=\"text\" name=\"salasana\"/><br/>\n"
+                + "<input type=\"submit\" value=\"Kirjaudu\"/>\n"
+                + "</form>";
     }
 }

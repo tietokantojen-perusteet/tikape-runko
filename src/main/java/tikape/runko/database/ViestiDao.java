@@ -11,7 +11,20 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     public ViestiDao(Database database) {
         this.database = database;
     }
+    public void lisaaViesti(String viesti) {
+        String lisattava = "";
+        lisattava = "INSERT INTO Viesti (sisalto) VALUES ('" + viesti + "');";        
+        
+        try (Connection conn = database.getConnection()) {
+            Statement st = conn.createStatement();
+            
+            st.executeUpdate(lisattava);
 
+        } catch (Throwable t) {
+            System.out.println("Error >> " + t.getMessage());
+        }
+        
+    }
     @Override
     public Viesti findOne(Integer key) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet.");

@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import tikape.runko.domain.*;
 
 public class Database {
 
@@ -71,14 +72,14 @@ public class Database {
                 + "Aihealue varchar(200)"
                 + ");");
         lista.add("CREATE TABLE Viesti ("
+                + "ViestiId Integer PRIMARY KEY,"
                 + "KayttajanID Integer NOT NULL,"
                 + "Kayttaja varchar(15) NOT NULL,"
-                + "Keskustelu varchar(200) NOT NULL,"
-                + "paivamaara DATE NOT NULL, "
+                + "Keskustelu Integer NOT NULL,"
                 + "kellonaika DATETIME NOT NULL, "   
-                + "sisalto varchar(200) NOT NULL,"
+                + "sisalto varchar(500) NOT NULL,"
                 + "FOREIGN KEY(kayttajanID) REFERENCES Kayttaja(Id),"
-                + "FOREIGN KEY(keskustelu) REFERENCES Keskustelu(otsikko)"
+                + "FOREIGN KEY(keskustelu) REFERENCES Keskustelu(KeskusteluID)"
                 + ");");
 
 

@@ -8,9 +8,10 @@ import tikape.runko.database.Database;
 public class KayttajaDao implements Dao<Kayttaja, Integer> {
     
     private Database database;
-    
-    public KayttajaDao(Database database) {
+    private List<Kayttaja> kayttajat;
+    public KayttajaDao(Database database) throws SQLException {
         this.database = database;
+        this.kayttajat = findAll();
     }
     
     @Override
@@ -66,7 +67,20 @@ public class KayttajaDao implements Dao<Kayttaja, Integer> {
     public void delete(Integer key) throws SQLException {
         // ei toteutettu
     }
-    
+    public boolean kirjaudu(Kayttaja kayttaja) {
+        if (kayttajat.contains(kayttaja)) {
+            return true;
+        }
+        return false;
+    } 
+    public Kayttaja getKayttaja(String tunnus) {
+        for (Kayttaja kayttaja : kayttajat) {
+            if (kayttaja.getTunnus().equals(tunnus)) {
+                return kayttaja;
+            }
+        }
+        return null;
+    }
     public void luoKayttaja(Kayttaja kayttaja) throws SQLException {
         String sql = "INSERT INTO Kayttaja "
                 + "(Id, tunnus, salasana, email) VALUES ("
@@ -76,7 +90,7 @@ public class KayttajaDao implements Dao<Kayttaja, Integer> {
                 + s(kayttaja.getEmail()) + " );";
         
         database.update(sql);
-        
+        kayttajat.add(kayttaja);
     }
         
     private String s(String s) {
