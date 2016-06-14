@@ -17,10 +17,6 @@ public class Kayttoliittyma {
         this.keskusteluDao = new KeskusteluDao(database);
         this.viestiDao = new ViestiDao(database);
     }
-    public void aloitusNakyma() {
-        List<String> otsikot = keskusteluDao.getAihealueet();  
-        String nakyma = linkkiListaaja(otsikot);
-    }
     public void suorita() throws SQLException {
         get("/", (req, res) -> {
             List<String> otsikot = keskusteluDao.getAihealueet();            
