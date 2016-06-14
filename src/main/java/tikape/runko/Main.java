@@ -13,29 +13,20 @@ import tikape.runko.domain.Keskustelu;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        Database database = new Database("jdbc:sqlite:keskustelu.db");
-        
-        KayttajaDao kayttajaDao = new KayttajaDao(database);
-        KeskusteluDao keskusteluDao = new KeskusteluDao(database);
-        
-//        Kayttaja pekka = new Kayttaja(4,"seppo","salasana4","seppo@pekkala.fi");
-//        kayttajaDao.luoKayttaja(pekka);
-        
-//        Keskustelu harleydavidson = new Keskustelu(1, "harley davidson", "Moottoripyörät");
-//        keskusteluDao.luoKeskustelu(harleydavidson);
-//        Keskustelu fenderstratocaster = new Keskustelu(2, "Fender Stratocaster", "Kitarat");
-//        keskusteluDao.luoKeskustelu(fenderstratocaster);
-        
-        for (Kayttaja kayttaja : kayttajaDao.findAll()) {
-            System.out.println(kayttaja);
+        if (System.getenv("PORT") != null) {
+            port(Integer.valueOf(System.getenv("PORT")));
         }
+        // käytetään oletuksena paikallista sqlite-tietokantaa
+        String jdbcOsoite = "jdbc:sqlite:keskustelu.db";
+        // jos heroku antaa käyttöömme tietokantaosoitteen, otetaan se käyttöön
+        if (System.getenv("DATABASE_URL") != null) {
+            jdbcOsoite = System.getenv("DATABASE_URL");
+        } 
+
+        Database db = new Database(jdbcOsoite);
         
-        for (Keskustelu keskustelu : keskusteluDao.findAll()){
-            System.out.println(keskustelu);
-        }
-        
-        System.out.println("hello hello");
-        System.out.println("jepjep");
+        Kayttoliittyma kali = new Kayttoliittyma(db);
+        kali.suorita();
         
     }
 }

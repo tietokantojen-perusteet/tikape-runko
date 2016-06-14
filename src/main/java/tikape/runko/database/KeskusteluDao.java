@@ -18,6 +18,41 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
         this.database = database;
     }
     
+    public List<String> getAihealueet() throws SQLException {
+        List<String> aihealueet = new ArrayList<>();
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT DISTINCT Aihealue FROM Keskustelu");
+        
+        ResultSet rs = stmt.executeQuery();
+        List<Keskustelu> keskustelut = new ArrayList<>();
+        while (rs.next()) {
+            aihealueet.add(rs.getString("Aihealue"));
+        }
+        
+        rs.close();
+        stmt.close();
+        connection.close();
+        
+        return aihealueet;
+    }
+    public List<String> getOtsikot(String aihealue) throws SQLException {
+        List<String> otsikot = new ArrayList<>();
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT DISTINCT Otsikko FROM Keskustelu WHERE Aihealue = '" + aihealue + "'");
+        
+        ResultSet rs = stmt.executeQuery();
+        List<Keskustelu> keskustelut = new ArrayList<>();
+        while (rs.next()) {
+            otsikot.add(rs.getString("Otsikko"));
+        }
+        
+        rs.close();
+        stmt.close();
+        connection.close();
+        
+        return otsikot;
+    }
+    
     @Override
     public Keskustelu findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();

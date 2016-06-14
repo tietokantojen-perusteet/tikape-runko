@@ -67,7 +67,7 @@ public class Database {
                 + ");");
         lista.add("CREATE TABLE Keskustelu ("
                 + "KeskusteluID Integer NOT NULL PRIMARY KEY,"
-                + "Otsikko varchar(200) NOT NULL UNIQUE,"
+                + "Otsikko varchar(200) NOT NULL,"
                 + "Aihealue varchar(200)"
                 + ");");
         lista.add("CREATE TABLE Viesti ("
