@@ -1,16 +1,18 @@
 package tikape.runko.domain;
 
-import java.util.Date;
+import java.sql.Date;
+import java.sql.Timestamp;
+
 
 public class Viesti {
     private int id;
     private Integer kayttaja;
     private Integer keskustelu;
     private String sisalto;
-    private Date kellonaika;
+    private Timestamp kellonaika;
 
     
-    public Viesti(int id, Integer kayttaja, Integer keskustelu, String sisalto, Date kellonaika) {
+    public Viesti(int id, Integer kayttaja, Integer keskustelu, String sisalto, Timestamp kellonaika) {
         this.id = id;
         this.kayttaja = kayttaja;
         this.keskustelu = keskustelu;
@@ -18,25 +20,33 @@ public class Viesti {
         this.kellonaika = kellonaika;
     }
     
-    public Viesti(int id, String sisalto, Date kellonaika){
-        this.id = id;
-        this.sisalto = sisalto;
-        this.kellonaika = kellonaika;
-    }
+//    public Viesti(int id, String sisalto, Date kellonaika){
+//        this.id = id;
+//        this.sisalto = sisalto;
+//        this.kellonaika = kellonaika;
+//    }
     
-    public String toString() {
-        return this.id + kayttaja.getTunnus() + keskustelu.getOtsikko() + sisalto + kellonaika.toString();
-    }
+//    public String toString() {
+//        return this.id + kayttaja.getTunnus() + keskustelu.getOtsikko() + sisalto + kellonaika.toString();
+//    }
     public int getId() {
         return id;
     }
     
-    public Kayttaja getKayttaja() {
+    public Integer getKayttajaID() {
         return kayttaja;
     }
-    
-    public Keskustelu getKeskustelu(){
+//    
+    public Integer getKeskusteluID(){
         return keskustelu;
+    }
+    
+    public String getSisalto(){
+        return this.sisalto;
+    }
+    
+    public Timestamp getKellonaika(){
+        return this.kellonaika;
     }
     
 }

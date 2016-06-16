@@ -76,7 +76,7 @@ public class Database {
                 + "KayttajanID Integer NOT NULL,"
                 + "Kayttaja varchar(15) NOT NULL,"
                 + "Keskustelu Integer NOT NULL,"
-                + "kellonaika DATETIME NOT NULL, "   
+                + "kellonaika TIMESTAMP NOT NULL, "   
                 + "sisalto varchar(500) NOT NULL,"
                 + "FOREIGN KEY(kayttajanID) REFERENCES Kayttaja(Id),"
                 + "FOREIGN KEY(keskustelu) REFERENCES Keskustelu(KeskusteluID)"

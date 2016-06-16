@@ -44,6 +44,16 @@ public class Kayttoliittyma {
             String nakyma = kirjautumisSivu();
             return nakyma;
         });
+        
+        get("/testi", (req, res) -> {
+            String nakyma = "";
+            List<Viesti> lista = viestiDao.getKetjuviestit(1);
+            for (Viesti viesti : lista){
+                nakyma += viesti.getSisalto() + ".<br>";
+            }
+            
+            return nakyma;
+        });
 
         get("/logout", (req, res) -> {
             kayttaja = null;

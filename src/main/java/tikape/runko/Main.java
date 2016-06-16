@@ -28,6 +28,8 @@ public class Main {
         Kayttoliittyma kali = new Kayttoliittyma(db);
         kali.suorita();
         
+        
+        
     }
 }
         
