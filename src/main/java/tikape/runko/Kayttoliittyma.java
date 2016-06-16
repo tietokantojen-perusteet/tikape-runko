@@ -43,7 +43,7 @@ public class Kayttoliittyma {
             return nakyma;
         });
         
-        get("/testi", (req, res) -> {
+        get("/ketjuviestit", (req, res) -> {
             String nakyma = "";
             List<Viesti> lista = viestiDao.getKetjuviestit(1);
             for (Viesti viesti : lista){
@@ -52,6 +52,18 @@ public class Kayttoliittyma {
             
             return nakyma;
         });
+        
+        get("/uusimmat", (req, res) -> {
+            String nakyma = "";
+            List<Viesti> lista = viestiDao.getUusimmatviestit(2);
+            for (Viesti viesti : lista){
+                nakyma += viesti.getSisalto() + ".<br>";
+            }
+            
+            return nakyma;
+        });
+        
+        
 
         get("/logout", (req, res) -> {
             kayttaja = null;
@@ -79,21 +91,22 @@ public class Kayttoliittyma {
             }
         });
 
-//        post("/luotunnus", (req, res) -> {
-//            String tunnus = req.queryParams("tunnus");
-//            String salasana = req.queryParams("salasana");
-//            String email = req.queryParams("email");
-//            int id = 0; // pitää kattoo
-//            Kayttaja uusi = new Kayttaja(id, tunnus, salasana, email);
-//            if (kayttajaDao.kirjaudu(uusi)) {
-//                uusi = kayttajaDao.getKayttaja(tunnus);
-//                return "<a href=\"/\"><H1>Aneereforum</H1></a>"
-//                        + "Kirjautuminen onnistui!";
-//            } else {
-//                return "<a href=\"/\"><H1>Aneereforum</H1></a>"
-//                        + "Väärä tunnus tai salasana!";
-//            }
-//        });
+        post("/luotunnus", (req, res) -> {
+            String tunnus = req.queryParams("tunnus");
+            String salasana = req.queryParams("salasana");
+            String email = req.queryParams("email");
+            int id = 0;
+            Kayttaja uusi = new Kayttaja(kayttajaDao.setId(), tunnus, salasana, email, 0);
+            
+            if (kayttajaDao.getKayttaja(tunnus) == null) {
+                kayttajaDao.luoKayttaja(uusi);
+                return "<a href=\"/\"><H1>Aneereforum</H1></a>"
+                        + "Käyttäjän luominen onnistui!";
+            } else {
+                return "<a href=\"/\"><H1>Aneereforum</H1></a>"
+                        + "Tunnus on jo käytössä";
+            }
+        });
     }
 
     private String nakymanLuoja(List<Keskustelu> keskustelut) {
@@ -130,7 +143,10 @@ public class Kayttoliittyma {
                 + "Salasana:<br/>"
                 + "<input type=\"text\" name=\"salasana\"/><br/>\n"
                 + "<input type=\"submit\" value=\"Kirjaudu\"/>\n"
+                + "<input type=\"submit\" value=\"Luo tunnus\"/>\n"
                 + "</form>";
+        
+        // luo tunnus -napista siirtyminen oikealle sivulle
     }
 
     private String luoTunnusSivu() {
@@ -145,6 +161,5 @@ public class Kayttoliittyma {
                 + "<input type=\"submit\" value=\"Luo\"/>\n"
                 + "</form>";
 
-        // pitäs saada toi uus käyttäjä tallennettuu tietokantaan
     }
 }
