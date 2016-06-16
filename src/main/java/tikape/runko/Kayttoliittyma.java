@@ -24,20 +24,22 @@ public class Kayttoliittyma {
     }
 
     public void suorita() throws SQLException {
-        List<String> aihealueet = keskusteluDao.getAihealueet();
+        List<Keskustelu> aihealueet = keskusteluDao.getAihealueet();
         get("/", (req, res) -> {
-            String nakyma = nakymanLuoja(aihealueet, "Aihealueet");
+            String nakyma = nakymanLuoja(aihealueet);
             return nakyma;
         });
 
-        for (String aihealue : aihealueet) {
+        for (Keskustelu aihealue : aihealueet) {
             get("/" + aihealue, (req, res) -> {
-                List<String> otsikot = keskusteluDao.getOtsikot(aihealue);
-                String nakyma = nakymanLuoja(otsikot, aihealue);
+                List<Keskustelu> otsikot = keskusteluDao.getKetjut("Puhelimet");
+                String nakyma = nakymanLuoja(aihealueet);
                 return nakyma;
             });
         }
 
+        
+        
         get("/kirjautuminen", (req, res) -> {
             String nakyma = kirjautumisSivu();
             return nakyma;
@@ -86,12 +88,13 @@ public class Kayttoliittyma {
 //        });
     }
 
-    private String nakymanLuoja(List<String> lista, String alue) {
+    private String nakymanLuoja(List<Keskustelu> keskustelut) {
 
         String nakyma = "";
-
-        for (String otsikko : lista) {
-            nakyma += "<a href=\"" + otsikko + "\">" + otsikko + "</a><br/>";
+        String alue = "vaiheessa";
+        
+        for (Keskustelu keskustelu : keskustelut) {
+            nakyma += "<a href=\"" + keskustelu.getId() + "\">" + keskustelu.getOtsikko() + "</a><br/>";
         }
 
         String palautettava = "";

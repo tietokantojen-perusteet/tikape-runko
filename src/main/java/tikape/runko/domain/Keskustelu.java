@@ -14,7 +14,9 @@ public class Keskustelu {
         this.otsikko = otsikko;
         this.aihealue = aihealue;
     }
-
+    public Keskustelu(Integer id, String aihealue) {
+        this.aihealue = aihealue;
+    }
     public Integer getId() {
         return keskusteluid;
     }

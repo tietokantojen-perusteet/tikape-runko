@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import tikape.runko.domain.Keskustelu;
 import tikape.runko.database.Database;
@@ -18,15 +19,17 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
         this.database = database;
     }
     
-    public List<String> getAihealueet() throws SQLException {
-        List<String> aihealueet = new ArrayList<>();
+    public List<Keskustelu> getAihealueet() throws SQLException {
+        List<Keskustelu> aihealueet = new ArrayList<>();
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT DISTINCT Aihealue FROM Keskustelu");
+        PreparedStatement stmt = connection.prepareStatement("SELECT DISTINCT keskusteluid,Aihealue FROM Keskustelu");
         
         ResultSet rs = stmt.executeQuery();
-        List<Keskustelu> keskustelut = new ArrayList<>();
         while (rs.next()) {
-            aihealueet.add(rs.getString("Aihealue"));
+            int id = rs.getInt("keskusteluid");
+            String aihealue = rs.getString("Aihealue");
+            Keskustelu yksittainenAihealue = new Keskustelu(id,aihealue);
+            aihealueet.add(yksittainenAihealue);
         }
         
         rs.close();
@@ -35,15 +38,19 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
         
         return aihealueet;
     }
-    public List<String> getOtsikot(String aihealue) throws SQLException {
-        List<String> otsikot = new ArrayList<>();
+    public List<Keskustelu> getOtsikot() throws SQLException {
+        List<Keskustelu> otsikot = new ArrayList<>();
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT DISTINCT Otsikko FROM Keskustelu WHERE Aihealue = '" + aihealue + "'");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Keskuste;");
         
         ResultSet rs = stmt.executeQuery();
-        List<Keskustelu> keskustelut = new ArrayList<>();
+
         while (rs.next()) {
-            otsikot.add(rs.getString("Otsikko"));
+            int id = rs.getInt("KeskustelunID");
+            String otsikko = rs.getString("Otsikko");
+            String aihealue = rs.getString("Aihealue");
+            Keskustelu keskustelu = new Keskustelu(id,otsikko,aihealue);
+            otsikot.add(keskustelu);
         }
         
         rs.close();
@@ -52,11 +59,31 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
         
         return otsikot;
     }
-    
+    public List<Keskustelu> getKetjut(String aihealue) throws SQLException {
+        List<Keskustelu> otsikot = new ArrayList<>();
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT keskusteluid,aihealue,otsikko as Keskustelu FROM keskustelu "
+                + "WHERE aihealue ='" + aihealue + "';");
+        
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            int id = rs.getInt("keskusteluid");
+            String otsikko = rs.getString("otsikko");
+
+            Keskustelu keskustelu = new Keskustelu(id,otsikko,aihealue);
+            otsikot.add(keskustelu);
+        }
+        
+        rs.close();
+        stmt.close();
+        connection.close();
+        
+        return otsikot;
+    }
     @Override
     public Keskustelu findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE id = ?");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Keskustelu ");
         stmt.setObject(1, key);
 
         ResultSet rs = stmt.executeQuery();
@@ -65,7 +92,7 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
             return null;
         }
 
-        Integer id = rs.getInt("id");
+        Integer id = rs.getInt("KeskusteluID");
         String otsikko = rs.getString("otsikko");
         String aihealue = rs.getString("aihealue");
         
