@@ -137,13 +137,13 @@ public class Kayttoliittyma {
 
     private String kirjautumisSivu() {
         return "<a href=\"/\"><H1>Aneereforum</H1></a>"
+                + "Eikö tunnusta? Tee tunnus <a href=\"/luotunnus\">tästä</a><br><br>"
                 + "<form method=\"POST\" action=\"/kirjautuminen\">\n"
                 + "Tunnus:<br/>\n"
                 + "<input type=\"text\" name=\"tunnus\"/><br/>\n"
                 + "Salasana:<br/>"
                 + "<input type=\"text\" name=\"salasana\"/><br/>\n"
                 + "<input type=\"submit\" value=\"Kirjaudu\"/>\n"
-                + "<input type=\"submit\" value=\"Luo tunnus\"/>\n"
                 + "</form>";
         
         // luo tunnus -napista siirtyminen oikealle sivulle
