@@ -4,26 +4,39 @@ import java.util.Date;
 
 public class Viesti {
     private int id;
-    private Kayttaja lahettaja;
-    private Keskustelu keskustelu;
+    private Integer kayttaja;
+    private Integer keskustelu;
     private String sisalto;
     private Date kellonaika;
+
     
-    public Viesti(int id, Kayttaja lahettaja, Keskustelu keskustelu, String sisalto, Date kellonaika) {
+    public Viesti(int id, Integer kayttaja, Integer keskustelu, String sisalto, Date kellonaika) {
         this.id = id;
-        this.lahettaja = lahettaja;
+        this.kayttaja = kayttaja;
         this.keskustelu = keskustelu;
         this.sisalto = sisalto;
         this.kellonaika = kellonaika;
     }
+    
+    public Viesti(int id, String sisalto, Date kellonaika){
+        this.id = id;
+        this.sisalto = sisalto;
+        this.kellonaika = kellonaika;
+    }
+    
     public String toString() {
-        return this.id + lahettaja.getTunnus() + keskustelu.getOtsikko() + sisalto + kellonaika.toString();
+        return this.id + kayttaja.getTunnus() + keskustelu.getOtsikko() + sisalto + kellonaika.toString();
     }
     public int getId() {
         return id;
     }
     
-    public Kayttaja getLahettaja() {
-        return lahettaja;
+    public Kayttaja getKayttaja() {
+        return kayttaja;
     }
+    
+    public Keskustelu getKeskustelu(){
+        return keskustelu;
+    }
+    
 }
