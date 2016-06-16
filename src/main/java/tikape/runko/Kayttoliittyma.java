@@ -45,7 +45,7 @@ public class Kayttoliittyma {
             return nakyma;
         });
         
-        get("/testi", (req, res) -> {
+        get("/ketjuviestit", (req, res) -> {
             String nakyma = "";
             List<Viesti> lista = viestiDao.getKetjuviestit(1);
             for (Viesti viesti : lista){
@@ -54,6 +54,18 @@ public class Kayttoliittyma {
             
             return nakyma;
         });
+        
+        get("/uusimmat", (req, res) -> {
+            String nakyma = "";
+            List<Viesti> lista = viestiDao.getUusimmatviestit(2);
+            for (Viesti viesti : lista){
+                nakyma += viesti.getSisalto() + ".<br>";
+            }
+            
+            return nakyma;
+        });
+        
+        
 
         get("/logout", (req, res) -> {
             kayttaja = null;
