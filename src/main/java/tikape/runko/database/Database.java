@@ -82,7 +82,6 @@ public class Database {
                 + "FOREIGN KEY(keskustelu) REFERENCES Keskustelu(KeskusteluID)"
                 + ");");
 
-
         return lista;
     }
 }

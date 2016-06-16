@@ -22,11 +22,11 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
     public List<Keskustelu> getAihealueet() throws SQLException {
         List<Keskustelu> aihealueet = new ArrayList<>();
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT DISTINCT keskusteluid,Aihealue FROM Keskustelu");
+        PreparedStatement stmt = connection.prepareStatement("SELECT DISTINCT KeskusteluID,Aihealue FROM Keskustelu");
         
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
-            int id = rs.getInt("keskusteluid");
+            int id = rs.getInt("KeskusteluID");
             String aihealue = rs.getString("Aihealue");
             Keskustelu yksittainenAihealue = new Keskustelu(id,aihealue);
             aihealueet.add(yksittainenAihealue);
@@ -41,7 +41,7 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
     public List<Keskustelu> getOtsikot() throws SQLException {
         List<Keskustelu> otsikot = new ArrayList<>();
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Keskuste;");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Keskustelu;");
         
         ResultSet rs = stmt.executeQuery();
 

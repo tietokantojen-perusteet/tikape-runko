@@ -30,16 +30,14 @@ public class Kayttoliittyma {
             return nakyma;
         });
 
-        for (Keskustelu aihealue : aihealueet) {
-            get("/" + aihealue, (req, res) -> {
-                List<Keskustelu> otsikot = keskusteluDao.getKetjut("Puhelimet");
+        List<Keskustelu> otsikot = keskusteluDao.getOtsikot();
+        for (Keskustelu otsikko : otsikot) {
+            get("/" + otsikko.getOtsikko(), (req, res) -> {
                 String nakyma = nakymanLuoja(aihealueet);
                 return nakyma;
             });
         }
-
-        
-        
+             
         get("/kirjautuminen", (req, res) -> {
             String nakyma = kirjautumisSivu();
             return nakyma;
@@ -101,10 +99,10 @@ public class Kayttoliittyma {
     private String nakymanLuoja(List<Keskustelu> keskustelut) {
 
         String nakyma = "";
-        String alue = "vaiheessa";
+        String alue = "Aihealueet";
         
         for (Keskustelu keskustelu : keskustelut) {
-            nakyma += "<a href=\"" + keskustelu.getId() + "\">" + keskustelu.getOtsikko() + "</a><br/>";
+            nakyma += "<a href=\"" + keskustelu.getId() + "\">" + keskustelu.getAihealue() + "</a><br/>";
         }
 
         String palautettava = "";
