@@ -33,7 +33,7 @@ public class Kayttoliittyma {
         List<Keskustelu> otsikot = keskusteluDao.getOtsikot();
         for (Keskustelu otsikko : otsikot) {
             get("/" + otsikko.getOtsikko(), (req, res) -> {
-                String nakyma = nakymanLuoja(aihealueet);
+                String nakyma = nakymanLuoja(otsikot);
                 return nakyma;
             });
         }
