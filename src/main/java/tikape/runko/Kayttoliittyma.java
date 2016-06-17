@@ -38,20 +38,18 @@ public class Kayttoliittyma {
             });
         }
 
-        
-        
         get("/kirjautuminen", (req, res) -> {
             String nakyma = kirjautumisSivu();
             return nakyma;
         });
-        
+
         get("/testi", (req, res) -> {
             String nakyma = "";
             List<Viesti> lista = viestiDao.getKetjuviestit(1);
-            for (Viesti viesti : lista){
+            for (Viesti viesti : lista) {
                 nakyma += viesti.getSisalto() + ".<br>";
             }
-            
+
             return nakyma;
         });
 
@@ -87,7 +85,7 @@ public class Kayttoliittyma {
             String email = req.queryParams("email");
             int id = 0;
             Kayttaja uusi = new Kayttaja(kayttajaDao.setId(), tunnus, salasana, email, 0);
-            
+
             if (kayttajaDao.getKayttaja(tunnus) == null) {
                 kayttajaDao.luoKayttaja(uusi);
                 return "<a href=\"/\"><H1>Aneereforum</H1></a>"
@@ -103,7 +101,7 @@ public class Kayttoliittyma {
 
         String nakyma = "";
         String alue = "vaiheessa";
-        
+
         for (Keskustelu keskustelu : keskustelut) {
             nakyma += "<a href=\"" + keskustelu.getId() + "\">" + keskustelu.getOtsikko() + "</a><br/>";
         }
@@ -133,15 +131,16 @@ public class Kayttoliittyma {
                 + "Salasana:<br/>"
                 + "<input type=\"text\" name=\"salasana\"/><br/>\n"
                 + "<input type=\"submit\" value=\"Kirjaudu\"/>\n"
-                + "<input type=\"submit\" value=\"Luo tunnus\"/>\n"
+                + "<a href=\"/luotunnus\">Luo tunnus</a>"
+//                + "<input type=\"submit\" value=\"Luo tunnus\"/>\n"
                 + "</form>";
-        
+
         // luo tunnus -napista siirtyminen oikealle sivulle
     }
 
     private String luoTunnusSivu() {
         return "<a href=\"/\"><H1>Aneereforum</H1></a>"
-                + "<form method=\"POST\" action=\"/Luo\">\n"
+                + "<form method=\"POST\" action=\"/luotunnus\">\n"
                 + "Email:<br/>\n"
                 + "<input type=\"text\" name=\"email\"/><br/>\n"
                 + "Tunnus:<br/>\n"

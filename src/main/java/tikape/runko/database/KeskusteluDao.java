@@ -1,13 +1,8 @@
 
 package tikape.runko.database;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.sql.*;
+import java.util.*;
 import tikape.runko.domain.Keskustelu;
 import tikape.runko.database.Database;
 
@@ -41,7 +36,7 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
     public List<Keskustelu> getOtsikot() throws SQLException {
         List<Keskustelu> otsikot = new ArrayList<>();
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Keskuste;");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Keskustelu;");
         
         ResultSet rs = stmt.executeQuery();
 
