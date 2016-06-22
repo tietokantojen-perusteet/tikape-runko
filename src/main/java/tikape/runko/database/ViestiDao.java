@@ -20,7 +20,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     public void lisaaViesti(Viesti viesti) {
         lista.add(viesti);
         String lisattava = "";
-        lisattava = "INSERT INTO Viesti VALUES (" + viesti.getId() + ", " + viesti.getKayttajaID()
+        lisattava = "INSERT INTO Viesti VALUES (" + viesti.getID() + ", " + viesti.getKayttajaID()
                 + ", " + viesti.getKeskusteluID() + ", \"" + viesti.getSisalto() + "\", "
                 + viesti.getKellonaika() + ")";
 
@@ -158,5 +158,4 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
         return viestit;
     }
-
 }
