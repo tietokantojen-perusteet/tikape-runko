@@ -92,7 +92,7 @@ public class KayttajaDao implements Dao<Kayttaja, Integer> {
     public void luoKayttaja(Kayttaja kayttaja) throws SQLException {
         String sql = "INSERT INTO Kayttaja "
                 + "(Id, tunnus, salasana, email) VALUES ("
-                + (kayttaja.getId()) + ", "
+                + (kayttaja.getID()) + ", "
                 + s(kayttaja.getTunnus()) + ", "
                 + s(kayttaja.getSalasana()) + ", "
                 + s(kayttaja.getEmail()) + " );";

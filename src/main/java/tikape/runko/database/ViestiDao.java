@@ -10,19 +10,39 @@ import tikape.runko.domain.Viesti;
 public class ViestiDao implements Dao<Viesti, Integer> {
 
     private Database database;
-    private List<Viesti> lista;
+    private List<Viesti> viestit;
 
     public ViestiDao(Database database) {
         this.database = database;
-        this.lista = new ArrayList();
+        this.viestit = new ArrayList();
+    }
+    public void init() throws SQLException {
+        
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti");
+
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            Integer ID = rs.getInt("ViestiID");
+            Integer kayttajanID = rs.getInt("Kayttaja");
+            Integer keskusteluID = rs.getInt("Keskustelu");
+            Timestamp kellonaika = rs.getTimestamp("kellonaika");
+            String sisalto = rs.getString("sisalto");
+
+            viestit.add(new Viesti(ID, kayttajanID, keskusteluID, kellonaika, sisalto));
+        }
+
+        rs.close();
+        stmt.close();
+        connection.close();
     }
 
     public void lisaaViesti(Viesti viesti) {
-        lista.add(viesti);
+        viestit.add(viesti);
         String lisattava = "";
         lisattava = "INSERT INTO Viesti VALUES (" + viesti.getID() + ", " + viesti.getKayttajaID()
-                + ", " + viesti.getKeskusteluID() + ", \"" + viesti.getSisalto() + "\", "
-                + viesti.getKellonaika() + ")";
+                + ", " + viesti.getKeskusteluID() + ", '" + viesti.getKellonaika() + "', '"
+                + viesti.getSisalto() + "')";
 
         try (Connection conn = database.getConnection()) {
             Statement st = conn.createStatement();
@@ -36,9 +56,11 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     }
 
     public List<Viesti> getLista() {
-        return this.lista;
+        return this.viestit;
     }
-
+    public int getSeuraavaID() {
+        return this.viestit.size();
+    }
 //    @Override
 //    public Viesti findOne(Integer key) throws SQLException {
 //        Connection connection = database.getConnection();
@@ -77,14 +99,13 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         ResultSet rs = stmt.executeQuery();
         List<Viesti> viestit = new ArrayList<>();
         while (rs.next()) {
-            Integer id = rs.getInt("ViestiId");
-            Integer kayttajanid = rs.getInt("KayttajanID");
-//            Integer kayttaja = rs.getInt("Kayttaja");
+            Integer ID = rs.getInt("ViestiId");
+            Integer kayttajanID = rs.getInt("Kayttaja");
             Integer keskustelu = rs.getInt("Keskustelu");
             Timestamp kellonaika = rs.getTimestamp("kellonaika");
             String sisalto = rs.getString("sisalto");
 
-            viestit.add(new Viesti(id, kayttajanid, keskustelu, sisalto, kellonaika));
+            viestit.add(new Viesti(ID, kayttajanID, keskustelu, kellonaika, sisalto));
 
         }
 
@@ -141,15 +162,13 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         ResultSet rs = stmt.executeQuery();
         List<Viesti> viestit = new ArrayList<>();
         while (rs.next()) {
-            Integer id = rs.getInt("ViestiId");
-            Integer kayttajanid = rs.getInt("KayttajanID");
-//            Integer kayttaja = rs.getInt("Kayttaja");
+            Integer ID = rs.getInt("ViestiId");
+            Integer kayttajanID = rs.getInt("KayttajanID");
             Integer keskustelu = rs.getInt("Keskustelu");
             Timestamp kellonaika = rs.getTimestamp("kellonaika");
             String sisalto = rs.getString("sisalto");
 
-            viestit.add(new Viesti(id, kayttajanid, keskustelu, sisalto, kellonaika));
-
+            viestit.add(new Viesti(ID, kayttajanID, keskustelu, kellonaika, sisalto));
         }
 
         rs.close();

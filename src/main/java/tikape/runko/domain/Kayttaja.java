@@ -32,7 +32,7 @@ public class Kayttaja {
     public String toString() {
         return this.id + " " + this.tunnus + " " + this.salasana + " " + this.email;
     }
-    public int getId() {
+    public int getID() {
         return this.id;
     }
     public String getTunnus() {

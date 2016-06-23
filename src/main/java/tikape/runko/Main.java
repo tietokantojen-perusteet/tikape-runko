@@ -26,6 +26,7 @@ public class Main {
         Database db = new Database(jdbcOsoite);
         
         Kayttoliittyma kali = new Kayttoliittyma(db);
+        kali.alkutoimet();
         kali.suorita();
         
         

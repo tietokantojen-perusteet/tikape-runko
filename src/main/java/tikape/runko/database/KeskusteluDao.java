@@ -79,12 +79,12 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
     public List<Keskustelu> getKetjut(String aihealue) throws SQLException {
         List<Keskustelu> otsikot = new ArrayList<>();
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT keskusteluid,aihealue,otsikko as Keskustelu FROM keskustelu "
+        PreparedStatement stmt = connection.prepareStatement("SELECT keskustelu,aihealue,otsikko as Keskustelu FROM keskustelu "
                 + "WHERE aihealue ='" + aihealue + "';");
         
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
-            int id = rs.getInt("keskusteluid");
+            int id = rs.getInt("keskustelu");
             String otsikko = rs.getString("otsikko");
 
             Keskustelu keskustelu = new Keskustelu(id,otsikko,aihealue);
@@ -110,8 +110,8 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
         }
 
         Integer id = rs.getInt("KeskusteluID");
-        String otsikko = rs.getString("otsikko");
-        String aihealue = rs.getString("aihealue");
+        String otsikko = rs.getString("Otsikko");
+        String aihealue = rs.getString("Aihealue");
         
 
         Keskustelu k = new Keskustelu(id, otsikko, aihealue);
@@ -132,8 +132,8 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
         List<Keskustelu> keskustelut = new ArrayList<>();
         while (rs.next()) {
             Integer id = rs.getInt("KeskusteluID");
-            String otsikko = rs.getString("otsikko");
-            String aihealue = rs.getString("aihealue");
+            String otsikko = rs.getString("Otsikko");
+            String aihealue = rs.getString("Aihealue");
             
 
             keskustelut.add(new Keskustelu(id, otsikko, aihealue));
