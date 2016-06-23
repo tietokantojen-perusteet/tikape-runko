@@ -17,13 +17,13 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
     public List<Keskustelu> getAihealueet() throws SQLException {
         List<Keskustelu> aihealueet = new ArrayList<>();
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT DISTINCT keskusteluid,Aihealue FROM Keskustelu");
+        PreparedStatement stmt = connection.prepareStatement("SELECT DISTINCT Aihealue FROM Keskustelu");
         
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
-            int id = rs.getInt("keskusteluid");
+            //int id = rs.getInt("KeskusteluID");
             String aihealue = rs.getString("Aihealue");
-            Keskustelu yksittainenAihealue = new Keskustelu(id,aihealue);
+            Keskustelu yksittainenAihealue = new Keskustelu(aihealue);
             aihealueet.add(yksittainenAihealue);
         }
         
@@ -36,12 +36,16 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
     public List<Keskustelu> getOtsikot() throws SQLException {
         List<Keskustelu> otsikot = new ArrayList<>();
         Connection connection = database.getConnection();
+
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Keskustelu;");
+
+//        PreparedStatement stmt = connection.prepareStatement("SELECT KeskusteluID,Otsikko,Aihealue FROM Keskustelu;");
+
         
         ResultSet rs = stmt.executeQuery();
 
         while (rs.next()) {
-            int id = rs.getInt("KeskustelunID");
+            int id = rs.getInt("KeskusteluID");
             String otsikko = rs.getString("Otsikko");
             String aihealue = rs.getString("Aihealue");
             Keskustelu keskustelu = new Keskustelu(id,otsikko,aihealue);
@@ -53,6 +57,24 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
         connection.close();
         
         return otsikot;
+    }
+    public Keskustelu getOtsikko(String otsikko) throws SQLException {
+        List<Keskustelu> lista = getOtsikot();
+        for (Keskustelu keskustelu : lista) {
+            if (keskustelu.getOtsikko().equals(otsikko)) {
+                return keskustelu;
+            }
+        }
+        return null;
+    }
+    public int getOtsikkoID(String otsikko) throws SQLException {
+        List<Keskustelu> lista = getOtsikot();
+        for (Keskustelu keskustelu : lista) {
+            if (keskustelu.getOtsikko().equals(otsikko)) {
+                return keskustelu.getID();
+            }
+        }
+        return 0;
     }
     public List<Keskustelu> getKetjut(String aihealue) throws SQLException {
         List<Keskustelu> otsikot = new ArrayList<>();
@@ -132,7 +154,7 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
     public void luoKeskustelu(Keskustelu keskustelu) throws SQLException {
         String sql = "INSERT INTO Keskustelu "
                 + "(KeskusteluID, otsikko, aihealue) VALUES ("
-                + (keskustelu.getId()) + ", "
+                + (keskustelu.getID()) + ", "
                 + s(keskustelu.getOtsikko()) + ", "
                 + s(keskustelu.getAihealue()) + " );";
         

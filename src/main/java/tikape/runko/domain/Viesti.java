@@ -19,7 +19,9 @@ public class Viesti {
         this.sisalto = sisalto;
         this.kellonaika = kellonaika;
     }
-    
+    public String toString() {
+        return this.id + this.kayttaja + this.keskustelu + this.sisalto + this.kellonaika;
+    }
 //    public Viesti(int id, String sisalto, Date kellonaika){
 //        this.id = id;
 //        this.sisalto = sisalto;
@@ -29,7 +31,7 @@ public class Viesti {
 //    public String toString() {
 //        return this.id + kayttaja.getTunnus() + keskustelu.getOtsikko() + sisalto + kellonaika.toString();
 //    }
-    public int getId() {
+    public int getID() {
         return id;
     }
     

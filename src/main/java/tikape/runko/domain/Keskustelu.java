@@ -15,13 +15,17 @@ public class Keskustelu {
         this.aihealue = aihealue;
     }
     public Keskustelu(Integer id, String aihealue) {
+        this.keskusteluid = id;
         this.aihealue = aihealue;
     }
-    public Integer getId() {
+    public Keskustelu(String aihealue) {
+        this.aihealue = aihealue;
+    }
+    public Integer getID() {
         return keskusteluid;
     }
 
-    public void setId(Integer id) {
+    public void setID(Integer id) {
         this.keskusteluid = id;
     }
 

@@ -20,7 +20,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     public void lisaaViesti(Viesti viesti) {
         lista.add(viesti);
         String lisattava = "";
-        lisattava = "INSERT INTO Viesti VALUES (" + viesti.getId() + ", " + viesti.getKayttajaID()
+        lisattava = "INSERT INTO Viesti VALUES (" + viesti.getID() + ", " + viesti.getKayttajaID()
                 + ", " + viesti.getKeskusteluID() + ", \"" + viesti.getSisalto() + "\", "
                 + viesti.getKellonaika() + ")";
 
@@ -132,5 +132,30 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     public List<Viesti> findAll() throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    public List<Viesti> getUusimmatviestit(int montako) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti "
+                + "ORDER BY kellonaika DESC LIMIT " + montako);
 
+        ResultSet rs = stmt.executeQuery();
+        List<Viesti> viestit = new ArrayList<>();
+        while (rs.next()) {
+            Integer id = rs.getInt("ViestiId");
+            Integer kayttajanid = rs.getInt("KayttajanID");
+//            Integer kayttaja = rs.getInt("Kayttaja");
+            Integer keskustelu = rs.getInt("Keskustelu");
+            Timestamp kellonaika = rs.getTimestamp("kellonaika");
+            String sisalto = rs.getString("sisalto");
+
+            viestit.add(new Viesti(id, kayttajanid, keskustelu, sisalto, kellonaika));
+
+        }
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return viestit;
+    }
 }
