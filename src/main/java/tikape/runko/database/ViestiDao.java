@@ -94,6 +94,42 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
         return viestit;
     }
+    
+    public int  getViestienmaaraAihealueittain() throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT Aihealue, COUNT(*) AS maara FROM Keskustelu, Viesti WHERE"
+                + " Keskustelu.KeskusteluID = Viesti.Keskustelu"
+                + " GROUP BY Keskustelu.Aihealue ORDER BY maara DESC");
+        
+        List<Viesti> viestit = new ArrayList<>();
+        List<Keskustelu> aihealueet = new ArrayList<>();
+        int maara = 0;
+        
+
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            Integer id = rs.getInt("ViestiId");
+            Integer kayttajanid = rs.getInt("KayttajanID");
+//            Integer kayttaja = rs.getInt("Kayttaja");
+            Integer keskustelu = rs.getInt("Keskustelu");
+            Timestamp kellonaika = rs.getTimestamp("kellonaika");
+            String sisalto = rs.getString("sisalto");
+            
+              //int id = rs.getInt("KeskusteluID");
+            String aihealue = rs.getString("Aihealue");
+            Keskustelu yksittainenAihealue = new Keskustelu(aihealue);
+            aihealueet.add(yksittainenAihealue);
+            viestit.add(new Viesti(id, kayttajanid, keskustelu, sisalto, kellonaika));
+
+        }
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return viestit.size();
+        
+    }
 
     @Override
     public void delete(Integer key) throws SQLException {

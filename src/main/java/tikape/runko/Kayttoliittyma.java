@@ -27,55 +27,64 @@ public class Kayttoliittyma {
     public void suorita() throws SQLException {
         List<Keskustelu> aihealueet = keskusteluDao.getAihealueet();
         List<Keskustelu> otsikot = keskusteluDao.getOtsikot();
-        
-        
-        
+
         get("/", (req, res) -> {
             String nakyma = nakymanLuoja(aihealueet, "Aihealueet", false);
             return nakyma;
         });
-        
+
         for (Keskustelu aihealue : aihealueet) {
             get("/" + aihealue.getAihealue(), (req, res) -> {
                 String nakyma = nakymanLuoja(otsikot, aihealue.getAihealue(), false);
                 return nakyma;
             });
         }
-        
+
         for (Keskustelu otsikko : otsikot) {
             get("/" + otsikko.getID(), (req, res) -> {
                 String nakyma = nakymanLuoja(otsikot, otsikko.getOtsikko(), true);
                 return nakyma;
             });
         }
-             
+
         get("/kirjautuminen", (req, res) -> {
             String nakyma = kirjautumisSivu();
             return nakyma;
         });
-        
+
         get("/ketjuviestit", (req, res) -> {
             String nakyma = "";
             List<Viesti> lista = viestiDao.getKetjuviestit(1);
-            for (Viesti viesti : lista){
+            for (Viesti viesti : lista) {
                 nakyma += viesti.getSisalto() + ".<br>";
+            }
+
+            return nakyma;
+        });
+
+        get("/uusimmat", (req, res) -> {
+            String nakyma = "";
+            List<Viesti> lista = viestiDao.getUusimmatviestit(2);
+            for (Viesti viesti : lista) {
+                nakyma += viesti.getSisalto() + ".<br>";
+            }
+
+            return nakyma;
+        });
+
+        get("/maara", (req, res) -> {
+            String nakyma = "";
+            int maara = 0;
+            List<Keskustelu> aihealueet2 = keskusteluDao.getAihealueet();
+            for (Keskustelu keskustelu : aihealueet2){
+                
+                nakyma += viestiDao.getViestienmaara() + ".<br>";
+                
             }
             
             return nakyma;
         });
-        
-        get("/uusimmat", (req, res) -> {
-            String nakyma = "";
-            List<Viesti> lista = viestiDao.getUusimmatviestit(2);
-            for (Viesti viesti : lista){
-                nakyma += viesti.getSisalto() + ".<br>";
-            }
-            
-            return nakyma;
-        });       
-        
-        
-        
+
         get("/logout", (req, res) -> {
             kayttaja = null;
             String nakyma = "<a href=\"/\"><H1>Aneereforum</H1></a>"
@@ -88,7 +97,6 @@ public class Kayttoliittyma {
 //            String nakyma = luoTunnusSivu();
 //            return nakyma;
 //        });
-
         post("/lahetetty", (req, res) -> {
             return "Viesti lähetetty!<br><a href=\"/\">Palaa forumille!</a>";
         });
@@ -113,7 +121,7 @@ public class Kayttoliittyma {
             String email = req.queryParams("email");
             int id = 0;
             Kayttaja uusi = new Kayttaja(kayttajaDao.setId(), tunnus, salasana, email, 0);
-            
+
             if (kayttajaDao.getKayttaja(tunnus) == null) {
                 kayttajaDao.luoKayttaja(uusi);
                 return "<a href=\"/\"><H1>Aneereforum</H1></a>"
@@ -128,14 +136,14 @@ public class Kayttoliittyma {
     private String nakymanLuoja(List<Keskustelu> keskustelut, String otsikko, boolean onkoKetju) throws SQLException {
 
         String palautettava = "";
-        
+
         palautettava += "<a href=\"/\"><H1>Aneereforum</H1></a>";
         if (kayttaja == null) {
             palautettava += "<a href=\"/kirjautuminen\">Kirjaudu</a>";
         } else {
             palautettava += "<a href=\"/omasivu\">" + kayttaja.getTunnus() + "</a> <a href=\"/logout\">Kirjaudu ulos</a>";
         }
-        
+
         if (otsikko.equals("Aihealueet")) { //ALOITUSSIVU
             palautettava += "<H2>" + otsikko + "</H2></a>";
         } else if (onkoKetju == false) {    // MUUT SIVUT
@@ -144,16 +152,16 @@ public class Kayttoliittyma {
             int keskusteluID = keskusteluDao.getOtsikkoID(otsikko);
             palautettava += "<a href=\"" + keskusteluID + "\"><H2>" + otsikko + "</H2></a>";
         }
-        
+
         String nakyma = "";
         int id = 0;
-        if (otsikko.equals("Aihealueet")) {            
+        if (otsikko.equals("Aihealueet")) {
             for (Keskustelu keskustelu : keskustelut) {
                 nakyma += "<a href=\"" + keskustelu.getAihealue() + "\">" + keskustelu.getAihealue() + "</a><br/>";
             }
         } else if (onkoKetju == false) {;
             for (Keskustelu keskustelu : keskustelut) {
-                if(keskustelu.getAihealue().equals(otsikko)) {
+                if (keskustelu.getAihealue().equals(otsikko)) {
                     nakyma += "<a href=\"" + keskustelu.getID() + "\">" + keskustelu.getOtsikko() + "</a><br/>";
                 }
             }
@@ -165,14 +173,14 @@ public class Kayttoliittyma {
             for (Viesti viesti : viestit) {
                 nakyma += viesti.toString() + "<br>";
             }
-                    nakyma += "<br><br>"
+            nakyma += "<br><br>"
                     + "<form method=\"POST\" action=\"/lahetetty\">\n"
                     + "Lisää viesti ketjuuni:<br/>\n"
                     + "<input type=\"text\" name=\"" + keskustelu.getID() + "\"/><br/>\n"
                     + "<input type=\"submit\" value=\"Lisää viesti\"/>\n"
                     + "</form>";
         }
-        
+
         palautettava += nakyma;
 
         return palautettava;
@@ -188,7 +196,7 @@ public class Kayttoliittyma {
                 + "<input type=\"text\" name=\"salasana\"/><br/>\n"
                 + "<input type=\"submit\" value=\"Kirjaudu\"/>\n"
                 + "</form>";
-        
+
         // luo tunnus -napista siirtyminen oikealle sivulle
     }
 
