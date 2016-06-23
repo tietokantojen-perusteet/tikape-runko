@@ -1,15 +1,17 @@
-package tikape.runko;
+package aneere.runko;
 
+
+import aneere.runko.database.Database;
+import aneere.runko.database.KayttajaDao;
+import aneere.runko.database.KeskusteluDao;
+import aneere.runko.database.ViestiDao;
+import aneere.runko.domain.Kayttaja;
+import aneere.runko.domain.Keskustelu;
+import aneere.runko.domain.Viesti;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import static java.time.LocalDateTime.now;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import static spark.Spark.get;
 import static spark.Spark.post;
-import tikape.runko.database.*;
-import tikape.runko.domain.*;
 
 public class Kayttoliittyma {
 
@@ -21,14 +23,11 @@ public class Kayttoliittyma {
     private Kayttaja kayttaja;
     private int tempKeskusteluID;
     
-    public Kayttoliittyma(Database database) throws SQLException {
+    public Kayttoliittyma(Database database, KeskusteluDao keda) throws SQLException {
         this.database = database;
         this.kayttajaDao = new KayttajaDao(database);
-        this.keskusteluDao = new KeskusteluDao(database);
+        this.keskusteluDao = keda;
         this.viestiDao = new ViestiDao(database);
-    }
-    public void alkutoimet() throws SQLException {
-        viestiDao.init();
     }
 
     public void suorita() throws SQLException {
@@ -56,44 +55,26 @@ public class Kayttoliittyma {
 
         get("/kirjautuminen", (req, res) -> {
             String nakyma = kirjautumisSivu();
-            return nakyma;
+            return cssLuoja(nakyma);
         });
-        
-        get("/ketjuviestit", (req, res) -> {
-            String nakyma = "";
-            List<Viesti> lista = viestiDao.getKetjuviestit(1);
-            for (Viesti viesti : lista) {
-                nakyma += viesti.getSisalto() + ".<br>";
-            }
 
-            return nakyma;
-        });
-        
-        get("/uusimmat", (req, res) -> {
-            String nakyma = "";
-            List<Viesti> lista = viestiDao.getUusimmatviestit(2);
-            for (Viesti viesti : lista){
-                nakyma += viesti.getSisalto() + ".<br>";
-            }
-            
-            return nakyma;
-        });             
-        
         get("/logout", (req, res) -> {
             kayttaja = null;
             String nakyma = "<a href=\"/\"><H1>Aneereforum</H1></a>"
                     + "Kirjauduttu ulos";
-            return nakyma;
+            return cssLuoja(nakyma);
         });
-
        
         get("/luotunnus", (req, res) -> {
             String nakyma = luoTunnusSivu();
-            return nakyma;
+            return cssLuoja(nakyma);
         });
 
         post("/lahetetty", (req, res) -> {          
             String sisalto = req.queryParams("sisalto");
+            if (kayttaja == null) {
+                kayttaja = kayttajaDao.findOne(4);
+            }
             Viesti lisattava = new Viesti(viestiDao.getSeuraavaID(), kayttaja.getID(), getKeskusteluID(), sisalto);
             viestiDao.lisaaViesti(lisattava);
             return "Viesti lähetetty!<br><a href=\"/\">Palaa forumille!</a>";
@@ -105,11 +86,13 @@ public class Kayttoliittyma {
             Kayttaja kirjautuva = new Kayttaja(tunnus, salasana);
             if (kayttajaDao.kirjaudu(kirjautuva)) {
                 kayttaja = kayttajaDao.getKayttaja(tunnus);
-                return "<a href=\"/\"><H1>Aneereforum</H1></a>"
+                String nakyma = "<a href=\"/\"><H1>Aneereforum</H1></a>"
                         + "Kirjautuminen onnistui!";
+                return cssLuoja(nakyma);
             } else {
-                return "<a href=\"/\"><H1>Aneereforum</H1></a>"
+                String nakyma = "<a href=\"/\"><H1>Aneereforum</H1></a>"
                         + "Väärä tunnus tai salasana!";
+                return cssLuoja(nakyma);
             }
         });
 
@@ -132,25 +115,19 @@ public class Kayttoliittyma {
 
     private String nakymanLuoja(List<Keskustelu> keskustelut, String otsikko, boolean onkoKetju) throws SQLException {
   
-        String palautettava = "";
-        String nakyma = "";
-        
-        palautettava += "<a href=\"/\"><H1>Aneereforum</H1></a>";
-        if (kayttaja == null) {
-            palautettava += "<a href=\"/kirjautuminen\">Kirjaudu</a>";
-        } else {
-            palautettava += "<a href=\"/omasivu\">" + kayttaja.getTunnus() + "</a> <a href=\"/logout\">Kirjaudu ulos</a>";
-        }
+        String nakyma = "";          
+          
         if (otsikko.equals("Aihealueet")) { //ALOITUSSIVU
-            palautettava += "<H2>" + otsikko + "</H2></a>";
+            nakyma += "<H2>" + otsikko + "</H2></a>";
         } else if (onkoKetju == false) {    // MUUT SIVUT
-            palautettava += "<a href=\"" + otsikko + "\"><H2>" + otsikko + "</H2></a>";
+            nakyma += "<a href=\"" + otsikko + "\"><H2>" + otsikko + "</H2></a>";
         } else {
             int keskusteluID = keskusteluDao.getOtsikkoID(otsikko);
-            palautettava += "<a href=\"" + keskusteluID + "\"><H2>" + otsikko + "</H2></a>";
-        }
+            String aihealue = keskusteluDao.getAihealue(keskusteluID);
+            nakyma += "<H2><a href=\"" + aihealue + "\">" + aihealue + "</a> ---->   ";
+            nakyma += "<a href=\"" + keskusteluID + "\">" + otsikko + "</a></H2>";
+        }        
         
-
         int id = 0;
         if (otsikko.equals("Aihealueet")) {            
             for (Keskustelu keskustelu : keskustelut) {
@@ -177,15 +154,58 @@ public class Kayttoliittyma {
             + "<input type=\"submit\" value=\"Lisää viesti\"/>\n"
             + "</form>";           
             setKeskusteluID(keskustelu.getID());
-        }         
-         
-        palautettava += nakyma;                   
-        return palautettava;
+        }           
+
+        String alaosa = "Oujee";
+        
+        return cssLuoja(nakyma);
+    }
+    private String cssLuoja(String nakyma) throws SQLException {
+        
+        String ylaosa = "<a href=\"/\"><H1>Aneereforum</H1></a>";
+        String alaosa = "Oujee";
+        String kirjautuminen = "";
+        if (kayttaja == null) {
+            kirjautuminen += "<a href=\"/kirjautuminen\">Kirjaudu</a>";
+        } else {
+            kirjautuminen += "<a href=\"/omasivu\">" + kayttaja.getTunnus() + "</a> <a href=\"/logout\">Kirjaudu ulos</a>";
+        }
+        
+        String info = "";
+        List<Viesti> uusimmat = viestiDao.getUusimmat(3);
+        for (Viesti viesti : uusimmat) {
+            info += viesti.toString() + "<br>";
+        }
+        
+        String cssPalauttaja = "<style type=\"text/css\">\n" +
+        ".tg  {border-collapse:collapse;border-spacing:0;}\n" +
+        ".tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}\n" +
+        ".tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}\n" +
+        ".tg .tg-bisz{font-size:20px;font-family:\"Courier New\", Courier, monospace !important;;background-color:#96fffb;vertical-align:top}\n" +
+        ".tg .tg-sp5c{font-size:18px;font-family:\"Arial Black\", Gadget, sans-serif !important;;background-color:#96fffb;text-align:center;vertical-align:top}\n" +
+        ".tg .tg-o2ji{font-family:\"Arial Black\", Gadget, sans-serif !important;;background-color:#96fffb;vertical-align:top}\n" +
+        ".tg .tg-jrdg{font-family:\"Courier New\", Courier, monospace !important;;background-color:#96fffb;vertical-align:top}\n" +
+        "</style>\n" +
+        "<table class=\"tg\">\n" +
+        "  <tr>\n" +
+        "    <th class=\"tg-sp5c\">" + ylaosa + "</th>\n" +
+        "    <th class=\"tg-o2ji\">" + kirjautuminen + "</th>\n" +
+        "  </tr>\n" +
+        "  <tr>\n" +
+        "    <td width=\"65%\" class=\"tg-jrdg\">" + nakyma + "</td>\n" +
+        "    <td class=\"tg-jrdg\"><u>Uusimmat viestit</u><br><br>" + info + "</td>\n" +
+        "  </tr>\n" +
+        "  <tr>\n" +
+        "    <td class=\"tg-bisz\" colspan=\"2\">" + alaosa + "</td>\n" +
+        "  </tr>\n" +
+        "</table>";
+        
+        return cssPalauttaja;
     }
     
+    
     private String kirjautumisSivu() {
-        return "<a href=\"/\"><H1>Aneereforum</H1></a>"
-                + "Eikö tunnusta? Tee tunnus <a href=\"/luotunnus\">tästä</a><br><br>"
+        return   "Eikö tunnusta? Tee tunnus <a href=\"/luotunnus\">tästä</a><br><br>"
                 + "<form method=\"POST\" action=\"/kirjautuminen\">\n"
                 + "Tunnus:<br/>\n"
                 + "<input type=\"text\" name=\"tunnus\"/><br/>\n"

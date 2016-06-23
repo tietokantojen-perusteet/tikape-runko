@@ -1,9 +1,9 @@
-package tikape.runko.database;
+package aneere.runko.database;
 
 import java.sql.*;
 import java.util.*;
-import tikape.runko.domain.Kayttaja;
-import tikape.runko.database.Database;
+import aneere.runko.domain.Kayttaja;
+import aneere.runko.database.Database;
 
 public class KayttajaDao implements Dao<Kayttaja, Integer> {
 

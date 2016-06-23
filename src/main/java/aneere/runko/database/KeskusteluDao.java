@@ -1,10 +1,10 @@
 
-package tikape.runko.database;
+package aneere.runko.database;
 
 import java.sql.*;
 import java.util.*;
-import tikape.runko.domain.Keskustelu;
-import tikape.runko.database.Database;
+import aneere.runko.domain.Keskustelu;
+import aneere.runko.database.Database;
 
 public class KeskusteluDao implements Dao<Keskustelu, Integer> {
     
@@ -63,6 +63,15 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
         for (Keskustelu keskustelu : lista) {
             if (keskustelu.getOtsikko().equals(otsikko)) {
                 return keskustelu;
+            }
+        }
+        return null;
+    }
+    public String getAihealue(int haettavaID) throws SQLException {
+        List<Keskustelu> lista = getOtsikot();
+        for (Keskustelu keskustelu : lista) {
+            if(keskustelu.getID() == haettavaID) {
+                return keskustelu.getAihealue();
             }
         }
         return null;

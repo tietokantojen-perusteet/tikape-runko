@@ -1,4 +1,4 @@
-package tikape.runko.domain;
+package aneere.runko.domain;
 
 import java.util.*;
 

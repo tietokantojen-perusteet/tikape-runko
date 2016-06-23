@@ -1,4 +1,4 @@
-package tikape.runko.database;
+package aneere.runko.database;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import tikape.runko.domain.*;
 
 public class Database {
 

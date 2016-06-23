@@ -1,4 +1,4 @@
-package tikape.runko.domain;
+package aneere.runko.domain;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -27,7 +27,7 @@ public class Viesti {
         this.kellonaika = kellonaika;
     }
     public String toString() {
-        return this.ID + this.kayttaja + this.keskustelu + this.sisalto + this.kellonaika;
+        return this.sisalto + "   " + this.kellonaika;
     }
     public int getID() {
         return ID;

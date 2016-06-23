@@ -1,20 +1,20 @@
-package tikape.runko.database;
+package aneere.runko.database;
 
 import java.sql.*;
 import java.util.*;
-import tikape.runko.*;
-import tikape.runko.domain.Kayttaja;
-import tikape.runko.domain.Keskustelu;
-import tikape.runko.domain.Viesti;
+import aneere.runko.domain.Kayttaja;
+import aneere.runko.domain.Keskustelu;
+import aneere.runko.domain.Viesti;
 
 public class ViestiDao implements Dao<Viesti, Integer> {
 
     private Database database;
     private List<Viesti> viestit;
 
-    public ViestiDao(Database database) {
+    public ViestiDao(Database database) throws SQLException {
         this.database = database;
         this.viestit = new ArrayList();
+        init();
     }
     public void init() throws SQLException {
         
@@ -154,7 +154,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    public List<Viesti> getUusimmatviestit(int montako) throws SQLException {
+    public List<Viesti> getUusimmat(int montako) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti "
                 + "ORDER BY kellonaika DESC LIMIT " + montako);
@@ -162,8 +162,8 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         ResultSet rs = stmt.executeQuery();
         List<Viesti> viestit = new ArrayList<>();
         while (rs.next()) {
-            Integer ID = rs.getInt("ViestiId");
-            Integer kayttajanID = rs.getInt("KayttajanID");
+            Integer ID = rs.getInt("ViestiID");
+            Integer kayttajanID = rs.getInt("Kayttaja");
             Integer keskustelu = rs.getInt("Keskustelu");
             Timestamp kellonaika = rs.getTimestamp("kellonaika");
             String sisalto = rs.getString("sisalto");
