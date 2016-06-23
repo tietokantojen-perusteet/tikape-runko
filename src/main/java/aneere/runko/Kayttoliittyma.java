@@ -186,6 +186,18 @@ public class Kayttoliittyma {
         ".tg .tg-sp5c{font-size:18px;font-family:\"Arial Black\", Gadget, sans-serif !important;;background-color:#96fffb;text-align:center;vertical-align:top}\n" +
         ".tg .tg-o2ji{font-family:\"Arial Black\", Gadget, sans-serif !important;;background-color:#96fffb;vertical-align:top}\n" +
         ".tg .tg-jrdg{font-family:\"Courier New\", Courier, monospace !important;;background-color:#96fffb;vertical-align:top}\n" +
+        "a:link {" +
+        "color: green;" +
+        "}" +
+        "a:visited {"+
+            "color: green;"+
+        "}"+
+        "a:hover {"+
+            "color: hotpink;"+
+        "}"+
+        "a:active {"+
+            "color: blue;"+
+        "}" +
         "</style>\n" +
         "<table class=\"tg\">\n" +
         "  <tr>\n" +
