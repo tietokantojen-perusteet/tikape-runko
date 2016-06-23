@@ -116,17 +116,20 @@ public class Kayttoliittyma {
     private String nakymanLuoja(List<Keskustelu> keskustelut, String otsikko, boolean onkoKetju) throws SQLException {
   
         String nakyma = "";          
+        
+        
+        nakyma += "<H2><a href=\"/\">Aihealueet</a> ";        
           
-        if (otsikko.equals("Aihealueet")) { //ALOITUSSIVU
-            nakyma += "<H2>" + otsikko + "</H2></a>";
-        } else if (onkoKetju == false) {    // MUUT SIVUT
-            nakyma += "<a href=\"" + otsikko + "\"><H2>" + otsikko + "</H2></a>";
-        } else {
+        if (onkoKetju == false && !otsikko.equals("Aihealueet")) {    // MUUT SIVUT
+            nakyma += " ---> <a href=\"" + otsikko + "\">" + otsikko + "</H2></a>";
+        } else if (onkoKetju == true) {
             int keskusteluID = keskusteluDao.getOtsikkoID(otsikko);
             String aihealue = keskusteluDao.getAihealue(keskusteluID);
-            nakyma += "<H2><a href=\"" + aihealue + "\">" + aihealue + "</a> ---->   ";
+            nakyma += "---> <a href=\"" + aihealue + "\">" + aihealue + "</a> --->   ";
             nakyma += "<a href=\"" + keskusteluID + "\">" + otsikko + "</a></H2>";
-        }        
+        } else {
+            nakyma += "</H2>";
+        }
         
         int id = 0;
         if (otsikko.equals("Aihealueet")) {            
@@ -155,8 +158,6 @@ public class Kayttoliittyma {
             + "</form>";           
             setKeskusteluID(keskustelu.getID());
         }           
-
-        String alaosa = "Oujee";
         
         return cssLuoja(nakyma);
     }
