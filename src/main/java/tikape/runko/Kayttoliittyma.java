@@ -46,15 +46,13 @@ public class Kayttoliittyma {
                 return nakyma;
             });
         }
-
         
         for (Keskustelu otsikko : otsikot) {
             get("/" + otsikko.getID(), (req, res) -> {
                 String nakyma = nakymanLuoja(otsikot, otsikko.getOtsikko(), true);
                 return nakyma;
             });
-        }
-             
+        }             
 
         get("/kirjautuminen", (req, res) -> {
             String nakyma = kirjautumisSivu();
@@ -179,11 +177,9 @@ public class Kayttoliittyma {
             + "<input type=\"submit\" value=\"Lisää viesti\"/>\n"
             + "</form>";           
             setKeskusteluID(keskustelu.getID());
-        }
+        }         
          
-         
-        palautettava += nakyma;           
-        
+        palautettava += nakyma;                   
         return palautettava;
     }
     
@@ -196,9 +192,6 @@ public class Kayttoliittyma {
                 + "Salasana:<br/>"
                 + "<input type=\"text\" name=\"salasana\"/><br/>\n"
                 + "<input type=\"submit\" value=\"Kirjaudu\"/>\n"
-
-                + "<a href=\"/luotunnus\">Luo tunnus</a>"
-                + "<input type=\"submit\" value=\"Luo tunnus\"/>\n"
                 + "</form>";
         // luo tunnus -napista siirtyminen oikealle sivulle
     }
@@ -206,12 +199,12 @@ public class Kayttoliittyma {
     private String luoTunnusSivu() {
         return "<a href=\"/\"><H1>Aneereforum</H1></a>"
                 + "<form method=\"POST\" action=\"/luotunnus\">\n"
-                + "Email:<br/>\n"
-                + "<input type=\"text\" name=\"email\"/><br/>\n"
                 + "Tunnus:<br/>\n"
                 + "<input type=\"text\" name=\"tunnus\"/><br/>\n"
                 + "Salasana:<br/>"
                 + "<input type=\"text\" name=\"salasana\"/><br/>\n"
+                + "Email:<br/>\n"
+                + "<input type=\"text\" name=\"email\"/><br/>\n"
                 + "<input type=\"submit\" value=\"Luo\"/>\n"
                 + "</form>";
 
