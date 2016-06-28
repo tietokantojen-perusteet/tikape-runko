@@ -2,6 +2,7 @@ package aneere.runko;
 
 import static spark.Spark.*;
 import aneere.runko.database.Database;
+import aneere.runko.database.KayttajaDao;
 import aneere.runko.database.KeskusteluDao;
 
 
@@ -20,7 +21,8 @@ public class Main {
 
         Database db = new Database(jdbcOsoite);
         KeskusteluDao keda = new KeskusteluDao(db);
-        Kayttoliittyma kali = new Kayttoliittyma(db, keda);
+        KayttajaDao kada = new KayttajaDao(db);
+        Kayttoliittyma kali = new Kayttoliittyma(db, keda, kada);
         kali.suorita();       
     }
 }
