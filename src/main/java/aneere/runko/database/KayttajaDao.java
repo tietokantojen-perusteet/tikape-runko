@@ -101,11 +101,24 @@ public class KayttajaDao implements Dao<Kayttaja, Integer> {
         kayttajat.add(kayttaja);
     }
 
-//    public void haeViestit(Kayttaja kayttaja) throws SQLException {
-//        Connection connection = database.getConnection();
-//        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE Viesti.kayttaja = " + kayttaja);
-//
-//    }
+    public String haeViestit(Kayttaja kayttaja) throws SQLException {
+        String nakyma = "";
+
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE Viesti.kayttaja = " + kayttaja.getID());
+
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            nakyma += rs.getString("sisalto") + "<br>";
+        }
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return nakyma;
+
+    }
 
     private String s(String s) {
         return "'" + s + "'";
