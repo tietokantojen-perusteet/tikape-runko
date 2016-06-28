@@ -59,7 +59,7 @@ public class Database {
 
         // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
         lista.add("CREATE TABLE Kayttaja ("
-                + "Id Integer PRIMARY KEY,"
+                + "ID Integer PRIMARY KEY,"
                 + "tunnus varchar(15) NOT NULL UNIQUE,"
                 + "salasana varchar(15),"
                 + "email varchar(50), "

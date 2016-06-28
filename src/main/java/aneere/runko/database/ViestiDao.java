@@ -111,15 +111,18 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
     public List<Viesti> getKetjuviestit(Integer otsikkoid) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti INNER JOIN"
-                + " Keskustelu ON Keskustelu.KeskusteluID = Viesti.keskustelu "
-                + " WHERE Keskustelu.KeskusteluID = " + otsikkoid);
+        PreparedStatement stmt = connection.prepareStatement("SELECT Viesti.ViestiID, Viesti.sisalto, Viesti"
+                + ".kellonaika, Kayttaja.tunnus FROM Viesti, Kayttaja, Keskustelu"
+                + " WHERE Keskustelu.KeskusteluID = Viesti.keskustelu"
+                + " AND Kayttaja.ID = Viesti.kayttaja"
+                + " AND Keskustelu.KeskusteluID = " + otsikkoid);
 
         ResultSet rs = stmt.executeQuery();
         List<Viesti> viestit = new ArrayList<>();
         while (rs.next()) {
-            Integer ID = rs.getInt("ViestiId");
+            Integer ID = rs.getInt("ViestiID");
             Integer kayttajanID = rs.getInt("Kayttaja");
+            String kayttajanTunnus = rs.getString("tunnus");
             Integer keskustelu = rs.getInt("Keskustelu");
             Timestamp kellonaika = rs.getTimestamp("kellonaika");
             String sisalto = rs.getString("sisalto");
@@ -135,7 +138,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         return viestit;
     }
     
-    public int getViestienmaara(Integer keskusteluID) throws SQLException {
+    public int getViestienmaaraKeskustelu(Integer keskusteluID) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT COUNT(Viesti.ViestiID) AS maara FROM Viesti, Keskustelu"
                 + " WHERE Keskustelu.KeskusteluID = Viesti.keskustelu "
@@ -154,34 +157,49 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         return maara;
         
     }
+    
+     public int getViestienmaaraAihealue(String aihealue) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT COUNT(Viesti.ViestiID) AS maara FROM Viesti, Keskustelu"
+                + " WHERE Keskustelu.KeskusteluID = Viesti.keskustelu "
+                + " AND Keskustelu.aihealue = " + aihealue);
+
+        ResultSet rs = stmt.executeQuery();
+        List<Viesti> viestit = new ArrayList<>();
+        
+        Integer maara = rs.getInt("maara");
+
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return maara;     
+    }
+     
+      public int getViestienmaaraKaikki() throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT COUNT(Viesti.ViestiID) AS maara FROM Viesti, Keskustelu"
+                + " WHERE Keskustelu.KeskusteluID = Viesti.keskustelu");
+
+        ResultSet rs = stmt.executeQuery();
+        
+        Integer maara = rs.getInt("maara");
+        
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return maara;     
+    }
+     
+     
 
     @Override
     public void delete(Integer key) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public ArrayList<String> getForeignKeys(String tableName) throws SQLException {
-
-        ArrayList<String> foreignKeys = new ArrayList<String>();
-        Connection connection = database.getConnection();
-
-        try {
-            DatabaseMetaData meta = connection.getMetaData();
-
-            ResultSet rs = meta.getExportedKeys(connection.getCatalog(), null, tableName);
-
-            while (rs.next()) {
-                String columnName = rs.getString(tableName);
-                foreignKeys.add(columnName);
-            }
-
-            return foreignKeys;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
 
     @Override
     public Viesti findOne(Integer key) throws SQLException {
@@ -195,19 +213,22 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
     public List<Viesti> getUusimmat(int montako) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti "
-                + "ORDER BY kellonaika DESC LIMIT " + montako);
+        PreparedStatement stmt = connection.prepareStatement("SELECT Viesti.ViestiID, Viesti.sisalto, Viesti.kellonaika,"
+                + " Viesti.kayttaja, Kayttaja.tunnus, Viesti.keskustelu FROM Viesti, Kayttaja "
+                + " WHERE Kayttaja.ID = Viesti.kayttaja "
+                + " ORDER BY kellonaika DESC LIMIT " + montako);
 
         ResultSet rs = stmt.executeQuery();
         List<Viesti> viestit = new ArrayList<>();
         while (rs.next()) {
-            Integer ID = rs.getInt("ViestiID");
+            Integer id = rs.getInt("ViestiID");
             Integer kayttajanID = rs.getInt("Kayttaja");
             Integer keskustelu = rs.getInt("Keskustelu");
+            String tunnus = rs.getString("tunnus");
             Timestamp kellonaika = rs.getTimestamp("kellonaika");
             String sisalto = rs.getString("sisalto");
 
-            viestit.add(new Viesti(ID, kayttajanID, keskustelu, kellonaika, sisalto));
+            viestit.add(new Viesti(id, kayttajanID, keskustelu, kellonaika, sisalto, tunnus));
         }
 
         rs.close();

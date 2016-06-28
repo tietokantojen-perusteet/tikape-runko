@@ -9,6 +9,7 @@ public class Viesti {
     private Integer keskustelu;
     private String sisalto;
     private Timestamp kellonaika;
+    private String tunnus;
 
     
     public Viesti(int ID, Integer kayttaja, Integer keskustelu, String sisalto) {
@@ -26,8 +27,17 @@ public class Viesti {
         this.sisalto = sisalto;
         this.kellonaika = kellonaika;
     }
+    
+    public Viesti(int ID, Integer kayttaja, Integer keskustelu, Timestamp kellonaika, String sisalto, String tunnus) {
+        this.ID = ID;
+        this.kayttaja = kayttaja;
+        this.keskustelu = keskustelu;
+        this.sisalto = sisalto;
+        this.kellonaika = kellonaika;
+        this.tunnus = tunnus;
+    }
     public String toString() {
-        return this.sisalto + "   " + this.kellonaika;
+        return this.sisalto + "   " + this.kellonaika + " " +  this.tunnus;
     }
     public int getID() {
         return ID;
