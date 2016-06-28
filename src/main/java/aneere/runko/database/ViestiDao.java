@@ -16,8 +16,9 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         this.viestit = new ArrayList();
         init();
     }
+
     public void init() throws SQLException {
-        
+
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti");
 
@@ -55,9 +56,26 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
     }
 
+    public void poistaViesti(Viesti viesti) {
+        
+        viestit.remove(viesti);
+        String poistettava = "";
+        poistettava = "DELETE FROM Viesti WHERE sisalto = '" + viesti + "'";
+
+        try (Connection conn = database.getConnection()) {
+            Statement st = conn.createStatement();
+
+            st.executeUpdate(poistettava);
+
+        } catch (Throwable t) {
+            System.out.println("Error >> " + t.getMessage());
+        }
+    }
+
     public List<Viesti> getLista() {
         return this.viestit;
     }
+
     public int getSeuraavaID() {
         return this.viestit.size();
     }
@@ -90,6 +108,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 //
 //        return k;
 //    }
+
     public List<Viesti> getKetjuviestit(Integer otsikkoid) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti INNER JOIN"
@@ -153,7 +172,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     public List<Viesti> findAll() throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     public List<Viesti> getUusimmat(int montako) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti "
