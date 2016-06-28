@@ -112,7 +112,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     public List<Viesti> getKetjuviestit(Integer otsikkoid) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT Viesti.ViestiID, Viesti.sisalto, Viesti"
-                + ".kellonaika, Kayttaja.tunnus FROM Viesti, Kayttaja, Keskustelu"
+                + ".kellonaika, Viesti.kayttaja, Kayttaja.tunnus, Viesti.keskustelu FROM Viesti, Kayttaja, Keskustelu"
                 + " WHERE Keskustelu.KeskusteluID = Viesti.keskustelu"
                 + " AND Kayttaja.ID = Viesti.kayttaja"
                 + " AND Keskustelu.KeskusteluID = " + otsikkoid);
@@ -122,12 +122,12 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         while (rs.next()) {
             Integer ID = rs.getInt("ViestiID");
             Integer kayttajanID = rs.getInt("Kayttaja");
-            String kayttajanTunnus = rs.getString("tunnus");
+            String tunnus = rs.getString("tunnus");
             Integer keskustelu = rs.getInt("Keskustelu");
             Timestamp kellonaika = rs.getTimestamp("kellonaika");
             String sisalto = rs.getString("sisalto");
 
-            viestit.add(new Viesti(ID, kayttajanID, keskustelu, kellonaika, sisalto));
+            viestit.add(new Viesti(ID, kayttajanID, keskustelu, kellonaika, sisalto, tunnus));
 
         }
 
