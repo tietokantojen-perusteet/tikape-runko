@@ -24,7 +24,6 @@ public class Kayttoliittyma {
 
     public Kayttoliittyma(Database database, KeskusteluDao keda, KayttajaDao kada) throws SQLException {
         this.database = database;
-        this.kayttajaDao = new KayttajaDao(database);
         this.keskusteluDao = keda;
         this.viestiDao = new ViestiDao(database);
         this.kayttajaDao = kada;
@@ -250,7 +249,8 @@ public class Kayttoliittyma {
 
     private String omaSivu() throws SQLException {
         return "Omasivu"
-                + "<form method=\"POST\" action=\"/omsivu\">\n";
+                + "<form method=\"POST\" action=\"/omsivu\">\n"
+                + kayttajaDao.haeViestit(kayttaja);
     }
 
     public void setKeskusteluID(int id) {
