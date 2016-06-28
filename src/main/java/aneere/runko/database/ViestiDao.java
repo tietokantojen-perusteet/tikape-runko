@@ -134,11 +134,6 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
         return viestit;
     }
-
-    @Override
-    public void delete(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
     
     public int getViestienmaara(Integer keskusteluID) throws SQLException {
         Connection connection = database.getConnection();
@@ -149,18 +144,21 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         ResultSet rs = stmt.executeQuery();
         List<Viesti> viestit = new ArrayList<>();
         
-        Integer keskustelu = rs.getInt("maara");
+        Integer maara = rs.getInt("maara");
 
 
         rs.close();
         stmt.close();
         connection.close();
 
-        return keskustelu;
+        return maara;
         
     }
-    
-    
+
+    @Override
+    public void delete(Integer key) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 
     public ArrayList<String> getForeignKeys(String tableName) throws SQLException {
 

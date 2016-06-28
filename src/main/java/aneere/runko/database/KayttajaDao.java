@@ -101,6 +101,12 @@ public class KayttajaDao implements Dao<Kayttaja, Integer> {
         kayttajat.add(kayttaja);
     }
 
+//    public void haeViestit(Kayttaja kayttaja) throws SQLException {
+//        Connection connection = database.getConnection();
+//        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE Viesti.kayttaja = " + kayttaja);
+//
+//    }
+
     private String s(String s) {
         return "'" + s + "'";
     }
