@@ -1,9 +1,9 @@
-package tikape.runko.database;
+package aneere.runko.database;
 
 import java.sql.*;
 import java.util.*;
-import tikape.runko.domain.Kayttaja;
-import tikape.runko.database.Database;
+import aneere.runko.domain.Kayttaja;
+import aneere.runko.database.Database;
 
 public class KayttajaDao implements Dao<Kayttaja, Integer> {
 
@@ -18,7 +18,7 @@ public class KayttajaDao implements Dao<Kayttaja, Integer> {
     @Override
     public Kayttaja findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE id = ?");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Kayttaja WHERE id = ?");
         stmt.setObject(1, key);
 
         ResultSet rs = stmt.executeQuery();
@@ -92,7 +92,7 @@ public class KayttajaDao implements Dao<Kayttaja, Integer> {
     public void luoKayttaja(Kayttaja kayttaja) throws SQLException {
         String sql = "INSERT INTO Kayttaja "
                 + "(Id, tunnus, salasana, email) VALUES ("
-                + (kayttaja.getId()) + ", "
+                + (kayttaja.getID()) + ", "
                 + s(kayttaja.getTunnus()) + ", "
                 + s(kayttaja.getSalasana()) + ", "
                 + s(kayttaja.getEmail()) + " );";

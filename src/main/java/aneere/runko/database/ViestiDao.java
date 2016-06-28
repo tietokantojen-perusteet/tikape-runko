@@ -1,28 +1,49 @@
-package tikape.runko.database;
+package aneere.runko.database;
 
 import java.sql.*;
 import java.util.*;
-import tikape.runko.*;
-import tikape.runko.domain.Kayttaja;
-import tikape.runko.domain.Keskustelu;
-import tikape.runko.domain.Viesti;
+import aneere.runko.domain.Kayttaja;
+import aneere.runko.domain.Keskustelu;
+import aneere.runko.domain.Viesti;
 
 public class ViestiDao implements Dao<Viesti, Integer> {
 
     private Database database;
-    private List<Viesti> lista;
+    private List<Viesti> viestit;
 
-    public ViestiDao(Database database) {
+    public ViestiDao(Database database) throws SQLException {
         this.database = database;
-        this.lista = new ArrayList();
+        this.viestit = new ArrayList();
+        init();
+    }
+
+    public void init() throws SQLException {
+
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti");
+
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            Integer ID = rs.getInt("ViestiID");
+            Integer kayttajanID = rs.getInt("Kayttaja");
+            Integer keskusteluID = rs.getInt("Keskustelu");
+            Timestamp kellonaika = rs.getTimestamp("kellonaika");
+            String sisalto = rs.getString("sisalto");
+
+            viestit.add(new Viesti(ID, kayttajanID, keskusteluID, kellonaika, sisalto));
+        }
+
+        rs.close();
+        stmt.close();
+        connection.close();
     }
 
     public void lisaaViesti(Viesti viesti) {
-        lista.add(viesti);
+        viestit.add(viesti);
         String lisattava = "";
         lisattava = "INSERT INTO Viesti VALUES (" + viesti.getID() + ", " + viesti.getKayttajaID()
-                + ", " + viesti.getKeskusteluID() + ", \"" + viesti.getSisalto() + "\", "
-                + viesti.getKellonaika() + ")";
+                + ", " + viesti.getKeskusteluID() + ", '" + viesti.getKellonaika() + "', '"
+                + viesti.getSisalto() + "')";
 
         try (Connection conn = database.getConnection()) {
             Statement st = conn.createStatement();
@@ -35,10 +56,29 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
     }
 
-    public List<Viesti> getLista() {
-        return this.lista;
+    public void poistaViesti(Viesti viesti) {
+        
+        viestit.remove(viesti);
+        String poistettava = "";
+        poistettava = "DELETE FROM Viesti WHERE sisalto = '" + viesti + "'";
+
+        try (Connection conn = database.getConnection()) {
+            Statement st = conn.createStatement();
+
+            st.executeUpdate(poistettava);
+
+        } catch (Throwable t) {
+            System.out.println("Error >> " + t.getMessage());
+        }
     }
 
+    public List<Viesti> getLista() {
+        return this.viestit;
+    }
+
+    public int getSeuraavaID() {
+        return this.viestit.size();
+    }
 //    @Override
 //    public Viesti findOne(Integer key) throws SQLException {
 //        Connection connection = database.getConnection();
@@ -68,6 +108,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 //
 //        return k;
 //    }
+
     public List<Viesti> getKetjuviestit(Integer otsikkoid) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti INNER JOIN"
@@ -77,14 +118,13 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         ResultSet rs = stmt.executeQuery();
         List<Viesti> viestit = new ArrayList<>();
         while (rs.next()) {
-            Integer id = rs.getInt("ViestiId");
-            Integer kayttajanid = rs.getInt("KayttajanID");
-//            Integer kayttaja = rs.getInt("Kayttaja");
+            Integer ID = rs.getInt("ViestiId");
+            Integer kayttajanID = rs.getInt("Kayttaja");
             Integer keskustelu = rs.getInt("Keskustelu");
             Timestamp kellonaika = rs.getTimestamp("kellonaika");
             String sisalto = rs.getString("sisalto");
 
-            viestit.add(new Viesti(id, kayttajanid, keskustelu, sisalto, kellonaika));
+            viestit.add(new Viesti(ID, kayttajanID, keskustelu, kellonaika, sisalto));
 
         }
 
@@ -94,47 +134,33 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
         return viestit;
     }
-    
-    public int  getViestienmaaraAihealueittain() throws SQLException {
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT Aihealue, COUNT(*) AS maara FROM Keskustelu, Viesti WHERE"
-                + " Keskustelu.KeskusteluID = Viesti.Keskustelu"
-                + " GROUP BY Keskustelu.Aihealue ORDER BY maara DESC");
-        
-        List<Viesti> viestit = new ArrayList<>();
-        List<Keskustelu> aihealueet = new ArrayList<>();
-        int maara = 0;
-        
-
-        ResultSet rs = stmt.executeQuery();
-        while (rs.next()) {
-            Integer id = rs.getInt("ViestiId");
-            Integer kayttajanid = rs.getInt("KayttajanID");
-//            Integer kayttaja = rs.getInt("Kayttaja");
-            Integer keskustelu = rs.getInt("Keskustelu");
-            Timestamp kellonaika = rs.getTimestamp("kellonaika");
-            String sisalto = rs.getString("sisalto");
-            
-              //int id = rs.getInt("KeskusteluID");
-            String aihealue = rs.getString("Aihealue");
-            Keskustelu yksittainenAihealue = new Keskustelu(aihealue);
-            aihealueet.add(yksittainenAihealue);
-            viestit.add(new Viesti(id, kayttajanid, keskustelu, sisalto, kellonaika));
-
-        }
-
-        rs.close();
-        stmt.close();
-        connection.close();
-
-        return viestit.size();
-        
-    }
 
     @Override
     public void delete(Integer key) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+    
+    public int getViestienmaara(Integer keskusteluID) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT COUNT(Viesti.ViestiID) AS maara FROM Viesti, Keskustelu"
+                + " WHERE Keskustelu.KeskusteluID = Viesti.keskustelu "
+                + " AND Keskustelu.KeskusteluID = " + keskusteluID);
+
+        ResultSet rs = stmt.executeQuery();
+        List<Viesti> viestit = new ArrayList<>();
+        
+        Integer keskustelu = rs.getInt("maara");
+
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return keskustelu;
+        
+    }
+    
+    
 
     public ArrayList<String> getForeignKeys(String tableName) throws SQLException {
 
@@ -168,8 +194,8 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     public List<Viesti> findAll() throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    public List<Viesti> getUusimmatviestit(int montako) throws SQLException {
+
+    public List<Viesti> getUusimmat(int montako) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti "
                 + "ORDER BY kellonaika DESC LIMIT " + montako);
@@ -177,15 +203,13 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         ResultSet rs = stmt.executeQuery();
         List<Viesti> viestit = new ArrayList<>();
         while (rs.next()) {
-            Integer id = rs.getInt("ViestiId");
-            Integer kayttajanid = rs.getInt("KayttajanID");
-//            Integer kayttaja = rs.getInt("Kayttaja");
+            Integer ID = rs.getInt("ViestiID");
+            Integer kayttajanID = rs.getInt("Kayttaja");
             Integer keskustelu = rs.getInt("Keskustelu");
             Timestamp kellonaika = rs.getTimestamp("kellonaika");
             String sisalto = rs.getString("sisalto");
 
-            viestit.add(new Viesti(id, kayttajanid, keskustelu, sisalto, kellonaika));
-
+            viestit.add(new Viesti(ID, kayttajanID, keskustelu, kellonaika, sisalto));
         }
 
         rs.close();

@@ -1,4 +1,4 @@
-package tikape.runko.database;
+package aneere.runko.database;
 
 import java.sql.*;
 import java.util.*;

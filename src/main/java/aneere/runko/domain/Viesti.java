@@ -1,38 +1,36 @@
-package tikape.runko.domain;
+package aneere.runko.domain;
 
-import java.sql.Date;
 import java.sql.Timestamp;
-
+import java.util.Calendar;
 
 public class Viesti {
-    private int id;
+    private int ID;
     private Integer kayttaja;
     private Integer keskustelu;
     private String sisalto;
     private Timestamp kellonaika;
 
     
-    public Viesti(int id, Integer kayttaja, Integer keskustelu, String sisalto, Timestamp kellonaika) {
-        this.id = id;
+    public Viesti(int ID, Integer kayttaja, Integer keskustelu, String sisalto) {
+        this.ID = ID;
+        this.kayttaja = kayttaja;
+        this.keskustelu = keskustelu;
+        this.sisalto = sisalto;
+        Calendar calendar = Calendar.getInstance();
+        this.kellonaika = new java.sql.Timestamp(calendar.getTime().getTime());
+    }
+    public Viesti(int ID, Integer kayttaja, Integer keskustelu, Timestamp kellonaika, String sisalto) {
+        this.ID = ID;
         this.kayttaja = kayttaja;
         this.keskustelu = keskustelu;
         this.sisalto = sisalto;
         this.kellonaika = kellonaika;
     }
     public String toString() {
-        return this.id + this.kayttaja + this.keskustelu + this.sisalto + this.kellonaika;
+        return this.sisalto + "   " + this.kellonaika;
     }
-//    public Viesti(int id, String sisalto, Date kellonaika){
-//        this.id = id;
-//        this.sisalto = sisalto;
-//        this.kellonaika = kellonaika;
-//    }
-    
-//    public String toString() {
-//        return this.id + kayttaja.getTunnus() + keskustelu.getOtsikko() + sisalto + kellonaika.toString();
-//    }
     public int getID() {
-        return id;
+        return ID;
     }
     
     public Integer getKayttajaID() {

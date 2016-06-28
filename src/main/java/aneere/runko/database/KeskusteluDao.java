@@ -1,15 +1,10 @@
 
-package tikape.runko.database;
+package aneere.runko.database;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import tikape.runko.domain.Keskustelu;
-import tikape.runko.database.Database;
+import java.sql.*;
+import java.util.*;
+import aneere.runko.domain.Keskustelu;
+import aneere.runko.database.Database;
 
 public class KeskusteluDao implements Dao<Keskustelu, Integer> {
     
@@ -41,7 +36,11 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
     public List<Keskustelu> getOtsikot() throws SQLException {
         List<Keskustelu> otsikot = new ArrayList<>();
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT KeskusteluID,Otsikko,Aihealue FROM Keskustelu;");
+
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Keskustelu;");
+
+//        PreparedStatement stmt = connection.prepareStatement("SELECT KeskusteluID,Otsikko,Aihealue FROM Keskustelu;");
+
         
         ResultSet rs = stmt.executeQuery();
 
@@ -68,6 +67,15 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
         }
         return null;
     }
+    public String getAihealue(int haettavaID) throws SQLException {
+        List<Keskustelu> lista = getOtsikot();
+        for (Keskustelu keskustelu : lista) {
+            if(keskustelu.getID() == haettavaID) {
+                return keskustelu.getAihealue();
+            }
+        }
+        return null;
+    }
     public int getOtsikkoID(String otsikko) throws SQLException {
         List<Keskustelu> lista = getOtsikot();
         for (Keskustelu keskustelu : lista) {
@@ -80,12 +88,12 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
     public List<Keskustelu> getKetjut(String aihealue) throws SQLException {
         List<Keskustelu> otsikot = new ArrayList<>();
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT keskusteluid,aihealue,otsikko as Keskustelu FROM keskustelu "
+        PreparedStatement stmt = connection.prepareStatement("SELECT keskustelu,aihealue,otsikko as Keskustelu FROM keskustelu "
                 + "WHERE aihealue ='" + aihealue + "';");
         
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
-            int id = rs.getInt("keskusteluid");
+            int id = rs.getInt("keskustelu");
             String otsikko = rs.getString("otsikko");
 
             Keskustelu keskustelu = new Keskustelu(id,otsikko,aihealue);
@@ -111,8 +119,8 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
         }
 
         Integer id = rs.getInt("KeskusteluID");
-        String otsikko = rs.getString("otsikko");
-        String aihealue = rs.getString("aihealue");
+        String otsikko = rs.getString("Otsikko");
+        String aihealue = rs.getString("Aihealue");
         
 
         Keskustelu k = new Keskustelu(id, otsikko, aihealue);
@@ -133,8 +141,8 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
         List<Keskustelu> keskustelut = new ArrayList<>();
         while (rs.next()) {
             Integer id = rs.getInt("KeskusteluID");
-            String otsikko = rs.getString("otsikko");
-            String aihealue = rs.getString("aihealue");
+            String otsikko = rs.getString("Otsikko");
+            String aihealue = rs.getString("Aihealue");
             
 
             keskustelut.add(new Keskustelu(id, otsikko, aihealue));

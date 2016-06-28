@@ -1,4 +1,4 @@
-package tikape.runko.database;
+package aneere.runko.database;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import tikape.runko.domain.*;
 
 public class Database {
 
@@ -60,26 +59,25 @@ public class Database {
 
         // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
         lista.add("CREATE TABLE Kayttaja ("
-                + "Id Integer NOT NULL PRIMARY KEY,"
+                + "Id Integer PRIMARY KEY,"
                 + "tunnus varchar(15) NOT NULL UNIQUE,"
-                + "salasana varchar(15) NOT NULL,"
+                + "salasana varchar(15),"
                 + "email varchar(50), "
                 + "onko_super Integer"
                 + ");");
         lista.add("CREATE TABLE Keskustelu ("
-                + "KeskusteluID Integer NOT NULL PRIMARY KEY,"
+                + "KeskusteluID Integer PRIMARY KEY,"
                 + "Otsikko varchar(200) NOT NULL,"
-                + "Aihealue varchar(200)"
+                + "Aihealue varchar(200) NOT NULL"
                 + ");");
         lista.add("CREATE TABLE Viesti ("
-                + "ViestiId Integer PRIMARY KEY,"
-                + "KayttajanID Integer NOT NULL,"
-                + "Kayttaja varchar(15) NOT NULL,"
-                + "Keskustelu Integer NOT NULL,"
-                + "kellonaika TIMESTAMP NOT NULL, "   
-                + "sisalto varchar(500) NOT NULL,"
-                + "FOREIGN KEY(kayttajanID) REFERENCES Kayttaja(Id),"
-                + "FOREIGN KEY(keskustelu) REFERENCES Keskustelu(KeskusteluID)"
+                + "ViestiID Integer PRIMARY KEY,"
+                + "Kayttaja Integer,"
+                + "Keskustelu Integer,"
+                + "kellonaika TIMESTAMP,"   
+                + "sisalto varchar(500),"
+                + "FOREIGN KEY(Kayttaja) REFERENCES Kayttaja(ID),"
+                + "FOREIGN KEY(Keskustelu) REFERENCES Keskustelu(KeskusteluID)"
                 + ");");
 
         return lista;

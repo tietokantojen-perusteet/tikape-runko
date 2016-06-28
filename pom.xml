@@ -59,4 +59,5 @@
             </plugin>
         </plugins>
     </build>
+    <name>aneereforum</name>
 </project>
