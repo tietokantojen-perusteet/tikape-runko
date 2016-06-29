@@ -78,7 +78,7 @@ public class Database {
         // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
         //lista.add("DROP TABLE Tuote;");
         // heroku käyttää SERIAL-avainsanaa uuden tunnuksen automaattiseen luomiseen
-        lista.add("DROP TABLE Kayttaja;");
+        lista.add("DROP TABLE Keskustelu;");
         lista.add("CREATE TABLE Kayttaja ("
                 + "ID SERIAL PRIMARY KEY,"
                 + "tunnus varchar(15) NOT NULL UNIQUE,"
