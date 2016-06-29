@@ -101,10 +101,10 @@ public class Database {
                 + "FOREIGN KEY(Keskustelu) REFERENCES Keskustelu(KeskusteluID"
                 + ");");
 
-        lista.add("INSERT INTO Keskustelu VALUES (1,'Harley Davidson', 'Mopot')");
-        lista.add("INSERT INTO Keskustelu VALUES (2,'Fender Stratocaster', 'Kitarat')");
-        lista.add("INSERT INTO Keskustelu VALUES (3,'iPhone', 'Puhelimet'");
-        lista.add("INSERT INTO Keskustelu VALUES (4,'Kehitysehdotuksia', 'Yleinen')");
+        lista.add("INSERT INTO Keskustelu VALUES (1,'Harley Davidson', 'Mopot');");
+        lista.add("INSERT INTO Keskustelu VALUES (2,'Fender Stratocaster', 'Kitarat');");
+        lista.add("INSERT INTO Keskustelu VALUES (3,'iPhone', 'Puhelimet');");
+        lista.add("INSERT INTO Keskustelu VALUES (4,'Kehitysehdotuksia', 'Yleinen');");
 
         return lista;
     }
