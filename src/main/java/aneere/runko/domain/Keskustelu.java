@@ -4,29 +4,24 @@ import java.util.*;
 
 public class Keskustelu {
 
-    private Integer keskusteluid;
+    private Integer keskusteluID;
     private String otsikko;
     private String aihealue;
-    private List<Viesti> viestit;
 
-    public Keskustelu(Integer id, String otsikko, String aihealue) {
-        this.keskusteluid = id;
+    public Keskustelu(Integer ID, String otsikko, String aihealue) {
+        this.keskusteluID = ID;
         this.otsikko = otsikko;
-        this.aihealue = aihealue;
-    }
-    public Keskustelu(Integer id, String aihealue) {
-        this.keskusteluid = id;
         this.aihealue = aihealue;
     }
     public Keskustelu(String aihealue) {
         this.aihealue = aihealue;
     }
     public Integer getID() {
-        return keskusteluid;
+        return keskusteluID;
     }
 
-    public void setID(Integer id) {
-        this.keskusteluid = id;
+    public void setID(Integer ID) {
+        this.keskusteluID = ID;
     }
 
     public String getOtsikko() {
@@ -46,7 +41,7 @@ public class Keskustelu {
     }
     
     public String toString(){
-        return this.keskusteluid + " " + this.otsikko + " " + this.aihealue;
+        return this.keskusteluID + " " + this.otsikko + " " + this.aihealue;
     }
 
 }

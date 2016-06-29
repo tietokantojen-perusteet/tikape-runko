@@ -164,19 +164,15 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
     
     public void luoKeskustelu(Keskustelu keskustelu) throws SQLException {
         
-        String sql = "INSERT INTO Keskustelu "
-                + "(KeskusteluID, otsikko, aihealue) VALUES ("
-                + (keskustelu.getID()) + ", '"
-                + s(keskustelu.getOtsikko()) + "', '"
-                + s(keskustelu.getAihealue()) + "');";
+        String sql = "INSERT INTO Keskustelu VALUES("
+                + keskustelu.getID() + ", '"
+                + keskustelu.getOtsikko() + "', '"
+                + keskustelu.getAihealue() + "')";
         
         database.update(sql);
         otsikot.add(keskustelu);
-    }
-        
-    private String s(String s) {
-        return "'" + s + "'";
-    }
+    }        
+
     public int getSeuraavaID() {
         return this.otsikot.size() + 1;
     }

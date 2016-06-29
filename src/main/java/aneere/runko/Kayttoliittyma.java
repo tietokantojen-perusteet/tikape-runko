@@ -20,17 +20,18 @@ public class Kayttoliittyma {
     private ViestiDao viestiDao;
     private Kayttaja kayttaja;
     private int tempKeskusteluID;
+    private List<Keskustelu> otsikot;
 
     public Kayttoliittyma(Database database) throws SQLException {
         this.database = database;
         this.keskusteluDao = new KeskusteluDao(database);
         this.viestiDao = new ViestiDao(database);
         this.kayttajaDao = new KayttajaDao(database);
+        this.otsikot = keskusteluDao.getOtsikot();
     }
 
     public void suorita() throws SQLException {
         List<Keskustelu> aihealueet = keskusteluDao.getAihealueet();
-        List<Keskustelu> otsikot = keskusteluDao.getOtsikot();
 
         get("/", (req, res) -> {
             String nakyma = nakymanLuoja(aihealueet, "Aihealueet", false);
@@ -84,23 +85,21 @@ public class Kayttoliittyma {
             }
             Viesti lisattava = new Viesti(viestiDao.getSeuraavaID(), kayttaja.getID(), getKeskusteluID(), sisalto);
             viestiDao.lisaaViesti(lisattava);
-            return "Viesti lähetetty!<br><a href=\"/\">Palaa forumille!</a>";
+            return cssLuoja("Viesti lähetetty!");
         });
 
         post("/kirjautuminen", (req, res) -> {
             String tunnus = req.queryParams("tunnus");
             String salasana = req.queryParams("salasana");
             Kayttaja kirjautuva = new Kayttaja(tunnus, salasana);
+            String nakyma = "";
             if (kayttajaDao.kirjaudu(kirjautuva)) {
                 kayttaja = kayttajaDao.getKayttaja(tunnus);
-                String nakyma = "<a href=\"/\"><H1>Aneereforum</H1></a>"
-                        + "Kirjautuminen onnistui!";
-                return cssLuoja(nakyma);
+                nakyma = "Kirjautuminen onnistui!";
             } else {
-                String nakyma = "<a href=\"/\"><H1>Aneereforum</H1></a>"
-                        + "Väärä tunnus tai salasana!";
-                return cssLuoja(nakyma);
+                nakyma = "Väärä tunnus tai salasana!";
             }
+            return cssLuoja(nakyma);
         });
 
         post("/luotunnus", (req, res) -> {
@@ -124,6 +123,7 @@ public class Kayttoliittyma {
             if (salasana.equals("uusi")) {
                 Keskustelu uusi = new Keskustelu(keskusteluDao.getSeuraavaID(), otsikko, aihealue);
                 keskusteluDao.luoKeskustelu(uusi);
+                otsikot = keskusteluDao.getOtsikot();
                 return cssLuoja("Keskustelu lisätty");
             }
             return cssLuoja("Väärä salasana");
