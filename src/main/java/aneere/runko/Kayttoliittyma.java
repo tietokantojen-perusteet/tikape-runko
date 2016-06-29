@@ -18,7 +18,6 @@ public class Kayttoliittyma {
     private KayttajaDao kayttajaDao;
     private KeskusteluDao keskusteluDao;
     private ViestiDao viestiDao;
-    private List<Integer> otsikkoIdt;
     private Kayttaja kayttaja;
     private int tempKeskusteluID;
 
@@ -167,7 +166,9 @@ public class Kayttoliittyma {
     }
 
     private String cssLuoja(String nakyma) throws SQLException {
-        int kayttajienMaara = 5;
+        int viestienMaara = viestiDao.getSeuraavaID()-1;
+        int kayttajienMaara = kayttajaDao.getSeuraavaID()-1;
+        
         String ylaosa = "<a href=\"/\"><H1>Aneereforum</H1></a>";
         String alaosa = "Viestejä forumilla yhteensä: " + 5 + " Käyttäjiä yhteensä forumilla: " + kayttajienMaara;
         String kirjautuminen = "";
