@@ -169,8 +169,13 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
                 + keskustelu.getOtsikko() + "', '"
                 + keskustelu.getAihealue() + "')";
         
-        database.update(sql);
-        otsikot.add(keskustelu);
+        try (Connection conn = database.getConnection()) {
+            Statement st = conn.createStatement();
+            st.executeUpdate(sql);
+            otsikot.add(keskustelu);
+        } catch (Throwable t) {
+            System.out.println("Error >> " + t.getMessage());
+        }
     }        
 
     public int getSeuraavaID() {
