@@ -170,7 +170,7 @@ public class Kayttoliittyma {
         int kayttajienMaara = kayttajaDao.getSeuraavaID()-1;
         
         String ylaosa = "<a href=\"/\"><H1>Aneereforum</H1></a>";
-        String alaosa = "Viestejä forumilla yhteensä: " + 5 + " Käyttäjiä yhteensä forumilla: " + kayttajienMaara;
+        String alaosa = "Viestejä forumilla yhteensä: " + viestienMaara + " Käyttäjiä yhteensä forumilla: " + kayttajienMaara;
         String kirjautuminen = "";
         if (kayttaja == null) {
             kirjautuminen += "<a href=\"/kirjautuminen\">Kirjaudu</a>";
