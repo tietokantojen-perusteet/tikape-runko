@@ -15,7 +15,7 @@ public class Database {
 
     private String databaseAddress;
     
-    public Database(String databaseAddress) throws ClassNotFoundException, SQLException {
+    public Database(String databaseAddress) throws Exception {
         this.databaseAddress = databaseAddress;
         init();
     }

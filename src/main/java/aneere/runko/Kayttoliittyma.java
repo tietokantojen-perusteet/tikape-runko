@@ -22,11 +22,11 @@ public class Kayttoliittyma {
     private Kayttaja kayttaja;
     private int tempKeskusteluID;
 
-    public Kayttoliittyma(Database database, KeskusteluDao keda, KayttajaDao kada) throws SQLException {
+    public Kayttoliittyma(Database database) throws SQLException {
         this.database = database;
-        this.keskusteluDao = keda;
+        this.keskusteluDao = new KeskusteluDao(database);
         this.viestiDao = new ViestiDao(database);
-        this.kayttajaDao = kada;
+        this.kayttajaDao = new KayttajaDao(database);
     }
 
     public void suorita() throws SQLException {

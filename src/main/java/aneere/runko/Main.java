@@ -20,9 +20,7 @@ public class Main {
         } 
 
         Database db = new Database(jdbcOsoite);
-        KeskusteluDao keda = new KeskusteluDao(db);
-        KayttajaDao kada = new KayttajaDao(db);
-        Kayttoliittyma kali = new Kayttoliittyma(db, keda, kada);
+        Kayttoliittyma kali = new Kayttoliittyma(db);
         kali.suorita();       
     }
 }
