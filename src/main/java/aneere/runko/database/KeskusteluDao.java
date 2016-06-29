@@ -9,6 +9,7 @@ import aneere.runko.database.Database;
 public class KeskusteluDao implements Dao<Keskustelu, Integer> {
     
     private Database database;
+    private List<Keskustelu> otsikot;
     
     public KeskusteluDao(Database database) {
         this.database = database;
@@ -56,6 +57,7 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
         stmt.close();
         connection.close();
         
+        this.otsikot = otsikot;
         return otsikot;
     }
     public Keskustelu getOtsikko(String otsikko) throws SQLException {
@@ -161,19 +163,22 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
     }
     
     public void luoKeskustelu(Keskustelu keskustelu) throws SQLException {
+        
         String sql = "INSERT INTO Keskustelu "
                 + "(KeskusteluID, otsikko, aihealue) VALUES ("
-                + (keskustelu.getID()) + ", "
-                + s(keskustelu.getOtsikko()) + ", "
-                + s(keskustelu.getAihealue()) + " );";
+                + (keskustelu.getID()) + ", '"
+                + s(keskustelu.getOtsikko()) + "', '"
+                + s(keskustelu.getAihealue()) + "');";
         
         database.update(sql);
-        
+        otsikot.add(keskustelu);
     }
         
     private String s(String s) {
         return "'" + s + "'";
     }
-
+    public int getSeuraavaID() {
+        return this.otsikot.size() + 1;
+    }
 }
 

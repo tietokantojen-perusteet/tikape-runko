@@ -67,6 +67,10 @@ public class Kayttoliittyma {
             String nakyma = luoTunnusSivu();
             return cssLuoja(nakyma);
         });
+        get("/luokeskustelu", (req, res) -> {
+            String nakyma = luoKeskusteluSivu();
+            return cssLuoja(nakyma);
+        });
 
         get("/omasivu", (req, res) -> {
             String nakyma = omaSivu();
@@ -115,6 +119,18 @@ public class Kayttoliittyma {
             }
         });
 
+        post("/luokeskustelu", (req, res) -> {
+            String aihealue = req.queryParams("aihealue");
+            String otsikko = req.queryParams("otsikko");
+            String salasana = req.queryParams("salasana");
+            if (salasana.equals("uusi")) {
+                Keskustelu uusi = new Keskustelu(keskusteluDao.getSeuraavaID(), otsikko, aihealue);
+                keskusteluDao.luoKeskustelu(uusi);
+                return cssLuoja("Keskustelu lisätty");
+            }
+            return cssLuoja("Väärä salasana");
+        });
+        
     }
 
     private String nakymanLuoja(List<Keskustelu> keskustelut, String otsikko, boolean onkoKetju) throws SQLException {
@@ -124,7 +140,8 @@ public class Kayttoliittyma {
         nakyma += "<H2><a href=\"/\">Aihealueet</a> ";
 
         if (onkoKetju == false && !otsikko.equals("Aihealueet")) {    // MUUT SIVUT
-            nakyma += " ---> <a href=\"" + otsikko + "\">" + otsikko + "</H2></a>";
+            nakyma += " ---> <a href=\"" + otsikko + "\">" + otsikko + "</a>" 
+            + "  <a href=\"luokeskustelu\">[Lisää uusi otsikko]</a></H2>";
         } else if (onkoKetju == true) {
             int keskusteluID = keskusteluDao.getOtsikkoID(otsikko);
             String aihealue = keskusteluDao.getAihealue(keskusteluID);
@@ -235,8 +252,7 @@ public class Kayttoliittyma {
     }
 
     private String luoTunnusSivu() {
-        return "<a href=\"/\"><H1>Aneereforum</H1></a>"
-                + "<form method=\"POST\" action=\"/luotunnus\">\n"
+        return  "<form method=\"POST\" action=\"/luotunnus\">\n"
                 + "Tunnus:<br/>\n"
                 + "<input type=\"text\" name=\"tunnus\"/><br/>\n"
                 + "Salasana:<br/>"
@@ -246,6 +262,17 @@ public class Kayttoliittyma {
                 + "<input type=\"submit\" value=\"Luo\"/>\n"
                 + "</form>";
 
+    }
+    private String luoKeskusteluSivu() {
+        return  "<form method=\"POST\" action=\"/luokeskustelu\">\n"
+                + "Aihealue:<br/>\n"
+                + "<input type=\"text\" name=\"aihealue\"/><br/>\n"
+                + "Otsikko:<br/>"
+                + "<input type=\"text\" name=\"otsikko\"/><br/>\n"
+                + "Salasana:<br/>\n"
+                + "<input type=\"text\" name=\"salasana\"/><br/>\n"
+                + "<input type=\"submit\" value=\"Luo\"/>\n"
+                + "</form>";
     }
 
     private String omaSivu() throws SQLException {
