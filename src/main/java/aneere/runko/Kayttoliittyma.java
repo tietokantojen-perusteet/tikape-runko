@@ -169,7 +169,7 @@ public class Kayttoliittyma {
     private String cssLuoja(String nakyma) throws SQLException {
         int kayttajienMaara = 5;
         String ylaosa = "<a href=\"/\"><H1>Aneereforum</H1></a>";
-        String alaosa = "Viestejä forumilla yhteensä: " + viestiDao.getViestienmaaraKaikki() + " Käyttäjiä yhteensä forumilla: " + kayttajienMaara;
+        String alaosa = "Viestejä forumilla yhteensä: " + 5 + " Käyttäjiä yhteensä forumilla: " + kayttajienMaara;
         String kirjautuminen = "";
         if (kayttaja == null) {
             kirjautuminen += "<a href=\"/kirjautuminen\">Kirjaudu</a>";
