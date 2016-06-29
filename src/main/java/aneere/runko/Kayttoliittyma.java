@@ -104,7 +104,7 @@ public class Kayttoliittyma {
             String tunnus = req.queryParams("tunnus");
             String salasana = req.queryParams("salasana");
             String email = req.queryParams("email");
-            Kayttaja uusi = new Kayttaja(kayttajaDao.setId(), tunnus, salasana, email, 0);
+            Kayttaja uusi = new Kayttaja(kayttajaDao.setID(), tunnus, salasana, email, 0);
 
             if (kayttajaDao.getKayttaja(tunnus) == null) {
                 kayttajaDao.luoKayttaja(uusi);
@@ -167,9 +167,9 @@ public class Kayttoliittyma {
     }
 
     private String cssLuoja(String nakyma) throws SQLException {
-
+        int kayttajienMaara = kayttajaDao.setID() - 1;
         String ylaosa = "<a href=\"/\"><H1>Aneereforum</H1></a>";
-        String alaosa = "Viestejä forumilla yhteensä: x Käyttäjiä yhteensä forumilla: x";
+        String alaosa = "Viestejä forumilla yhteensä: " + viestiDao.getViestienmaaraKaikki() + " Käyttäjiä yhteensä forumilla: " + kayttajienMaara;
         String kirjautuminen = "";
         if (kayttaja == null) {
             kirjautuminen += "<a href=\"/kirjautuminen\">Kirjaudu</a>";

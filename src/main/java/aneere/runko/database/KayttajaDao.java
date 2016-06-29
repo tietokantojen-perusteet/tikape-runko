@@ -85,7 +85,7 @@ public class KayttajaDao implements Dao<Kayttaja, Integer> {
         return null;
     }
 
-    public int setId() {
+    public int setID() {
         return kayttajat.size() + 1;
     }
 
