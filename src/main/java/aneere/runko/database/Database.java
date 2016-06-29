@@ -79,6 +79,7 @@ public class Database {
         //lista.add("DROP TABLE Tuote;");
         // heroku käyttää SERIAL-avainsanaa uuden tunnuksen automaattiseen luomiseen
         lista.add("DROP TABLE Kayttaja;");
+        lista.add("DROP TABLE Keskustelu");
         lista.add("CREATE TABLE Kayttaja ("
                 + "ID SERIAL PRIMARY KEY,"
                 + "tunnus varchar(15) NOT NULL UNIQUE,"
@@ -98,7 +99,7 @@ public class Database {
                 + "kellonaika TIMESTAMP, "
                 + "sisalto varchar(500), "
                 + "FOREIGN KEY(Kayttaja) REFERENCES Kayttaja(ID), "
-                + "FOREIGN KEY(Keskustelu) REFERENCES Keskustelu(KeskusteluID"
+                + "FOREIGN KEY(Keskustelu) REFERENCES Keskustelu(KeskusteluID)"
                 + ");");
 
         lista.add("INSERT INTO Keskustelu VALUES (1,'Harley Davidson', 'Mopot');");
