@@ -79,34 +79,34 @@ public class Database {
         //lista.add("DROP TABLE Tuote;");
         // heroku käyttää SERIAL-avainsanaa uuden tunnuksen automaattiseen luomiseen
         lista.add("INSERT INTO Viesti VALUES(1, 1, 1, '2016-06-23 23:09:11.946', 'Tosi magee!!')");
-        lista.add("DROP TABLE Kayttaja;");
-        lista.add("DROP TABLE Keskustelu");
-        lista.add("CREATE TABLE Kayttaja ("
-                + "ID SERIAL PRIMARY KEY,"
-                + "tunnus varchar(15) NOT NULL UNIQUE,"
-                + "salasana varchar(15),"
-                + "email varchar(50), "
-                + "onko_super Integer"
-                + ");");
-        lista.add("CREATE TABLE Keskustelu ("
-                + "KeskusteluID SERIAL PRIMARY KEY, "
-                + "Otsikko varchar(200) NOT NULL, "
-                + "Aihealue varchar(200) NOT NULL"
-                + ");");
-        lista.add("CREATE TABLE Viesti ("
-                + "ViestiID SERIAL PRIMARY KEY, "
-                + "Kayttaja Integer, "
-                + "Keskustelu Integer, "
-                + "kellonaika TIMESTAMP, "
-                + "sisalto varchar(500), "
-                + "FOREIGN KEY(Kayttaja) REFERENCES Kayttaja(ID), "
-                + "FOREIGN KEY(Keskustelu) REFERENCES Keskustelu(KeskusteluID)"
-                + ");");
-
-        lista.add("INSERT INTO Keskustelu VALUES (1,'Harley Davidson', 'Mopot');");
-        lista.add("INSERT INTO Keskustelu VALUES (2,'Fender Stratocaster', 'Kitarat');");
-        lista.add("INSERT INTO Keskustelu VALUES (3,'iPhone', 'Puhelimet');");
-        lista.add("INSERT INTO Keskustelu VALUES (4,'Kehitysehdotuksia', 'Yleinen');");
+//        lista.add("DROP TABLE Kayttaja;");
+//        lista.add("DROP TABLE Keskustelu");
+//        lista.add("CREATE TABLE Kayttaja ("
+//                + "ID SERIAL PRIMARY KEY,"
+//                + "tunnus varchar(15) NOT NULL UNIQUE,"
+//                + "salasana varchar(15),"
+//                + "email varchar(50), "
+//                + "onko_super Integer"
+//                + ");");
+//        lista.add("CREATE TABLE Keskustelu ("
+//                + "KeskusteluID SERIAL PRIMARY KEY, "
+//                + "Otsikko varchar(200) NOT NULL, "
+//                + "Aihealue varchar(200) NOT NULL"
+//                + ");");
+//        lista.add("CREATE TABLE Viesti ("
+//                + "ViestiID SERIAL PRIMARY KEY, "
+//                + "Kayttaja Integer, "
+//                + "Keskustelu Integer, "
+//                + "kellonaika TIMESTAMP, "
+//                + "sisalto varchar(500), "
+//                + "FOREIGN KEY(Kayttaja) REFERENCES Kayttaja(ID), "
+//                + "FOREIGN KEY(Keskustelu) REFERENCES Keskustelu(KeskusteluID)"
+//                + ");");
+//
+//        lista.add("INSERT INTO Keskustelu VALUES (1,'Harley Davidson', 'Mopot');");
+//        lista.add("INSERT INTO Keskustelu VALUES (2,'Fender Stratocaster', 'Kitarat');");
+//        lista.add("INSERT INTO Keskustelu VALUES (3,'iPhone', 'Puhelimet');");
+//        lista.add("INSERT INTO Keskustelu VALUES (4,'Kehitysehdotuksia', 'Yleinen');");
 
         return lista;
     }
