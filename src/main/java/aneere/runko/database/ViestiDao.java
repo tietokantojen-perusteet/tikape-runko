@@ -19,23 +19,23 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
     public void init() throws SQLException {
 
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti");
-
-        ResultSet rs = stmt.executeQuery();
-        while (rs.next()) {
-            Integer ID = rs.getInt("ViestiID");
-            Integer kayttajanID = rs.getInt("Kayttaja");
-            Integer keskusteluID = rs.getInt("Keskustelu");
-            Timestamp kellonaika = rs.getTimestamp("kellonaika");
-            String sisalto = rs.getString("sisalto");
-
-            viestit.add(new Viesti(ID, kayttajanID, keskusteluID, kellonaika, sisalto));
+        try (Connection connection = database.getConnection()) {
+            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti");
+            
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Integer ID = rs.getInt("ViestiID");
+                Integer kayttajanID = rs.getInt("Kayttaja");
+                Integer keskusteluID = rs.getInt("Keskustelu");
+                Timestamp kellonaika = rs.getTimestamp("kellonaika");
+                String sisalto = rs.getString("sisalto");
+                
+                viestit.add(new Viesti(ID, kayttajanID, keskusteluID, kellonaika, sisalto));
+            }
+            
+            rs.close();
+            stmt.close();
         }
-
-        rs.close();
-        stmt.close();
-        connection.close();
     }
 
     public void lisaaViesti(Viesti viesti) {
