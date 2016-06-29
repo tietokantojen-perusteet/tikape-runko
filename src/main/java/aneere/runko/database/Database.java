@@ -98,12 +98,13 @@ public class Database {
                 + "kellonaika TIMESTAMP, "
                 + "sisalto varchar(500), "
                 + "FOREIGN KEY(Kayttaja) REFERENCES Kayttaja(ID), "
-                + "FOREIGN KEY(Keskustelu) REFERENCES Keskustelu(KeskusteluID");
+                + "FOREIGN KEY(Keskustelu) REFERENCES Keskustelu(KeskusteluID"
+                + ");");
 
-        lista.add("INSERT INTO Keskustelu VALUES (1,'Harley Davidson', 'Mopot'");
-        lista.add("INSERT INTO Keskustelu VALUES (2,'Fender Stratocaster', 'Kitarat'");
+        lista.add("INSERT INTO Keskustelu VALUES (1,'Harley Davidson', 'Mopot')");
+        lista.add("INSERT INTO Keskustelu VALUES (2,'Fender Stratocaster', 'Kitarat')");
         lista.add("INSERT INTO Keskustelu VALUES (3,'iPhone', 'Puhelimet'");
-        lista.add("INSERT INTO Keskustelu VALUES (4,'Kehitysehdotuksia', 'Yleinen'");
+        lista.add("INSERT INTO Keskustelu VALUES (4,'Kehitysehdotuksia', 'Yleinen')");
 
         return lista;
     }
