@@ -77,7 +77,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     }
 
     public int getSeuraavaID() {
-        return this.viestit.size();
+        return this.viestit.size()+1;
     }
 //    @Override
 //    public Viesti findOne(Integer key) throws SQLException {
