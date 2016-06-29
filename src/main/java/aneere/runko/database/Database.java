@@ -1,5 +1,6 @@
 package aneere.runko.database;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Connection;
@@ -22,11 +23,31 @@ public class Database {
     }
 
     public Connection getConnection() throws SQLException {
+        if (this.databaseAddress.contains("postgres")) {
+            try {
+                URI dbUri = new URI(databaseAddress);
+
+                String username = dbUri.getUserInfo().split(":")[0];
+                String password = dbUri.getUserInfo().split(":")[1];
+                String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
+
+                return DriverManager.getConnection(dbUrl, username, password);
+            } catch (Throwable t) {
+                System.out.println("Error: " + t.getMessage());
+                t.printStackTrace();
+            }
+        }
+
         return DriverManager.getConnection(databaseAddress);
     }
 
-    public void init() {
-        List<String> lauseet = sqliteLauseet();
+    private void init() {
+        List<String> lauseet = null;
+        if (this.databaseAddress.contains("postgres")) {
+            lauseet = postgreLauseet();
+        } else {
+            lauseet = sqliteLauseet();
+        }
 
         // "try with resources" sulkee resurssin automaattisesti lopuksi
         try (Connection conn = getConnection()) {
@@ -42,7 +63,7 @@ public class Database {
             // jos tietokantataulu on jo olemassa, ei komentoja suoriteta
             System.out.println("Error >> " + t.getMessage());
         }
-    }   
+    }
 
     public void update(String sql) throws SQLException {
         connection.setAutoCommit(false);
@@ -52,7 +73,40 @@ public class Database {
         connection.commit();
     }
 
-    
+    private List<String> postgreLauseet() {
+        ArrayList<String> lista = new ArrayList<>();
+
+        // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
+        //lista.add("DROP TABLE Tuote;");
+        // heroku käyttää SERIAL-avainsanaa uuden tunnuksen automaattiseen luomiseen
+        lista.add("CREATE TABLE Kayttaja ("
+                + "ID Integer SERIAL PRIMARY KEY,"
+                + "tunnus varchar(15) NOT NULL UNIQUE,"
+                + "salasana varchar(15),"
+                + "email varchar(50), "
+                + "onko_super Integer"
+                + ");");
+        lista.add("CREATE TABLE Keskustelu ("
+                + "KeskusteluID Integer SERIAL PRIMARY KEY,"
+                + "Otsikko varchar(200) NOT NULL,"
+                + "Aihealue varchar(200) NOT NULL"
+                + ");");
+        lista.add("CREATE TABLE Viesti ("
+                + "ViestiID SERIAL PRIMARY KEY, "
+                + "Kayttaja Integer, "
+                + "Keskustelu Integer, "
+                + "kellonaika TIMESTAMP, "
+                + "sisalto varchar(500), "
+                + "FOREIGN KEY(Kayttaja) REFERENCES Kayttaja(ID), "
+                + "FOREIGN KEY(Keskustelu) REFERENCES Keskustelu(KeskusteluID");
+
+        lista.add("INSERT INTO Keskustelu VALUES (1,'Harley Davidson', 'Mopot'");
+        lista.add("INSERT INTO Keskustelu VALUES (2,'Fender Stratocaster', 'Kitarat'");
+        lista.add("INSERT INTO Keskustelu VALUES (3,'iPhone', 'Puhelimet'");
+        lista.add("INSERT INTO Keskustelu VALUES (4,'Kehitysehdotuksia', 'Yleinen'");
+
+        return lista;
+    }
     private List<String> sqliteLauseet() {        
 
         List<String> lista = new ArrayList<>();
