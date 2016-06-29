@@ -14,11 +14,9 @@ import java.util.List;
 public class Database {
 
     private String databaseAddress;
-    private Connection connection;
     
     public Database(String databaseAddress) throws ClassNotFoundException, SQLException {
         this.databaseAddress = databaseAddress;
-        this.connection = getConnection();
         init();
     }
 
@@ -66,6 +64,7 @@ public class Database {
     }
 
     public void update(String sql) throws SQLException {
+        Connection connection = getConnection();
         connection.setAutoCommit(false);
         Statement stmt = connection.createStatement();
         stmt.executeUpdate(sql);
