@@ -41,11 +41,11 @@ public class Database {
 
     private void init() {
         List<String> lauseet = null;
-        if (this.databaseAddress.contains("postgres")) {
-            lauseet = postgreLauseet();
-        } else {
+//        if (this.databaseAddress.contains("postgres")) {
+//            lauseet = postgreLauseet();
+//        } else {
             lauseet = sqliteLauseet();
-        }
+//        }
 
         // "try with resources" sulkee resurssin automaattisesti lopuksi
         try (Connection conn = getConnection()) {
