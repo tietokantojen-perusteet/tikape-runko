@@ -80,7 +80,7 @@ public class Database {
         // heroku käyttää SERIAL-avainsanaa uuden tunnuksen automaattiseen luomiseen
         lista.add("DROP TABLE Kayttaja;");
         lista.add("DROP TABLE Keskustelu;");
-        lista.add("DROP TABLE Viesti");
+        lista.add("DROP TABLE Viesti;");
         lista.add("CREATE TABLE Kayttaja ("
                 + "ID Integer SERIAL PRIMARY KEY,"
                 + "tunnus varchar(15) NOT NULL UNIQUE,"
