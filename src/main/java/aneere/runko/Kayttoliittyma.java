@@ -111,11 +111,9 @@ public class Kayttoliittyma {
 
             if (kayttajaDao.getKayttaja(tunnus) == null) {
                 kayttajaDao.luoKayttaja(uusi);
-                return "<a href=\"/\"><H1>Aneereforum</H1></a>"
-                        + "Käyttäjän luominen onnistui!";
+                return cssLuoja("Käyttäjän luominen onnistui!");
             } else {
-                return "<a href=\"/\"><H1>Aneereforum</H1></a>"
-                        + "Tunnus on jo käytössä";
+                return cssLuoja("Tunnus on jo käytössä");
             }
         });
 
