@@ -12,7 +12,7 @@ public class KayttajaDao implements Dao<Kayttaja, Integer> {
 
     public KayttajaDao(Database database) throws SQLException {
         this.database = database;
-        this.kayttajat = findAll();
+        //this.kayttajat = findAll();
     }
 
     @Override
