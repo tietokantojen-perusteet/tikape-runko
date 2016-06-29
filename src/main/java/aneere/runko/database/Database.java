@@ -86,8 +86,8 @@ public class Database {
                 + "onko_super Integer"
                 + ");");
         lista.add("CREATE TABLE Keskustelu ("
-                + "KeskusteluID SERIAL PRIMARY KEY,"
-                + "Otsikko varchar(200) NOT NULL,"
+                + "KeskusteluID SERIAL PRIMARY KEY, "
+                + "Otsikko varchar(200) NOT NULL, "
                 + "Aihealue varchar(200) NOT NULL"
                 + ");");
         lista.add("CREATE TABLE Viesti ("
