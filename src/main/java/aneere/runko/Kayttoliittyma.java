@@ -134,7 +134,6 @@ public class Kayttoliittyma {
     private String nakymanLuoja(List<Keskustelu> keskustelut, String otsikko, boolean onkoKetju) throws SQLException {
 
         String nakyma = "";
-
         nakyma += "<H2><a href=\"/\">Aihealueet</a> ";
 
         if (onkoKetju == false && !otsikko.equals("Aihealueet")) {    // MUUT SIVUT
