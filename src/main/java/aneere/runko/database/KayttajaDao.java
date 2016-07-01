@@ -105,18 +105,22 @@ public class KayttajaDao implements Dao<Kayttaja, Integer> {
         String nakyma = "";
 
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT sisalto, kellonaika, COUNT(ViestiID) AS maara FROM Viesti WHERE Viesti.kayttaja = " + kayttaja.getID());
-
+        PreparedStatement stmt = connection.prepareStatement("SELECT sisalto, kellonaika FROM Viesti WHERE Viesti.kayttaja = " + kayttaja.getID());
+        List<String> lista = new ArrayList();
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
-            nakyma += rs.getString("sisalto") + " " +  rs.getTimestamp("kellonaika") + " viestit yhteensä: "  + rs.getInt("maara") +  "<br>";
+            nakyma += rs.getString("sisalto") + " " +  rs.getTimestamp("kellonaika") + "<br>";
+            lista.add(nakyma);
         }
+        
+        int luku = lista.size();
+        String lukustring = "" + luku;
 
         rs.close();
         stmt.close();
         connection.close();
 
-        return nakyma;
+        return nakyma + " viestejä yhteensä: " + lukustring;
 
     }
 
