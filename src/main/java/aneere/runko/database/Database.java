@@ -74,11 +74,12 @@ public class Database {
 
     private List<String> postgreLauseet() {
         ArrayList<String> lista = new ArrayList<>();
-
+        
         // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
         //lista.add("DROP TABLE Tuote;");
         // heroku käyttää SERIAL-avainsanaa uuden tunnuksen automaattiseen luomiseen
         //lista.add("INSERT INTO Viesti VALUES(1, 1, 1, '2016-06-23 23:09:11.946', 'Tosi magee!!')");
+        lista.add("REMOVE FROM Viesti WHERE ViestiID = 15");
 //        lista.add("DROP TABLE Kayttaja;");
 //        lista.add("DROP TABLE Keskustelu");
 //        lista.add("CREATE TABLE Kayttaja ("
