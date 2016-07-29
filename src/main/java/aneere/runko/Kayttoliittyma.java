@@ -223,10 +223,10 @@ public class Kayttoliittyma {
         }
 
         String info = "";
-        List<Viesti> uusimmat = viestiDao.getUusimmat(3);
-        for (Viesti viesti : uusimmat) {
-            info += viesti.toString() + "<br>";
-        }
+//        List<Viesti> uusimmat = viestiDao.getUusimmat(3);
+//        for (Viesti viesti : uusimmat) {
+//            info += viesti.toString() + "<br>";
+//        }
 
         String cssPalauttaja = "<style type=\"text/css\">\n"
                 + ".tg  {border-collapse:collapse;border-spacing:0;}\n"
