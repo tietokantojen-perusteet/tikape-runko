@@ -37,7 +37,7 @@ public class Viesti {
         this.tunnus = tunnus;
     }
     public String toString() {
-        return this.sisalto + "   " + this.kellonaika + " " +  this.tunnus;
+        return "ID:" + this.ID + " " + this.sisalto + "   " + this.kellonaika + " " +  this.tunnus;
     }
     public int getID() {
         return ID;
