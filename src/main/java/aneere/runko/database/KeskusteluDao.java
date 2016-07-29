@@ -91,7 +91,8 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
         List<Keskustelu> otsikot = new ArrayList<>();
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT keskustelu,aihealue,otsikko as Keskustelu FROM keskustelu "
-                + "WHERE aihealue ='" + aihealue + "';");
+                + "WHERE aihealue ='?';");
+        stmt.setObject(1, aihealue);
         
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
@@ -161,21 +162,45 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
     public void delete(Integer key) throws SQLException {
         // ei toteutettu
     }
+    public boolean poistaKeskustelu(int poistettavaID) throws SQLException {
+        boolean onnistuu = false;
+        Keskustelu poistettava = null;
+        
+        for (Keskustelu keskustelu : otsikot) {
+            if (keskustelu.getID() == poistettavaID) {
+                poistettava = keskustelu;
+                onnistuu = true;
+                break;
+            }
+        }
+        
+        if (poistettava != null) {
+            otsikot.remove(poistettava);
+        }
+        
+        if (onnistuu == true) {
+            Connection connection = database.getConnection();
+            PreparedStatement stmt = connection.prepareStatement("DELETE FROM Keskustelu WHERE KeskusteluID = ?");
+            stmt.setObject(1, poistettavaID);
+        }
+        return onnistuu;
+    }
     
     public void luoKeskustelu(Keskustelu keskustelu) throws SQLException {
         
-        String sql = "INSERT INTO Keskustelu VALUES("
-                + keskustelu.getID() + ", '"
-                + keskustelu.getOtsikko() + "', '"
-                + keskustelu.getAihealue() + "')";
+//        String sql = "INSERT INTO Keskustelu VALUES("
+//                + keskustelu.getID() + ", '"
+//                + keskustelu.getOtsikko() + "', '"
+//                + keskustelu.getAihealue() + "')";
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Keskustelu VALUES (?, ?, ?)");
+               
+        stmt.setObject(1, keskustelu.getID());
+        stmt.setObject(2, keskustelu.getOtsikko());
+        stmt.setObject(3, keskustelu.getAihealue());      
         
-        try (Connection conn = database.getConnection()) {
-            Statement st = conn.createStatement();
-            st.executeUpdate(sql);
-            otsikot.add(keskustelu);
-        } catch (Throwable t) {
-            System.out.println("Error >> " + t.getMessage());
-        }
+        stmt .executeUpdate();
+        otsikot.add(keskustelu);
     }        
 
     public int getSeuraavaID() {

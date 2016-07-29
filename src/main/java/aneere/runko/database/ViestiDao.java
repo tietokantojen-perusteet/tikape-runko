@@ -38,38 +38,48 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         }
     }
 
-    public void lisaaViesti(Viesti viesti) {
+    public void lisaaViesti(Viesti viesti) throws SQLException {
+   
+ //       String lisattava = "";
+//        lisattava = "INSERT INTO Viesti VALUES (" + viesti.getID() + ", " + viesti.getKayttajaID()
+//                + ", " + viesti.getKeskusteluID() + ", '" + viesti.getKellonaika() + "', '"
+//                + viesti.getSisalto() + "')";
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Viesti VALUES (?, ?, ?, ?, ?)");
+        
+        stmt.setObject(1, viesti.getID());
+        stmt.setObject(2, viesti.getKayttajaID());
+        stmt.setObject(3, viesti.getKeskusteluID());
+        stmt.setObject(4, viesti.getKellonaika());
+        stmt.setObject(5, viesti.getSisalto());       
+        
+        
+        stmt .executeUpdate();
         viestit.add(viesti);
-        String lisattava = "";
-        lisattava = "INSERT INTO Viesti VALUES (" + viesti.getID() + ", " + viesti.getKayttajaID()
-                + ", " + viesti.getKeskusteluID() + ", '" + viesti.getKellonaika() + "', '"
-                + viesti.getSisalto() + "')";
-
-        try (Connection conn = database.getConnection()) {
-            Statement st = conn.createStatement();
-
-            st.executeUpdate(lisattava);
-
-        } catch (Throwable t) {
-            System.out.println("Error >> " + t.getMessage());
-        }
 
     }
 
-    public void poistaViesti(Viesti viesti) {
-        
-        viestit.remove(viesti);
-        String poistettava = "";
-        poistettava = "DELETE FROM Viesti WHERE sisalto = '" + viesti + "'";
-
-        try (Connection conn = database.getConnection()) {
-            Statement st = conn.createStatement();
-
-            st.executeUpdate(poistettava);
-
-        } catch (Throwable t) {
-            System.out.println("Error >> " + t.getMessage());
+    public boolean poistaViesti(int poistettavaID) throws SQLException {
+        boolean onnistuu = false;
+        Viesti poistettava = null;
+        for (Viesti viesti : viestit) {
+            if (viesti.getID() == poistettavaID) {
+                poistettava = viesti;
+                onnistuu = true;
+                break;
+            }
         }
+        
+        if (poistettava != null) {
+            viestit.remove(poistettava);
+        }
+        
+        if (onnistuu == true) {
+            Connection connection = database.getConnection();
+            PreparedStatement stmt = connection.prepareStatement("DELETE FROM Viesti WHERE ViestiID = ?");
+            stmt.setObject(1, poistettavaID);
+        }
+        return onnistuu;
     }
 
     public List<Viesti> getLista() {
@@ -115,7 +125,8 @@ public class ViestiDao implements Dao<Viesti, Integer> {
                 + ".kellonaika, Viesti.kayttaja, Kayttaja.tunnus, Viesti.keskustelu FROM Viesti, Kayttaja, Keskustelu"
                 + " WHERE Keskustelu.KeskusteluID = Viesti.keskustelu"
                 + " AND Kayttaja.ID = Viesti.kayttaja"
-                + " AND Keskustelu.KeskusteluID = " + otsikkoid);
+                + " AND Keskustelu.KeskusteluID = ?");
+        stmt.setObject(1, otsikkoid);
 
         ResultSet rs = stmt.executeQuery();
         List<Viesti> viestit = new ArrayList<>();
@@ -142,7 +153,8 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT COUNT(Viesti.ViestiID) AS maara FROM Viesti, Keskustelu"
                 + " WHERE Keskustelu.KeskusteluID = Viesti.keskustelu "
-                + " AND Keskustelu.KeskusteluID = " + keskusteluID);
+                + " AND Keskustelu.KeskusteluID = ?");
+        stmt.setObject(1, keskusteluID);
 
         ResultSet rs = stmt.executeQuery();
         List<Viesti> viestit = new ArrayList<>();
@@ -162,7 +174,8 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT COUNT(Viesti.ViestiID) AS maara FROM Viesti, Keskustelu"
                 + " WHERE Keskustelu.KeskusteluID = Viesti.keskustelu "
-                + " AND Keskustelu.aihealue = " + aihealue);
+                + " AND Keskustelu.aihealue = ?");
+        stmt.setObject(1,aihealue);
 
         ResultSet rs = stmt.executeQuery();
         List<Viesti> viestit = new ArrayList<>();
@@ -216,7 +229,8 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         PreparedStatement stmt = connection.prepareStatement("SELECT Viesti.ViestiID, Viesti.sisalto, Viesti.kellonaika,"
                 + " Viesti.kayttaja, Kayttaja.tunnus, Viesti.keskustelu FROM Viesti, Kayttaja "
                 + " WHERE Kayttaja.ID = Viesti.kayttaja "
-                + " ORDER BY kellonaika DESC LIMIT " + montako);
+                + " ORDER BY kellonaika DESC LIMIT ?");
+        stmt.setObject(1, montako);
 
         ResultSet rs = stmt.executeQuery();
         List<Viesti> viestit = new ArrayList<>();

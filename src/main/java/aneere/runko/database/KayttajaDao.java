@@ -90,22 +90,34 @@ public class KayttajaDao implements Dao<Kayttaja, Integer> {
     }
 
     public void luoKayttaja(Kayttaja kayttaja) throws SQLException {
-        String sql = "INSERT INTO Kayttaja "
-                + "(Id, tunnus, salasana, email) VALUES ("
-                + (kayttaja.getID()) + ", "
-                + s(kayttaja.getTunnus()) + ", "
-                + s(kayttaja.getSalasana()) + ", "
-                + s(kayttaja.getEmail()) + " );";
+//        String sql = "INSERT INTO Kayttaja "
+//                + "(Id, tunnus, salasana, email) VALUES ("
+//                + (kayttaja.getID()) + ", "
+//                + s(kayttaja.getTunnus()) + ", "
+//                + s(kayttaja.getSalasana()) + ", "
+//                + s(kayttaja.getEmail()) + " );";
 
-        database.update(sql);
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Kayttaja"
+                + "(Id, tunnus, salasana, email) VALUES (?, ?, ?, ?)");
+               
+        stmt.setObject(1, kayttaja.getID());
+        stmt.setObject(2, kayttaja.getTunnus());
+        stmt.setObject(3, kayttaja.getSalasana());
+        stmt.setObject(4, kayttaja.getEmail());
+
+        stmt .executeUpdate();
+        //database.update(stmt);
         kayttajat.add(kayttaja);
     }
 
     public String haeViestit(Kayttaja kayttaja) throws SQLException {
         String nakyma = "";
-
+        int ID = kayttaja.getID();
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT sisalto, kellonaika FROM Viesti WHERE Viesti.kayttaja = " + kayttaja.getID());
+        //PreparedStatement stmt = connection.prepareStatement("SELECT sisalto, kellonaika FROM Viesti WHERE Viesti.kayttaja = ?" + kayttaja.getID());
+        PreparedStatement stmt = connection.prepareStatement("SELECT sisalto, kellonaika FROM Viesti WHERE Viesti.kayttaja = ?");
+        stmt.setObject(1, ID);
         List<String> lista = new ArrayList();
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {

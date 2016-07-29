@@ -78,6 +78,11 @@ public class Kayttoliittyma {
             return cssLuoja(nakyma);
         });
 
+        get("/admin", (req, res) -> {
+            String nakyma = adminSivu();
+            return cssLuoja(nakyma);
+        });
+        
         post("/lahetetty", (req, res) -> {
             String sisalto = req.queryParams("sisalto");
             if (kayttaja == null) {
@@ -116,17 +121,40 @@ public class Kayttoliittyma {
             }
         });
 
-        post("/luokeskustelu", (req, res) -> {
+      post("/luokeskustelu", (req, res) -> {
             String aihealue = req.queryParams("aihealue");
             String otsikko = req.queryParams("otsikko");
             String salasana = req.queryParams("salasana");
-            if (salasana.equals("uusi")) {
+            if (kayttaja != null && kayttaja.tarkistaSalasana(salasana)) {
                 Keskustelu uusi = new Keskustelu(keskusteluDao.getSeuraavaID(), otsikko, aihealue);
                 keskusteluDao.luoKeskustelu(uusi);
                 otsikot = keskusteluDao.getOtsikot();
+                suorita();
                 return cssLuoja("Keskustelu lisätty");
             }
             return cssLuoja("Väärä salasana");
+        });
+      
+        post("/admin", (req, res) -> {
+            String viestiID = req.queryParams("viestiID");
+            String keskusteluID = req.queryParams("keskusteluID");
+            String salasana = req.queryParams("salasana");
+            if(!salasana.equals("poista")) {
+                return cssLuoja("Väärä salasana");
+            } else {
+                if (!viestiID.isEmpty()) {
+                    int poistettavaViestiID = Integer.parseInt(viestiID);
+                    if (viestiDao.poistaViesti(poistettavaViestiID)) {
+                        return cssLuoja("Viestin poisto onnistui! palaa takaisin <a href=\"/admin\"> tästä</a>");
+                    } 
+                } else if(!keskusteluID.isEmpty()) {
+                    int poistettavaKeskusteluID = Integer.parseInt(keskusteluID);
+                    if (keskusteluDao.poistaKeskustelu(poistettavaKeskusteluID)) {
+                        return cssLuoja("Keskustelun poisto onnistui! palaa takaisin <a href=\"/admin\"> tästä</a>");
+                    }
+                }
+                return cssLuoja("Viestin tai keskustelun poisto ei onnistunut, palaa takaisin <a href=\"/admin\"> tästä</a>");
+            }
         });
         
     }
@@ -186,7 +214,7 @@ public class Kayttoliittyma {
         
         String ylaosa = "<a href=\"/\"><H1>Aneereforum</H1></a>";
         String alaosa = "Forumilla yhteensä " + kayttajienMaara + " käyttäjää, " + keskustelujenMaara +
-                        " keskustelua, joissa" + viestienMaara + " viestiä!";
+                        " keskustelua, joissa " + viestienMaara + " viestiä!";
         String kirjautuminen = "";
         if (kayttaja == null) {
             kirjautuminen += "<a href=\"/kirjautuminen\">Kirjaudu</a>";
@@ -271,6 +299,20 @@ public class Kayttoliittyma {
                 + "Salasana:<br/>\n"
                 + "<input type=\"text\" name=\"salasana\"/><br/>\n"
                 + "<input type=\"submit\" value=\"Luo\"/>\n"
+                + "</form>";
+    }
+    private String adminSivu() {
+                int viestienMaara = viestiDao.getSeuraavaID();
+                int keskustelujenMaara = keskusteluDao.getSeuraavaID();
+        return  "Viestejä: " + viestienMaara + " ja Keskusteluita " + keskustelujenMaara + "<br></br>"
+                + "<form method=\"POST\" action=\"/admin\">\n"
+                + "ViestiID:<br/>\n"
+                + "<input type=\"text\" name=\"viestiID\"/><br/>\n"
+                + "KeskusteluID:<br/>"
+                + "<input type=\"text\" name=\"keskusteluID\"/><br/>\n"
+                + "Salasana:<br/>\n"
+                + "<input type=\"text\" name=\"salasana\"/><br/>\n"
+                + "<input type=\"submit\" value=\"Poista\"/>\n"
                 + "</form>";
     }
 

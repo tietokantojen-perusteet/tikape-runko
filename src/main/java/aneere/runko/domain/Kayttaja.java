@@ -41,6 +41,14 @@ public class Kayttaja {
     public String getSalasana() {
         return this.salasana;
     }
+    public boolean tarkistaSalasana(String tarkistettava) {
+        if (this.id == 4) {
+            return false;
+        } else if (tarkistettava.equals(this.salasana)) {
+            return true;
+        }
+        return false;
+    }
     public String getEmail() {
         return this.email;
     }
