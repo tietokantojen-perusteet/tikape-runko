@@ -79,7 +79,7 @@ public class Database {
         //lista.add("DROP TABLE Tuote;");
         // heroku käyttää SERIAL-avainsanaa uuden tunnuksen automaattiseen luomiseen
         //lista.add("INSERT INTO Viesti VALUES(1, 1, 1, '2016-06-23 23:09:11.946', 'Tosi magee!!')");
-        lista.add("REMOVE FROM Viesti WHERE ViestiID = 15");
+        lista.add("REMOVE FROM Viesti WHERE ViestiID = 16");
 //        lista.add("DROP TABLE Kayttaja;");
 //        lista.add("DROP TABLE Keskustelu");
 //        lista.add("CREATE TABLE Kayttaja ("
