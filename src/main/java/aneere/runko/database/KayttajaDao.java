@@ -85,8 +85,20 @@ public class KayttajaDao implements Dao<Kayttaja, Integer> {
         return null;
     }
 
-    public int getSeuraavaID() {
-        return kayttajat.size() + 1;
+    public int getSeuraavaID() throws SQLException {
+        int seuraavaID = 0;
+        try (Connection connection = database.getConnection()) {
+            PreparedStatement stmt = connection.prepareStatement("SELECT ID FROM Kayttaja ORDER BY ID DESC LIMIT 1");
+            
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                seuraavaID = rs.getInt("ID");
+            }            
+            rs.close();
+            stmt.close();
+        }        
+        
+        return seuraavaID+1;
     }
 
     public void luoKayttaja(Kayttaja kayttaja) throws SQLException {

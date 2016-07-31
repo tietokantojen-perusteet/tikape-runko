@@ -178,10 +178,13 @@ public class Kayttoliittyma {
         muutettava = StringEscapeUtils.escapeHtml4(muutettava);
         muutettava = StringEscapeUtils.escapeXml11(muutettava);
         muutettava = muutettava.replace("&amp;auml;", "ä");
+        muutettava = muutettava.replace("&amp;Auml;", "Ä");
         muutettava = muutettava.replace("&amp;ouml;", "ö");
+        muutettava = muutettava.replace("&amp;Ouml;", "Ö");
         muutettava = muutettava.replace("&amp;aring;", "å");
+        muutettava = muutettava.replace("&amp;Aring;", "Å");
         muutettava = muutettava.replace("&amp;euro;", "€");
-//        System.out.println(muutettava);
+        System.out.println(muutettava);
         return muutettava;
     }
 
