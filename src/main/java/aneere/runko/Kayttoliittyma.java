@@ -89,8 +89,8 @@ public class Kayttoliittyma {
         post("/lahetetty", (req, res) -> {
 
             String sisalto = escapeeKaikki(req.queryParams("sisalto"));
-            if (sisalto.isEmpty()) {
-                return cssLuoja("Et voi lähettää tyhjää viestiä");
+            if (sisalto.isEmpty() || sisalto.length() > 499) {
+                return cssLuoja("Et voi lähettää tyhjää viestiä tai ylipitkää(500) merkkiä pitkää viestiä");
             } else if (kayttaja == null) {
                 kayttaja = kayttajaDao.findOne(4);
             }
