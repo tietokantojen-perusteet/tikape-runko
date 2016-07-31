@@ -6,7 +6,7 @@ import java.util.Calendar;
 public class Viesti {
     private int ID;
     private Integer kayttaja;
-    private Integer keskustelu;
+    private int keskustelu;
     private String sisalto;
     private Timestamp kellonaika;
     private String tunnus;
@@ -39,6 +39,7 @@ public class Viesti {
     public String toString() {
         return "ID:" + this.ID + " " + this.sisalto + "   " + this.kellonaika + " " +  this.tunnus;
     }
+
     public int getID() {
         return ID;
     }

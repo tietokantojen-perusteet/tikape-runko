@@ -64,20 +64,18 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         Viesti poistettava = null;
         for (Viesti viesti : viestit) {
             if (viesti.getID() == poistettavaID) {
-                poistettava = viesti;
+                viestit.remove(viesti);
                 onnistuu = true;
                 break;
             }
         }
-        
-        if (poistettava != null) {
-            viestit.remove(poistettava);
-        }
+       
         
         if (onnistuu == true) {
             Connection connection = database.getConnection();
             PreparedStatement stmt = connection.prepareStatement("DELETE FROM Viesti WHERE ViestiID = ?");
             stmt.setObject(1, poistettavaID);
+            stmt .executeUpdate();
         }
         return onnistuu;
     }
@@ -86,8 +84,19 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         return this.viestit;
     }
 
-    public int getSeuraavaID() {
-        return this.viestit.size()+1;
+    public int getSeuraavaID() throws SQLException {
+        int seuraavaID = 0;
+        try (Connection connection = database.getConnection()) {
+            PreparedStatement stmt = connection.prepareStatement("SELECT ViestiId FROM Viesti ORDER BY ViestiId DESC LIMIT 1");
+            
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                seuraavaID = rs.getInt("ViestiID");
+            }            
+            rs.close();
+            stmt.close();
+        }        
+        return seuraavaID+1;
     }
 //    @Override
 //    public Viesti findOne(Integer key) throws SQLException {
@@ -229,7 +238,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         PreparedStatement stmt = connection.prepareStatement("SELECT Viesti.ViestiID, Viesti.sisalto, Viesti.kellonaika,"
                 + " Viesti.kayttaja, Kayttaja.tunnus, Viesti.keskustelu FROM Viesti, Kayttaja "
                 + " WHERE Kayttaja.ID = Viesti.kayttaja "
-                + " ORDER BY kellonaika DESC LIMIT ?");
+                + " ORDER BY Viesti.ViestiID DESC LIMIT ?");
         stmt.setObject(1, montako);
 
         ResultSet rs = stmt.executeQuery();

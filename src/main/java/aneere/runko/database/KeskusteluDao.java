@@ -182,6 +182,7 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
             Connection connection = database.getConnection();
             PreparedStatement stmt = connection.prepareStatement("DELETE FROM Keskustelu WHERE KeskusteluID = ?");
             stmt.setObject(1, poistettavaID);
+            stmt .executeUpdate();
         }
         return onnistuu;
     }
@@ -203,8 +204,21 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
         otsikot.add(keskustelu);
     }        
 
-    public int getSeuraavaID() {
-        return this.otsikot.size() + 1;
+    public int getSeuraavaID() throws SQLException {
+        int seuraavaID = 0;
+        try (Connection connection = database.getConnection()) {
+            PreparedStatement stmt = connection.prepareStatement("SELECT KeskusteluID FROM Keskustelu ORDER BY KeskusteluID DESC LIMIT 1");
+            
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                seuraavaID = rs.getInt("KeskusteluID");
+            }            
+            rs.close();
+            stmt.close();
+        }        
+        
+        return seuraavaID+1;
     }
 }
+
 

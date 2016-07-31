@@ -7,8 +7,11 @@ import aneere.runko.database.ViestiDao;
 import aneere.runko.domain.Kayttaja;
 import aneere.runko.domain.Keskustelu;
 import aneere.runko.domain.Viesti;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.sql.SQLException;
 import java.util.List;
+import org.apache.commons.lang3.StringEscapeUtils;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
@@ -84,18 +87,23 @@ public class Kayttoliittyma {
         });
         
         post("/lahetetty", (req, res) -> {
-            String sisalto = req.queryParams("sisalto");
-            if (kayttaja == null) {
+
+            String sisalto = escapeeKaikki(req.queryParams("sisalto"));
+            if (sisalto.isEmpty()) {
+                return cssLuoja("Et voi lähettää tyhjää viestiä");
+            } else if (kayttaja == null) {
                 kayttaja = kayttajaDao.findOne(4);
             }
+                        
             Viesti lisattava = new Viesti(viestiDao.getSeuraavaID(), kayttaja.getID(), getKeskusteluID(), sisalto);
             viestiDao.lisaaViesti(lisattava);
-            return cssLuoja("Viesti lähetetty!");
+            suorita();
+            return cssLuoja("Viesti lähetetty! Palaa <a href=/" + lisattava.getKeskusteluID() + ">katsomaan</a> viestisi");
         });
 
         post("/kirjautuminen", (req, res) -> {
-            String tunnus = req.queryParams("tunnus");
-            String salasana = req.queryParams("salasana");
+            String tunnus = escapeeKaikki(req.queryParams("tunnus"));
+            String salasana = escapeeKaikki(req.queryParams("salasana"));
             Kayttaja kirjautuva = new Kayttaja(tunnus, salasana);
             String nakyma = "";
             if (kayttajaDao.kirjaudu(kirjautuva)) {
@@ -108,9 +116,10 @@ public class Kayttoliittyma {
         });
 
         post("/luotunnus", (req, res) -> {
-            String tunnus = req.queryParams("tunnus");
-            String salasana = req.queryParams("salasana");
-            String email = req.queryParams("email");
+            String tunnus = escapeeKaikki(req.queryParams("tunnus"));
+            String salasana = escapeeKaikki(req.queryParams("salasana"));
+            String email = escapeeKaikki(req.queryParams("email"));
+;
             Kayttaja uusi = new Kayttaja(kayttajaDao.getSeuraavaID(), tunnus, salasana, email, 0);
 
             if (kayttajaDao.getKayttaja(tunnus) == null) {
@@ -122,9 +131,10 @@ public class Kayttoliittyma {
         });
 
       post("/luokeskustelu", (req, res) -> {
-            String aihealue = req.queryParams("aihealue");
-            String otsikko = req.queryParams("otsikko");
-            String salasana = req.queryParams("salasana");
+            String aihealue = escapeeKaikki(req.queryParams("aihealue"));
+            String otsikko = escapeeKaikki(req.queryParams("otsikko"));
+            String salasana = escapeeKaikki(req.queryParams("salasana"));            
+            
             if (kayttaja != null && kayttaja.tarkistaSalasana(salasana)) {
                 Keskustelu uusi = new Keskustelu(keskusteluDao.getSeuraavaID(), otsikko, aihealue);
                 keskusteluDao.luoKeskustelu(uusi);
@@ -136,9 +146,10 @@ public class Kayttoliittyma {
         });
       
         post("/admin", (req, res) -> {
-            String viestiID = req.queryParams("viestiID");
-            String keskusteluID = req.queryParams("keskusteluID");
-            String salasana = req.queryParams("salasana");
+            String viestiID = escapeeKaikki(req.queryParams("viestiID"));
+            String keskusteluID = escapeeKaikki(req.queryParams("keskusteluID"));
+            String salasana = escapeeKaikki(req.queryParams("salasana"));
+
             if(!salasana.equals("poista")) {
                 return cssLuoja("Väärä salasana");
             } else {
@@ -157,6 +168,18 @@ public class Kayttoliittyma {
             }
         });
         
+    }
+    /* Poistaa Html ja Xml injektiot */
+    private String escapeeKaikki(String muutettava) {
+        //Charset.forName("ISO-8859-1").encode(muutettava);
+        muutettava = StringEscapeUtils.escapeHtml4(muutettava);
+        muutettava = StringEscapeUtils.escapeXml11(muutettava);
+        muutettava = muutettava.replace("&amp;auml;", "ä");
+        muutettava = muutettava.replace("&amp;ouml;", "ö");
+        muutettava = muutettava.replace("&amp;aring;", "å");
+        muutettava = muutettava.replace("&amp;euro;", "€");
+        System.out.println(muutettava);
+        return muutettava;
     }
 
     private String nakymanLuoja(List<Keskustelu> keskustelut, String otsikko, boolean onkoKetju) throws SQLException {
@@ -301,7 +324,7 @@ public class Kayttoliittyma {
                 + "<input type=\"submit\" value=\"Luo\"/>\n"
                 + "</form>";
     }
-    private String adminSivu() {
+    private String adminSivu() throws SQLException {
                 int viestienMaara = viestiDao.getSeuraavaID();
                 int keskustelujenMaara = keskusteluDao.getSeuraavaID();
         return  "Viestejä: " + viestienMaara + " ja Keskusteluita " + keskustelujenMaara + "<br></br>"
