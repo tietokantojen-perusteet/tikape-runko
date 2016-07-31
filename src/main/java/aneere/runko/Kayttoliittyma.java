@@ -97,6 +97,9 @@ public class Kayttoliittyma {
                         
             Viesti lisattava = new Viesti(viestiDao.getSeuraavaID(), kayttaja.getID(), getKeskusteluID(), sisalto);
             viestiDao.lisaaViesti(lisattava);
+            if (kayttaja.getID() == 4 || kayttaja.getTunnus().equals("Anonyymi")) {
+                kayttaja = null;
+            }
             suorita();
             return cssLuoja("Viesti lähetetty! Palaa <a href=/" + lisattava.getKeskusteluID() + ">katsomaan</a> viestisi");
         });
