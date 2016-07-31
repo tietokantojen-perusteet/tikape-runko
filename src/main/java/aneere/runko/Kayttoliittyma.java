@@ -178,7 +178,7 @@ public class Kayttoliittyma {
         muutettava = muutettava.replace("&amp;ouml;", "ö");
         muutettava = muutettava.replace("&amp;aring;", "å");
         muutettava = muutettava.replace("&amp;euro;", "€");
-        System.out.println(muutettava);
+//        System.out.println(muutettava);
         return muutettava;
     }
 

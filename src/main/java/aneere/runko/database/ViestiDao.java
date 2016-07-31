@@ -134,7 +134,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
                 + ".kellonaika, Viesti.kayttaja, Kayttaja.tunnus, Viesti.keskustelu FROM Viesti, Kayttaja, Keskustelu"
                 + " WHERE Keskustelu.KeskusteluID = Viesti.keskustelu"
                 + " AND Kayttaja.ID = Viesti.kayttaja"
-                + " AND Keskustelu.KeskusteluID = ?");
+                + " AND Keskustelu.KeskusteluID = ? ORDER BY Viesti.ViestiID DESC");
         stmt.setObject(1, otsikkoid);
 
         ResultSet rs = stmt.executeQuery();
