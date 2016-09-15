@@ -1,4 +1,3 @@
-# tikape-runko
+# Tietokantojen perusteet: Keskustelualueprojekti
 
-Tietokantojen perusteet -kurssilla tehtävän web-sovelluksen pohja.
-
+Tietokantojen perusteet -kurssilla tehtävä web-sovellus.
