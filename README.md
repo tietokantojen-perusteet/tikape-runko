@@ -13,7 +13,7 @@ Keskeneräinen koodi pysyy aina dev:ssä. Masteriin viedään pelkästään valm
 Tässä vielä ohjeistusta tuohon Git:n käyttöön tälle repolle Netbeansissa:
 
 
-Menkää ylävalikosta **Team -> Remote -> Clone...**
+Menkää ylävalikosta **Team -> Remote/Git -> Clone...**
 
 
 Repository URL: https://github.com/alehuo/tikape-keskustelualue.git
