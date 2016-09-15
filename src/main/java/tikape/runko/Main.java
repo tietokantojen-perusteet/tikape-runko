@@ -16,7 +16,7 @@ public class Main {
 //        OpiskelijaDao opiskelijaDao = new OpiskelijaDao(database);
         
         //Portti 80 jotta päästään selaamaan projektia suoraan osoitteessa http://localhost (Muistetaan silti poistaa tämä kun projekti viedään Herokuun.)
-        port(80);
+//        port(80);
        
         //Etusivu
         get("/", (req, res) -> {
