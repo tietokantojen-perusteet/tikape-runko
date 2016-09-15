@@ -42,11 +42,11 @@ public class Database {
         //Kategoriat -taulu
         lista.add("CREATE TABLE categories (categoryId integer PRIMARY KEY, title varchar(255));");
         //Alakategoriat -taulu
-        lista.add("CREATE TABLE subCategories (subCatId integer PRIMARY KEY, catId integer FOREIGN KEY categories(categoryId), title varchar(255), description varchar(1024));");
+        lista.add("CREATE TABLE subCategories (subCatId integer PRIMARY KEY, catId integer , title varchar(255), description varchar(1024), FOREIGN KEY catId REFERENCES categories(categoryId));");
         //Viestiketjut
-        lista.add("CREATE TABLE threads (threadId integer PRIMARY KEY, subCategoryId integer FOREIGN KEY subCategories(subCatId), title varchar(255), creationDate varchar(255);");
+        lista.add("CREATE TABLE threads (threadId integer PRIMARY KEY, subCategoryId integer , title varchar(255), creationDate varchar(255), FOREIGN KEY subCategoryId REFERENCES subCategories(subCatId));");
         //Viestiketjun postaukset
-        lista.add("CREATE TABLE posts (postId integer PRIMARY KEY, threadId integer FOREIGN KEY threads(threadId), userId integer FOREIGN KEY users(userId), timestamp varchar(255), body varchar(4096);");
+        lista.add("CREATE TABLE posts (postId integer PRIMARY KEY, threadId integer , userId integer FOREIGN KEY users(userId), timestamp varchar(255), body varchar(40960, FOREIGN KEY threadId REFERENCES threads(threadId));");
         //Käyttäjät
         lista.add("CREATE TABLE users (userId integer PRIMARY KEY, username varchar(255), password varchar(255), salt varchar(255), userLevel integer);");
         return lista;
