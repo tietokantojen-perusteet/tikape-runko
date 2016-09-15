@@ -39,11 +39,16 @@ public class Database {
         ArrayList<String> lista = new ArrayList<>();
 
         // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
-        lista.add("CREATE TABLE Opiskelija (id integer PRIMARY KEY, nimi varchar(255));");
-        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Platon');");
-        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Aristoteles');");
-        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Homeros');");
-
+        //Kategoriat -taulu
+        lista.add("CREATE TABLE categories (categoryId integer PRIMARY KEY, title varchar(255));");
+        //Alakategoriat -taulu
+        lista.add("CREATE TABLE subCategories (subCatId integer PRIMARY KEY, catId integer FOREIGN KEY categories(categoryId), title varchar(255), description varchar(1024));");
+        //Viestiketjut
+        lista.add("CREATE TABLE threads (threadId integer PRIMARY KEY, subCategoryId integer FOREIGN KEY subCategories(subCatId), title varchar(255), creationDate varchar(255);");
+        //Viestiketjun postaukset
+        lista.add("CREATE TABLE posts (postId integer PRIMARY KEY, threadId integer FOREIGN KEY threads(threadId), userId integer FOREIGN KEY users(userId), timestamp varchar(255), body varchar(4096);");
+        //Käyttäjät
+        lista.add("CREATE TABLE users (userId integer PRIMARY KEY, username varchar(255), password varchar(255), salt varchar(255), userLevel integer);");
         return lista;
     }
 }
