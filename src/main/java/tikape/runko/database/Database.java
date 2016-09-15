@@ -49,6 +49,11 @@ public class Database {
         lista.add("CREATE TABLE posts (postId integer PRIMARY KEY, threadId integer , userId integer , timestamp varchar(255), body varchar(4096), FOREIGN KEY(threadId) REFERENCES threads(threadId), FOREIGN KEY(userId) REFERENCES users(userId));");
         //Käyttäjät
         lista.add("CREATE TABLE users (userId integer PRIMARY KEY, username varchar(255), password varchar(255), salt varchar(255), userLevel integer);");
+        
+        //Kategoriat
+        lista.add("INSERT INTO categories (categoryId, title) VALUES (NULL, \"Testialue\");");
+        //Alakategoriat
+        //Jne..
         return lista;
     }
 }
