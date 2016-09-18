@@ -13,11 +13,6 @@ public class Main {
         Database database = new Database("jdbc:sqlite:keskustelualue.db");
         database.init();
 
-//        OpiskelijaDao opiskelijaDao = new OpiskelijaDao(database);
-        
-        //Portti 80 jotta päästään selaamaan projektia suoraan osoitteessa http://localhost (Muistetaan silti poistaa tämä kun projekti viedään Herokuun.)
-//        port(80);
-       
         //Etusivu
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
@@ -25,19 +20,29 @@ public class Main {
 
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
+        //Näytä viestiketju
+        get("/thread/:threadId", (req, res) -> {
+            int id = Integer.parseInt(req.params("threadId"));
 
-//        get("/opiskelijat", (req, res) -> {
-//            HashMap map = new HashMap<>();
-//            map.put("opiskelijat", opiskelijaDao.findAll());
-//
-//            return new ModelAndView(map, "opiskelijat");
-//        }, new ThymeleafTemplateEngine());
-//
-//        get("/opiskelijat/:id", (req, res) -> {
-//            HashMap map = new HashMap<>();
-//            map.put("opiskelija", opiskelijaDao.findOne(Integer.parseInt(req.params("id"))));
-//
-//            return new ModelAndView(map, "opiskelija");
-//        }, new ThymeleafTemplateEngine());
+            return "Viestiketjun id: " + id;
+        });
+        //Näytä alakategorian viestit:
+        get("/subcategory/:subCategoryId", (req, res) -> {
+            int id = Integer.parseInt(req.params("subCategoryId"));
+
+            return "Alakategorian id: " + id;
+        });
+        //Uuden viestiketjun luominen:
+        get("/new/:subCategoryId", (req, res) -> {
+            int id = Integer.parseInt(req.params("subCategoryId"));
+
+            return "Tällä luodaan uusi viestiketju alakategoriaan " + id + ".";
+        });
+        //Uuden viestiketjun lähettäminen:
+        post("/new/:subCategoryId", (req, res) -> {
+            int id = Integer.parseInt(req.params("subCategoryId"));
+            return "Tällä käsitellään viestiketjun data alakategoriaan " + id + ".";
+        });
+
     }
 }
