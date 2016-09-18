@@ -26,6 +26,12 @@ public class Main {
 
             return "Viestiketjun id: " + id;
         });
+        //Lähetä viestiketjuun uusi vastaus
+        post("/thread/:threadId", (req, res) -> {
+            int id = Integer.parseInt(req.params("threadId"));
+
+            return "Vastaus viestiketjuun, jolla id: " + id;
+        });
         //Näytä alakategorian viestit:
         get("/subcategory/:subCategoryId", (req, res) -> {
             int id = Integer.parseInt(req.params("subCategoryId"));
