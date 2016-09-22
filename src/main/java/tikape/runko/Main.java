@@ -13,6 +13,14 @@ public class Main {
         Database database = new Database("jdbc:sqlite:keskustelualue.db");
         database.init();
 
+        //Oletusportti
+        int appPort = 4567;
+        if (System.getenv("PORT") != null) {
+            appPort = Integer.parseInt(System.getenv("PORT"));
+        }
+        
+        port(appPort);
+
         //Etusivu
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
