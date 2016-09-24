@@ -1,11 +1,15 @@
 package tikape.runko.database;
 
+import java.io.UnsupportedEncodingException;
+import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import tikape.runko.domain.User;
 
 public class UserDao implements Dao<User, Integer> {
@@ -65,6 +69,13 @@ public class UserDao implements Dao<User, Integer> {
     @Override
     public void delete(Integer key) throws SQLException {
         // ei toteutettu
+    }
+
+    public void add(String username, String password) throws SQLException {
+        //Luodaan salasanalle "suola"
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[32];
+        random.nextBytes(salt);
     }
 
 }
