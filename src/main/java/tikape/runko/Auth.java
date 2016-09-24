@@ -6,10 +6,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Base64.Decoder;
 
-/**
- *
- * @author Aleksi Huotala
- */
 public class Auth {
 
     public static boolean passwordMatches(String password, String hashedPasswordBase64, String saltBase64) throws NoSuchAlgorithmException {
