@@ -5,6 +5,7 @@ import spark.ModelAndView;
 import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.runko.database.Database;
+import tikape.runko.database.UserDao;
 
 public class Main {
 
@@ -13,12 +14,17 @@ public class Main {
         Database database = new Database("jdbc:sqlite:keskustelualue.db");
         database.init();
 
+        UserDao user = new UserDao(database);
+//        user.add("test", "helloworld");
+//Tällä tarkastetaan, onko salasana oikein. Salaamiseen käytetään AES-256 -algoritmiä.
+//Auth.passwordMatches(selkokielinen salasana, tietokannasta poimittu salasanan tiiviste, tietokannasta poimittu suolan tiiviste);
+//        System.out.println(Auth.passwordMatches("helloworld", "zPW69qOgYVbx8CagpUBV2sBxxaBIGb1c+kQm0IFioow=", "gJlIz8+u+3AvCCZuFo2PumGWPxrUglw7jZxEuo0j+Uc="));
         //Oletusportti
         int appPort = 4567;
         if (System.getenv("PORT") != null) {
             appPort = Integer.parseInt(System.getenv("PORT"));
         }
-        
+
         port(appPort);
 
         //Etusivu
