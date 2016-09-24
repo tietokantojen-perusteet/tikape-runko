@@ -82,13 +82,26 @@ public class Main {
                     return "Kirjauduttu sisään.";
                 } else {
                     //Väärä salasana!
+                    res.redirect("/login");
                     return "Käyttäjätunnus tai salasana väärä.";
                 }
             } else {
                 //Käyttäjätunnusta ei ole olemassa!
+                res.redirect("/login");
                 return "Käyttäjätunnus tai salasana väärä.";
             }
 
         });
+
+        //Kirjautumissivu
+        get("/login", (req, res) -> {
+            HashMap map = new HashMap<>();
+            return new ModelAndView(map, "login");
+        }, new ThymeleafTemplateEngine());
+        //Rekisteröitymissivu
+        get("/register", (req, res) -> {
+            HashMap map = new HashMap<>();
+            return new ModelAndView(map, "register");
+        }, new ThymeleafTemplateEngine());
     }
 }
