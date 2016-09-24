@@ -77,7 +77,7 @@ public class UserDao implements Dao<User, Integer> {
         username = username.trim();
         //Luodaan salasanalle "suola"
         SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[32];
+        byte[] salt = new byte[8];
         random.nextBytes(salt);
         try {
             //Yhdistetään suola ja salasanan bittijono
