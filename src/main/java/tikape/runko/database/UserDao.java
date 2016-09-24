@@ -11,8 +11,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Base64.Encoder;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import tikape.runko.Auth;
 import tikape.runko.domain.User;
 
