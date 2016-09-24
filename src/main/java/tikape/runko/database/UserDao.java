@@ -90,15 +90,21 @@ public class UserDao implements Dao<User, Integer> {
             byte[] hashedPassword = digest.digest(saltedPassword);
             //Lopuksi käytetään Base64-enkoodausta jotta salasana ja suola voidaan tallentaa tietokantaan.
             Encoder en = java.util.Base64.getEncoder();
+            //Base64-enkoodatut suola ja salasana
             String saltBase64 = en.encodeToString(salt);
             String hashedPasswordBase64 = en.encodeToString(hashedPassword);
 
+            //Kysely, joka aiotaan suorittaa
             String query = "INSERT INTO users (userId, username, password, salt, userLevel) VALUES(NULL, ?, ?, ?, 0)";
             Connection con = database.getConnection();
             PreparedStatement stmt = con.prepareStatement(query);
+            //Käyttäjätunnus
             stmt.setString(1, username);
+            //Salasana
             stmt.setString(2, hashedPasswordBase64);
+            //Suola
             stmt.setString(3, saltBase64);
+            //Suorita kysely
             stmt.execute();
         } catch (UnsupportedEncodingException ex) {
             ex.printStackTrace();
