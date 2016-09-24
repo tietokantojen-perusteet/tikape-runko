@@ -2,15 +2,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <head>
-        <title>Otsikko</title>
+        <title>Testisivu</title>
         <meta charset="utf-8" />
     </head>
 
     <body>
-        <h1>Heippa vaan!</h1>
-
-        <p>Ja .. <span th:text="${viesti}">jotain?</span></p>
-
-        <p><a href="/opiskelijat">Tästä opiskelijalistaukseen.</a></p>
+        <h2>Rekisteröidy</h2>
+        <form action="/register" method="POST">
+            <input type="text" name="username" placeholder="Käyttäjätunnus"/><br/>
+            <input type="password" name="password" placeholder="Salasana"/>
+            <input type="submit" name="register" value="Rekisteröidy"/>
+        </form>
+        <h2>Kirjaudu sisään</h2>
+        <form action="/login" method="POST">
+            <input type="text" name="username" placeholder="Käyttäjätunnus"/><br/>
+            <input type="password" name="password" placeholder="Salasana"/>
+            <input type="submit" name="login" value="Kirjaudu sisään"/>
+        </form>
     </body>
 </html>

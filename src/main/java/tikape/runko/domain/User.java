@@ -4,6 +4,9 @@ public class User {
 
     private int id;
     private String username;
+    private String password;
+    private String salt;
+    private int userLevel = -1;
 
     public User(int id, String username) {
         this.id = id;
@@ -26,6 +29,33 @@ public class User {
      */
     public String getUsername() {
         return username;
+    }
+
+    public String getPasswordHash() {
+        return password;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public int getUserLevel() {
+        return userLevel;
+    }
+
+    public User setPasswordHash(String hash) {
+        password = hash;
+        return this;
+    }
+
+    public User setSalt(String salt) {
+        this.salt = salt;
+        return this;
+    }
+
+    public User setUserLevel(int level) {
+        userLevel = level;
+        return this;
     }
 
 }

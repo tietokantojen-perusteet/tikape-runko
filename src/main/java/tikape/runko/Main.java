@@ -6,6 +6,7 @@ import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.runko.database.Database;
 import tikape.runko.database.UserDao;
+import tikape.runko.domain.User;
 
 public class Main {
 
@@ -14,17 +15,15 @@ public class Main {
         Database database = new Database("jdbc:sqlite:keskustelualue.db");
         database.init();
 
-        UserDao user = new UserDao(database);
-//        user.add("test", "helloworld");
-//Tällä tarkastetaan, onko salasana oikein. Salaamiseen käytetään AES-256 -algoritmiä.
-//Auth.passwordMatches(selkokielinen salasana, tietokannasta poimittu salasanan tiiviste, tietokannasta poimittu suolan tiiviste);
-//        System.out.println(Auth.passwordMatches("helloworld", "zPW69qOgYVbx8CagpUBV2sBxxaBIGb1c+kQm0IFioow=", "gJlIz8+u+3AvCCZuFo2PumGWPxrUglw7jZxEuo0j+Uc="));
+        UserDao userDao = new UserDao(database);
+
         //Oletusportti
         int appPort = 4567;
         if (System.getenv("PORT") != null) {
             appPort = Integer.parseInt(System.getenv("PORT"));
         }
 
+        //Asetetaan oletusportti
         port(appPort);
 
         //Etusivu
@@ -63,6 +62,33 @@ public class Main {
             int id = Integer.parseInt(req.params("subCategoryId"));
             //Näytetään tässä lomake käyttäjälle
             return "Tällä luodaan uusi viestiketju alakategoriaan " + id + ".";
+        });
+
+        //Kirjaudu sisään
+        post("/login", (req, res) -> {
+            //Käsitellään tässä POST-pyynnön data
+            //Käyttäjätunnus
+            String username = req.queryParams("username").trim();
+            //Salasana
+            String password = req.queryParams("password");
+            User u = userDao.findByUsername(username);
+            //Jos käyttäjä löytyy tietokannasta
+            if (u != null) {
+                if (Auth.passwordMatches(password, u.getPasswordHash(), u.getSalt())) {
+                    //Kirjaudu sisään. Asetetaan evästeet loggedIn = true ja userId = (USERID)
+                    res.cookie("loggedIn", 1 + "", 63600);
+                    res.cookie("userId", u.getId() + "", 3600);
+                    res.redirect("/");
+                    return "Kirjauduttu sisään.";
+                } else {
+                    //Väärä salasana!
+                    return "Käyttäjätunnus tai salasana väärä.";
+                }
+            } else {
+                //Käyttäjätunnusta ei ole olemassa!
+                return "Käyttäjätunnus tai salasana väärä.";
+            }
+
         });
     }
 }

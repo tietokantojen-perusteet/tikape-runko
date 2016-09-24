@@ -25,7 +25,7 @@ public class UserDao implements Dao<User, Integer> {
     @Override
     public User findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM users WHERE id = ?");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM users WHERE userId = ?");
         stmt.setObject(1, key);
 
         ResultSet rs = stmt.executeQuery();
@@ -34,16 +34,43 @@ public class UserDao implements Dao<User, Integer> {
             return null;
         }
 
-        Integer id = rs.getInt("id");
-        String nimi = rs.getString("nimi");
-
-        User o = new User(id, nimi);
+        Integer id = rs.getInt("userId");
+        String uname = rs.getString("username");
+        String passwordHash = rs.getString("password");
+        String salt = rs.getString("salt");
+        Integer userLevel = rs.getInt("userLevel");
+        User u = new User(id, uname).setUserLevel(userLevel).setPasswordHash(passwordHash).setSalt(salt);
 
         rs.close();
         stmt.close();
         connection.close();
 
-        return o;
+        return u;
+    }
+
+    public User findByUsername(String username) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM users WHERE username = ?");
+        stmt.setObject(1, username.trim().toLowerCase());
+
+        ResultSet rs = stmt.executeQuery();
+        boolean hasOne = rs.next();
+        if (!hasOne) {
+            return null;
+        }
+
+        Integer id = rs.getInt("userId");
+        String uname = rs.getString("username");
+        String passwordHash = rs.getString("password");
+        String salt = rs.getString("salt");
+        Integer userLevel = rs.getInt("userLevel");
+        User u = new User(id, uname).setUserLevel(userLevel).setPasswordHash(passwordHash).setSalt(salt);
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return u;
     }
 
     @Override
@@ -55,10 +82,12 @@ public class UserDao implements Dao<User, Integer> {
         ResultSet rs = stmt.executeQuery();
         List<User> users = new ArrayList<>();
         while (rs.next()) {
-            Integer id = rs.getInt("id");
-            String nimi = rs.getString("nimi");
-
-            users.add(new User(id, nimi));
+            Integer id = rs.getInt("userId");
+            String uname = rs.getString("username");
+            String passwordHash = rs.getString("password");
+            String salt = rs.getString("salt");
+            Integer userLevel = rs.getInt("userLevel");
+            users.add(new User(id, uname).setUserLevel(userLevel).setPasswordHash(passwordHash).setSalt(salt));
         }
 
         rs.close();
@@ -74,7 +103,7 @@ public class UserDao implements Dao<User, Integer> {
     }
 
     public void add(String username, String password) throws SQLException {
-        username = username.trim();
+        username = username.trim().toLowerCase();
         //Luodaan salasanalle "suola"
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[8];
