@@ -1,11 +1,17 @@
 package tikape.runko;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Scanner;
 import spark.ModelAndView;
 import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
+import tikape.runko.database.CategoryDao;
 import tikape.runko.database.Database;
+import tikape.runko.database.SubCategoryDao;
 import tikape.runko.database.UserDao;
+import tikape.runko.domain.Category;
+import tikape.runko.domain.SubCategory;
 import tikape.runko.domain.User;
 
 public class Main {
@@ -16,6 +22,67 @@ public class Main {
         database.init();
 
         UserDao userDao = new UserDao(database);
+        CategoryDao catDao = new CategoryDao(database);
+        SubCategoryDao subCatDao = new SubCategoryDao(database);
+        Scanner sc = new Scanner(System.in);
+        OUTER:
+        while (true) {
+            System.out.println("1) Listaa kategoriat ja niiden alakategoriat");
+            System.out.println("2) Listaa viestiketjut alakategoriasta (TODO)");
+            System.out.println("3) Lisää uusi kategoria");
+            System.out.println("4) Lisää uusi alakategoria");
+            System.out.println("5) Kirjoita uusi viestiketju (TODO)");
+            System.out.println("6) Kirjoita uusi viesti viestiketjuun (TODO)");
+            System.out.println("exit Poistu ja käynnistä Web-sovellus");
+            System.out.println("");
+            System.out.print("> ");
+            String komento = sc.nextLine();
+            switch (komento) {
+                case "exit":
+                    break OUTER;
+                case "1":
+                    System.out.println("Listataan kategoriat ja niiden alakategoriat: ");
+                    List<Category> categories = catDao.findAll();
+                    for (Category cat : categories) {
+                        System.out.println(cat.getCategoryId() + ": " + cat);
+                        if (cat.getSubCategories().size() > 0) {
+                            for (SubCategory subCat : cat.getSubCategories()) {
+                                System.out.println("- " + subCat);
+                            }
+                        } else {
+                            System.out.println("(Ei alakategorioita)");
+                        }
+
+                    }
+                    break;
+                case "2":
+
+                    break;
+                case "3":
+                    System.out.print("Anna nimi: ");
+                    String name = sc.nextLine();
+                    Category c = new Category(-1, name);
+                    catDao.add(c);
+                    break;
+                case "4":
+                    System.out.print("Anna yläkategorian ID: ");
+                    Integer categoryId = Integer.parseInt(sc.nextLine());
+                    System.out.print("Anna nimi: ");
+                    String subCategoryName = sc.nextLine();
+                    System.out.print("Anna kuvaus: ");
+                    String desc = sc.nextLine();
+                    SubCategory subCategory = new SubCategory(categoryId, -1, subCategoryName).setDescription(desc);
+                    subCatDao.add(subCategory);
+                    break;
+                case "5":
+                    break;
+                case "6":
+                    break;
+                default:
+                    break;
+            }
+            System.out.println("");
+        }
 
         //Oletusportti
         int appPort = 4567;
