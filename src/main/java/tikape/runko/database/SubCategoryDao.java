@@ -73,15 +73,14 @@ public class SubCategoryDao implements Dao<SubCategory, Integer> {
      */
     public List<SubCategory> findAllByCategoryId(int categoryId) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM categories WHERE catId = ?");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM subCategories WHERE catId = ?");
         stmt.setInt(1, categoryId);
         ResultSet rs = stmt.executeQuery();
-        boolean hasOne = rs.next();
 
         List<SubCategory> categories = new ArrayList<>();
         while (rs.next()) {
             Integer mainCatId = rs.getInt("catId");
-            Integer subCatId = rs.getInt("categoryId");
+            Integer subCatId = rs.getInt("subCatId");
             String title = rs.getString("title");
             String description = rs.getString("description");
             categories.add(new SubCategory(mainCatId, subCatId, title).setDescription(description));
@@ -97,6 +96,18 @@ public class SubCategoryDao implements Dao<SubCategory, Integer> {
     @Override
     public void delete(Integer key) throws SQLException {
         //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public boolean add(SubCategory c) throws SQLException {
+        Connection connection = database.getConnection();
+        int mainCatId = c.getCategoryId();
+        String title = c.getName();
+        String desc = c.getDescription();
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO subCategories (subCatId, catId, title , description) VALUES (NULL, ?, ?, ?)");
+        stmt.setInt(1, mainCatId);
+        stmt.setString(2, title);
+        stmt.setString(3, desc);
+        return stmt.execute();
     }
 
 }

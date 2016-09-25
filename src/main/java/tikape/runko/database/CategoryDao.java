@@ -48,8 +48,7 @@ public class CategoryDao implements Dao<Category, Integer> {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM categories");
         ResultSet rs = stmt.executeQuery();
-        boolean hasOne = rs.next();
-
+        
         List<Category> categories = new ArrayList<>();
         while (rs.next()) {
             Integer id = rs.getInt("categoryId");
@@ -69,6 +68,13 @@ public class CategoryDao implements Dao<Category, Integer> {
     @Override
     public void delete(Integer key) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public boolean add(Category c) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO categories (categoryId, title) VALUES (NULL, ?)");
+        stmt.setString(1, c.getName());
+        return stmt.execute();
     }
 
 }
