@@ -33,6 +33,8 @@ public class Main {
             System.out.println("4) Lisää uusi alakategoria");
             System.out.println("5) Kirjoita uusi viestiketju (TODO)");
             System.out.println("6) Kirjoita uusi viesti viestiketjuun (TODO)");
+            System.out.println("7) Lisää uusi käyttäjä tietokantaan");
+            System.out.println("8) Listaa käyttäjät");
             System.out.println("exit Poistu ja käynnistä Web-sovellus");
             System.out.println("");
             System.out.print("> ");
@@ -77,6 +79,25 @@ public class Main {
                 case "5":
                     break;
                 case "6":
+                    break;
+                case "7":
+                    System.out.print("Anna käyttäjätunnus: ");
+                    String userName = sc.nextLine();
+                    System.out.print("Anna salasana: ");
+                    String passWd = sc.nextLine();
+                    System.out.print("Anna salasana uudestaan: ");
+                    String passWdAgain = sc.nextLine();
+                    if (passWd.equals(passWdAgain)) {
+                        System.out.println("Lisätään käyttäjä..");
+                        userDao.add(userName, passWd);
+                    }
+
+                    break;
+                case "8":
+                    List<User> users = userDao.findAll();
+                    for (User u : users) {
+                        System.out.println(u);
+                    }
                     break;
                 default:
                     break;
