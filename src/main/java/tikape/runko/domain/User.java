@@ -58,4 +58,9 @@ public class User {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return id + " : " + username; //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
