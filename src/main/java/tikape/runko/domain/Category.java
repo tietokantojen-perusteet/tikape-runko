@@ -32,4 +32,9 @@ public class Category {
         return subCategories;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
 }
