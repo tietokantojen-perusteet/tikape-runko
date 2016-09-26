@@ -117,7 +117,6 @@ public class Main {
         //Etusivu
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("viesti", "tervehdys");
             //Tähän näkymä, jolla näytetään etusivu (kategoriat ja alakategoriat)
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
@@ -191,5 +190,12 @@ public class Main {
             HashMap map = new HashMap<>();
             return new ModelAndView(map, "register");
         }, new ThymeleafTemplateEngine());
+        //Uloskirjautuminen
+        get("/logout", (req, res) -> {
+            res.cookie("loggedIn", "0", 0);
+            res.cookie("userId", "0", 0);
+            res.redirect("/");
+            return "";
+        });
     }
 }
