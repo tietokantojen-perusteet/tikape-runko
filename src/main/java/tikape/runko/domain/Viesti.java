@@ -16,9 +16,8 @@ public class Viesti {
     private String kirjoittaja;
     private String teksti;
 
-    public Viesti(Integer id, Keskustelu mes, Date aika, String kirjo, String tekstii) {
+    public Viesti(Integer id, Date aika, String kirjo, String tekstii) {
         this.viesti_id = id;
-        this.omakeskustelu = mes;
         this.julkaisuaika = aika;
         this.kirjoittaja = kirjo;
         this.teksti = tekstii;

@@ -18,12 +18,11 @@ public class Keskustelu {
     private Date paivamaara;
     
 
-    public Keskustelu(Integer id, String otsikko, String aloittaja, String aloitusviesti, Alue alue, Date paivays) {
+    public Keskustelu(Integer id, String otsikko, String aloittaja, String aloitusviesti, Date paivays) {
         this.keskustelu_id = id;
         this.otsikko = otsikko;
         this.aloittaja = aloittaja;
         this.aloitusviesti = aloitusviesti;
-        this.omaalue = alue;
         this.paivamaara = paivays;
     }
 
