@@ -36,7 +36,7 @@ public class SubCategory {
 
     @Override
     public String toString() {
-        return name + " (" + description + ")";
+        return subCategoryId + ": " + name + " (" + description + ")";
     }
 
 }
