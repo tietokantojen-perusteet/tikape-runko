@@ -8,9 +8,12 @@ import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.runko.database.CategoryDao;
 import tikape.runko.database.Database;
+import tikape.runko.database.MessageThreadDao;
 import tikape.runko.database.SubCategoryDao;
 import tikape.runko.database.UserDao;
 import tikape.runko.domain.Category;
+import tikape.runko.domain.Message;
+import tikape.runko.domain.MessageThread;
 import tikape.runko.domain.SubCategory;
 import tikape.runko.domain.User;
 
@@ -24,14 +27,15 @@ public class Main {
         UserDao userDao = new UserDao(database);
         CategoryDao catDao = new CategoryDao(database);
         SubCategoryDao subCatDao = new SubCategoryDao(database);
+        MessageThreadDao msgDao = new MessageThreadDao(database);
         Scanner sc = new Scanner(System.in);
         OUTER:
         while (true) {
             System.out.println("1) Listaa kategoriat ja niiden alakategoriat");
-            System.out.println("2) Listaa viestiketjut alakategoriasta (TODO)");
+            System.out.println("2) Listaa viestiketjut alakategoriasta");
             System.out.println("3) Lisää uusi kategoria");
             System.out.println("4) Lisää uusi alakategoria");
-            System.out.println("5) Kirjoita uusi viestiketju (TODO)");
+            System.out.println("5) Kirjoita uusi viestiketju");
             System.out.println("6) Kirjoita uusi viesti viestiketjuun (TODO)");
             System.out.println("7) Lisää uusi käyttäjä tietokantaan");
             System.out.println("8) Listaa käyttäjät");
@@ -58,6 +62,16 @@ public class Main {
                     }
                     break;
                 case "2":
+                    System.out.print("Anna alakategorian ID: ");
+                    Integer subCategoryId = Integer.parseInt(sc.nextLine());
+                    List<MessageThread> msgThreads = msgDao.findAllFromSubCategory(subCategoryId);
+                    if (msgThreads.size() > 0) {
+                        for (MessageThread msgThread : msgThreads) {
+                            System.out.println(msgThread);
+                        }
+                    } else {
+                        System.out.println("Ei viestiketjuja kyseisessä alakategoriassa.");
+                    }
 
                     break;
                 case "3":
@@ -77,6 +91,19 @@ public class Main {
                     subCatDao.add(subCategory);
                     break;
                 case "5":
+                    //Uusi viestiketju
+                    System.out.println("Anna alakaterogian ID: ");
+                    subCategoryId = Integer.parseInt(sc.nextLine());
+                    System.out.println("Anna käyttäjätunnuksen ID: ");
+                    int userId = Integer.parseInt(sc.nextLine());
+                    System.out.println("Anna otsikko: ");
+                    String title = sc.nextLine();
+                    System.out.println("Kirjoita aloituspostaus: ");
+                    String body = sc.nextLine();
+                    String timeStamp = new java.sql.Timestamp(new java.util.Date().getTime()).toString();
+                    MessageThread tmpThread = new MessageThread(subCategoryId, userId, title, timeStamp);
+                    tmpThread.addMessage(new Message(-1, userId, body, timeStamp));
+                    msgDao.add(tmpThread);
                     break;
                 case "6":
                     break;
