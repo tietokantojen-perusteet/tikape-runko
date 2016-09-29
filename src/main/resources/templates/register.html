@@ -1,4 +1,4 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+﻿<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <head>
@@ -10,12 +10,12 @@
     <body>
         <div class="container">
             <h2>Rekisteröidy</h2>
-            <form action="/register" method="POST">
+            <form action="/register" method="POST" class="form-horizontal">
                 <div class="form-group">
                     <label for="username">Käyttäjätunnus</label>
                     <input type="text" name="username" id="username" placeholder="Käyttäjätunnus"/><br/>
                     <label for="passwd">Salasana</label>
-                    <input type="password" name="password" id="password" placeholder="Salasana"/>
+                    <input type="password" name="password" id="passwd" placeholder="Salasana"/>
                 </div>
                 <button type="submit" class="btn btn-primary" name="register">Rekisteröidy</button>
             </form>
