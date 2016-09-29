@@ -8,12 +8,18 @@
     </head>
 
     <body>
-        <h2>Rekisteröidy</h2>
-        <form action="/register" method="POST">
-            <input type="text" name="username" placeholder="Käyttäjätunnus"/><br/>
-            <input type="password" name="password" placeholder="Salasana"/>
-            <input type="submit" name="register" value="Rekisteröidy"/>
-        </form>
+        <div class="container">
+            <h2>Rekisteröidy</h2>
+            <form action="/register" method="POST">
+                <div class="form-group">
+                    <label for="username">Käyttäjätunnus</label>
+                    <input type="text" name="username" id="username" placeholder="Käyttäjätunnus"/><br/>
+                    <label for="passwd">Salasana</label>
+                    <input type="password" name="password" id="password" placeholder="Salasana"/>
+                    <button type="submit" class="btn btn-primary" name="register">Rekisteröidy</button>
+                </div>
+            </form>
+        </div>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </body>
 </html>
