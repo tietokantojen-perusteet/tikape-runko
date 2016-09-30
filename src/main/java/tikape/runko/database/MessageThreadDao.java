@@ -18,6 +18,12 @@ public class MessageThreadDao implements Dao<MessageThread, Integer> {
         this.database = database;
     }
     
+    /**
+     * Hakee tietyn viestiketjun ID:n avulla
+     * @param key
+     * @return
+     * @throws SQLException 
+     */
     @Override
     public MessageThread findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
@@ -55,11 +61,22 @@ public class MessageThreadDao implements Dao<MessageThread, Integer> {
         return msgThread;
     }
     
+    /**
+     * Hakee kaikki viestiketjut
+     * @return
+     * @throws SQLException 
+     */
     @Override
     public List<MessageThread> findAll() throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+    /**
+     * Hakee kaikki viestiketjut tietystä alakategoriasta
+     * @param subCategoryId
+     * @return
+     * @throws SQLException 
+     */
     public List<MessageThread> findAllFromSubCategory(int subCategoryId) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM threads WHERE subCategoryId = ?");
@@ -82,6 +99,11 @@ public class MessageThreadDao implements Dao<MessageThread, Integer> {
         return msgThreads;
     }
     
+    /**
+     * Poistaa viestiketjun
+     * @param key
+     * @throws SQLException 
+     */
     @Override
     public void delete(Integer key) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

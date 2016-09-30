@@ -16,6 +16,12 @@ public class SubCategoryDao implements Dao<SubCategory, Integer> {
         this.database = db;
     }
 
+    /**
+     * Hakee alakategorian ID:n avulla
+     * @param key
+     * @return
+     * @throws SQLException 
+     */
     @Override
     public SubCategory findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
@@ -41,10 +47,15 @@ public class SubCategoryDao implements Dao<SubCategory, Integer> {
         return cat;
     }
 
+    /**
+     * Hakee kaikki alakategoriat
+     * @return
+     * @throws SQLException 
+     */
     @Override
     public List<SubCategory> findAll() throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM categories");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM subCategories");
         ResultSet rs = stmt.executeQuery();
         boolean hasOne = rs.next();
 
@@ -98,6 +109,12 @@ public class SubCategoryDao implements Dao<SubCategory, Integer> {
         //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Lisää alakategorian
+     * @param c
+     * @return
+     * @throws SQLException 
+     */
     public boolean add(SubCategory c) throws SQLException {
         Connection connection = database.getConnection();
         int mainCatId = c.getCategoryId();

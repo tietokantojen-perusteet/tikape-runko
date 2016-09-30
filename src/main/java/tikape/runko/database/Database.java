@@ -35,6 +35,10 @@ public class Database {
         }
     }
 
+    /**
+     * SQL-kyselyt, jotka suoritetaan palvelimen käynnistyessä
+     * @return 
+     */
     private List<String> sqliteLauseet() {
         ArrayList<String> lista = new ArrayList<>();
 

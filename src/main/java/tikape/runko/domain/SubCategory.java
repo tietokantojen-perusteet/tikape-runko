@@ -4,8 +4,8 @@ public class SubCategory {
 
     private final int subCategoryId;
     private final int categoryId;
-    private final String name;
-    private String description;
+    public String name;
+    public String description;
 
     public SubCategory(int categoryId, int subCategoryId, String name) {
         this.categoryId = categoryId;

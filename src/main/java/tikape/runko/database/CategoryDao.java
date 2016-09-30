@@ -18,6 +18,12 @@ public class CategoryDao implements Dao<Category, Integer> {
         subCategoryDao = new SubCategoryDao(db);
     }
 
+    /**
+     * Hakee tietyn kategorian ID:n avulla
+     * @param key
+     * @return
+     * @throws SQLException 
+     */
     @Override
     public Category findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
@@ -43,6 +49,11 @@ public class CategoryDao implements Dao<Category, Integer> {
         return cat;
     }
 
+    /**
+     * Hakee jokaisen kategorian sekä hakee niiden alakategoriat
+     * @return
+     * @throws SQLException 
+     */
     @Override
     public List<Category> findAll() throws SQLException {
         Connection connection = database.getConnection();
@@ -65,11 +76,22 @@ public class CategoryDao implements Dao<Category, Integer> {
         return categories;
     }
 
+    /**
+     * Poista kategorian
+     * @param key
+     * @throws SQLException 
+     */
     @Override
     public void delete(Integer key) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Lisää kategorian
+     * @param c
+     * @return
+     * @throws SQLException 
+     */
     public boolean add(Category c) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("INSERT INTO categories (categoryId, title) VALUES (NULL, ?)");
