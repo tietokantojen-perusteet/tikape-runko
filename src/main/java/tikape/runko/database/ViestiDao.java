@@ -90,7 +90,95 @@ public class ViestiDao implements Dao<Viesti, Integer>{
 
         return viestit;
     }
+    
+    public int keskustelunViestienmaara(Integer keskustelu_id) throws SQLException{
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT COUNT(*) AS luku FROM Viesti WHERE viesti.omakeskustelu = ?");
+        stmt.setObject(1, keskustelu_id);
+        
+        
+        ResultSet rs = stmt.executeQuery();
+        int vastaus = rs.getInt("luku");
+       
+        rs.close();
+        stmt.close();
+        connection.close();
 
+        return vastaus;
+    }
+    public int alueenViestienmaara(Integer alueid) throws SQLException{
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Keskustelu WHERE Keskustelu.omaalue = ?");
+        stmt.setObject(1, alueid);
+      
+        
+        ResultSet rs = stmt.executeQuery();
+        int summa = 0;
+        while(rs.next()){
+            summa = summa + keskustelunViestienmaara(rs.getInt("keskustelu_id"));
+        }
+       
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return summa;
+    } 
+        
+    public Date keskustelunUusin(Integer keskusteluid) throws SQLException{
+       Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE Viesti.omakeskustelu = ? ");
+       
+        stmt.setObject(1, keskusteluid);
+      
+        Date aloitus = keskusdao.findOne(keskusteluid).getDate();
+        
+        ResultSet rs = stmt.executeQuery();
+        if(!rs.next()){
+            return aloitus;
+        }
+        Date yrite = rs.getDate("paivamaara");
+        
+        while(rs.next()){
+            Date haastaja = rs.getDate("paivamaara");
+            if(yrite.before(haastaja)){
+                yrite = haastaja;
+            }
+        }
+        
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return yrite; 
+        
+    }
+   public Date alueenUusin(Integer alueid) throws SQLException{
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Keskustelu WHERE Keskustelu.omaalue = ? ");
+       
+        stmt.setObject(1, alueid);      
+        
+        ResultSet rs = stmt.executeQuery();
+        if(!rs.next()){
+            return null;
+        }
+        Date yrite = keskustelunUusin(rs.getInt("keskustelu_id"));
+        
+        while(rs.next()){
+            Date haastaja = keskustelunUusin(rs.getInt("keskustelu_id"));
+            if(yrite.before(haastaja)){
+                yrite = haastaja;
+            }
+        }
+        
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return yrite;
+    }
+   
     @Override
     public void delete(Integer key) throws SQLException {
         // ei toteutettu
