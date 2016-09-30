@@ -2,8 +2,8 @@ package tikape.runko.domain;
 
 public class SubCategory {
 
-    private final int subCategoryId;
-    private final int categoryId;
+    public int subCategoryId;
+    public int categoryId;
     public String name;
     public String description;
 

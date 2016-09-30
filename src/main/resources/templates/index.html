@@ -21,9 +21,12 @@
                 </div>
             </nav>
             <table class="table" th:each="kategoria : ${kategoriat}">
-                <tr class="active"><td class="category" th:text="${kategoria.name}" style="font-weight: bold; font-size: 15pt;" colspan="3">Kategoria</td></tr>
+
+                <tr class="active category">
+                    <td th:text="${kategoria.name}" style="font-weight: bold;">Otsikko</td><td></td><td></td>
+                </tr>
                 <tr class="subCategory" th:each="alaKategoria : ${kategoria.subCategories}">
-                    <td th:text="${alaKategoria.name}" style="font-weight: bold;">Otsikko</td><td th:text="${alaKategoria.description}">Kuvaus</td><td th:text="${alaKategoria.description}">Viimeisin viesti</td>
+                    <td style="font-weight: bold;"><a th:href="@{'http://localhost:4567/subcategory/' + ${alaKategoria.subCategoryId}}" th:text="${alaKategoria.name}" href=""></a></td><td th:text="${alaKategoria.description}">Kuvaus</td><td>Viimeisin viesti: </td>
                 </tr>
             </table>
         </div>
