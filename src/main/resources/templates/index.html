@@ -20,6 +20,12 @@
                     </ul>
                 </div>
             </nav>
+            <table class="table" th:each="kategoria : ${kategoriat}">
+                <tr class="active"><td class="category" th:text="${kategoria.name}" style="font-weight: bold; font-size: 15pt;" colspan="3">Kategoria</td></tr>
+                <tr class="subCategory" th:each="alaKategoria : ${kategoria.subCategories}">
+                    <td th:text="${alaKategoria.name}" style="font-weight: bold;">Otsikko</td><td th:text="${alaKategoria.description}">Kuvaus</td><td th:text="${alaKategoria.description}">Viimeisin viesti</td>
+                </tr>
+            </table>
         </div>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </body>
