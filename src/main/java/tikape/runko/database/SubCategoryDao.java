@@ -18,9 +18,10 @@ public class SubCategoryDao implements Dao<SubCategory, Integer> {
 
     /**
      * Hakee alakategorian ID:n avulla
+     *
      * @param key
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
     @Override
     public SubCategory findOne(Integer key) throws SQLException {
@@ -40,6 +41,9 @@ public class SubCategoryDao implements Dao<SubCategory, Integer> {
         String description = rs.getString("description");
         SubCategory cat = new SubCategory(mainCatId, subCatId, title).setDescription(description);
 
+        //Tämä kysely hakee uusimman viestin tietystä alakategoriasta. Haku palauttaa viestin timestampin, käyttäjätunnuksen, viestiketjun otsikon sekä ID:n.
+        String query = "SELECT posts.timestamp, users.username, threads.title, threads.threadId FROM posts INNER JOIN threads ON posts.threadId = threads.threadId INNER JOIN users ON posts.userId = users.userId WHERE threads.subCategoryId = ? ORDER BY posts.timestamp DESC LIMIT 1";
+
         rs.close();
         stmt.close();
         connection.close();
@@ -49,8 +53,9 @@ public class SubCategoryDao implements Dao<SubCategory, Integer> {
 
     /**
      * Hakee kaikki alakategoriat
+     *
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
     @Override
     public List<SubCategory> findAll() throws SQLException {
@@ -111,9 +116,10 @@ public class SubCategoryDao implements Dao<SubCategory, Integer> {
 
     /**
      * Lisää alakategorian
+     *
      * @param c
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
     public boolean add(SubCategory c) throws SQLException {
         Connection connection = database.getConnection();

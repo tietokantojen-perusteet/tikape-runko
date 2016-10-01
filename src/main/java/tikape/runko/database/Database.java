@@ -43,6 +43,8 @@ public class Database {
         ArrayList<String> lista = new ArrayList<>();
 
         // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
+        //Foreign keys päälle
+        lista.add("PRAGMA foreign_keys = ON;");
         //Kategoriat -taulu
         lista.add("CREATE TABLE categories (categoryId integer PRIMARY KEY, title varchar(255));");
         //Alakategoriat -taulu
