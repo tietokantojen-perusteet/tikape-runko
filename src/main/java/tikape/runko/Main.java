@@ -21,7 +21,13 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         //Tietokannan alustus
-        Database database = new Database("jdbc:sqlite:keskustelualue.db");
+        //Käytetään oletuksena paikallista sqlite-tietokantaa
+        String jdbcOsoite = "jdbc:sqlite:keskustelualue.db";
+        //Jos heroku antaa käyttöömme tietokantaosoitteen, otetaan se käyttöön
+        if (System.getenv("DATABASE_URL") != null) {
+            jdbcOsoite = System.getenv("DATABASE_URL");
+        }
+        Database database = new Database(jdbcOsoite);
         database.init();
 
         UserDao userDao = new UserDao(database);
