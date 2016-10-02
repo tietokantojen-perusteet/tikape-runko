@@ -1,0 +1,26 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Kirjaudu sisään</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css"/>
+    </head>
+
+    <body>
+        <div class="container">
+            <h2>Kirjaudu sisään</h2>
+
+            <form action="/login" method="POST" class="form-horizontal">
+                <div class="form-group">
+                    <label for="username">Käyttäjätunnus</label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Käyttäjätunnus"/><br/>
+                    <label for="passwd">Salasana</label>
+                    <input type="password" class="form-control" id="passwd" name="password" placeholder="Salasana"/>
+                </div>
+                <button type="submit" class="btn btn-primary" name="login">Kirjaudu sisään</button>
+            </form>
+        </div>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </body>
+</html>

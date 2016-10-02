@@ -2,15 +2,35 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <head>
-        <title>Otsikko</title>
+        <title>Etusivu</title>
         <meta charset="utf-8" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css"/>
     </head>
 
     <body>
-        <h1>Heippa vaan!</h1>
+        <div class="container">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">Keskustelualue</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li><a href="/login">Kirjaudu sisään</a></li>
+                        <li><a href="/register">Rekister"oidy</a></li>
+                    </ul>
+                </div>
+            </nav>
+            <table class="table" th:each="kategoria : ${kategoriat}">
 
-        <p>Ja .. <span th:text="${viesti}">jotain?</span></p>
-
-        <p><a href="/opiskelijat">Tästä opiskelijalistaukseen.</a></p>
+                <tr class="active category">
+                    <td th:text="${kategoria.name}" style="font-weight: bold;">Otsikko</td><td></td><td></td>
+                </tr>
+                <tr class="subCategory" th:each="alaKategoria : ${kategoria.subCategories}">
+                    <td style="font-weight: bold;"><a th:href="@{'http://localhost:4567/subcategory/' + ${alaKategoria.subCategoryId}}" th:text="${alaKategoria.name}" href=""></a></td><td th:text="${alaKategoria.description}">Kuvaus</td><td>Viimeisin viesti: </td>
+                </tr>
+            </table>
+        </div>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </body>
+
 </html>
