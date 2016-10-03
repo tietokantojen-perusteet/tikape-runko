@@ -15,6 +15,7 @@ import tikape.runko.domain.Alue;
  *
  * @author tamella
  */
+// Tämä luokka koostuu niistä kyselyistä, jotak taululle Alue voidaan esittää
 public class AlueDao implements Dao<Alue, Integer>{
     private Database database;
     

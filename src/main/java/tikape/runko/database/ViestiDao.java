@@ -10,11 +10,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import tikape.runko.domain.Alue;
 import tikape.runko.domain.Keskustelu;
 import tikape.runko.domain.Viesti;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  *
@@ -23,12 +26,13 @@ import tikape.runko.domain.Viesti;
 // tämä luokka koostuu niistä kyselyistä, jotka taululle Viesti voidaan esittää
 public class ViestiDao implements Dao<Viesti, Integer>{
     private Database database;
-    private Dao<Keskustelu, Integer> keskusdao;
+    private KeskusteluDao keskusdao;
     
-    public ViestiDao(Database base, Dao<Keskustelu, Integer> keskusdao ){
+    public ViestiDao(Database base, KeskusteluDao keskusdao ){
         this.database = base;
         this.keskusdao = keskusdao;
     }
+    // ensin perus daotoiminnalisuus, eli etsi yksittäinen ja etsi kaikki
     @Override
     public Viesti findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
@@ -90,6 +94,107 @@ public class ViestiDao implements Dao<Viesti, Integer>{
 
         return viestit;
     }
+    public List<Viesti> viestitJarjestys(Integer keskusteluid) throws SQLException{
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Keskustelu WHERE omakeskustelu = ?");
+        stmt.setObject(1, keskusteluid);
+
+        ResultSet rs = stmt.executeQuery();
+        List<Viesti> viestit = new ArrayList<>();
+        while (rs.next()) {
+            Integer id = rs.getInt("viesti_id");
+            Date aika = rs.getDate("julkaisuaika");
+            String kirjoittaja = rs.getString("kirjoittaja");
+            String teksti = rs.getString("teksti"); 
+            
+            Keskustelu omakes = keskusdao.findOne(keskusteluid);
+            
+            Viesti viesti = new Viesti(id, aika, kirjoittaja, teksti);
+            
+            viesti.setOmakeskustelu(omakes);
+            viestit.add(viesti);
+        }
+        Collections.sort(viestit);
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return viestit;
+    }
+    // antaa keskustelut järjestettynä viimeisimmän viestin mukaan
+    public List<Keskustelu> keskustelutJarjestys(Integer alueid) throws SQLException{
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE omaalue = ?");
+        stmt.setObject(1, alueid);
+
+        ResultSet rs = stmt.executeQuery();
+        List<Keskustelu> keskustelut = new ArrayList<>();
+        while (rs.next()) {
+            Integer id = rs.getInt("keskustelu_id");
+            String otsikko = rs.getString("otsikko");
+            String aloittaja = rs.getString("aloittaja");
+            String teksti = rs.getString("aloitusviesti"); 
+            Date paivamaara = rs.getDate("paivamaara");
+            
+            
+            Integer omaalue = rs.getInt("omaalue");
+            
+            
+
+            Keskustelu palapala = new Keskustelu(id, otsikko, aloittaja, teksti, paivamaara);
+            AlueDao aluedao = keskusdao.getAlueDao();
+            palapala.setOmaalue(aluedao.findOne(omaalue));
+            keskustelut.add(palapala);
+        }
+        Collections.sort(keskustelut, new Comparator<Keskustelu>() {
+            public int compare(Keskustelu k1, Keskustelu k2){
+                try{
+                    return keskustelunUusin(k1.getId()).compareTo(keskustelunUusin(k2.getId()));
+                }catch(Exception e){
+                    System.out.println("");
+                }
+                return 1;
+             }
+        });
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return keskustelut;
+    }
+    // antaa alueet järjestettynä viimeisimmän viestin mukaan
+    public List<Alue> alueetJarjestys() throws SQLException{
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue");
+
+        ResultSet rs = stmt.executeQuery();
+        List<Alue> alueet = new ArrayList<>();
+        while (rs.next()) {
+            Integer id = rs.getInt("alue_id");
+            String nimi = rs.getString("nimi");
+            
+
+            Alue alue = new Alue(id, nimi);
+            
+            
+            alueet.add(alue);
+        }
+        Collections.sort(alueet, new Comparator<Alue>() {
+            public int compare(Alue a1, Alue a2){
+                try{
+                    return alueenUusin(a1.getId()).compareTo(alueenUusin(a2.getId()));
+                }catch(Exception e){
+                    System.out.println("");
+                }
+                return 1;
+             }
+        });
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return alueet;
+    }
     
     public int keskustelunViestienmaara(Integer keskustelu_id) throws SQLException{
         Connection connection = database.getConnection();
@@ -124,7 +229,7 @@ public class ViestiDao implements Dao<Viesti, Integer>{
 
         return summa;
     } 
-        
+    // antaa uusimman viestin päiväyksen
     public Date keskustelunUusin(Integer keskusteluid) throws SQLException{
        Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE Viesti.omakeskustelu = ? ");
@@ -153,6 +258,7 @@ public class ViestiDao implements Dao<Viesti, Integer>{
         return yrite; 
         
     }
+    // antaa uusimman viestin päiväyksen
    public Date alueenUusin(Integer alueid) throws SQLException{
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Keskustelu WHERE Keskustelu.omaalue = ? ");

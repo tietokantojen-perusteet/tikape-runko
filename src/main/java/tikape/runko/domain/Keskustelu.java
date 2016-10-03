@@ -9,7 +9,7 @@ import java.util.Date;
  *
  * @author tamella
  */
-public class Keskustelu {
+public class Keskustelu{
     private Integer keskustelu_id;
     private String otsikko;
     private String aloittaja;
@@ -25,7 +25,7 @@ public class Keskustelu {
         this.aloitusviesti = aloitusviesti;
         this.paivamaara = paivays;
     }
-
+    
     public Integer getId() {
         return keskustelu_id;
     }

@@ -9,7 +9,7 @@ import java.util.Date;
  *
  * @author tamella
  */
-public class Viesti {
+public class Viesti implements Comparable<Viesti>{
     private Integer viesti_id;
     private Keskustelu omakeskustelu;
     private Date julkaisuaika;
@@ -22,7 +22,10 @@ public class Viesti {
         this.kirjoittaja = kirjo;
         this.teksti = tekstii;
     }
-
+    @Override
+    public int compareTo(Viesti v) {
+    return getViestiDate().compareTo(v.getViestiDate());
+  }
     public Integer getId() {
         return viesti_id;
     }

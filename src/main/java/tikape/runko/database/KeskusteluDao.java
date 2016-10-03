@@ -19,11 +19,13 @@ import java.util.Date;
  *
  * @author tamella
  */
+// tämä luokka koostuu niistä kyselyistä, joita taululle Keskustelut voidaan esittää
+
 public class KeskusteluDao implements Dao<Keskustelu, Integer>{
     private Database database;
-    private Dao<Alue, Integer> aluedao;
+    private AlueDao aluedao;
     
-    public KeskusteluDao(Database base, Dao<Alue, Integer> aluedao ){
+    public KeskusteluDao(Database base, AlueDao aluedao ){
         this.database = base;
         this.aluedao = aluedao;
     }
@@ -90,5 +92,8 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer>{
     @Override
     public void delete(Integer key) throws SQLException {
         // ei toteutettu
+    }
+    public AlueDao getAlueDao(){
+        return this.aluedao;
     }
 }
