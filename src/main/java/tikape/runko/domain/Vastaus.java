@@ -57,7 +57,7 @@ public class Vastaus {
     }
     
     public void setTeksti(String teksti) {
-        this.teksti teksti;
+        this.teksti = teksti;
     }
     
     public void setAjankohta(String ajankohta) {
