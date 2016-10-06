@@ -1,7 +1,6 @@
 package tikape.runko.domain;
 
 public class Keskustelunavaus {
-
     private Integer id;
     private Integer alue;
     private String otsikko;
