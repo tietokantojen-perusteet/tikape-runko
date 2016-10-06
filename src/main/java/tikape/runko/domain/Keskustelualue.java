@@ -69,7 +69,4 @@ public class Keskustelualue {
     public void setPerustaja(String perustaja) {
         this.perustaja = perustaja;
     }
-    
-    
-    
-    
+}
