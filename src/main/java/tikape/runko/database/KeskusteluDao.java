@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import tikape.runko.domain.Alue;
@@ -45,8 +46,7 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer>{
         String otsikko = rs.getString("otsikko");
         String aloittaja = rs.getString("aloittaja");
         String aloitusviesti = rs.getString("aloitusviesti");
-        Date paivamaara = rs.getDate("paivamaara");
-        
+        Timestamp paivamaara = rs.getTimestamp("paivamaara");
 
         Keskustelu k = new Keskustelu(keskusteluid, otsikko, aloittaja, aloitusviesti, paivamaara);
         
@@ -75,7 +75,8 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer>{
             String aloittaja = rs.getString("aloittaja");
             String aloitusviesti = rs.getString("aloitusviesti");
             Integer omaa = rs.getInt("omaalue");
-            Date paivamaara = rs.getDate("paivamaara");
+            Timestamp paivamaara = rs.getTimestamp("paivamaara");
+//            Date paivamaara = rs.getDate("paivamaara");
 
             Keskustelu palapala = new Keskustelu(keskusteluid, otsikko, aloittaja, aloitusviesti, paivamaara);
             palapala.setOmaalue(this.aluedao.findOne(omaa));

@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -46,7 +48,8 @@ public class ViestiDao implements Dao<Viesti, Integer>{
         }
 
         Integer id = rs.getInt("viesti_id");
-        Date paivamaara = rs.getDate("julkaisuaika");
+//        Date paivamaara = rs.getDate("julkaisuaika");
+        Timestamp paivamaara = rs.getTimestamp("julkaisuaika");
         String kirjoittaja = rs.getString("kirjoittaja");
         String teksti = rs.getString("teksti");
         
@@ -75,7 +78,8 @@ public class ViestiDao implements Dao<Viesti, Integer>{
         List<Viesti> viestit = new ArrayList<>();
         while (rs.next()) {
             Integer id = rs.getInt("viesti_id");
-            Date paivamaara = rs.getDate("julkaisuaika");
+//            Date paivamaara = rs.getDate("julkaisuaika");
+            Timestamp paivamaara = rs.getTimestamp("julkaisuaika");
             String kirjoittaja = rs.getString("kirjoittaja");
             String teksti = rs.getString("teksti");
             
@@ -96,14 +100,17 @@ public class ViestiDao implements Dao<Viesti, Integer>{
     }
     public List<Viesti> viestitJarjestys(Integer keskusteluid) throws SQLException{
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Keskustelu WHERE omakeskustelu = ?");
+//          vaihdettu haettavaksi tauluksi Viestit / VK
+//        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Keskustelu WHERE omakeskustelu = ?");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE omakeskustelu = ?");
         stmt.setObject(1, keskusteluid);
 
         ResultSet rs = stmt.executeQuery();
         List<Viesti> viestit = new ArrayList<>();
         while (rs.next()) {
             Integer id = rs.getInt("viesti_id");
-            Date aika = rs.getDate("julkaisuaika");
+//            Date aika = rs.getDate("julkaisuaika");
+            Timestamp aika = rs.getTimestamp("julkaisuaika");
             String kirjoittaja = rs.getString("kirjoittaja");
             String teksti = rs.getString("teksti"); 
             
@@ -134,7 +141,8 @@ public class ViestiDao implements Dao<Viesti, Integer>{
             String otsikko = rs.getString("otsikko");
             String aloittaja = rs.getString("aloittaja");
             String teksti = rs.getString("aloitusviesti"); 
-            Date paivamaara = rs.getDate("paivamaara");
+//            Date paivamaara = rs.getDate("paivamaara");
+            Timestamp paivamaara = rs.getTimestamp("paivamaara");
             
             
             Integer omaalue = rs.getInt("omaalue");
@@ -230,22 +238,22 @@ public class ViestiDao implements Dao<Viesti, Integer>{
         return summa;
     } 
     // antaa uusimman viestin päiväyksen
-    public Date keskustelunUusin(Integer keskusteluid) throws SQLException{
+    public Timestamp keskustelunUusin(Integer keskusteluid) throws SQLException{
        Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE Viesti.omakeskustelu = ? ");
        
         stmt.setObject(1, keskusteluid);
       
-        Date aloitus = keskusdao.findOne(keskusteluid).getDate();
+        Timestamp aloitus = keskusdao.findOne(keskusteluid).getDate();
         
         ResultSet rs = stmt.executeQuery();
         if(!rs.next()){
             return aloitus;
         }
-        Date yrite = rs.getDate("paivamaara");
+        Timestamp yrite = rs.getTimestamp("paivamaara");
         
         while(rs.next()){
-            Date haastaja = rs.getDate("paivamaara");
+            Timestamp haastaja = rs.getTimestamp("paivamaara");
             if(yrite.before(haastaja)){
                 yrite = haastaja;
             }
@@ -259,7 +267,7 @@ public class ViestiDao implements Dao<Viesti, Integer>{
         
     }
     // antaa uusimman viestin päiväyksen
-   public Date alueenUusin(Integer alueid) throws SQLException{
+   public Timestamp alueenUusin(Integer alueid) throws SQLException{
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Keskustelu WHERE Keskustelu.omaalue = ? ");
        
@@ -269,10 +277,10 @@ public class ViestiDao implements Dao<Viesti, Integer>{
         if(!rs.next()){
             return null;
         }
-        Date yrite = keskustelunUusin(rs.getInt("keskustelu_id"));
+        Timestamp yrite = keskustelunUusin(rs.getInt("keskustelu_id"));
         
         while(rs.next()){
-            Date haastaja = keskustelunUusin(rs.getInt("keskustelu_id"));
+            Timestamp haastaja = keskustelunUusin(rs.getInt("keskustelu_id"));
             if(yrite.before(haastaja)){
                 yrite = haastaja;
             }

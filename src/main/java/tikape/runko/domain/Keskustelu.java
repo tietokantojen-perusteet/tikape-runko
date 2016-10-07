@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 package tikape.runko.domain;
+import java.sql.Timestamp;
 import java.util.Date;
+
 /**
  *
  * @author tamella
@@ -15,10 +17,11 @@ public class Keskustelu{
     private String aloittaja;
     private String aloitusviesti;
     private Alue omaalue;
-    private Date paivamaara;
+    private Timestamp paivamaara;
+//    private Date paivamaara;
     
 
-    public Keskustelu(Integer id, String otsikko, String aloittaja, String aloitusviesti, Date paivays) {
+    public Keskustelu(Integer id, String otsikko, String aloittaja, String aloitusviesti, Timestamp paivays) {
         this.keskustelu_id = id;
         this.otsikko = otsikko;
         this.aloittaja = aloittaja;
@@ -62,11 +65,11 @@ public class Keskustelu{
     public void setOmaalue(Alue alue) {
         this.omaalue = alue;
     }
-    public Date getDate() {
+    public Timestamp getDate() {
         return paivamaara;
     }
 
-    public void setDate(Date date) {
-        this.paivamaara = date;
+    public void setDate(Timestamp ts) {
+        this.paivamaara = ts;
     }
 }
