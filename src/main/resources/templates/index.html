@@ -2,15 +2,26 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <head>
-        <title>Otsikko</title>
+        <title>Keskustelualue</title>
         <meta charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="styles.css">
     </head>
 
     <body>
-        <h1>Heippa vaan!</h1>
+        <h2>Keskustelualue</h2>
 
-        <p>Ja .. <span th:text="${viesti}">jotain?</span></p>
 
-        <p><a href="/opiskelijat">Tästä opiskelijalistaukseen.</a></p>
+<!-- DATAA KANNASTA 
+        <p><a th:href="${'/alue/' + alue.id}"><span th:each="${alue.nimi}"></span></a></p>
+-->
+
+<!-- ESIMERKKI-ALUEET -->
+        <p><a th:href="${'/alue/' + alue.id}"><span th:each="${alue.nimi}">Helsinki</span></a></p>
+       	<p><a th:href="${'/alue/' + alue.id}"><span th:each="${alue.nimi}">Vantaa</span></a></p>
+        <p><a th:href="${'/alue/' + alue.id}"><span th:each="${alue.nimi}">Espoo</span></a></p>
+        <p><a th:href="${'/alue/' + alue.id}"><span th:each="${alue.nimi}">Turku</span></a></p>
+ <!-- ESIMERKIN LOPPU -->
+<p class="Copyright"> TeamTableTurners ver. 1.0 <p>
+
     </body>
 </html>
