@@ -1,0 +1,45 @@
+Askel 2
+
+1. Database-luokka
+
+2. Tietokantataulu-luokat ja Dao-oliot:
+Alue-luokka
+Aihe-luokka
+Viesti-luokka
+
+Dao-rajapinta
+AlueDao
+AiheDao
+ViestiDao
+
+3. Testaamista varten tekstikäyttöliittymä
+
+4. Paikallisella koneella toimiva web-sovellus
+
+5. Mahdollisuus lisätä uusia aiheita
+
+6. Linkit foorumin alueisiin ja alueessa olevien aiheiden listaus
+
+7. Mahdollisuus lisätä uusia aiheita(keskustelunavauksia)
+Aiheen kohdalla myös viestien lukumäärä, lähettäjä ja viimeisimmän viestin päivämäärä.
+Aiheet täytyy järjestää uusimman viestin perusteella
+
+
+Askel 3
+
+1. Mahdollisuus lukea aiheeseen liittyvät viestit
+
+2. Mahdollisuus lisätä aiheeseen viesti
+
+4. Myös alueiden listauksessa viestien lukumäärä sekä viimeisimmän viestin päivämäärä
+Alueet tulee järjestää alueen nimen perusteella
+
+5. Aluekohtaisten aiheiden rajoitus niin, että näytetään vain 10 uusinta(per sivu)
+
+6. Mahdollisuus rajata aihekohtaisten viestien määrää(esim. vaihtoehtoina 5, 10, 20 per sivu)
+
+7. Tarkistetaan, ettei sovellukseen voi tehdä SQL-injektioita eikä käyttäjä voi syöttää HTML-koodia tietokantaan
+
+8. Sovelluksen siirto Heroku-palveluun oppimateriaalin ohjeiden mukaisesti
+
+
