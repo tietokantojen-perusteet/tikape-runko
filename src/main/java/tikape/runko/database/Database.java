@@ -1,6 +1,5 @@
 package tikape.runko.database;
 
-import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,26 +7,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import org.h2.tools.RunScript;
 
 public class Database<T> {
     private String address;
 
-    public Database(String address) throws Exception {
-        this.address = address;
-
-        Connection conn = getConnection();
-
-        try {
-            // If database has not yet been created, insert content
-            RunScript.execute(conn, new FileReader("database-schema.sql"));
-            RunScript.execute(conn, new FileReader("database-import.sql"));
-        } catch (Throwable t) {
-        }
-
-        conn.close();
+    public Database(String databaseAddress) throws ClassNotFoundException {
+        this.address = databaseAddress;
     }
-
+    
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(address);
     }
