@@ -11,7 +11,6 @@ import java.util.List;
 import org.h2.tools.RunScript;
 
 public class Database<T> {
-
     private String address;
 
     public Database(String address) throws Exception {
