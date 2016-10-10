@@ -67,9 +67,13 @@ public class OpiskelijaDao implements Dao<Opiskelija, Integer> {
         return opiskelijat;
     }
 
-    @Override
     public void delete(Integer key) throws SQLException {
         // ei toteutettu
+    }
+
+    @Override
+    public List<Opiskelija> findRange(int first, int count) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
