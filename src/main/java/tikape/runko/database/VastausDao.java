@@ -43,10 +43,6 @@ public class VastausDao implements Dao<Vastaus, Integer> {
         return v;
     }
     
-    public List<Vastaus> findAll(String user) {
-        
-    }
-
     @Override
     public List<Vastaus> findAll() throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -54,6 +50,16 @@ public class VastausDao implements Dao<Vastaus, Integer> {
 
     @Override
     public void delete(Integer key) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Vastaus create(Vastaus t) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void update(Integer key, Vastaus t) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
