@@ -10,8 +10,8 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 //        Käytetään testidataa
-//        Database database = new Database("jdbc:sqlite:yksisarvistentestitietokanta.db");
-//        database.init();
+        Database database = new Database("jdbc:sqlite:yksisarvistentestitietokanta.db");
+        database.init();
 
         // OpiskelijaDao opiskelijaDao = new OpiskelijaDao(database);
 
