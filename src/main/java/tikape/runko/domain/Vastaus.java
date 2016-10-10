@@ -7,6 +7,11 @@ public class Vastaus {
     private String ajankohta;
     private String kirjoittaja;
     
+    //Konstruktorit
+    
+    public Vastaus() {
+    }
+    
     public Vastaus (Integer id, Keskustelunavaus avaus, String teksti, String ajankohta, String kirjoittaja) {
         this.id = id;
         this.avaus = avaus;
@@ -15,12 +20,11 @@ public class Vastaus {
         this.kirjoittaja = kirjoittaja;
     }
     
-    public Vastaus() {
-    }
-    
     public Vastaus (Integer id, Keskustelunavaus avaus, String teksti, String kirjoittaja) {
         this(null, avaus, teksti, null, kirjoittaja);
     }
+    
+    //Getterit
     
     public Keskustelunavaus getAvaus() {
         return this.avaus;
@@ -37,6 +41,12 @@ public class Vastaus {
     public String getAjankohta() {
         return this.ajankohta;
     }
+
+    public Integer getId() {
+        return id;
+    }
+    
+    //Setterit
     
     public void setAvaus(Keskustelunavaus avaus) {
         this.avaus = avaus;
@@ -52,5 +62,9 @@ public class Vastaus {
     
     public void setAjankohta(String ajankohta) {
         this.ajankohta = ajankohta;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }
