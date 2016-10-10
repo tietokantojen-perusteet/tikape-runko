@@ -1,23 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tikape.runko.domain;
 
-/**
- *
- * @author maijhuot
- */
 public class Vastaus {
-    
     private Integer id;
-    private Integer avaus;
+    private Keskustelunavaus avaus;
     private String teksti;
     private String ajankohta;
     private String kirjoittaja;
     
-    public Vastaus (Integer id, Integer avaus, String teksti, String ajankohta, String kirjoittaja) {
+    public Vastaus (Integer id, Keskustelunavaus avaus, String teksti, String ajankohta, String kirjoittaja) {
         this.id = id;
         this.avaus = avaus;
         this.teksti = teksti;
@@ -28,11 +18,11 @@ public class Vastaus {
     public Vastaus() {
     }
     
-    public Vastaus (Integer id, Integer avaus, String teksti, String kirjoittaja) {
+    public Vastaus (Integer id, Keskustelunavaus avaus, String teksti, String kirjoittaja) {
         this(null, avaus, teksti, null, kirjoittaja);
     }
     
-    public Integer getAvaus() {
+    public Keskustelunavaus getAvaus() {
         return this.avaus;
     }
     
@@ -48,7 +38,7 @@ public class Vastaus {
         return this.ajankohta;
     }
     
-    public void setAvaus(Integer avaus) {
+    public void setAvaus(Keskustelunavaus avaus) {
         this.avaus = avaus;
     }
     
