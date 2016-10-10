@@ -20,7 +20,7 @@ public class AlueDao implements Dao<Alue, Integer>{
     @Override
     public Alue findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue WHERE id = ?");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue WHERE tunnus = ?");
         stmt.setInt(1, key);
 
         ResultSet rs = stmt.executeQuery();

@@ -44,7 +44,7 @@ public class AiheDao implements Dao<Aihe, Integer> {
     @Override
     public Aihe findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Aihe WHERE id = ?");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Aihe WHERE tunnus = ?");
         stmt.setInt(1, key);
 
         ResultSet rs = stmt.executeQuery();
