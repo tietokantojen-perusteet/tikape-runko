@@ -3,9 +3,8 @@ package tikape.runko.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Keskustelu {
-    
+
     private Integer id;
     private Alue alue;
     private String otsikko;
@@ -41,6 +40,5 @@ public class Keskustelu {
     public void setOtsikko(String otsikko) {
         this.otsikko = otsikko;
     }
-    
-    
+
 }

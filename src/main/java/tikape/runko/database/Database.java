@@ -43,10 +43,9 @@ public class Database {
         lista.add("INSERT INTO Alue (nimi) VALUES ('Platon');");
         lista.add("INSERT INTO Alue (nimi) VALUES ('Aristoteles');");
         lista.add("INSERT INTO Alue (nimi) VALUES ('Homeros');");
-        
-        
+
         lista.add("CREATE TABLE Keskustelu (id integer PRIMARY KEY, alue_id integer NOT NULL, otsikko varchar(100) NOT NULL, FOREIGN KEY(alue_id) REFERENCES Alue(id))");
-        
+
         lista.add("CREATE TABLE Viesti (id integer PRIMARY KEY, keskustelu_id integer NOT NULL, aika timestamp DEFAULT CURRENT_TIMESTAMP, kayttaja varchar(30), "
                 + "sisalto varchar(10000) NOT NULL, FOREIGN KEY(keskustelu_id) REFERENCES Keskustelu(id)");
 
