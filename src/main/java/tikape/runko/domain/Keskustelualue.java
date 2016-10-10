@@ -1,7 +1,6 @@
 package tikape.runko.domain;
 
 public class Keskustelualue {
-
     private Integer id;
     private String aihealue;
     private String kuvaus;
@@ -11,7 +10,6 @@ public class Keskustelualue {
     // Konstruktorit:
     
     public Keskustelualue() {
-
     }
 
     public Keskustelualue(Integer id, String aihealue, String kuvaus, String perustettu, String perustaja) {

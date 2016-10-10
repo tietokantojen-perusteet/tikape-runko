@@ -42,7 +42,7 @@ public class VastausDao implements Dao<Vastaus, Integer> {
     
     @Override
     public void update(Integer key, Vastaus t) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); //Mitä tämä voisi tehdä, kun vastauksilla ei ole otsikkoa?
     }
     
     //Muut metodit
