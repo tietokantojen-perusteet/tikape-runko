@@ -1,16 +1,21 @@
 package tikape.runko.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class Keskustelu {
     
     private Integer id;
-    private Integer alue_id;
+    private Alue alue;
     private String otsikko;
+    private List<Viesti> viestit;
 
-    public Keskustelu(Integer id, Integer alue_id, String otsikko) {
+    public Keskustelu(Integer id, String otsikko) {
         this.id = id;
-        this.alue_id = alue_id;
+        this.alue = alue;
         this.otsikko = otsikko;
+        this.viestit = new ArrayList();
     }
 
     public Integer getId() {
@@ -21,12 +26,12 @@ public class Keskustelu {
         this.id = id;
     }
 
-    public Integer getAlue_id() {
-        return alue_id;
+    public Alue getAlue() {
+        return alue;
     }
 
-    public void setAlue_id(Integer alue_id) {
-        this.alue_id = alue_id;
+    public void setAlue(Alue alue) {
+        this.alue = alue;
     }
 
     public String getOtsikko() {
