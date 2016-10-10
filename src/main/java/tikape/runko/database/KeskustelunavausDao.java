@@ -41,7 +41,7 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
     @Override
     public Keskustelunavaus create(Keskustelunavaus t) throws SQLException {
         database.update("INSERT INTO Keskustelunavaus (alue, otsikko, avaus, aloittaja) VALUES (?, ?, ?, ?)", t.getAlue().getId(), t.getOtsikko(), t.getAvaus(), t.getAloittaja());
-        return findByTime(t.getAloitettu()); // saadaan oikeat arvot sarakkeisiin 'id' ja 'aloitettu'
+        return findByParameters(t.getAlue().getId(), t.getOtsikko(), t.getAvaus(), t.getAloittaja()); // saadaan oikeat arvot sarakkeisiin 'id' ja 'aloitettu' -- toivottavasti...
     }
     
     @Override
@@ -64,9 +64,9 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
         return (Integer) database.queryAndCollect(query, rs -> rs.getInt("COUNT(Vastaus.id)"), key).get(0);
     }
     
-    public Keskustelunavaus findByTime(String time) throws SQLException {
+    public Keskustelunavaus findByParameters(Integer alue, String otsikko, String avaus, String aloittaja) throws SQLException {
         KeskustelualueDao keskustelualuedao = new KeskustelualueDao(database);
         
-        return (Keskustelunavaus) database.queryAndCollect("SELECT * FROM Keskustelunavaus WHERE aloitettu = ?", rs -> new Keskustelunavaus(rs.getInt("id"), keskustelualuedao.findOne(rs.getInt("alue")), rs.getString("otsikko"), rs.getString("avaus"), rs.getString("aloitettu"), rs.getString("aloittaja")), time).get(0);
+        return (Keskustelunavaus) database.queryAndCollect("SELECT * FROM Keskustelunavaus WHERE alue = ? AND otsikko = ? AND avaus = ? AND aloittaja = ?", rs -> new Keskustelunavaus(rs.getInt("id"), keskustelualuedao.findOne(rs.getInt("alue")), rs.getString("otsikko"), rs.getString("avaus"), rs.getString("aloitettu"), rs.getString("aloittaja")), alue, otsikko, avaus, aloittaja).get(0);
     }
 }

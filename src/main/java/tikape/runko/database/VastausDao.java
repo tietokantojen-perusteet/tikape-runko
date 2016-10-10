@@ -1,66 +1,55 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tikape.runko.database;
+
 import java.sql.*;
 import java.util.List;
 import tikape.runko.domain.Vastaus;
-/**
- *
- * @author maijhuot
- */
+
 public class VastausDao implements Dao<Vastaus, Integer> {
-    
     private Database database;
+
+    //Konstruktori
     
     public VastausDao(Database database) {
         this.database = database;
     }
+
+    //Dao-metodit
     
-    public Vastaus findOne(Integer id) throws SQLException {
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Vastaus WHERE id = ?");
-        stmt.setObject(1, id);
+    @Override
+    public Vastaus findOne(Integer key) throws SQLException {
+        KeskustelunavausDao keskustelunavausdao = new KeskustelunavausDao(database);
 
-        ResultSet rs = stmt.executeQuery();
-        boolean hasOne = rs.next();
-        if (!hasOne) {
-            return null;
-        }
-
-        id = rs.getInt("id");
-        Integer avaus = rs.getInt("avaus");
-        String teksti = rs.getString("teksti");
-
-        Vastaus v = new Vastaus(id, avaus, nimi);
-
-        rs.close();
-        stmt.close();
-        connection.close();
-
-        return v;
+        return (Vastaus) database.queryAndCollect("SELECT * FROM Vastaus WHERE id = ?", rs -> new Vastaus(rs.getInt("id"), keskustelunavausdao.findOne(rs.getInt("avaus")), rs.getString("teksti"), rs.getString("ajankohta"), rs.getString("kirjoittaja")), key).get(0);
     }
-    
+
     @Override
     public List<Vastaus> findAll() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        KeskustelunavausDao keskustelunavausdao = new KeskustelunavausDao(database);
 
+        return database.queryAndCollect("SELECT * FROM Vastaus", rs -> new Vastaus(rs.getInt("id"), keskustelunavausdao.findOne(rs.getInt("avaus")), rs.getString("teksti"), rs.getString("ajankohta"), rs.getString("kirjoittaja")));
+    }
+    
     @Override
     public void delete(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        database.update("DELETE FROM Vastaus WHERE id = ?", key);
     }
 
     @Override
     public Vastaus create(Vastaus t) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        database.update("INSERT INTO Vastaus (avaus, teksti, kirjoittaja) VALUES (?, ?, ?)", t.getAvaus().getId(), t.getTeksti(), t.getKirjoittaja());
+        return findByParameters(t.getAvaus().getId(), t.getTeksti(), t.getKirjoittaja()); // saadaan oikeat arvot sarakkeisiin 'id' ja 'ajankohta' -- toivottavasti...
     }
-
+    
     @Override
     public void update(Integer key, Vastaus t) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+    //Muut metodit
+    
+    public Vastaus findByParameters(Integer avaus, String teksti, String kirjoittaja) throws SQLException {
+        KeskustelunavausDao keskustelunavausdao = new KeskustelunavausDao(database);
+        
+        return (Vastaus) database.queryAndCollect("SELECT * FROM Vastaus WHERE avaus = ? AND teksti = ? AND kirjoittaja = ?", rs -> new Vastaus(rs.getInt("id"), keskustelunavausdao.findOne(rs.getInt("avaus")), rs.getString("teksti"), rs.getString("ajankohta"), rs.getString("kirjoittaja")), avaus, teksti, kirjoittaja).get(0);
+    }
 }
