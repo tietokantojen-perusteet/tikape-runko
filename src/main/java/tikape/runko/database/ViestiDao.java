@@ -44,7 +44,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     @Override
     public Viesti findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE id = ?");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE tunnus = ?");
         stmt.setInt(1, key);
 
         ResultSet rs = stmt.executeQuery();
