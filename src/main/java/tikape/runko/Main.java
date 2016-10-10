@@ -17,11 +17,15 @@ public class Main {
         database.init();
 
         AlueDao alueDao = new AlueDao(database);
+        
+        System.out.println("ASD");
 
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("viesti", "tervehdys");
-
+            //map.put("viesti", "tervehdys");
+            
+            System.out.println("asd");
+            
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
 
@@ -33,6 +37,20 @@ public class Main {
         }, new ThymeleafTemplateEngine());
 
         get("/alueet/:id", (req, res) -> {
+            HashMap map = new HashMap<>();
+            map.put("alue", alueDao.findOne(Integer.parseInt(req.params("id"))));
+
+            return new ModelAndView(map, "alue");
+        }, new ThymeleafTemplateEngine());
+        
+        get("/opiskelijat", (req, res) -> {
+            HashMap map = new HashMap<>();
+            map.put("alueet", alueDao.findAll());
+
+            return new ModelAndView(map, "alueet");
+        }, new ThymeleafTemplateEngine());
+
+        get("/opiskelijat/:id", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("alue", alueDao.findOne(Integer.parseInt(req.params("id"))));
 

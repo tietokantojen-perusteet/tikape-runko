@@ -59,50 +59,51 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
 
         Map<Integer, List<Keskustelu>> alueidenKeskustelut = new HashMap<>();
 
-        List<Keskustelu> varaukset = new ArrayList<>();
+        List<Keskustelu> keskustelut = new ArrayList<>();
 
         while (rs.next()) {
 
-            Integer varaustunnus = rs.getInt("varaustunnus");
-            Timestamp alku = rs.getTimestamp("varaus_alkaa");
-            Timestamp loppu = rs.getTimestamp("varaus_loppuu");
+            Integer id = rs.getInt("id");
+            String otsikko = rs.getString("otsikko");
 
-            Varaus v = new Varaus(varaustunnus, alku, loppu);
-            varaukset.add(v);
+            Keskustelu keskustelu = new Keskustelu(id, otsikko);
+            keskustelut.add(keskustelu);
 
-            String pyora = rs.getString("pyora");
+            int alue = rs.getInt("alue_id");
 
-            if (!varaustenPyorat.containsKey(pyora)) {
-                varaustenPyorat.put(pyora, new ArrayList<>());
+            if (!alueidenKeskustelut.containsKey(alue)) {
+                alueidenKeskustelut.put(alue, new ArrayList<>());
             }
-            varaustenPyorat.get(pyora).add(v);
+            alueidenKeskustelut.get(alue).add(keskustelu);
         }
 
         rs.close();
         stmt.close();
         connection.close();
 
-        for (Pyora pyora : this.pyoraDao.findAll()) {
-            if (!varaustenPyorat.containsKey(pyora.getRekisterinumero())) {
+        for (Alue alue : this.alueDao.findAll()) {
+            if (!alueidenKeskustelut.containsKey(alue.getId())) {
                 continue;
             }
 
-            for (Varaus varaus : varaustenPyorat.get(pyora.getRekisterinumero())) {
-                varaus.setPyora(pyora);
+            for (Keskustelu keskustelu : alueidenKeskustelut.get(alue.getId())) {
+                keskustelu.setAlue(alue);
             }
         }
 
-        return varaukset;
+        return keskustelut;
     }
-}
 
-@Override
-        public List<Keskustelu> findRange(int first, int count) throws SQLException {
+    @Override
+    public List<Keskustelu> findRange(int first, int count) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    
-
-    
-
 }
+
+
+
+    
+
+    
+
+
