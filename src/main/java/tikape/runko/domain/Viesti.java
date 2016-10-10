@@ -1,9 +1,9 @@
-
 package tikape.runko.domain;
 
 import java.sql.Timestamp;
 
 public class Viesti {
+
     private Integer id;
     private Keskustelu keskustelu;
     private Timestamp aika;
@@ -56,7 +56,5 @@ public class Viesti {
     public void setSisalto(String sisalto) {
         this.sisalto = sisalto;
     }
-    
-        
-    
+
 }
