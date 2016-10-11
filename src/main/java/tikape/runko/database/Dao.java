@@ -10,6 +10,5 @@ public interface Dao<T, K> {
     List<T> findAll() throws SQLException;
 
     //void delete(K key) throws SQLException;
-    List<T> findRange(int first, int count) throws SQLException;
-
+    //List<T> findRange(int first, int count) throws SQLException;
 }
