@@ -32,15 +32,15 @@
 
     <body>                    
         <h1>Foorumi</h1>
-
+        <p id="demo"></p>
         <table class="two">
             <tr>
-                <th>Alue</th>
-            </tr>
-            <tr th:each="alue : ${alue}">
+                <th th:text="|Alue: ${keskustelu[0].omaalue.nimi}|"></th>
+            </tr>            
+            <tr th:each="kesk : ${keskustelu}">
                 <td> 
-                    <a href="/alue.html" th:href="|/alue/${alue.id}|">
-                        <div th:text="${alue.nimi}" style="height: 100%;width: 100%"></div>
+                    <a href="/keskustelu.html" th:href="|${kesk.omaalue.id}/keskustelu/${kesk.id}|">
+                        <div th:text="${kesk.otsikko}" style="height: 100%;width: 100%"></div>
                     </a>
                 </td>
             </tr>
@@ -68,10 +68,7 @@
 
         </table>
         
-        <form method="POST" action="index.html">
-            Nimi:<br/>
-            <input type="text" name="nimi"/><br/>
-            <input type="submit" value="Lisää alue"/>
-        </form>
+        <p><br></br>'</p>
+        <a href="/">Takaisin aluelistaukseen.</a>
     </body>
 </html>

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 import spark.ModelAndView;
-import static spark.Spark.get;
+import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.runko.database.*;
 import tikape.runko.domain.*;
@@ -30,13 +30,13 @@ public class Kayttoliittyma {
     public HashMap getIndexpage() throws Exception {
         HashMap map = new HashMap<>();
         ArrayList<Alue> alueet = new ArrayList<>();
-        ArrayList<Integer> viestejaYht = new ArrayList<>();
-        ArrayList<Timestamp> viimViesti = new ArrayList<>();
+        ArrayList<String> viestejaYht = new ArrayList<>();
+        ArrayList<String> viimViesti = new ArrayList<>();
 
         for (Alue a : viestiDao.alueetJarjestys()) {
             alueet.add(a);
-            viestejaYht.add(viestiDao.alueenViestienmaara(a.getId()));
-            viimViesti.add(viestiDao.alueenUusin(a.getId()));
+            viestejaYht.add(Integer.toString(viestiDao.alueenViestienmaara(a.getId())));
+            viimViesti.add(viestiDao.alueenUusin(a.getId()).toString());
         }
 
         map.put("alue", alueet);
@@ -46,18 +46,44 @@ public class Kayttoliittyma {
         return map;
     }
 
-    public void getAluepage(int alueId) throws Exception {
+    public HashMap getAluepage(int alueId) throws Exception {
+        HashMap map = new HashMap<>();
+        ArrayList<Keskustelu> keskustelut = new ArrayList<>();
+        ArrayList<String> viestejaYht = new ArrayList<>();
+        ArrayList<String> viimViesti = new ArrayList<>();
+
         for (Keskustelu k : viestiDao.keskustelutJarjestys(alueId)) {
-            System.out.println(k.getOtsikko() + "\t\t" + viestiDao.keskustelunViestienmaara(k.getId())
-                    + '\t' + viestiDao.keskustelunUusin(k.getId()));
+            keskustelut.add(k);
+            viestejaYht.add(Integer.toString(viestiDao.keskustelunViestienmaara(k.getId())));
+            viimViesti.add(viestiDao.keskustelunUusin(k.getId()).toString());
         }
+
+        map.put("keskustelu", keskustelut);
+        map.put("yht", viestejaYht);
+        map.put("viim", viimViesti);
+
+        return map;
     }
 
     public void run() throws Exception {
+        ArrayList<String> alueet = new ArrayList<>();
+        
         get("/", (req, res) -> {
             HashMap map = getIndexpage();
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
+
+        get("/alue/:id", (req, res) -> {
+            HashMap map = getAluepage(Integer.parseInt(req.params("id")));
+            return new ModelAndView(map, "alue");
+        }, new ThymeleafTemplateEngine());
+
+        post("/index.html", (req, res) -> {
+            String nimi = req.queryParams("nimi");
+            System.out.println("Vastaanotettiin " + nimi);
+
+            return "Vastaanotettiin: " + nimi;
+        });
 
     }
 
