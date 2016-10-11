@@ -21,9 +21,10 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     @Override
     public Viesti create(Viesti v) throws SQLException {
         Connection conn = database.getConnection();
-        String sql = "INSERT INTO Viesti (aihe, teksti, lahettaja, lahetetty) " 
-                   + "VALUES (?, ?, ?, ?);";
-        PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement stmt = conn.prepareStatement(
+            "INSERT INTO Viesti (aihe, teksti, lahettaja, lahetetty) " 
+          + "VALUES (?, ?, ?, ?);", 
+            Statement.RETURN_GENERATED_KEYS);
         
         stmt.setInt(1, v.getAihe().getTunnus());
         stmt.setString(2, v.getTeksti());
@@ -47,7 +48,10 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     @Override
     public Viesti findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE tunnus = ?");
+        PreparedStatement stmt = connection.prepareStatement(
+            "SELECT * FROM Viesti WHERE tunnus = ?"
+        );
+        
         stmt.setInt(1, key);
 
         ResultSet rs = stmt.executeQuery();
@@ -75,7 +79,10 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     @Override
     public List<Viesti> findAll() throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti;");
+        PreparedStatement stmt = connection.prepareStatement(
+            "SELECT * FROM Viesti;"
+        );
+        
         ResultSet rs = stmt.executeQuery();
         
         Map<Integer, List<Viesti>> aiheidenViestit = new HashMap<>();
@@ -124,7 +131,10 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     
     public List<Viesti> findAllInAihe(Aihe aihe) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE aihe = ?;");
+        PreparedStatement stmt = connection.prepareStatement(
+            "SELECT * FROM Viesti WHERE aihe = ? ORDER BY lahetetty;"
+        );
+        
         stmt.setInt(1, aihe.getTunnus());
         
         ResultSet rs = stmt.executeQuery();

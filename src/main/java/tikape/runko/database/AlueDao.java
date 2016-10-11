@@ -21,7 +21,11 @@ public class AlueDao implements Dao<Alue, Integer>{
     @Override
     public Alue findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue WHERE tunnus = ?");
+        
+        PreparedStatement stmt = connection.prepareStatement(
+            "SELECT * FROM Alue WHERE tunnus = ?"
+        );
+        
         stmt.setInt(1, key);
 
         ResultSet rs = stmt.executeQuery();
@@ -46,7 +50,10 @@ public class AlueDao implements Dao<Alue, Integer>{
     @Override
     public List<Alue> findAll() throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue");
+        
+        PreparedStatement stmt = connection.prepareStatement(
+            "SELECT * FROM Alue"
+        );
         
         ResultSet rs = stmt.executeQuery();
         
@@ -72,15 +79,18 @@ public class AlueDao implements Dao<Alue, Integer>{
             return new ArrayList<>();
         }
 
-        // Luodaan IN-kyselyä varten paikat, joihin arvot asetetaan --
-        // toistaiseksi IN-parametrille ei voi antaa suoraan kokoelmaa
+        // Luodaan IN-kyselyä varten paikat, joihin arvot asetetaan
         StringBuilder arvot = new StringBuilder("?");
         for (int i = 1; i < keys.size(); i++) {
             arvot.append(", ?");
         }
 
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue WHERE tunnus IN (" + arvot + ")");
+        
+        PreparedStatement stmt = connection.prepareStatement(
+            "SELECT * FROM Alue WHERE tunnus IN (" + arvot + ")"
+        );
+        
         int laskuri = 1;
         
         for (Integer key : keys) {

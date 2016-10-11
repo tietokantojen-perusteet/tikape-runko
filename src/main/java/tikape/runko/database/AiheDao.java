@@ -17,9 +17,11 @@ public class AiheDao implements Dao<Aihe, Integer> {
     @Override
     public Aihe create(Aihe a) throws SQLException {
         Connection conn = database.getConnection();
-        String sql = "INSERT INTO Aihe (alue, aloittaja, sisalto, otsikko, luotu) " +
-                     "VALUES (?, ?, ?, ?, ?);";
-        PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        
+        PreparedStatement stmt = conn.prepareStatement(
+            "INSERT INTO Aihe (alue, aloittaja, sisalto, otsikko, luotu) "
+          + "VALUES (?, ?, ?, ?, ?);", 
+            Statement.RETURN_GENERATED_KEYS);
         
         stmt.setInt(1, a.getAlue().getTunnus());
         stmt.setString(2, a.getAloittaja());
@@ -44,7 +46,11 @@ public class AiheDao implements Dao<Aihe, Integer> {
     @Override
     public Aihe findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Aihe WHERE tunnus = ?");
+        
+        PreparedStatement stmt = connection.prepareStatement(
+            "SELECT * FROM Aihe WHERE tunnus = ?"
+        );
+        
         stmt.setInt(1, key);
 
         ResultSet rs = stmt.executeQuery();
@@ -73,7 +79,11 @@ public class AiheDao implements Dao<Aihe, Integer> {
     @Override
     public List<Aihe> findAll() throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Aihe;");
+        
+        PreparedStatement stmt = connection.prepareStatement(
+                "SELECT * FROM Aihe;"
+        );
+        
         ResultSet rs = stmt.executeQuery();
         
         Map<Integer, List<Aihe>> alueidenAiheet = new HashMap<>();
@@ -129,7 +139,11 @@ public class AiheDao implements Dao<Aihe, Integer> {
         }
 
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Aihe WHERE tunnus IN (" + arvot + ")");
+        
+        PreparedStatement stmt = connection.prepareStatement(
+            "SELECT * FROM Aihe WHERE tunnus IN (" + arvot + ")"
+        );
+        
         int laskuri = 1;
         
         for (Integer key : keys) {
@@ -174,4 +188,75 @@ public class AiheDao implements Dao<Aihe, Integer> {
         return aiheet;
     }
     
+    public List<Aihe> findAllInAlue(Alue alue) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement(
+            "SELECT * FROM Aihe WHERE alue = ?;"
+        );
+        
+        stmt.setInt(1, alue.getTunnus());
+        
+        ResultSet rs = stmt.executeQuery();
+        
+        List<Aihe> aiheet = new ArrayList<>();
+        
+        while (rs.next()) {
+            Integer tunnus = rs.getInt("tunnus");
+            String aloittaja = rs.getString("aloittaja");
+            String sisalto = rs.getString("sisalto");
+            String otsikko = rs.getString("otsikko");
+            Timestamp luotu = rs.getTimestamp("luotu");
+
+            Aihe aihe = new Aihe(tunnus, aloittaja, sisalto, otsikko, luotu);
+            aiheet.add(aihe);
+            
+            aihe.setAlue(alue);
+        }
+        
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return aiheet;
+    }
+    
+    public List<Aihe> findAllInAluePerPage(Alue alue, Integer pageNum) throws SQLException {
+        Connection connection = database.getConnection();
+         
+        PreparedStatement stmt = connection.prepareStatement(
+            "SELECT a.*, v.uusin_viesti, v.viestimaara FROM Aihe a"
+          + "   INNER JOIN("
+          + "       SELECT MAX(lahetetty) as uusin_viesti, COUNT(*) as viestimaara, aihe"
+          + "       FROM Viesti GROUP BY aihe"
+          + "   ) v ON a.tunnus = v.aihe"
+          + "WHERE a.alue = ? ORDER BY v.uusin_viesti DESC LIMIT ?, ?;"
+        );
+        
+        stmt.setInt(1, alue.getTunnus());
+        stmt.setInt(2, 10 * (pageNum - 1) );
+        stmt.setInt(3, 10 * pageNum);
+        
+        ResultSet rs = stmt.executeQuery();
+        
+        List<Aihe> aiheet = new ArrayList<>();
+        
+        while (rs.next()) {
+            Integer tunnus = rs.getInt("tunnus");
+            String aloittaja = rs.getString("aloittaja");
+            String sisalto = rs.getString("sisalto");
+            String otsikko = rs.getString("otsikko");
+            Timestamp luotu = rs.getTimestamp("luotu");
+
+            Aihe aihe = new Aihe(tunnus, aloittaja, sisalto, otsikko, luotu);
+            aiheet.add(aihe);
+            
+            aihe.setAlue(alue);
+        }
+        
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return aiheet;
+    }
 }
