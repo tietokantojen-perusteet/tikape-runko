@@ -12,13 +12,16 @@ public class Aihe {
     private String otsikko;
     private Timestamp luotu;
     private List<Viesti> viestit;
+    private Timestamp viimeisin_viesti;
+    private Integer viestimaara;
     
     public Aihe(String aloittaja, String sisalto, String otsikko, Timestamp luotu) {
-        this(null, aloittaja, sisalto, otsikko, luotu);
+        this(null, aloittaja, sisalto, otsikko, luotu, null, null);
     }
     
     public Aihe(Integer tunnus, String aloittaja, String sisalto, 
-                String otsikko, Timestamp luotu) {
+                String otsikko, Timestamp luotu, Timestamp viimeisin_viesti,
+                Integer viestimaara) {
         
         this.tunnus = tunnus;
         this.alue = null;
@@ -27,6 +30,8 @@ public class Aihe {
         this.otsikko = otsikko;
         this.luotu = luotu;
         this.viestit = new ArrayList<>();
+        this.viimeisin_viesti = viimeisin_viesti;
+        this.viestimaara = viestimaara;
     }
     
     public Integer getTunnus() {

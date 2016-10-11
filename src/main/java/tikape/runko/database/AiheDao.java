@@ -48,7 +48,12 @@ public class AiheDao implements Dao<Aihe, Integer> {
         Connection connection = database.getConnection();
         
         PreparedStatement stmt = connection.prepareStatement(
-            "SELECT * FROM Aihe WHERE tunnus = ?"
+            "SELECT a.*, viimeisin_viesti, viestimaara FROM Aihe a"
+          + "   INNER JOIN("
+          + "       SELECT MAX(lahetetty) as viimeisin_viesti, COUNT(*) as viestimaara, aihe"
+          + "       FROM Viesti GROUP BY aihe"
+          + "   ) v ON a.tunnus = v.aihe"
+          + "WHERE tunnus = ?"
         );
         
         stmt.setInt(1, key);
@@ -65,8 +70,11 @@ public class AiheDao implements Dao<Aihe, Integer> {
         String sisalto = rs.getString("sisalto");
         String otsikko = rs.getString("otsikko");
         Timestamp luotu = rs.getTimestamp("luotu");
+        Timestamp viimViesti = rs.getTimestamp("viimeisin_viesti");
+        Integer viestimaara = rs.getInt("viestimaara");
 
-        Aihe aihe = new Aihe(key, aloittaja, sisalto, otsikko, luotu);
+        Aihe aihe = new Aihe(key, aloittaja, sisalto, otsikko, 
+                             luotu, viimViesti, viestimaara);
         aihe.setAlue(alueDao.findOne(alueTunnus));
 
         rs.close();
@@ -81,7 +89,11 @@ public class AiheDao implements Dao<Aihe, Integer> {
         Connection connection = database.getConnection();
         
         PreparedStatement stmt = connection.prepareStatement(
-                "SELECT * FROM Aihe;"
+            "SELECT a.*, viimeisin_viesti, viestimaara FROM Aihe a"
+          + "   INNER JOIN("
+          + "       SELECT MAX(lahetetty) as viimeisin_viesti, COUNT(*) as viestimaara, aihe"
+          + "       FROM Viesti GROUP BY aihe"
+          + "   ) v ON a.tunnus = v.aihe"
         );
         
         ResultSet rs = stmt.executeQuery();
@@ -97,8 +109,11 @@ public class AiheDao implements Dao<Aihe, Integer> {
             String sisalto = rs.getString("sisalto");
             String otsikko = rs.getString("otsikko");
             Timestamp luotu = rs.getTimestamp("luotu");
+            Timestamp viimViesti = rs.getTimestamp("viimeisin_viesti");
+            Integer viestimaara = rs.getInt("viestimaara");
 
-            Aihe aihe = new Aihe(tunnus, aloittaja, sisalto, otsikko, luotu);
+            Aihe aihe = new Aihe(tunnus, aloittaja, sisalto, otsikko, 
+                                 luotu, viimViesti, viestimaara);
             aiheet.add(aihe);
             
             if (!alueidenAiheet.containsKey(alueTunnus)) {
@@ -141,9 +156,14 @@ public class AiheDao implements Dao<Aihe, Integer> {
         Connection connection = database.getConnection();
         
         PreparedStatement stmt = connection.prepareStatement(
-            "SELECT * FROM Aihe WHERE tunnus IN (" + arvot + ")"
+            "SELECT a.*, viimeisin_viesti, viestimaara FROM Aihe a"
+          + "   INNER JOIN("
+          + "       SELECT MAX(lahetetty) as viimeisin_viesti, COUNT(*) as viestimaara, aihe"
+          + "       FROM Viesti GROUP BY aihe"
+          + "   ) v ON a.tunnus = v.aihe"
+          + "WHERE tunnus IN (" + arvot + ")"
         );
-        
+
         int laskuri = 1;
         
         for (Integer key : keys) {
@@ -164,8 +184,11 @@ public class AiheDao implements Dao<Aihe, Integer> {
             String sisalto = rs.getString("sisalto");
             String otsikko = rs.getString("otsikko");
             Timestamp luotu = rs.getTimestamp("luotu");
+            Timestamp viimViesti = rs.getTimestamp("viimeisin_viesti");
+            Integer viestimaara = rs.getInt("viestimaara");
 
-            Aihe aihe = new Aihe(tunnus, aloittaja, sisalto, otsikko, luotu);
+            Aihe aihe = new Aihe(tunnus, aloittaja, sisalto, otsikko, 
+                                 luotu, viimViesti, viestimaara);
             aiheet.add(aihe);
             
             if (!alueidenAiheet.containsKey(alueTunnus)) {
@@ -190,8 +213,14 @@ public class AiheDao implements Dao<Aihe, Integer> {
     
     public List<Aihe> findAllInAlue(Alue alue) throws SQLException {
         Connection connection = database.getConnection();
+        
         PreparedStatement stmt = connection.prepareStatement(
-            "SELECT * FROM Aihe WHERE alue = ?;"
+            "SELECT a.*, viimeisin_viesti, viestimaara FROM Aihe a"
+          + "   INNER JOIN("
+          + "       SELECT MAX(lahetetty) as viimeisin_viesti, COUNT(*) as viestimaara, aihe"
+          + "       FROM Viesti GROUP BY aihe"
+          + "   ) v ON a.tunnus = v.aihe"
+          + "WHERE a.alue = ?;"
         );
         
         stmt.setInt(1, alue.getTunnus());
@@ -206,8 +235,11 @@ public class AiheDao implements Dao<Aihe, Integer> {
             String sisalto = rs.getString("sisalto");
             String otsikko = rs.getString("otsikko");
             Timestamp luotu = rs.getTimestamp("luotu");
+            Timestamp viimViesti = rs.getTimestamp("viimeisin_viesti");
+            Integer viestimaara = rs.getInt("viestimaara");
 
-            Aihe aihe = new Aihe(tunnus, aloittaja, sisalto, otsikko, luotu);
+            Aihe aihe = new Aihe(tunnus, aloittaja, sisalto, otsikko, 
+                                 luotu, viimViesti, viestimaara);
             aiheet.add(aihe);
             
             aihe.setAlue(alue);
@@ -224,12 +256,12 @@ public class AiheDao implements Dao<Aihe, Integer> {
         Connection connection = database.getConnection();
          
         PreparedStatement stmt = connection.prepareStatement(
-            "SELECT a.*, v.uusin_viesti, v.viestimaara FROM Aihe a"
+            "SELECT a.*, viimeisin_viesti, viestimaara FROM Aihe a"
           + "   INNER JOIN("
-          + "       SELECT MAX(lahetetty) as uusin_viesti, COUNT(*) as viestimaara, aihe"
+          + "       SELECT MAX(lahetetty) as viimeisin_viesti, COUNT(*) as viestimaara, aihe"
           + "       FROM Viesti GROUP BY aihe"
           + "   ) v ON a.tunnus = v.aihe"
-          + "WHERE a.alue = ? ORDER BY v.uusin_viesti DESC LIMIT ?, ?;"
+          + "WHERE a.alue = ? ORDER BY v.viimeisin_viesti DESC LIMIT ?, ?;"
         );
         
         stmt.setInt(1, alue.getTunnus());
@@ -246,8 +278,11 @@ public class AiheDao implements Dao<Aihe, Integer> {
             String sisalto = rs.getString("sisalto");
             String otsikko = rs.getString("otsikko");
             Timestamp luotu = rs.getTimestamp("luotu");
+            Timestamp viimViesti = rs.getTimestamp("viimeisin_viesti");
+            Integer viestimaara = rs.getInt("viestimaara");
 
-            Aihe aihe = new Aihe(tunnus, aloittaja, sisalto, otsikko, luotu);
+            Aihe aihe = new Aihe(tunnus, aloittaja, sisalto, otsikko, 
+                                 luotu, viimViesti, viestimaara);
             aiheet.add(aihe);
             
             aihe.setAlue(alue);
