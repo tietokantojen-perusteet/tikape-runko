@@ -72,12 +72,107 @@ public class AiheDao implements Dao<Aihe, Integer> {
 
     @Override
     public List<Aihe> findAll() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Aihe;");
+        ResultSet rs = stmt.executeQuery();
+        
+        Map<Integer, List<Aihe>> alueidenAiheet = new HashMap<>();
+        
+        List<Aihe> aiheet = new ArrayList<>();
+        
+        while (rs.next()) {
+            Integer tunnus = rs.getInt("tunnus");
+            Integer alueTunnus = rs.getInt("alue");
+            String aloittaja = rs.getString("aloittaja");
+            String sisalto = rs.getString("sisalto");
+            String otsikko = rs.getString("otsikko");
+            Timestamp luotu = rs.getTimestamp("luotu");
+
+            Aihe aihe = new Aihe(tunnus, aloittaja, sisalto, otsikko, luotu);
+            aiheet.add(aihe);
+            
+            if (!alueidenAiheet.containsKey(alueTunnus)) {
+                alueidenAiheet.put(alueTunnus, new ArrayList<>());
+            }
+            
+            alueidenAiheet.get(alueTunnus).add(aihe);
+        }
+        
+        rs.close();
+        stmt.close();
+        connection.close();
+        
+        for (Alue alue : this.alueDao.findAllIn(alueidenAiheet.keySet())) {
+            for (Aihe aihe : alueidenAiheet.get(alue.getTunnus())) {
+                aihe.setAlue(alue);
+            }
+        }
+
+        return aiheet;
     }
 
     @Override
     public void update(Integer key, Aihe t) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Aihe> findAllIn(Collection<Integer> keys) throws SQLException {
+        if (keys.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        // Luodaan IN-kyselyä varten paikat, joihin arvot asetetaan --
+        // toistaiseksi IN-parametrille ei voi antaa suoraan kokoelmaa
+        StringBuilder arvot = new StringBuilder("?");
+        for (int i = 1; i < keys.size(); i++) {
+            arvot.append(", ?");
+        }
+
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Aihe WHERE tunnus IN (" + arvot + ")");
+        int laskuri = 1;
+        
+        for (Integer key : keys) {
+            stmt.setInt(laskuri, key);
+            laskuri++;
+        }
+
+        ResultSet rs = stmt.executeQuery();
+        
+        Map<Integer, List<Aihe>> alueidenAiheet = new HashMap<>();
+        
+        List<Aihe> aiheet = new ArrayList<>();
+        
+        while (rs.next()) {
+            Integer tunnus = rs.getInt("tunnus");
+            Integer alueTunnus = rs.getInt("alue");
+            String aloittaja = rs.getString("aloittaja");
+            String sisalto = rs.getString("sisalto");
+            String otsikko = rs.getString("otsikko");
+            Timestamp luotu = rs.getTimestamp("luotu");
+
+            Aihe aihe = new Aihe(tunnus, aloittaja, sisalto, otsikko, luotu);
+            aiheet.add(aihe);
+            
+            if (!alueidenAiheet.containsKey(alueTunnus)) {
+                alueidenAiheet.put(alueTunnus, new ArrayList<>());
+            }
+            
+            alueidenAiheet.get(alueTunnus).add(aihe);
+        }
+        
+        rs.close();
+        stmt.close();
+        connection.close();
+        
+        for (Alue alue : this.alueDao.findAllIn(alueidenAiheet.keySet())) {
+            for (Aihe aihe : alueidenAiheet.get(alue.getTunnus())) {
+                aihe.setAlue(alue);
+            }
+        }
+
+        return aiheet;
     }
     
 }
