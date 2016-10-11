@@ -33,7 +33,7 @@
         
         <form method="POST" th:action="@{~/{id}(id=${alue.id})}">
             <p>Otsikko: <input type="text" name="otsikko"/></p>
-            <p>Teksti: <input type="text" name="avaus"/></p>
+            <p>Teksti: <textarea name="avaus"/></p>
             <p>Käyttäjänimi: <input type="text" name="aloittaja"/></p>
             <p><input type="submit" value="Lisää!"/></p>
         </form>
