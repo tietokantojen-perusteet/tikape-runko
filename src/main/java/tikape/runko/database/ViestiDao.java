@@ -122,5 +122,64 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+    public List<Viesti> findAllInAihe(Aihe aihe) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE aihe = ?;");
+        stmt.setInt(1, aihe.getTunnus());
+        
+        ResultSet rs = stmt.executeQuery();
+        
+        List<Viesti> viestit = new ArrayList<>();
+        
+        while (rs.next()) {
+            Integer tunnus = rs.getInt("tunnus");
+            String teksti = rs.getString("teksti");
+            String lahettaja = rs.getString("lahettaja");
+            Timestamp lahetetty = rs.getTimestamp("lahetetty");
+            
+            Viesti viesti = new Viesti(tunnus, teksti, lahettaja, lahetetty);
+            viesti.setAihe(aihe);
+            
+            viestit.add(viesti);
+        }
+        
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return viestit;
+    }
     
+    public List<Viesti> findAllInAihePerPage(Aihe aihe, Integer pageNum, Integer msgLimit) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement(
+            "SELECT * FROM Viesti WHERE aihe = ? ORDER BY lahetetty LIMIT ?, ?;"
+        );
+        
+        stmt.setInt(1, aihe.getTunnus());
+        stmt.setInt(2, msgLimit * (pageNum - 1) );
+        stmt.setInt(3, msgLimit * pageNum);
+        
+        ResultSet rs = stmt.executeQuery();
+        
+        List<Viesti> viestit = new ArrayList<>();
+        
+        while (rs.next()) {
+            Integer tunnus = rs.getInt("tunnus");
+            String teksti = rs.getString("teksti");
+            String lahettaja = rs.getString("lahettaja");
+            Timestamp lahetetty = rs.getTimestamp("lahetetty");
+            
+            Viesti viesti = new Viesti(tunnus, teksti, lahettaja, lahetetty);
+            viesti.setAihe(aihe);
+            
+            viestit.add(viesti);
+        }
+        
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return viestit;
+    }
 }

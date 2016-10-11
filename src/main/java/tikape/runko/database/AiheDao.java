@@ -122,8 +122,7 @@ public class AiheDao implements Dao<Aihe, Integer> {
             return new ArrayList<>();
         }
 
-        // Luodaan IN-kyselyä varten paikat, joihin arvot asetetaan --
-        // toistaiseksi IN-parametrille ei voi antaa suoraan kokoelmaa
+        // Luodaan IN-kyselyä varten paikat, joihin arvot asetetaan
         StringBuilder arvot = new StringBuilder("?");
         for (int i = 1; i < keys.size(); i++) {
             arvot.append(", ?");
