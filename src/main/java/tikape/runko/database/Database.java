@@ -4,9 +4,14 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Database {
+public class Database<T> {
 
+    private boolean debug;
     private String databaseAddress;
+    
+    public void setDebugMode(boolean d) {
+        this.debug = d;
+    }
 
     public Database(String databaseAddress) throws ClassNotFoundException {
         this.databaseAddress = databaseAddress;
@@ -34,10 +39,42 @@ public class Database {
             System.out.println("Error >> " + t.getMessage());
         }
     }
+    
+    public List<T> queryAndCollect(String query, Collector<T> col) throws SQLException {
+        List<T> rows = new ArrayList<>();
+        Statement stmt = getConnection().createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+        
+        while(rs.next()) {
+            if (debug) {
+                System.out.println("---");
+                System.out.println("query");
+                debug(rs);
+                System.out.println("---");
+            }
+            
+            rows.add(col.collect(rs));
+        }
+        
+        rs.close();
+        stmt.close();
+        return rows;
+    }
 
     private List<String> sqliteLauseet() {
         ArrayList<String> lista = new ArrayList<>();
 
         return lista;
+    }
+    
+    private void debug(ResultSet rs) throws SQLException {
+        int columns = rs.getMetaData().getColumnCount();
+        for (int i = 0; i < columns; i++) {
+            System.out.print(
+                    rs.getObject(i + 1) + ":"
+                    + rs.getMetaData().getColumnName(i + 1) + "  ");
+        }
+
+        System.out.println();
     }
 }
