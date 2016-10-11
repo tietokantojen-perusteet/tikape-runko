@@ -12,33 +12,33 @@ AlueDao
 AiheDao
 ViestiDao
 
-3. Testaamista varten tekstik‰yttˆliittym‰
+3. Testaamista varten tekstik√§ytt√∂liittym√§
 
 4. Paikallisella koneella toimiva web-sovellus
 
-5. Mahdollisuus lis‰t‰ uusia aiheita
+5. Mahdollisuus lis√§t√§ uusia aiheita
 
 6. Linkit foorumin alueisiin ja alueessa olevien aiheiden listaus
 
-7. Mahdollisuus lis‰t‰ uusia aiheita(keskustelunavauksia)
-Aiheen kohdalla myˆs viestien lukum‰‰r‰, l‰hett‰j‰ ja viimeisimm‰n viestin p‰iv‰m‰‰r‰.
-Aiheet t‰ytyy j‰rjest‰‰ uusimman viestin perusteella
+7. Mahdollisuus lis√§t√§ uusia aiheita(keskustelunavauksia)
+Aiheen kohdalla my√∂s viestien lukum√§√§r√§, l√§hett√§j√§ ja viimeisimm√§n viestin p√§iv√§m√§√§r√§.
+Aiheet t√§ytyy j√§rjest√§√§ uusimman viestin perusteella
 
 
 Askel 3
 
-1. Mahdollisuus lukea aiheeseen liittyv‰t viestit
+1. Mahdollisuus lukea aiheeseen liittyv√§t viestit
 
-2. Mahdollisuus lis‰t‰ aiheeseen viesti
+2. Mahdollisuus lis√§t√§ aiheeseen viesti
 
-4. Myˆs alueiden listauksessa viestien lukum‰‰r‰ sek‰ viimeisimm‰n viestin p‰iv‰m‰‰r‰
-Alueet tulee j‰rjest‰‰ alueen nimen perusteella
+4. My√∂s alueiden listauksessa viestien lukum√§√§r√§ sek√§ viimeisimm√§n viestin p√§iv√§m√§√§r√§
+Alueet tulee j√§rjest√§√§ alueen nimen perusteella
 
-5. Aluekohtaisten aiheiden rajoitus niin, ett‰ n‰ytet‰‰n vain 10 uusinta(per sivu)
+5. Aluekohtaisten aiheiden rajoitus niin, ett√§ n√§ytet√§√§n vain 10 uusinta(per sivu)
 
-6. Mahdollisuus rajata aihekohtaisten viestien m‰‰r‰‰(esim. vaihtoehtoina 5, 10, 20 per sivu)
+6. Mahdollisuus rajata aihekohtaisten viestien m√§√§r√§√§(esim. vaihtoehtoina 4, 8, 12 per sivu)
 
-7. Tarkistetaan, ettei sovellukseen voi tehd‰ SQL-injektioita eik‰ k‰ytt‰j‰ voi syˆtt‰‰ HTML-koodia tietokantaan
+7. Tarkistetaan, ettei sovellukseen voi tehd√§ SQL-injektioita eik√§ k√§ytt√§j√§ voi sy√∂tt√§√§ HTML-koodia tietokantaan
 
 8. Sovelluksen siirto Heroku-palveluun oppimateriaalin ohjeiden mukaisesti
 
