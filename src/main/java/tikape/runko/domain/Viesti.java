@@ -17,6 +17,14 @@ public class Viesti {
         this.sisalto = sisalto;
     }
 
+    public Viesti(Integer id, Keskustelu keskustelu, Timestamp aika, String kayttaja, String sisalto) {
+        this.id = id;
+        this.keskustelu = keskustelu;
+        this.aika = aika;
+        this.kayttaja = kayttaja;
+        this.sisalto = sisalto;
+    }
+
     public Integer getId() {
         return id;
     }
