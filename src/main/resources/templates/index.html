@@ -10,16 +10,6 @@
         <h1>Keskustelufoorumi</h1>
 
         <h2>Keskustelualueet</h2>
-        
-        <h3>Listana...</h3>
-
-        <ul>
-            <li th:each="alue : ${alueet}">
-                <span th:text="${alue.aihealue}">alue</span>
-            </li>
-        </ul>
-        
-        <h3>...ja taulukkona</h3>
 
         <table>
             <tr>
@@ -27,7 +17,7 @@
                 <th>Perustaja</th>
                 <th>Perustettu</th>
             </tr>
-            
+
             <th:block th:each="alue : ${alueet}">
                 <tr>
                     <td th:text="${alue.aihealue}">alue</td>
@@ -36,5 +26,14 @@
                 </tr>
             </th:block>
         </table>
+
+        <h3>Lisää alue</h3>
+
+        <form method="POST" th:action="@{~/}">
+            <p>Otsikko: <input type="text" name="aihealue"/></p>
+            <p>Lyhyt kuvaus: <input type="text" name="kuvaus"/></p>
+            <p>Käyttäjänimi: <input type="text" name="perustaja"/></p>
+            <p><input type="submit" value="Lisää!"/></p>
+        </form>
     </body>
 </html>

@@ -1,5 +1,5 @@
 package tikape.runko;
-    
+
 import java.util.HashMap;
 import spark.ModelAndView;
 import static spark.Spark.*;
@@ -14,13 +14,20 @@ public class Main {
     public static void main(String[] args) throws Exception {
         Database database = new Database("jdbc:sqlite:foorumi.db");
         KeskustelualueDao keskustelualuedao = new KeskustelualueDao(database);
-        
+
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
 
             map.put("alueet", keskustelualuedao.findAll());
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
+
+        post("/", (req, res) -> {
+            keskustelualuedao.create(new Keskustelualue(req.queryParams("aihealue"), req.queryParams("kuvaus"), req.queryParams("perustaja")));
+            
+            res.redirect("/");
+            return "";
+        });
 
 //        get("/opiskelijat", (req, res) -> {
 //            HashMap map = new HashMap<>();
