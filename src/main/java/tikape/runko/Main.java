@@ -19,7 +19,9 @@ public class Main {
 //
 //        get("/", (req, res) -> {
 //            HashMap map = new HashMap<>();
-//            map.put("viesti", "tervehdys");
+//            map.put("alue", "tervehdys");
+//            map.put("viestejayht", "moi");
+//            map.put("viimeisinviesti", "taas");
 //
 //            return new ModelAndView(map, "index");
 //        }, new ThymeleafTemplateEngine());
@@ -38,4 +40,5 @@ public class Main {
 //            return new ModelAndView(map, "opiskelija");
 //        }, new ThymeleafTemplateEngine());
     }
+    
 }
