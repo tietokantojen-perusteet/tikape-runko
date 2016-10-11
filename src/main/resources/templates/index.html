@@ -20,7 +20,7 @@
 
             <th:block th:each="alue : ${alueet}">
                 <tr>
-                    <td th:text="${alue.aihealue}">alue</td>
+                    <td><a th:href="@{~/{id}(id=${alue.id})}" th:text="${alue.aihealue}">alue</a></td>
                     <td th:text="${alue.perustaja}">perustaja</td>
                     <td th:text="${alue.perustettu}">perustettu</td>
                 </tr>

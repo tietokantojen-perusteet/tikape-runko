@@ -1,0 +1,43 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Keskustelufoorumi</title>
+        <meta charset="utf-8" />
+    </head>
+
+    <body>
+        <h1>Keskustelufoorumi: <span th:text="${alue.aihealue}">Alueen nimi</span></h1>
+        
+        <p th:text="${alue.kuvaus}">Alueen kuvaus</p>
+
+        <h2>Keskustelunavaukset</h2>
+
+        <table>
+            <tr>
+                <th>Otsikko</th>
+                <th>Aloittaja</th>
+                <th>Aloitettu</th>
+            </tr>
+
+            <th:block th:each="avaus : ${avaukset}">
+                <tr>
+                    <td th:text="${avaus.otsikko}">alue</td>
+                    <td th:text="${avaus.aloittaja}">perustaja</td>
+                    <td th:text="${avaus.aloitettu}">perustettu</td>
+                </tr>
+            </th:block>
+        </table>
+
+        <h3>Lisää avaus</h3>
+        
+        <form method="POST" th:action="@{~/{id}(id=${alue.id})}">
+            <p>Otsikko: <input type="text" name="otsikko"/></p>
+            <p>Teksti: <input type="text" name="avaus"/></p>
+            <p>Käyttäjänimi: <input type="text" name="aloittaja"/></p>
+            <p><input type="submit" value="Lisää!"/></p>
+        </form>
+        
+        <p><a href="/">Takaisin keskustelualueisiin</a></p>
+    </body>
+</html>

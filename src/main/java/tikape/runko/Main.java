@@ -6,14 +6,17 @@ import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.runko.database.Database;
 import tikape.runko.database.KeskustelualueDao;
+import tikape.runko.database.KeskustelunavausDao;
 import tikape.runko.database.OpiskelijaDao;
 import tikape.runko.domain.Keskustelualue;
+import tikape.runko.domain.Keskustelunavaus;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
         Database database = new Database("jdbc:sqlite:foorumi.db");
         KeskustelualueDao keskustelualuedao = new KeskustelualueDao(database);
+        KeskustelunavausDao keskustelunavausdao = new KeskustelunavausDao(database);
 
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
@@ -26,6 +29,23 @@ public class Main {
             keskustelualuedao.create(new Keskustelualue(req.queryParams("aihealue"), req.queryParams("kuvaus"), req.queryParams("perustaja")));
             
             res.redirect("/");
+            return "";
+        });
+        
+        get("/:id", (req, res) -> {
+            HashMap map = new HashMap<>();
+            Integer id = Integer.parseInt(req.params(":id"));
+
+            map.put("alue", keskustelualuedao.findOne(id));
+            map.put("avaukset", keskustelunavausdao.findAllInAlue(id));
+            return new ModelAndView(map, "alue");
+        }, new ThymeleafTemplateEngine());
+        
+        post("/:id", (req, res) -> {
+            Integer id = Integer.parseInt(req.params(":id"));
+            keskustelunavausdao.create(new Keskustelunavaus(keskustelualuedao.findOne(id), req.queryParams("otsikko"), req.queryParams("avaus"), req.queryParams("aloittaja")));
+            
+            res.redirect("/" + id);
             return "";
         });
 
