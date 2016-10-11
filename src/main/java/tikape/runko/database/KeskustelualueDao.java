@@ -46,4 +46,16 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
     public Keskustelualue findByName(String name) throws SQLException {
         return (Keskustelualue) database.queryAndCollect("SELECT * FROM Keskustelualue WHERE aihealue = ?", rs -> new Keskustelualue(rs.getInt("id"), rs.getString("aihealue"), rs.getString("kuvaus"), rs.getString("perustettu"), rs.getString("perustaja")), name).get(0);
     }
+    
+    public Integer findNoOfReplies(Integer key) throws SQLException {
+        String query = "SELECT COUNT(Vastaus.id) FROM Keskustelualue LEFT JOIN Keskustelunavaus ON Keskustelualue.id = Keskustelunavaus.alue AND Keskustelualue.id = ? INNER JOIN Vastaus ON Keskustelunavaus.id = Vastaus.avaus";
+        
+        return (Integer) database.queryAndCollect(query, rs -> rs.getInt("COUNT(Vastaus.id)"), key).get(0);
+    }
+    
+    public String timeOfLastReply(Integer key) throws SQLException { // Ei huomioi keskustelunavauksen aloitusajankohtaa
+        String query = "SELECT Vastaus.ajankohta FROM Keskustelualue INNER JOIN Keskustelunavaus ON Keskustelualue.id = Keskustelunavaus.alue AND Keskustelualue.id = ? INNER JOIN Vastaus ON Keskustelunavaus.id = Vastaus.avaus ORDER BY Vastaus.ajankohta DESC LIMIT 1";
+        
+        return (String) database.queryAndCollect(query, rs -> rs.getInt("Vastaus.ajankohta"), key).get(0);
+    }
 }
