@@ -20,7 +20,7 @@ public class Vastaus {
         this.kirjoittaja = kirjoittaja;
     }
     
-    public Vastaus (Integer id, Keskustelunavaus avaus, String teksti, String kirjoittaja) {
+    public Vastaus (Keskustelunavaus avaus, String teksti, String kirjoittaja) {
         this(null, avaus, teksti, null, kirjoittaja);
     }
     

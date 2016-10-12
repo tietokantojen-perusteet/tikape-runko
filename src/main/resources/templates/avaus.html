@@ -1,0 +1,37 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title th:text="${avaus.otsikko}">Avauksen nimi</title>
+        <meta charset="utf-8" />
+    </head>
+
+    <body>
+        <table>
+            <tr>
+                <th>Alue: <span th:text="${alue.aihealue}">Alueen nimi</span> <span>&#8594;</span> <span th:text="${avaus.otsikko}">Avauksen nimi</span></th>
+            </tr>
+
+            <tr>
+                <td>
+                    <ol>
+                        <li><span th:text="${avaus.avaus}">Avausviesti</span>  /<span th:text="${avaus.aloittaja}">Aloittaja</span></li>
+                        <th:block th:each="viesti : ${viestit}">
+                            <li><span th:text="${viesti.teksti}">Vastaus</span>  /<span th:text="${viesti.kirjoittaja}">Kirjoittaja</span></li>
+                        </th:block>
+                    </ol>
+                </td>
+            </tr>
+        </table>
+
+        <h3>Lisää viesti</h3>
+
+        <form method="POST" th:action="@{~/{id}/{idd}(id=${alue.id},idd=${avaus.id})}">
+            <p>Teksti: <textarea name="teksti"/></p>
+            <p>Käyttäjänimi: <input type="text" name="kirjoittaja"/></p>
+            <p><input type="submit" value="Lisää!"/></p>
+        </form>
+
+        <p><a th:href="@{~/{id}(id=${alue.id})}">Takaisin keskustelunavauksiin</a></p>
+    </body>
+</html>

@@ -7,10 +7,6 @@
     </head>
 
     <body>
-        <h1>Keskustelufoorumi</h1>
-
-        <h2>Keskustelualueet</h2>
-
         <table>
             <tr>
                 <th>Alue</th>
@@ -31,7 +27,7 @@
 
         <form method="POST" th:action="@{~/}">
             <p>Otsikko: <input type="text" name="aihealue"/></p>
-            <p>Lyhyt kuvaus: <input type="text" name="kuvaus"/></p>
+            <p>Lyhyt kuvaus: <textarea name="kuvaus"/></p>
             <p>Käyttäjänimi: <input type="text" name="perustaja"/></p>
             <p><input type="submit" value="Lisää!"/></p>
         </form>

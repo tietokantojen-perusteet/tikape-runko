@@ -52,4 +52,11 @@ public class VastausDao implements Dao<Vastaus, Integer> {
         
         return (Vastaus) database.queryAndCollect("SELECT * FROM Vastaus WHERE avaus = ? AND teksti = ? AND kirjoittaja = ?", rs -> new Vastaus(rs.getInt("id"), keskustelunavausdao.findOne(rs.getInt("avaus")), rs.getString("teksti"), rs.getString("ajankohta"), rs.getString("kirjoittaja")), avaus, teksti, kirjoittaja).get(0);
     }
+
+    public List<Vastaus> findAllInAvaus(Integer key) throws SQLException {
+        KeskustelunavausDao keskustelunavausdao = new KeskustelunavausDao(database);
+        String query = "SELECT * FROM Vastaus INNER JOIN Keskustelunavaus ON Vastaus.avaus = Keskustelunavaus.id AND Keskustelunavaus.id = ?";
+
+        return database.queryAndCollect(query, rs -> new Vastaus(rs.getInt("id"), keskustelunavausdao.findOne(rs.getInt("avaus")), rs.getString("teksti"), rs.getString("ajankohta"), rs.getString("kirjoittaja")), key);
+    }
 }
