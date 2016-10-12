@@ -12,14 +12,14 @@
         <table class="table" STYLE="margin-top: 30px">
             <tr>
                 <th>Alue: <span th:text="${alue.aihealue}">Alueen nimi</span></th>
-                <th>Aloittaja</th>
-                <th>Aloitettu</th>
+                <th>Viestejä</th>
+                <th>Viimeisin viesti</th>
             </tr>
 
             <tr th:each="avaus : ${avaukset}">
-                <td><a th:href="@{~/{id}/{idd}(id=${alue.id},idd=${avaus.id})}" th:text="${avaus.otsikko}">alue</a></td>
-                <td th:text="${avaus.aloittaja}">perustaja</td>
-                <td th:text="${avaus.aloitettu}">perustettu</td>
+                <td><a th:href="@{~/{id}/{idd}(id=${alue.id},idd=${avaus.id})}" th:text="${avaus.aihealue}">avaus</a></td>
+                <td th:text="${avaus.viestejaYhteensa}">viestejä</td>
+                <td th:text="${avaus.viimeisinViesti}">yhteensä</td>
             </tr>
         </table>
 

@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import tikape.runko.domain.Avausnakyma;
 import tikape.runko.domain.Keskustelunavaus;
 
 public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
@@ -75,5 +76,11 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
         String query = "SELECT * FROM Keskustelunavaus INNER JOIN Keskustelualue ON Keskustelunavaus.alue = Keskustelualue.id AND Keskustelualue.id = ?";
         
         return database.queryAndCollect(query, rs -> new Keskustelunavaus(rs.getInt("id"), keskustelualuedao.findOne(rs.getInt("alue")), rs.getString("otsikko"), rs.getString("avaus"), rs.getString("aloitettu"), rs.getString("aloittaja")), key);
+    }
+    
+    public List<Avausnakyma> openingView(int key) throws SQLException {
+        String query = "SELECT Keskustelunavaus.id AS Id, Keskustelunavaus.otsikko AS Alue, COUNT(DISTINCT Vastaus.id) + 1 AS Viesteja_yhteensa, MAX(MAX(Vastaus.ajankohta), MAX(Keskustelunavaus.aloitettu)) AS Viimeisin_viesti FROM Keskustelunavaus INNER JOIN Keskustelualue ON Keskustelunavaus.alue = Keskustelualue.id AND Keskustelualue.id = ? LEFT JOIN Vastaus ON Keskustelunavaus.id = Vastaus.avaus GROUP BY Keskustelunavaus.id ORDER BY Viimeisin_viesti DESC";
+        
+        return database.queryAndCollect(query, rs -> new Avausnakyma(Integer.parseInt(rs.getString("Id")), rs.getString("Alue"), Integer.parseInt(rs.getString("Viesteja_yhteensa")), rs.getString("Viimeisin_viesti")), key);
     }
 }

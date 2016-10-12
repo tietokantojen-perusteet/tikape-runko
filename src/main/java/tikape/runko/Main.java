@@ -41,7 +41,7 @@ public class Main {
             Integer id = Integer.parseInt(req.params(":id"));
 
             map.put("alue", keskustelualuedao.findOne(id));
-            map.put("avaukset", keskustelunavausdao.findAllInAlue(id));
+            map.put("avaukset", keskustelunavausdao.openingView(id));
             return new ModelAndView(map, "alue");
         }, new ThymeleafTemplateEngine());
         
