@@ -3,8 +3,9 @@
 
     <head>
         <title>Keskustelu</title>
+        <!--        <meta charset="UTF-8"></meta>-->
         <meta charset="utf-8" />
-        <link rel="stylesheet" type="text/css" href="styles.css">
+        <link rel="stylesheet" type="text/css" href="/styles.css"/>
     </head>
 
     <body>
@@ -12,78 +13,80 @@
 
         <ul>
 
-<!-- TIETOKANNASTA DATAA
-           
-           <li th:each="keskustelu.otsikko: ${keskustelu.otsikko}">
-            
-                <a th:href="${'/keskustelu.otsikko/' + keskustelu.id}">
-                    <span th:text="${otsikko.nimi}"></span>
+            <!-- TIETOKANNASTA DATAA
+                       
+            -->           
+            <li th:each="keskustelu: ${keskustelut}">
+
+                <a th:href="${'/keskustelu/' + keskustelu.id}">
+                    <span th:text="${keskustelu.otsikko}">Helsinki on paras</span>
                 </a>
 
-                <div class="name" th:each="viesti.kayttaja : ${viesti.kayttaja}"></div>
-                <div>Viimeinen julkaisu: 
-                    <span class="lastmsg" th:each="viesti.aika  : ${.viesti.aika }"></span><span>&nbsp;|&nbsp;</span>
-                </div>
+                <!--                <div class="name" th:text="viesti.kayttaja : ${viesti.kayttaja}"></div>
+                                <div>Viimeinen julkaisu: 
+                                    <span class="lastmsg" th:each="viesti.aika  : ${.viesti.aika }"></span><span>&nbsp;|&nbsp;</span>
+                                </div>-->
 
             </li>
-
--->
-
-<!-- ESIMERKKI (KOLME KESKUSTELUA) -->
-
-           <li th:each="keskustelu.otsikko: ${keskustelu.otsikko}">
+            <!--
             
-                <a th:href="${'/keskustelu.otsikko/' + keskustelu.id}">
-                    <span th:text="${otsikko.nimi}">Helsinki on paras!</span>
-                </a>
+            -->
 
-                <div class="name" th:each="viesti.kayttaja : ${viesti.kayttaja}">Kenneth</div>
-                <div>Viimeinen julkaisu: 
-                    <span class="lastmsg" th:each="viesti.aika  : ${.viesti.aika }">8.10.2016</span><span>&nbsp;|&nbsp;</span>
-                </div>
+            <!-- ESIMERKKI (KOLME KESKUSTELUA) -->
 
-            </li>
-
-            <li th:each="keskustelu.otsikko: ${keskustelu.otsikko}">
+            <!--            <li th:each="keskustelu.otsikko: ${keskustelu.otsikko}">
             
-                <a th:href="${'/keskustelu.otsikko/' + keskustelu.id}">
-                    <span th:text="${otsikko.nimi}">Helsinki on paras!</span>
-                </a>
-
-                <div class="name" th:each="viesti.kayttaja : ${viesti.kayttaja}">Kenneth</div>
-                <div>Viimeinen julkaisu: 
-                    <span class="lastmsg" th:each="viesti.aika  : ${.viesti.aika }">8.10.2016</span><span>&nbsp;|&nbsp;</span>
-                </div>
-
-            </li>
-
-            <li th:each="keskustelu.otsikko: ${keskustelu.otsikko}">
+                            <a th:href="${'/keskustelu.otsikko/' + keskustelu.id}">
+                                <span th:text="${otsikko.nimi}">Helsinki on paras!</span>
+                            </a>
             
-                <a th:href="${'/keskustelu.otsikko/' + keskustelu.id}">
-                    <span th:text="${otsikko.nimi}">Helsinki on paras!</span>
-                </a>
+                            <div class="name" th:each="viesti.kayttaja : ${viesti.kayttaja}">Kenneth</div>
+                            <div>Viimeinen julkaisu: 
+                                <span class="lastmsg" th:each="viesti.aika  : ${.viesti.aika }">8.10.2016</span><span>&nbsp;|&nbsp;</span>
+                            </div>
+            
+                        </li>
+            
+                        <li th:each="keskustelu.otsikko: ${keskustelu.otsikko}">
+            
+                            <a th:href="${'/keskustelu.otsikko/' + keskustelu.id}">
+                                <span th:text="${otsikko.nimi}">Helsinki on paras!</span>
+                            </a>
+            
+                            <div class="name" th:each="viesti.kayttaja : ${viesti.kayttaja}">Kenneth</div>
+                            <div>Viimeinen julkaisu: 
+                                <span class="lastmsg" th:each="viesti.aika  : ${.viesti.aika }">8.10.2016</span><span>&nbsp;|&nbsp;</span>
+                            </div>
+            
+                        </li>
+            
+                        <li th:each="keskustelu.otsikko: ${keskustelu.otsikko}">
+            
+                            <a th:href="${'/keskustelu.otsikko/' + keskustelu.id}">
+                                <span th:text="${otsikko.nimi}">Helsinki on paras!</span>
+                            </a>
+            
+                            <div class="name" th:each="viesti.kayttaja : ${viesti.kayttaja}">Kenneth</div>
+                            <div>Viimeinen julkaisu: 
+                                <span class="lastmsg" th:each="viesti.aika  : ${.viesti.aika }">8.10.2016</span><span>&nbsp;|&nbsp;</span>
+                            </div>
+            
+                        </li>-->
 
-                <div class="name" th:each="viesti.kayttaja : ${viesti.kayttaja}">Kenneth</div>
-                <div>Viimeinen julkaisu: 
-                    <span class="lastmsg" th:each="viesti.aika  : ${.viesti.aika }">8.10.2016</span><span>&nbsp;|&nbsp;</span>
-                </div>
+            <!-- ESIMERKIN LOPPU -->
 
-            </li>
-
-<!-- ESIMERKIN LOPPU -->
-           
         </ul>
 
-        <hr/><br/>
-        <h4>Lisää uusi keskustelu</h4>
-        <form>
+        <br/>
+        <h4>Luo uusi keskustelunavaus</h4>
+        <form method="post">
             <b>Nimimerkki</b>
-            <input type="text" name="nimi">
+            <input type="text" name="nimi"/>
             <b>Otsikko</b>
-            <input type="text" name="otsikko" size="40">
+            <input type="text" name="otsikko" size="40"/><br/>
             <b>Viesti</b>
-            <textarea rows="5" cols="50" name="sisalto"></textarea><br/>
-            <input method="post" action="Database.java" type="submit" name="lähetä" value="Lähetä">
+            <textarea rows="5" cols="50" name="sisalto"></textarea>
+            <input type="submit" name="Lähetä" value="Submit"/>
         </form>       
 
     </body>
