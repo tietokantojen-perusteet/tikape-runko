@@ -15,9 +15,9 @@
             <tr>
                 <td>
                     <ol>
-                        <li><span th:text="${avaus.avaus}">Avausviesti</span>  /<span th:text="${avaus.aloittaja}">Aloittaja</span></li>
+                        <li><span th:text="${avaus.avaus}">Avausviesti</span><span>&nbsp;&nbsp;</span>/<span th:text="${avaus.aloittaja}">Aloittaja</span></li>
                         <th:block th:each="viesti : ${viestit}">
-                            <li><span th:text="${viesti.teksti}">Vastaus</span>  /<span th:text="${viesti.kirjoittaja}">Kirjoittaja</span></li>
+                            <li><span th:text="${viesti.teksti}">Vastaus</span><span>&nbsp;&nbsp;</span>/<span th:text="${viesti.kirjoittaja}">Kirjoittaja</span></li>
                         </th:block>
                     </ol>
                 </td>
