@@ -1,5 +1,6 @@
 package tikape.runko;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import spark.ModelAndView;
 import static spark.Spark.*;
@@ -23,8 +24,8 @@ public class Main {
 
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
-
-            map.put("alueet", keskustelualuedao.findAll());
+            
+            map.put("alueet", keskustelualuedao.openingView());
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
 

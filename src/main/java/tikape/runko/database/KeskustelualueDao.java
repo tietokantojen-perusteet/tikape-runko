@@ -2,6 +2,7 @@ package tikape.runko.database;
 
 import java.sql.SQLException;
 import java.util.List;
+import tikape.runko.domain.Avausnakyma;
 import tikape.runko.domain.Keskustelualue;
 
 public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
@@ -57,5 +58,11 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
         String query = "SELECT Vastaus.ajankohta FROM Keskustelualue INNER JOIN Keskustelunavaus ON Keskustelualue.id = Keskustelunavaus.alue AND Keskustelualue.id = ? INNER JOIN Vastaus ON Keskustelunavaus.id = Vastaus.avaus ORDER BY Vastaus.ajankohta DESC LIMIT 1";
         
         return (String) database.queryAndCollect(query, rs -> rs.getInt("Vastaus.ajankohta"), key).get(0);
+    }
+    
+    public List<Avausnakyma> openingView() throws SQLException {
+        String query = "SELECT Keskustelualue.id AS Id, Keskustelualue.aihealue AS Alue, COUNT(DISTINCT Keskustelunavaus.id) + COUNT(DISTINCT Vastaus.id) AS Viesteja_yhteensa, MAX(MAX(Vastaus.ajankohta), MAX(Keskustelunavaus.aloitettu)) AS Viimeisin_viesti FROM Keskustelualue LEFT JOIN Keskustelunavaus ON Keskustelualue.id = Keskustelunavaus.alue LEFT JOIN Vastaus ON Keskustelunavaus.id = Vastaus.avaus GROUP BY Keskustelualue.id ORDER BY Keskustelualue.aihealue";
+        
+        return database.queryAndCollect(query, rs -> new Avausnakyma(Integer.parseInt(rs.getString("Id")), rs.getString("Alue"), Integer.parseInt(rs.getString("Viesteja_yhteensa")), rs.getString("Viimeisin_viesti")));
     }
 }
