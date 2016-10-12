@@ -4,24 +4,26 @@
     <head>
         <title>Keskustelualue</title>
         <meta charset="utf-8" />
-        <link rel="stylesheet" type="text/css" href="styles.css">
+        <link rel="stylesheet" type="text/css" href="/styles.css" />
     </head>
 
     <body>
         <h2>Keskustelualue</h2>
 
 
-<!-- DATAA KANNASTA 
-        <p><a th:href="${'/alue/' + alue.id}"><span th:each="${alue.nimi}"></span></a></p>
--->
+        <!-- DATAA KANNASTA 
+        -->        
+        <p th:each="alue: ${alueet}"><a th:href="${'/alue/' + alue.id}"><span th:text="${alue.nimi}"></span></a></p>
+        <!--
+        -->
 
-<!-- ESIMERKKI-ALUEET -->
-        <p><a th:href="${'/alue/' + alue.id}"><span th:each="${alue.nimi}">Helsinki</span></a></p>
-       	<p><a th:href="${'/alue/' + alue.id}"><span th:each="${alue.nimi}">Vantaa</span></a></p>
-        <p><a th:href="${'/alue/' + alue.id}"><span th:each="${alue.nimi}">Espoo</span></a></p>
-        <p><a th:href="${'/alue/' + alue.id}"><span th:each="${alue.nimi}">Turku</span></a></p>
- <!-- ESIMERKIN LOPPU -->
-<p class="Copyright"> TeamTableTurners ver. 1.0 <p>
+        <!-- ESIMERKKI-ALUEET -->
+        <!--        <p><a th:href="${'/alue/' + alue.id}"><span th:each="${alue.nimi}">Helsinki</span></a></p>
+                <p><a th:href="${'/alue/' + alue.id}"><span th:each="${alue.nimi}">Vantaa</span></a></p>
+                <p><a th:href="${'/alue/' + alue.id}"><span th:each="${alue.nimi}">Espoo</span></a></p>
+                <p><a th:href="${'/alue/' + alue.id}"><span th:each="${alue.nimi}">Turku</span></a></p>-->
+        <!-- ESIMERKIN LOPPU -->
+        <p class="Copyright"> TeamTableTurners ver. 1.0 </p>
 
     </body>
 </html>
