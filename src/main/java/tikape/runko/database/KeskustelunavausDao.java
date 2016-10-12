@@ -79,7 +79,7 @@ public class KeskustelunavausDao implements Dao<Keskustelunavaus, Integer> {
     }
     
     public List<Avausnakyma> openingView(int key) throws SQLException {
-        String query = "SELECT Keskustelunavaus.id AS Id, Keskustelunavaus.otsikko AS Alue, COUNT(DISTINCT Vastaus.id) + 1 AS Viesteja_yhteensa, MAX(MAX(Vastaus.ajankohta), MAX(Keskustelunavaus.aloitettu)) AS Viimeisin_viesti FROM Keskustelunavaus INNER JOIN Keskustelualue ON Keskustelunavaus.alue = Keskustelualue.id AND Keskustelualue.id = ? LEFT JOIN Vastaus ON Keskustelunavaus.id = Vastaus.avaus GROUP BY Keskustelunavaus.id ORDER BY Viimeisin_viesti DESC";
+        String query = "SELECT Keskustelunavaus.id AS Id, Keskustelunavaus.otsikko AS Alue, COUNT(DISTINCT Vastaus.id) + 1 AS Viesteja_yhteensa, MAX(MAX(Vastaus.ajankohta), MAX(Keskustelunavaus.aloitettu)) AS Viimeisin_viesti FROM Keskustelunavaus INNER JOIN Keskustelualue ON Keskustelunavaus.alue = Keskustelualue.id AND Keskustelualue.id = ? LEFT JOIN Vastaus ON Keskustelunavaus.id = Vastaus.avaus GROUP BY Keskustelunavaus.id ORDER BY Viimeisin_viesti DESC LIMIT 10";
         
         return database.queryAndCollect(query, rs -> new Avausnakyma(Integer.parseInt(rs.getString("Id")), rs.getString("Alue"), Integer.parseInt(rs.getString("Viesteja_yhteensa")), rs.getString("Viimeisin_viesti")), key);
     }
