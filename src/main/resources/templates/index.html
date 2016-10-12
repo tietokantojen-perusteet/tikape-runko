@@ -12,17 +12,15 @@
         <table class="table" STYLE="margin-top: 30px">
             <tr>
                 <th>Alue</th>
-                <th>Perustaja</th>
-                <th>Perustettu</th>
+                <th>Viestejä yhteensä</th>
+                <th>Viimeisin viesti</th>
             </tr>
 
-            <th:block th:each="alue : ${alueet}">
-                <tr>
-                    <td><a th:href="@{~/{id}(id=${alue.id})}" th:text="${alue.aihealue}">alue</a></td>
-                    <td th:text="${alue.perustaja}">perustaja</td>
-                    <td th:text="${alue.perustettu}">perustettu</td>
-                </tr>
-            </th:block>
+            <tr th:each="alue : ${alueet}">
+                <td><a th:href="@{~/{id}(id=${alue.id})}" th:text="${alue.aihealue}">alue</a></td>
+                <td th:text="${alue.perustaja}">perustaja</td>
+                <td th:text="${alue.perustettu}">perustettu</td>
+            </tr>
         </table>
 
         <h3>Lisää alue</h3>

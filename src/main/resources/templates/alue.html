@@ -16,13 +16,11 @@
                 <th>Aloitettu</th>
             </tr>
 
-            <th:block th:each="avaus : ${avaukset}">
-                <tr>
-                    <td><a th:href="@{~/{id}/{idd}(id=${alue.id},idd=${avaus.id})}" th:text="${avaus.otsikko}">alue</a></td>
-                    <td th:text="${avaus.aloittaja}">perustaja</td>
-                    <td th:text="${avaus.aloitettu}">perustettu</td>
-                </tr>
-            </th:block>
+            <tr th:each="avaus : ${avaukset}">
+                <td><a th:href="@{~/{id}/{idd}(id=${alue.id},idd=${avaus.id})}" th:text="${avaus.otsikko}">alue</a></td>
+                <td th:text="${avaus.aloittaja}">perustaja</td>
+                <td th:text="${avaus.aloitettu}">perustettu</td>
+            </tr>
         </table>
 
         <h3>Lisää avaus</h3>
