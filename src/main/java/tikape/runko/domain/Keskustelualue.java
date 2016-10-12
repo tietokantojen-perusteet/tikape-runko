@@ -20,8 +20,8 @@ public class Keskustelualue {
         this.perustaja = perustaja;
     }
 
-    public Keskustelualue(String aihealue, String kuvaus, String perustaja) {
-        this(null, aihealue, kuvaus, null, perustaja);
+    public Keskustelualue(String aihealue, String perustaja) {
+        this(null, aihealue, null, null, perustaja);
     }
 
     // Getterit:

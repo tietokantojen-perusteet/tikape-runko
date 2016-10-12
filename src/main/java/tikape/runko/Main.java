@@ -29,7 +29,7 @@ public class Main {
         }, new ThymeleafTemplateEngine());
 
         post("/", (req, res) -> {
-            keskustelualuedao.create(new Keskustelualue(req.queryParams("aihealue"), req.queryParams("kuvaus"), req.queryParams("perustaja")));
+            keskustelualuedao.create(new Keskustelualue(req.queryParams("aihealue"), req.queryParams("perustaja")));
             
             res.redirect("/");
             return "";
