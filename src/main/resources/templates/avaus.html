@@ -1,0 +1,39 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title th:text="${avaus.otsikko}">Avauksen nimi</title>
+        <meta charset="utf-8" />
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    </head>
+
+    <body class="container">
+        <table class="table" STYLE="margin-top: 30px">
+            <tr>
+                <th>Alue: <span th:text="${alue.aihealue}">Alueen nimi</span> <span>&#8594;</span> <span th:text="${avaus.otsikko}">Avauksen nimi</span></th>
+            </tr>
+
+            <tr>
+                <td>
+                    <ol>
+                        <li><span th:text="${avaus.avaus}">Avausviesti</span><span>&nbsp;&nbsp;</span>/<span th:text="${avaus.aloittaja}">Aloittaja</span></li>
+                        <th:block th:each="viesti : ${viestit}">
+                            <li><span th:text="${viesti.teksti}">Vastaus</span><span>&nbsp;&nbsp;</span>/<span th:text="${viesti.kirjoittaja}">Kirjoittaja</span></li>
+                        </th:block>
+                    </ol>
+                </td>
+            </tr>
+        </table>
+
+        <h3>Lisää viesti</h3>
+
+        <form method="POST" th:action="@{~/{id}/{idd}(id=${alue.id},idd=${avaus.id})}">
+            <p>Teksti: <textarea name="teksti"/></p>
+            <p>Käyttäjänimi: <input type="text" name="kirjoittaja"/></p>
+            <p><input type="submit" value="Lisää!"/></p>
+        </form>
+
+        <p><a th:href="@{~/{id}(id=${alue.id})}">Takaisin keskustelunavauksiin</a></p>
+    </body>
+</html>
