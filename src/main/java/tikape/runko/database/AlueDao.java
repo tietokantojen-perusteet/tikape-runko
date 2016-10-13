@@ -71,9 +71,9 @@ public class AlueDao implements Dao<Alue, Integer> {
     public List<Alue> findEtusivunAlueet() throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(
-                "SELECT Alue.*, COUNT(Viesti.id) AS viestienLkm, MAX(Viesti.aika) AS viimeisinAika"
-                + "FROM Alue LEFT JOIN Keskustelu ON Alue.id = Keskustelu.alue_id"
-                + "LEFT JOIN Viesti ON Keskustelu.id = Viesti.keskustelu_id"
+                "SELECT Alue.*, COUNT(Viesti.id) AS viestienLkm, MAX(Viesti.aika) AS viimeisinAika "
+                + "FROM Alue LEFT JOIN Keskustelu ON Alue.id = Keskustelu.alue_id "
+                + "LEFT JOIN Viesti ON Keskustelu.id = Viesti.keskustelu_id "
                 + "GROUP BY Alue.id");
 
         ResultSet rs = stmt.executeQuery();

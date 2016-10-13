@@ -97,9 +97,9 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
     public List<Keskustelu> findAlueenKeskustelut(int alue_id) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(
-                "SELECT Keskustelu.*, COUNT(Viesti.id) AS viestienLkm, MAX(Viesti.aika) AS viimeisinAika"
-                + "FROM Keskustelu LEFT JOIN Viesti ON Keskustelu.id = Viesti.keskustelu_id"
-                + "WHERE Keskustelu.alue_id = ?"
+                "SELECT Keskustelu.*, COUNT(Viesti.id) AS viestienLkm, MAX(Viesti.aika) AS viimeisinAika "
+                + "FROM Keskustelu LEFT JOIN Viesti ON Keskustelu.id = Viesti.keskustelu_id "
+                + "WHERE Keskustelu.alue_id = ? "
                 + "GROUP BY Keskustelu.id");
         stmt.setObject(1, alue_id);
         ResultSet rs = stmt.executeQuery();
