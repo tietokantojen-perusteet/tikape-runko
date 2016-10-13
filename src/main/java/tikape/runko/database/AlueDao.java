@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import tikape.runko.domain.Alue;
@@ -67,7 +69,13 @@ public class AlueDao implements Dao<Alue, Integer>{
 
         return alueet;
     }
+    public void lisaaAlue(Integer id, String nimi) throws SQLException{
+         Connection conn = database.getConnection();
+        Statement stmt = conn.createStatement();
+        stmt.execute("INSERT INTO Alue (alue_id, nimi)VALUES ('"+id+","+nimi+ "')");
 
+        conn.close();
+    }
     @Override
     public void delete(Integer key) throws SQLException {
         // ei toteutettu

@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +90,13 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer>{
 
         return keskustelut;
     }
+    public void lisaaKeskustelu(Integer id, Alue alue, String otsikko, String aloittaja, String aloitusviesti, Timestamp paivays) throws SQLException{
+         Connection conn = database.getConnection();
+        Statement stmt = conn.createStatement();
+        stmt.execute("INSERT INTO Keskustelu (keskustelu_id, omaalue, otsikko, paivamaara, aloittaja, aloitusviesti) VALUES ('"+id+","+alue+","+otsikko+ ","+paivays+","+aloittaja+","+aloitusviesti+"')");
 
+        conn.close();
+    }
     @Override
     public void delete(Integer key) throws SQLException {
         // ei toteutettu

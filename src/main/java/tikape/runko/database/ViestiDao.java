@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -289,7 +291,14 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
         return yrite;
     }
+    public void lisaaViesti(Integer id, Keskustelu kesk, Timestamp aika, String kirjoittaja, String teksti) throws SQLException{
+         Connection conn = database.getConnection();
+        Statement stmt = conn.createStatement();
+        stmt.execute("INSERT INTO Viesti (viesti_id, omakeskustelu, julkaisuaika, kirjoittaja, teksti)VALUES ('"+id+","+ kesk+ ","+aika+ ","+kirjoittaja+","+teksti+"')");
 
+        conn.close();
+    }
+    
     @Override
     public void delete(Integer key) throws SQLException {
         // ei toteutettu
