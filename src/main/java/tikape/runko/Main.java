@@ -3,6 +3,7 @@ package tikape.runko;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.thymeleaf.templateresolver.TemplateResolver;
 import spark.ModelAndView;
 import spark.Spark;
 import static spark.Spark.*;
@@ -22,7 +23,7 @@ public class Main {
         }
         Database database = new Database("jdbc:sqlite:keskustelualue.db");
         database.init();
-
+        
         staticFileLocation("/public");
 
         AlueDao alueDao = new AlueDao(database);
@@ -30,9 +31,17 @@ public class Main {
         ViestiDao viestiDao = new ViestiDao(database, keskusteluDao);
 
         Spark.get("/", (req, res) -> {
-            List<Alue> list = alueDao.findEtusivunAlueet();
+            List<Alue> list = new ArrayList<>();
+//            try {
+//                System.out.println("Yritetään ajaa metodia findEtusivunalueet");
+                list.addAll(alueDao.findEtusivunAlueet());
+//            } catch (Throwable t) {
+//                System.out.println(t.getMessage());
+//            }
+             
             HashMap map = new HashMap();
             map.put("alueet", list);
+            res.type("text/html;charset=UTF-8");
 
             return new ModelAndView(map, "index");
 
@@ -64,6 +73,7 @@ public class Main {
 //            }
             HashMap map = new HashMap();
             map.put("keskustelut", list);
+            map.put("alue", alueDao.findOne(Integer.parseInt(req.params("id"))));
             return new ModelAndView(map, "alue");
 
         }, new ThymeleafTemplateEngine());
