@@ -59,8 +59,8 @@ public class Keskustelu {
         this.viestienLkm = viestienLkm;
     }
 
-    public Timestamp getViimeisinAika() {
-        return viimeisinAika;
+    public String getViimeisinAika() {
+        return viimeisinAika.toString();
     }
 
     public void setViimeisinAika(Timestamp viimeisinAika) {
