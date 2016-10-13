@@ -36,7 +36,11 @@ public class Kayttoliittyma {
         for (Alue a : viestiDao.alueetJarjestys()) {
             alueet.add(a);
             viestejaYht.add(Integer.toString(viestiDao.alueenViestienmaara(a.getId())));
-            viimViesti.add(viestiDao.alueenUusin(a.getId()).toString());
+            if (viestiDao.alueenUusin(a.getId()) != null) {
+                viimViesti.add(viestiDao.alueenUusin(a.getId()).toString());
+            } else {
+                viimViesti.add("-");
+            }
         }
 
         map.put("alue", alueet);
@@ -67,7 +71,7 @@ public class Kayttoliittyma {
 
     public void run() throws Exception {
         ArrayList<String> alueet = new ArrayList<>();
-        
+
         get("/", (req, res) -> {
             HashMap map = getIndexpage();
             return new ModelAndView(map, "index");
@@ -109,17 +113,17 @@ public class Kayttoliittyma {
                 case "Keskustelu":
                     for (Keskustelu k : keskusteluDao.findAll()) {
                         System.out.println("\n Alue: " + k.getOmaalue().getNimi()
-                                + "\n Keskustelun avaaja:" + k.getAloittaja() + " " + k.getDate()
+                                + "\n Keskustelun avaaja:" + k.getAloittaja() + " " + k.getTime()
                                 + "\n Otsikko:" + k.getOtsikko()
                                 + "\n Viesti:" + k.getAloitusviesti());
                     }
                     break;
                 case "Viesti":
                     for (Viesti v : viestiDao.findAll()) {
-                        System.out.println("\n Keskustelun avaaja: " + v.getOmakeskustelu().getAloittaja() + " " + v.getOmakeskustelu().getDate()
+                        System.out.println("\n Keskustelun avaaja: " + v.getOmakeskustelu().getAloittaja() + " " + v.getOmakeskustelu().getTime()
                                 + "\n Keskustelun otsikko: " + v.getOmakeskustelu().getOtsikko()
                                 + "\n Avausviesti: " + v.getOmakeskustelu().getAloitusviesti()
-                                + "\n Vastaajan nimimerkki: " + v.getKirjoittaja() + " " + v.getViestiDate()
+                                + "\n Vastaajan nimimerkki: " + v.getKirjoittaja() + " " + v.getViestiTime()
                                 + "\n Vastaajan viesti: " + v.getTeksti());
                     }
                     break;

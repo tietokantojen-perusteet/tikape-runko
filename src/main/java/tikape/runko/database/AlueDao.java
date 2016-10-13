@@ -69,10 +69,10 @@ public class AlueDao implements Dao<Alue, Integer>{
 
         return alueet;
     }
-    public void lisaaAlue(Integer id, String nimi) throws SQLException{
+    public void lisaaAlue( String nimi) throws SQLException{
          Connection conn = database.getConnection();
         Statement stmt = conn.createStatement();
-        stmt.execute("INSERT INTO Alue (alue_id, nimi)VALUES ('"+id+","+nimi+ "')");
+        stmt.execute("INSERT INTO Alue (nimi)VALUES ('"+nimi+ "')");
 
         conn.close();
     }

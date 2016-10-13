@@ -90,10 +90,10 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer>{
 
         return keskustelut;
     }
-    public void lisaaKeskustelu(Integer id, Alue alue, String otsikko, String aloittaja, String aloitusviesti, Timestamp paivays) throws SQLException{
+    public void lisaaKeskustelu( Alue alue, String otsikko, String aloittaja, String aloitusviesti ) throws SQLException{
          Connection conn = database.getConnection();
         Statement stmt = conn.createStatement();
-        stmt.execute("INSERT INTO Keskustelu (keskustelu_id, omaalue, otsikko, paivamaara, aloittaja, aloitusviesti) VALUES ('"+id+","+alue+","+otsikko+ ","+paivays+","+aloittaja+","+aloitusviesti+"')");
+        stmt.execute("INSERT INTO Keskustelu (omaalue, otsikko, aloittaja, aloitusviesti) VALUES ('"+alue+","+otsikko+ ","+aloittaja+","+aloitusviesti+"')");
 
         conn.close();
     }
