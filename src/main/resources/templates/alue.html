@@ -20,6 +20,8 @@
 
                 <a th:href="${'/keskustelu/' + keskustelu.id}">
                     <span th:text="${keskustelu.otsikko}">Helsinki on paras</span>
+                    <span th:text="'Viestej&auml;: ' + ${keskustelu.viestienLkm}">Viestien lukumäärä</span>
+                    <span th:text="'Viimeisin viesti l&auml;hetetty: ' + ${keskustelu.viimeisinAika}">Viimeisimmän viestin aika</span> 
                 </a>
 
                 <!--                <div class="name" th:text="viesti.kayttaja : ${viesti.kayttaja}"></div>
