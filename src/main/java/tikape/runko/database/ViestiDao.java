@@ -58,8 +58,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
     public List<Viesti> findKeskustelunViestit(int keskustelu_id) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement(
-                "SELECT * FROM Viesti WHERE keskustelu_id = ? ORDER BY id");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE keskustelu_id = ? ORDER BY id");
         stmt.setObject(1, keskustelu_id);
         ResultSet rs = stmt.executeQuery();
 
