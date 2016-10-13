@@ -41,8 +41,8 @@ public class Viesti {
         this.keskustelu = keskustelu;
     }
 
-    public Timestamp getAika() {
-        return aika;
+    public String getAika() {
+        return aika.toString();
     }
 
     public void setAika(Timestamp aika) {
