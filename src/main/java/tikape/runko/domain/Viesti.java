@@ -4,19 +4,19 @@
  * and open the template in the editor.
  */
 package tikape.runko.domain;
-import java.util.Date;
-/**
- *
- * @author tamella
- */
+import java.sql.Time;
+import java.sql.Timestamp;
+// *
+ //* @author tamella
+ //*/
 public class Viesti implements Comparable<Viesti>{
     private Integer viesti_id;
     private Keskustelu omakeskustelu;
-    private Date julkaisuaika;
+    private Timestamp julkaisuaika;
     private String kirjoittaja;
     private String teksti;
 
-    public Viesti(Integer id, Date aika, String kirjo, String tekstii) {
+    public Viesti(Integer id, Timestamp aika, String kirjo, String tekstii) {
         this.viesti_id = id;
         this.julkaisuaika = aika;
         this.kirjoittaja = kirjo;
@@ -24,7 +24,7 @@ public class Viesti implements Comparable<Viesti>{
     }
     @Override
     public int compareTo(Viesti v) {
-    return getViestiDate().compareTo(v.getViestiDate());
+    return getViestiTime().compareTo(v.getViestiTime());
   }
     public Integer getId() {
         return viesti_id;
@@ -41,12 +41,12 @@ public class Viesti implements Comparable<Viesti>{
     public void setOmakeskustelu(Keskustelu mess) {
         this.omakeskustelu = mess;
     }
-    public Date getViestiDate() {
+    public Timestamp getViestiTime() {
         return julkaisuaika;
     }
 
-    public void setViestiDate(Date date) {
-        this.julkaisuaika = date;
+    public void setViestiTime(Timestamp aika) {
+        this.julkaisuaika = aika;
     }
     public String getKirjoittaja() {
         return kirjoittaja;

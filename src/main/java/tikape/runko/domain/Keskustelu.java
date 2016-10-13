@@ -65,11 +65,11 @@ public class Keskustelu{
     public void setOmaalue(Alue alue) {
         this.omaalue = alue;
     }
-    public Timestamp getDate() {
+    public Timestamp getTime() {
         return paivamaara;
     }
 
-    public void setDate(Timestamp ts) {
+    public void setTime(Timestamp ts) {
         this.paivamaara = ts;
     }
 }

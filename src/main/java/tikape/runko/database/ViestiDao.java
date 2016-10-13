@@ -186,7 +186,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         Collections.sort(alueet, new Comparator<Alue>() {
             public int compare(Alue a1, Alue a2) {
                 try {
-                    return alueenUusin(a1.getId()).compareTo(alueenUusin(a2.getId()));
+                    return a1.getNimi().compareTo(a2.getNimi());
                 } catch (Exception e) {
                     System.out.println("");
                 }
@@ -240,7 +240,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
         stmt.setObject(1, keskusteluid);
 
-        Timestamp aloitus = keskusdao.findOne(keskusteluid).getDate();
+        Timestamp aloitus = keskusdao.findOne(keskusteluid).getTime();
 
         ResultSet rs = stmt.executeQuery();
         if (!rs.next()) {
