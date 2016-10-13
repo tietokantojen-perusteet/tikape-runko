@@ -42,7 +42,10 @@ public class Viesti {
     }
 
     public String getAika() {
-        return aika.toString();
+        if (this.aika == null) {
+            return "Ei viestejä";
+        }
+        return this.aika.toString();
     }
 
     public void setAika(Timestamp aika) {

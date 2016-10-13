@@ -53,8 +53,10 @@ public class Alue {
     }
 
     public String getViimeisinAika() {
-        
-        return viimeisinAika.toString();
+        if(this.viimeisinAika == null) {
+            return "Ei viestejä";
+        }
+        return this.viimeisinAika.toString();
     }
 
     public void setViimeisinAika(Timestamp viimeisinAika) {
