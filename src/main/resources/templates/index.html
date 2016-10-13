@@ -3,7 +3,8 @@
 
     <head>
         <title>Keskustelualue</title>
-        <meta charset="utf-8" />
+<!--        <meta http-equiv="content-type" content="text/html; charset=UTF-8"></meta>-->
+        <meta charset="utf-8" th:charset="UTF-8"/>
         <link rel="stylesheet" type="text/css" href="/styles.css" />
     </head>
 
@@ -13,9 +14,17 @@
 
         <!-- DATAA KANNASTA 
         -->        
-        <p th:each="alue : ${alueet}"><a th:href="${'/alue/' + alue.id}"><span th:text="${alue.nimi}"></span></a></p>
-        <!--
-        -->
+        <p th:each="alue : ${alueet}">
+            <a th:href="${'/alue/' + alue.id}">
+                <span th:text="${alue.nimi}">Alueen nimi</span>
+<!--                <span>Viestejä: </span>-->
+                <span th:text="'Viestej&auml;: ' + ${alue.viestienLkm}">Viestien lukumäärä</span>
+<!--                <span>Viimeisin viesti: </span>-->
+                <span th:text="'Viimeisin viesti l&auml;hetetty: ' + ${alue.viimeisinAika}">Viimeisimmän viestin aika</span>      
+            </a>
+        </p>
+
+        
 
         <!-- ESIMERKKI-ALUEET -->
         <!--        <p><a th:href="${'/alue/' + alue.id}"><span th:each="${alue.nimi}">Helsinki</span></a></p>
