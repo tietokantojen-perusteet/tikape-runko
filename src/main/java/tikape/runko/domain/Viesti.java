@@ -43,7 +43,7 @@ public class Viesti {
 
     public String getAika() {
         if (this.aika == null) {
-            return "Ei viestejä";
+            return "Aika ei tiedossa";
         }
         return this.aika.toString();
     }

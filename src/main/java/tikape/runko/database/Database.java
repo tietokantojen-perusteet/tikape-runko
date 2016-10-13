@@ -48,6 +48,10 @@ public class Database {
 
         lista.add("CREATE TABLE Viesti (id integer PRIMARY KEY, keskustelu_id integer NOT NULL, aika timestamp DEFAULT CURRENT_TIMESTAMP, kayttaja varchar(30), "
                 + "sisalto varchar(10000) NOT NULL, FOREIGN KEY(keskustelu_id) REFERENCES Keskustelu(id));");
+//        Seuraavat kaksi komentoa ovat sovelluksen testaamista varten ja ne voi poistaa kun lisää-metodit ovat käytössä
+//        lista.add("INSERT INTO Keskustelu (alue_id, otsikko) VALUES (1, 'Testikeskustelu');");
+//        lista.add("INSERT INTO Viesti (keskustelu_id, kayttaja, sisalto) VALUES (1, 'Jippo444', "
+//                + "'Tämä on taulujen yhteydessä luotu testikeskustelu, jonka voi poistaa myöhemmin');");
 
         return lista;
     }
