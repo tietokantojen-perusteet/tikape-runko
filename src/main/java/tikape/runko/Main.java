@@ -55,7 +55,6 @@ public class Main {
 //
 //            return new ModelAndView(map, "index");
 //        }, new ThymeleafTemplateEngine());
-
 //        Spark.get("/alue/:id", (req, res) -> {
 //            HashMap map = new HashMap<>();
 //            map.put("alue", alueDao.findOne(Integer.parseInt(req.params("id"))));
@@ -114,7 +113,11 @@ public class Main {
 //                }
 //            }
             map.put("viestit", list);
-            map.put("sivu", (Integer.parseInt(req.queryParams("page")) - 1) * 10);
+            if (req.queryParams("page") != null) {
+                map.put("sivu", (Integer.parseInt(req.queryParams("page")) - 1) * 10);
+            } else {
+                map.put("sivu", 0);
+            }
             ModelAndView model = new ModelAndView(map, "Keskustelu");
             return model;
         }, new ThymeleafTemplateEngine());
