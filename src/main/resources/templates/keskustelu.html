@@ -41,9 +41,9 @@
     
     <h2><span th:text="${keskustelu.otsikko}">Helsinki on paras!</span></h2>
 
-    <div class="viesti" th:each="viesti : ${viestit}">
+    <div class="viesti" th:each="viesti, iterStat : ${viestit}">
 
-           <b>#<span th:text="${viesti.id}">1</span>           </b>
+           <b>#<span th:text="${iterStat.count} + ${sivu}">1</span>           </b>
 
             <p th:text="${viesti.sisalto}">
             	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc cursus lacinia ipsum, ac posuere nunc efficitur non. Donec imperdiet diam id vulputate venenatis. Vivamus mattis sit amet ligula cursus tempor. Ut id quam est. Ut sit amet egestas mauris. Curabitur lorem quam, tincidunt ac porttitor in, consequat ac felis. Donec tortor sem, imperdiet a gravida in, maximus non sapien.

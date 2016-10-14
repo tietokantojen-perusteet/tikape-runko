@@ -88,7 +88,7 @@ public class Main {
 
         });
 
-        post("keskustelu/:id", (req, res) -> {
+        Spark.post("keskustelu/:id", (req, res) -> {
 //            viestiDao.addOne();
 
             res.redirect("/keskustelu/" + req.params("id"));
@@ -109,7 +109,8 @@ public class Main {
 //                }
 //            }
             map.put("viestit", list);
-            ModelAndView model = new ModelAndView(map, "viesti");
+            map.put("sivu", (Integer.parseInt(req.queryParams("page")) - 1) * 10);
+            ModelAndView model = new ModelAndView(map, "Keskustelu");
             return model;
         }, new ThymeleafTemplateEngine());
 
