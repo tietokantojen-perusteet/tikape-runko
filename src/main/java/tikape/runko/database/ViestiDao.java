@@ -60,7 +60,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     public List<Viesti> findKeskustelunViestit(int keskustelu_id) throws SQLException {
         Keskustelu keskustelu = keskusteluDao.findOne(keskustelu_id);
         return database.queryAndCollect(
-                "SELECT * FROM Viesti WHERE keskustelu_id = ? ORDER BY id",
+                "SELECT id, strftime('%Y-%m-%d %H:%M:%f', aika) AS aika, kayttaja, sisalto FROM Viesti WHERE keskustelu_id = ? ORDER BY id",
                 rs -> new Viesti(rs.getInt("id"),
                         keskustelu,
                         rs.getTimestamp("aika"),
@@ -92,8 +92,21 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 //        return keskustelunViestit;
     }
 
-    public void lisaaViesti(String sisalto, String kayttaja) {
-        // Ei vielä toteutettu
+    public void lisaaViesti(String nimi, String sisalto) throws SQLException {  
+        Connection connection = database.getConnection();
+        System.out.println("LISATAAN VIESTIA");
+        System.out.println(" nimi: " + nimi + " sisalto: " + sisalto);
+        PreparedStatement stmt = connection.prepareStatement(
+                
+                "INSERT INTO Viesti (keskustelu_id, kayttaja, sisalto) VALUES ((SELECT MAX(id) FROM Keskustelu), ?, ?)");
+        
+        stmt.setString(1, nimi);
+        stmt.setString(2, sisalto);
+        
+        stmt.execute();
+        stmt.close();
+        connection.close();
+        
     }
 
 //    @Override

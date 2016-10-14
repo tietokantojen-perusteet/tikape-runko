@@ -102,7 +102,7 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
     public List<Keskustelu> findAlueenKeskustelut(int alue_id) throws SQLException {
         Alue alue = alueDao.findOne(alue_id);
         return database.queryAndCollect(
-                "SELECT Keskustelu.*, COUNT(Viesti.id) AS viestienLkm, MAX(Viesti.aika) AS viimeisinAika "
+                "SELECT Keskustelu.*, COUNT(Viesti.id) AS viestienLkm, strftime('%Y-%m-%d %H:%M:%f', MAX(Viesti.aika)) AS viimeisinAika "
                 + "FROM Keskustelu LEFT JOIN Viesti ON Keskustelu.id = Viesti.keskustelu_id "
                 + "WHERE Keskustelu.alue_id = ? "
                 + "GROUP BY Keskustelu.id",
@@ -141,12 +141,24 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
 //        return alueenKeskustelut;
     }
 
-    public void lisaaKeskustelunavaus(String otsikko, String sisalto, String kayttaja) {
-        // Ei vielä toteutettu
+    public void lisaaKeskustelu(int alue_id, String nimi, String otsikko, String sisalto, ViestiDao viestiDao) throws SQLException {
+        Connection connection = database.getConnection();
+        System.out.println("LISATAAN KESKUSTELUA");
+        System.out.println(" alueid " + alue_id + " nimi: " + nimi + " otsikko: " + otsikko + " sisalto: " + sisalto);
+        PreparedStatement stmt = connection.prepareStatement(
+                "INSERT INTO Keskustelu (alue_id, otsikko) VALUES (?, ?)");
+        stmt.setInt(1, alue_id);
+        stmt.setString(2, otsikko);
+        stmt.execute();
+        stmt.close();
+        connection.close();
+
+        viestiDao.lisaaViesti(nimi, sisalto);
     }
+}
 
 //    @Override
 //    public List<Keskustelu> findRange(int first, int count) throws SQLException {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 //    }
-}
+
