@@ -46,13 +46,13 @@ public class Database<T> {
 
         lista.add("CREATE TABLE Keskustelu (id integer PRIMARY KEY, alue_id integer NOT NULL, otsikko varchar(100) NOT NULL, FOREIGN KEY(alue_id) REFERENCES Alue(id));");
 
-        lista.add("CREATE TABLE Viesti (id integer PRIMARY KEY, keskustelu_id integer NOT NULL, aika timestamp DEFAULT CURRENT_TIMESTAMP, kayttaja varchar(30), "
-                + "sisalto varchar(10000) NOT NULL, FOREIGN KEY(keskustelu_id) REFERENCES Keskustelu(id));");
+        // Aika-sarake hankalasti, jotta getTimestamp-metodin haluamassa muodossa:
+        lista.add("CREATE TABLE Viesti (id integer PRIMARY KEY, keskustelu_id integer NOT NULL, aika timestamp DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now')), kayttaja varchar(30), sisalto varchar(10000) NOT NULL, FOREIGN KEY(keskustelu_id) REFERENCES Keskustelu(id))");
+
 //        Seuraavat kaksi komentoa ovat sovelluksen testaamista varten ja ne voi poistaa kun lisää-metodit ovat käytössä
 //        lista.add("INSERT INTO Keskustelu (alue_id, otsikko) VALUES (1, 'Testikeskustelu');");
 //        lista.add("INSERT INTO Viesti (keskustelu_id, kayttaja, sisalto) VALUES (1, 'Jippo444', "
 //                + "'Tämä on taulujen yhteydessä luotu testikeskustelu, jonka voi poistaa myöhemmin');");
-
         return lista;
     }
 
@@ -77,7 +77,7 @@ public class Database<T> {
         return rows;
     }
 
-    public int update(String updateQuery, Object... params) throws SQLException {
+    public void update(String updateQuery, Object... params) throws SQLException {
         Connection connection = this.getConnection();
         PreparedStatement stmt = connection.prepareStatement(updateQuery);
 
@@ -85,11 +85,9 @@ public class Database<T> {
             stmt.setObject(i + 1, params[i]);
         }
 
-        int changes = stmt.executeUpdate();
+        stmt.execute();
 
         stmt.close();
         connection.close();
-
-        return changes;
     }
 }

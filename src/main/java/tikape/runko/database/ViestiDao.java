@@ -23,94 +23,72 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
     @Override
     public Viesti findOne(Integer key) throws SQLException {
+        return (Viesti) database.queryAndCollect("SELECT * FROM Viesti WHERE id = ?",
+                rs -> new Viesti(rs.getInt("id"),
+                        this.keskusteluDao.findOne(rs.getInt("keskustelu_id")),
+                        rs.getTimestamp("aika"),
+                        rs.getString("kayttaja"),
+                        rs.getString("sisalto")),
+                key).get(0);
 
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue WHERE id = ?");
-        stmt.setObject(1, key);
-
-        ResultSet rs = stmt.executeQuery();
-        boolean hasOne = rs.next();
-        if (!hasOne) {
-            return null;
-        }
-
-        Integer id = rs.getInt("id");
-        Timestamp aika = rs.getTimestamp("aika");
-        String kayttaja = rs.getString("kayttaja");
-        String sisalto = rs.getString("sisalto");
-
-        Viesti viesti = new Viesti(id, aika, kayttaja, sisalto);
-
-        Integer keskustelu = rs.getInt("keskustelu_id");
-
-        rs.close();
-        stmt.close();
-        connection.close();
-
-        viesti.setKeskustelu(this.keskusteluDao.findOne(keskustelu));
-
-        return viesti;
+//        Connection connection = database.getConnection();
+//        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue WHERE id = ?");
+//        stmt.setObject(1, key);
+//
+//        ResultSet rs = stmt.executeQuery();
+//        boolean hasOne = rs.next();
+//        if (!hasOne) {
+//            return null;
+//        }
+//
+//        Integer id = rs.getInt("id");
+//        Timestamp aika = rs.getTimestamp("aika");
+//        String kayttaja = rs.getString("kayttaja");
+//        String sisalto = rs.getString("sisalto");
+//
+//        Viesti viesti = new Viesti(id, aika, kayttaja, sisalto);
+//
+//        Integer keskustelu = rs.getInt("keskustelu_id");
+//
+//        rs.close();
+//        stmt.close();
+//        connection.close();
+//
+//        viesti.setKeskustelu(this.keskusteluDao.findOne(keskustelu));
+//
+//        return viesti;
     }
 
-    @Override
-    public List findAll() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public List<Viesti> findKeskustelunViestit(int keskustelu_id) throws SQLException {
+//    @Override
+//    public List findAll() throws SQLException {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
+    public List<Viesti> findKeskustelunViestitSivullinen(int keskustelu_id, int sivunumero, int viestienLkmSivulla) throws SQLException {
         Keskustelu keskustelu = keskusteluDao.findOne(keskustelu_id);
         return database.queryAndCollect(
-                "SELECT id, strftime('%Y-%m-%d %H:%M:%f', aika) AS aika, kayttaja, sisalto FROM Viesti WHERE keskustelu_id = ? ORDER BY id",
+                "SELECT * FROM Viesti WHERE keskustelu_id = ? ORDER BY id LIMIT ? OFFSET ?",
+                rs -> new Viesti(rs.getInt("id"),
+                        keskustelu,
+                        rs.getTimestamp("aika"),
+                        rs.getString("kayttaja"),
+                        rs.getString("sisalto")),
+                keskustelu_id, viestienLkmSivulla, (sivunumero - 1) * viestienLkmSivulla);
+    }
+
+    public List<Viesti> findKeskustelunViestitKaikki(int keskustelu_id) throws SQLException {
+        Keskustelu keskustelu = keskusteluDao.findOne(keskustelu_id);
+        return database.queryAndCollect(
+                "SELECT * FROM Viesti WHERE keskustelu_id = ? ORDER BY id",
                 rs -> new Viesti(rs.getInt("id"),
                         keskustelu,
                         rs.getTimestamp("aika"),
                         rs.getString("kayttaja"),
                         rs.getString("sisalto")),
                 keskustelu_id);
-
-//        Connection connection = database.getConnection();
-//        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE keskustelu_id = ? ORDER BY id");
-//        stmt.setObject(1, keskustelu_id);
-//        ResultSet rs = stmt.executeQuery();
-//
-//        Keskustelu keskustelu = keskusteluDao.findOne(keskustelu_id);
-//
-//        List<Viesti> keskustelunViestit = new ArrayList<>();
-//        while (rs.next()) {
-//            Integer id = rs.getInt("id");
-//            Timestamp aika = rs.getTimestamp("aika");
-//            String kayttaja = rs.getString("kayttaja");
-//            String sisalto = rs.getString("sisalto");
-//
-//            keskustelunViestit.add(new Viesti(id, keskustelu, aika, kayttaja, sisalto));
-//        }
-//
-//        rs.close();
-//        stmt.close();
-//        connection.close();
-//
-//        return keskustelunViestit;
     }
 
-    public void lisaaViesti(String nimi, String sisalto) throws SQLException {  
-        Connection connection = database.getConnection();
-        System.out.println("LISATAAN VIESTIA");
-        System.out.println(" nimi: " + nimi + " sisalto: " + sisalto);
-        PreparedStatement stmt = connection.prepareStatement(
-                
-                "INSERT INTO Viesti (keskustelu_id, kayttaja, sisalto) VALUES ((SELECT MAX(id) FROM Keskustelu), ?, ?)");
-        
-        stmt.setString(1, nimi);
-        stmt.setString(2, sisalto);
-        
-        stmt.execute();
-        stmt.close();
-        connection.close();
-        
+    public void lisaaViesti(int keskustelu_id, String kayttaja, String sisalto) throws SQLException {
+        database.update("INSERT INTO Viesti (keskustelu_id, kayttaja, sisalto) VALUES (?, ?, ?)",
+                keskustelu_id, kayttaja, sisalto);
     }
-
-//    @Override
-//    public List findRange(int first, int count) throws SQLException {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
 }
