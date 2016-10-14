@@ -101,16 +101,15 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
     public List<Viesti> viestitJarjestys(Integer keskusteluid) throws SQLException {
         Connection connection = database.getConnection();
-//          vaihdettu haettavaksi tauluksi Viestit / VK
-//        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Keskustelu WHERE omakeskustelu = ?");
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE omakeskustelu = ?");
         stmt.setObject(1, keskusteluid);
 
         ResultSet rs = stmt.executeQuery();
         List<Viesti> viestit = new ArrayList<>();
+        
         while (rs.next()) {
+            
             Integer id = rs.getInt("viesti_id");
-//            Date aika = rs.getDate("julkaisuaika");
             Timestamp aika = rs.getTimestamp("julkaisuaika");
             String kirjoittaja = rs.getString("kirjoittaja");
             String teksti = rs.getString("teksti");
@@ -122,6 +121,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
             viesti.setOmakeskustelu(omakes);
             viestit.add(viesti);
         }
+        
         Collections.sort(viestit);
         rs.close();
         stmt.close();
@@ -138,12 +138,13 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
         ResultSet rs = stmt.executeQuery();
         List<Keskustelu> keskustelut = new ArrayList<>();
+
         while (rs.next()) {
+            
             Integer id = rs.getInt("keskustelu_id");
             String otsikko = rs.getString("otsikko");
             String aloittaja = rs.getString("aloittaja");
             String teksti = rs.getString("aloitusviesti");
-//            Date paivamaara = rs.getDate("paivamaara");
             Timestamp paivamaara = rs.getTimestamp("paivamaara");
 
             Integer omaalue = rs.getInt("omaalue");
@@ -291,14 +292,15 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
         return yrite;
     }
-    public void lisaaViesti(Keskustelu kesk, String kirjoittaja, String teksti) throws SQLException{
-         Connection conn = database.getConnection();
+
+    public void lisaaViesti(Keskustelu kesk, String kirjoittaja, String teksti) throws SQLException {
+        Connection conn = database.getConnection();
         Statement stmt = conn.createStatement();
-        stmt.execute("INSERT INTO Viesti (omakeskustelu, kirjoittaja, teksti)VALUES ('"+ kesk+ ","+kirjoittaja+","+teksti+"')");
+        stmt.execute("INSERT INTO Viesti (omakeskustelu, kirjoittaja, teksti)VALUES ('" + kesk + "," + kirjoittaja + "," + teksti + "')");
 
         conn.close();
     }
-    
+
     @Override
     public void delete(Integer key) throws SQLException {
         // ei toteutettu

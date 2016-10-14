@@ -22,15 +22,16 @@ import java.util.Date;
  * @author tamella
  */
 // tämä luokka koostuu niistä kyselyistä, joita taululle Keskustelut voidaan esittää
+public class KeskusteluDao implements Dao<Keskustelu, Integer> {
 
-public class KeskusteluDao implements Dao<Keskustelu, Integer>{
     private Database database;
     private AlueDao aluedao;
-    
-    public KeskusteluDao(Database base, AlueDao aluedao ){
+
+    public KeskusteluDao(Database base, AlueDao aluedao) {
         this.database = base;
         this.aluedao = aluedao;
     }
+
     @Override
     public Keskustelu findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
@@ -50,11 +51,11 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer>{
         Timestamp paivamaara = rs.getTimestamp("paivamaara");
 
         Keskustelu k = new Keskustelu(keskusteluid, otsikko, aloittaja, aloitusviesti, paivamaara);
-        
+
         Integer omaalue = rs.getInt("omaalue");
-        
+
         k.setOmaalue(this.aluedao.findOne(omaalue));
-        
+
         rs.close();
         stmt.close();
         connection.close();
@@ -77,7 +78,6 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer>{
             String aloitusviesti = rs.getString("aloitusviesti");
             Integer omaa = rs.getInt("omaalue");
             Timestamp paivamaara = rs.getTimestamp("paivamaara");
-//            Date paivamaara = rs.getDate("paivamaara");
 
             Keskustelu palapala = new Keskustelu(keskusteluid, otsikko, aloittaja, aloitusviesti, paivamaara);
             palapala.setOmaalue(this.aluedao.findOne(omaa));
@@ -90,18 +90,21 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer>{
 
         return keskustelut;
     }
-    public void lisaaKeskustelu( Alue alue, String otsikko, String aloittaja, String aloitusviesti ) throws SQLException{
-         Connection conn = database.getConnection();
+
+    public void lisaaKeskustelu(Integer alue_id, String otsikko, String aloittaja, String aloitusviesti) throws SQLException {
+        Connection conn = database.getConnection();
         Statement stmt = conn.createStatement();
-        stmt.execute("INSERT INTO Keskustelu (omaalue, otsikko, aloittaja, aloitusviesti) VALUES ('"+alue+","+otsikko+ ","+aloittaja+","+aloitusviesti+"')");
+        stmt.execute("INSERT INTO Keskustelu (omaalue, otsikko, aloittaja, aloitusviesti) VALUES (" + alue_id + ",'" + otsikko + "','" + aloittaja + "','" + aloitusviesti + "')");
 
         conn.close();
     }
+
     @Override
     public void delete(Integer key) throws SQLException {
         // ei toteutettu
     }
-    public AlueDao getAlueDao(){
+
+    public AlueDao getAlueDao() {
         return this.aluedao;
     }
 }

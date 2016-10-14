@@ -3,6 +3,8 @@ package tikape.runko;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Properties;
 import java.util.Scanner;
 import spark.ModelAndView;
 import static spark.Spark.*;
@@ -19,7 +21,7 @@ public class Kayttoliittyma {
     private static ViestiDao viestiDao;
 
     public Kayttoliittyma() throws Exception {
-        this.database = new Database("jdbc:sqlite:foorumi2.db");
+        this.database = new Database("jdbc:sqlite:foorumi.db");
         database.init();
         this.alueDao = new AlueDao(database);
         this.keskusteluDao = new KeskusteluDao(database, alueDao);
@@ -29,15 +31,15 @@ public class Kayttoliittyma {
 
     public HashMap getIndexpage() throws Exception {
         HashMap map = new HashMap<>();
-        ArrayList<Alue> alueet = new ArrayList<>();
+        List<Alue> alueet = viestiDao.alueetJarjestys();
         ArrayList<String> viestejaYht = new ArrayList<>();
         ArrayList<String> viimViesti = new ArrayList<>();
 
-        for (Alue a : viestiDao.alueetJarjestys()) {
-            alueet.add(a);
+        for (Alue a : alueet) {
             viestejaYht.add(Integer.toString(viestiDao.alueenViestienmaara(a.getId())));
             if (viestiDao.alueenUusin(a.getId()) != null) {
-                viimViesti.add(viestiDao.alueenUusin(a.getId()).toString());
+                String str = viestiDao.alueenUusin(a.getId()).toString();
+                viimViesti.add(str.substring(0, 19));
             } else {
                 viimViesti.add("-");
             }
@@ -52,14 +54,20 @@ public class Kayttoliittyma {
 
     public HashMap getAluepage(int alueId) throws Exception {
         HashMap map = new HashMap<>();
-        ArrayList<Keskustelu> keskustelut = new ArrayList<>();
+        List<Keskustelu> keskustelut = viestiDao.keskustelutJarjestys(alueId);
         ArrayList<String> viestejaYht = new ArrayList<>();
         ArrayList<String> viimViesti = new ArrayList<>();
 
-        for (Keskustelu k : viestiDao.keskustelutJarjestys(alueId)) {
-            keskustelut.add(k);
+        for (Keskustelu k : keskustelut) {
             viestejaYht.add(Integer.toString(viestiDao.keskustelunViestienmaara(k.getId())));
-            viimViesti.add(viestiDao.keskustelunUusin(k.getId()).toString());
+
+            if (viestiDao.keskustelunUusin(k.getId()) != null) {
+                String str = viestiDao.keskustelunUusin(k.getId()).toString();
+                viimViesti.add(str.substring(0, 19));
+            } else {
+                String str = keskusteluDao.findOne(k.getId()).getTime().toString();
+                viimViesti.add(str.substring(0, 19));
+            }
         }
 
         map.put("keskustelu", keskustelut);
@@ -72,6 +80,8 @@ public class Kayttoliittyma {
     public void run() throws Exception {
         ArrayList<String> alueet = new ArrayList<>();
 
+        staticFileLocation("/templates");
+
         get("/", (req, res) -> {
             HashMap map = getIndexpage();
             return new ModelAndView(map, "index");
@@ -82,12 +92,21 @@ public class Kayttoliittyma {
             return new ModelAndView(map, "alue");
         }, new ThymeleafTemplateEngine());
 
-        post("/index.html", (req, res) -> {
+        post("/", (req, res) -> {
             String nimi = req.queryParams("nimi");
-            System.out.println("Vastaanotettiin " + nimi);
+            alueDao.lisaaAlue(nimi);
+            HashMap map = getIndexpage();
+            return new ModelAndView(map, "index");
+        }, new ThymeleafTemplateEngine());
 
-            return "Vastaanotettiin: " + nimi;
-        });
+        post("/alue/:id", (req, res) -> {
+            String nimi = req.queryParams("nimi");
+            String otsikko = req.queryParams("otsikko");
+            String viesti = req.queryParams("viesti");
+            keskusteluDao.lisaaKeskustelu(alueDao.findOne(Integer.parseInt(req.params("id"))).getId(), otsikko, viesti, viesti);
+            HashMap map = getAluepage(Integer.parseInt(req.params("id")));
+            return new ModelAndView(map, "alue");
+        }, new ThymeleafTemplateEngine());
 
     }
 
