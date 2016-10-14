@@ -81,15 +81,20 @@ public class Main {
         }, new ThymeleafTemplateEngine());
 
         Spark.post("alue/:id", (req, res) -> {
-//            keskusteluDao.addOne();
+            int id = Integer.parseInt(req.params("id"));
+            String nimi = req.queryParams("nimi");
+            String otsikko = req.queryParams("otsikko");
+            String sisalto = req.queryParams("sisalto");
+            System.out.println("Valmistellaan keskustelun lisäystä...");
+            keskusteluDao.lisaaKeskustelu(id, nimi, otsikko, sisalto, viestiDao);
 
             res.redirect("/alue/" + req.params("id"));
             return "Metodi ei vielä käytössä";
 
         });
 
-        Spark.post("keskustelu/:id", (req, res) -> {
-//            viestiDao.addOne();
+        post("keskustelu/:id", (req, res) -> {
+            //viestiDao.lisaaViesti(0, nimi, sisalto);
 
             res.redirect("/keskustelu/" + req.params("id"));
             return "Turhaa tekstiä jota ei käytetä";
