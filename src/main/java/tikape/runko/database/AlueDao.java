@@ -24,26 +24,29 @@ public class AlueDao implements Dao<Alue, Integer> {
 
     @Override
     public Alue findOne(Integer key) throws SQLException {
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue WHERE id = ?");
-        stmt.setObject(1, key);
-
-        ResultSet rs = stmt.executeQuery();
-        boolean hasOne = rs.next();
-        if (!hasOne) {
-            return null;
-        }
-
-        Integer id = rs.getInt("id");
-        String nimi = rs.getString("nimi");
-
-        Alue alue = new Alue(id, nimi);
-
-        rs.close();
-        stmt.close();
-        connection.close();
-
-        return alue;
+        return (Alue) database.queryAndCollect("SELECT * FROM Alue WHERE id = ?",
+                rs -> new Alue(rs.getInt("id"), rs.getString("nimi")), key).get(0);
+//        
+//        Connection connection = database.getConnection();
+//        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue WHERE id = ?");
+//        stmt.setObject(1, key);
+//
+//        ResultSet rs = stmt.executeQuery();
+//        boolean hasOne = rs.next();
+//        if (!hasOne) {
+//            return null;
+//        }
+//
+//        Integer id = rs.getInt("id");
+//        String nimi = rs.getString("nimi");
+//
+//        Alue alue = new Alue(id, nimi);
+//
+//        rs.close();
+//        stmt.close();
+//        connection.close();
+//
+//        return alue;
     }
 
     @Override
@@ -69,29 +72,43 @@ public class AlueDao implements Dao<Alue, Integer> {
     }
 
     public List<Alue> findEtusivunAlueet() throws SQLException {
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement(
-                "SELECT Alue.*, COUNT(Viesti.id) AS viestienLkm, MAX(Viesti.aika) AS viimeisinAika "
+//        return database.queryAndCollect(
+//                "SELECT Alue.*, COUNT(Viesti.id) AS viestienLkm, MAX(Viesti.aika) AS viimeisinAika "
+//                + "FROM Alue LEFT JOIN Keskustelu ON Alue.id = Keskustelu.alue_id "
+//                + "LEFT JOIN Viesti ON Keskustelu.id = Viesti.keskustelu_id "
+//                + "GROUP BY Alue.id",
+//                rs -> new Alue(rs.getInt("id"), rs.getString("nimi"), rs.getInt("viestienLkm"), rs.getTimestamp("viimeisinAika")));
+        // Ajan palautus getTimestamp-metodin haluamassa muodossa:
+        return database.queryAndCollect(
+                "SELECT Alue.*, COUNT(Viesti.id) AS viestienLkm, strftime('%Y-%m-%d %H:%M:%f', MAX(Viesti.aika)) AS viimeisinAika "
                 + "FROM Alue LEFT JOIN Keskustelu ON Alue.id = Keskustelu.alue_id "
                 + "LEFT JOIN Viesti ON Keskustelu.id = Viesti.keskustelu_id "
-                + "GROUP BY Alue.id");
+                + "GROUP BY Alue.id",
+                rs -> new Alue(rs.getInt("id"), rs.getString("nimi"), rs.getInt("viestienLkm"), rs.getTimestamp("viimeisinAika")));
 
-        ResultSet rs = stmt.executeQuery();
-        List<Alue> alueet = new ArrayList<>();
-        while (rs.next()) {
-            Integer id = rs.getInt("id");
-            String nimi = rs.getString("nimi");
-            Integer viestienLkm = rs.getInt("viestienLkm");
-            Timestamp viimeisinAika = rs.getTimestamp("viimeisinAika");
-
-            alueet.add(new Alue(id, nimi, viestienLkm, viimeisinAika));
-        }
-
-        rs.close();
-        stmt.close();
-        connection.close();
-
-        return alueet;
+//        Connection connection = database.getConnection();
+//        PreparedStatement stmt = connection.prepareStatement(
+//                "SELECT Alue.*, COUNT(Viesti.id) AS viestienLkm, MAX(Viesti.aika) AS viimeisinAika "
+//                + "FROM Alue LEFT JOIN Keskustelu ON Alue.id = Keskustelu.alue_id "
+//                + "LEFT JOIN Viesti ON Keskustelu.id = Viesti.keskustelu_id "
+//                + "GROUP BY Alue.id");
+//
+//        ResultSet rs = stmt.executeQuery();
+//        List<Alue> alueet = new ArrayList<>();
+//        while (rs.next()) {
+//            Integer id = rs.getInt("id");
+//            String nimi = rs.getString("nimi");
+//            Integer viestienLkm = rs.getInt("viestienLkm");
+//            Timestamp viimeisinAika = rs.getTimestamp("viimeisinAika");
+//
+//            alueet.add(new Alue(id, nimi, viestienLkm, viimeisinAika));
+//        }
+//
+//        rs.close();
+//        stmt.close();
+//        connection.close();
+//
+//        return alueet;
     }
 
 //    public void delete(Integer key) throws SQLException {
