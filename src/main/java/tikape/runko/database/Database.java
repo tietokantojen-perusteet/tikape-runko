@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Database {
+public class Database<T> {
 
     private String databaseAddress;
 
@@ -54,5 +54,42 @@ public class Database {
 //                + "'Tämä on taulujen yhteydessä luotu testikeskustelu, jonka voi poistaa myöhemmin');");
 
         return lista;
+    }
+
+    public List<T> queryAndCollect(String query, Collector<T> col, Object... params) throws SQLException {
+        Connection connection = this.getConnection();
+        PreparedStatement stmt = connection.prepareStatement(query);
+        for (int i = 0; i < params.length; i++) {
+            stmt.setObject(i + 1, params[i]);
+        }
+
+        ResultSet rs = stmt.executeQuery();
+        List<T> rows = new ArrayList<>();
+
+        while (rs.next()) {
+            rows.add(col.collect(rs));
+        }
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return rows;
+    }
+
+    public int update(String updateQuery, Object... params) throws SQLException {
+        Connection connection = this.getConnection();
+        PreparedStatement stmt = connection.prepareStatement(updateQuery);
+
+        for (int i = 0; i < params.length; i++) {
+            stmt.setObject(i + 1, params[i]);
+        }
+
+        int changes = stmt.executeUpdate();
+
+        stmt.close();
+        connection.close();
+
+        return changes;
     }
 }
