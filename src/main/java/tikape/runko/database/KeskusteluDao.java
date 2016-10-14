@@ -23,31 +23,36 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
     }
 
     public Keskustelu findOne(Integer key) throws SQLException {
-
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue WHERE id = ?");
-        stmt.setObject(1, key);
-
-        ResultSet rs = stmt.executeQuery();
-        boolean hasOne = rs.next();
-        if (!hasOne) {
-            return null;
-        }
-
-        Integer id = rs.getInt("id");
-        String otsikko = rs.getString("otsikko");
-
-        Keskustelu keskustelu = new Keskustelu(id, otsikko);
-
-        Integer alue = rs.getInt("alue_id");
-
-        rs.close();
-        stmt.close();
-        connection.close();
-
-        keskustelu.setAlue(this.alueDao.findOne(alue));
-
-        return keskustelu;
+        return (Keskustelu) database.queryAndCollect("SELECT * FROM Keskustelu WHERE id = ?",
+                rs -> new Keskustelu(rs.getInt("id"),
+                        this.alueDao.findOne(rs.getInt("alue_id")),
+                        rs.getString("otsikko"), null, null),
+                key).get(0);
+//
+//        Connection connection = database.getConnection();
+//        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Keskustelu WHERE id = ?");
+//        stmt.setObject(1, key);
+//
+//        ResultSet rs = stmt.executeQuery();
+//        boolean hasOne = rs.next();
+//        if (!hasOne) {
+//            return null;
+//        }
+//
+//        Integer id = rs.getInt("id");
+//        String otsikko = rs.getString("otsikko");
+//
+//        Keskustelu keskustelu = new Keskustelu(id, otsikko);
+//
+//        Integer alue = rs.getInt("alue_id");
+//
+//        rs.close();
+//        stmt.close();
+//        connection.close();
+//
+//        keskustelu.setAlue(this.alueDao.findOne(alue));
+//
+//        return keskustelu;
     }
 
     @Override
@@ -95,32 +100,49 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
     }
 
     public List<Keskustelu> findAlueenKeskustelut(int alue_id) throws SQLException {
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement(
+        Alue alue = alueDao.findOne(alue_id);
+        return database.queryAndCollect(
                 "SELECT Keskustelu.*, COUNT(Viesti.id) AS viestienLkm, MAX(Viesti.aika) AS viimeisinAika "
                 + "FROM Keskustelu LEFT JOIN Viesti ON Keskustelu.id = Viesti.keskustelu_id "
                 + "WHERE Keskustelu.alue_id = ? "
-                + "GROUP BY Keskustelu.id");
-        stmt.setObject(1, alue_id);
-        ResultSet rs = stmt.executeQuery();
+                + "GROUP BY Keskustelu.id",
+                rs -> new Keskustelu(rs.getInt("id"),
+                        alue,
+                        rs.getString("otsikko"),
+                        rs.getInt("viestienLkm"),
+                        rs.getTimestamp("viimeisinAika")),
+                alue_id);
 
-        Alue alue = alueDao.findOne(alue_id);
+//        Connection connection = database.getConnection();
+//        PreparedStatement stmt = connection.prepareStatement(
+//                "SELECT Keskustelu.*, COUNT(Viesti.id) AS viestienLkm, MAX(Viesti.aika) AS viimeisinAika "
+//                + "FROM Keskustelu LEFT JOIN Viesti ON Keskustelu.id = Viesti.keskustelu_id "
+//                + "WHERE Keskustelu.alue_id = ? "
+//                + "GROUP BY Keskustelu.id");
+//        stmt.setObject(1, alue_id);
+//        ResultSet rs = stmt.executeQuery();
+//
+//        Alue alue = alueDao.findOne(alue_id);
+//
+//        List<Keskustelu> alueenKeskustelut = new ArrayList<>();
+//        while (rs.next()) {
+//            Integer id = rs.getInt("id");
+//            String otsikko = rs.getString("otsikko");
+//            Integer viestienLkm = rs.getInt("viestienLkm");
+//            Timestamp viimeisinAika = rs.getTimestamp("viimeisinAika");
+//
+//            alueenKeskustelut.add(new Keskustelu(id, alue, otsikko, viestienLkm, viimeisinAika));
+//        }
+//
+//        rs.close();
+//        stmt.close();
+//        connection.close();
+//
+//        return alueenKeskustelut;
+    }
 
-        List<Keskustelu> alueenKeskustelut = new ArrayList<>();
-        while (rs.next()) {
-            Integer id = rs.getInt("id");
-            String otsikko = rs.getString("otsikko");
-            Integer viestienLkm = rs.getInt("viestienLkm");
-            Timestamp viimeisinAika = rs.getTimestamp("viimeisinAika");
-
-            alueenKeskustelut.add(new Keskustelu(id, alue, otsikko, viestienLkm, viimeisinAika));
-        }
-
-        rs.close();
-        stmt.close();
-        connection.close();
-
-        return alueenKeskustelut;
+    public void lisaaKeskustelunavaus(String otsikko, String sisalto, String kayttaja) {
+        // Ei vielä toteutettu
     }
 
 //    @Override
