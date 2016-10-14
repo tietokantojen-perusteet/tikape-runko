@@ -28,137 +28,103 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
                         this.alueDao.findOne(rs.getInt("alue_id")),
                         rs.getString("otsikko"), null, null),
                 key).get(0);
+    }
+
+//    @Override
+//    public List<Keskustelu> findAll() throws SQLException {
 //
 //        Connection connection = database.getConnection();
-//        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Keskustelu WHERE id = ?");
-//        stmt.setObject(1, key);
-//
+//        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Keskustelu");
 //        ResultSet rs = stmt.executeQuery();
-//        boolean hasOne = rs.next();
-//        if (!hasOne) {
-//            return null;
+//
+//        Map<Integer, List<Keskustelu>> alueidenKeskustelut = new HashMap<>();
+//
+//        List<Keskustelu> keskustelut = new ArrayList<>();
+//
+//        while (rs.next()) {
+//
+//            Integer id = rs.getInt("id");
+//            String otsikko = rs.getString("otsikko");
+//
+//            Keskustelu keskustelu = new Keskustelu(id, otsikko);
+//            keskustelut.add(keskustelu);
+//
+//            int alue = rs.getInt("alue_id");
+//
+//            if (!alueidenKeskustelut.containsKey(alue)) {
+//                alueidenKeskustelut.put(alue, new ArrayList<>());
+//            }
+//            alueidenKeskustelut.get(alue).add(keskustelu);
 //        }
-//
-//        Integer id = rs.getInt("id");
-//        String otsikko = rs.getString("otsikko");
-//
-//        Keskustelu keskustelu = new Keskustelu(id, otsikko);
-//
-//        Integer alue = rs.getInt("alue_id");
 //
 //        rs.close();
 //        stmt.close();
 //        connection.close();
 //
-//        keskustelu.setAlue(this.alueDao.findOne(alue));
+//        for (Alue alue : this.alueDao.findAll()) {
+//            if (!alueidenKeskustelut.containsKey(alue.getId())) {
+//                continue;
+//            }
 //
-//        return keskustelu;
-    }
-
-    @Override
-    public List<Keskustelu> findAll() throws SQLException {
-
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Keskustelu");
-        ResultSet rs = stmt.executeQuery();
-
-        Map<Integer, List<Keskustelu>> alueidenKeskustelut = new HashMap<>();
-
-        List<Keskustelu> keskustelut = new ArrayList<>();
-
-        while (rs.next()) {
-
-            Integer id = rs.getInt("id");
-            String otsikko = rs.getString("otsikko");
-
-            Keskustelu keskustelu = new Keskustelu(id, otsikko);
-            keskustelut.add(keskustelu);
-
-            int alue = rs.getInt("alue_id");
-
-            if (!alueidenKeskustelut.containsKey(alue)) {
-                alueidenKeskustelut.put(alue, new ArrayList<>());
-            }
-            alueidenKeskustelut.get(alue).add(keskustelu);
-        }
-
-        rs.close();
-        stmt.close();
-        connection.close();
-
-        for (Alue alue : this.alueDao.findAll()) {
-            if (!alueidenKeskustelut.containsKey(alue.getId())) {
-                continue;
-            }
-
-            for (Keskustelu keskustelu : alueidenKeskustelut.get(alue.getId())) {
-                keskustelu.setAlue(alue);
-            }
-        }
-
-        return keskustelut;
-    }
-
-    public List<Keskustelu> findAlueenKeskustelut(int alue_id) throws SQLException {
+//            for (Keskustelu keskustelu : alueidenKeskustelut.get(alue.getId())) {
+//                keskustelu.setAlue(alue);
+//            }
+//        }
+//
+//        return keskustelut;
+//    }
+    public List<Keskustelu> findAlueenKeskustelutUusimmat(int alue_id) throws SQLException {
+        int uusimpienLkm = 10;
         Alue alue = alueDao.findOne(alue_id);
         return database.queryAndCollect(
-                "SELECT Keskustelu.*, COUNT(Viesti.id) AS viestienLkm, strftime('%Y-%m-%d %H:%M:%f', MAX(Viesti.aika)) AS viimeisinAika "
+                "SELECT Keskustelu.*, COUNT(Viesti.id) AS viestienLkm, MAX(Viesti.aika) AS viimeisinAika "
                 + "FROM Keskustelu LEFT JOIN Viesti ON Keskustelu.id = Viesti.keskustelu_id "
                 + "WHERE Keskustelu.alue_id = ? "
-                + "GROUP BY Keskustelu.id",
+                + "GROUP BY Keskustelu.id ORDER BY viimeisinAika DESC LIMIT ?",
+                rs -> new Keskustelu(rs.getInt("id"),
+                        alue,
+                        rs.getString("otsikko"),
+                        rs.getInt("viestienLkm"),
+                        rs.getTimestamp("viimeisinAika")),
+                alue_id, uusimpienLkm);
+    }
+
+    public List<Keskustelu> findAlueenKeskustelutKaikki(int alue_id) throws SQLException {
+        Alue alue = alueDao.findOne(alue_id);
+        return database.queryAndCollect(
+                "SELECT Keskustelu.*, COUNT(Viesti.id) AS viestienLkm, MAX(Viesti.aika) AS viimeisinAika "
+                + "FROM Keskustelu LEFT JOIN Viesti ON Keskustelu.id = Viesti.keskustelu_id "
+                + "WHERE Keskustelu.alue_id = ? "
+                + "GROUP BY Keskustelu.id ORDER BY viimeisinAika DESC",
                 rs -> new Keskustelu(rs.getInt("id"),
                         alue,
                         rs.getString("otsikko"),
                         rs.getInt("viestienLkm"),
                         rs.getTimestamp("viimeisinAika")),
                 alue_id);
-
-//        Connection connection = database.getConnection();
-//        PreparedStatement stmt = connection.prepareStatement(
-//                "SELECT Keskustelu.*, COUNT(Viesti.id) AS viestienLkm, MAX(Viesti.aika) AS viimeisinAika "
-//                + "FROM Keskustelu LEFT JOIN Viesti ON Keskustelu.id = Viesti.keskustelu_id "
-//                + "WHERE Keskustelu.alue_id = ? "
-//                + "GROUP BY Keskustelu.id");
-//        stmt.setObject(1, alue_id);
-//        ResultSet rs = stmt.executeQuery();
-//
-//        Alue alue = alueDao.findOne(alue_id);
-//
-//        List<Keskustelu> alueenKeskustelut = new ArrayList<>();
-//        while (rs.next()) {
-//            Integer id = rs.getInt("id");
-//            String otsikko = rs.getString("otsikko");
-//            Integer viestienLkm = rs.getInt("viestienLkm");
-//            Timestamp viimeisinAika = rs.getTimestamp("viimeisinAika");
-//
-//            alueenKeskustelut.add(new Keskustelu(id, alue, otsikko, viestienLkm, viimeisinAika));
-//        }
-//
-//        rs.close();
-//        stmt.close();
-//        connection.close();
-//
-//        return alueenKeskustelut;
     }
 
-    public void lisaaKeskustelu(int alue_id, String nimi, String otsikko, String sisalto, ViestiDao viestiDao) throws SQLException {
+    public void lisaaKeskustelunavaus(int alue_id, String otsikko, String kayttaja, String sisalto) throws SQLException {
+        // Käyttäen tietokantatransaktiota, jottei kahden sql-komennon välissä tietokantaan ilmesty toista uutta keskustelua.
         Connection connection = database.getConnection();
-        System.out.println("LISATAAN KESKUSTELUA");
-        System.out.println(" alueid " + alue_id + " nimi: " + nimi + " otsikko: " + otsikko + " sisalto: " + sisalto);
-        PreparedStatement stmt = connection.prepareStatement(
-                "INSERT INTO Keskustelu (alue_id, otsikko) VALUES (?, ?)");
-        stmt.setInt(1, alue_id);
-        stmt.setString(2, otsikko);
-        stmt.execute();
-        stmt.close();
-        connection.close();
+        connection.setAutoCommit(false);
 
-        viestiDao.lisaaViesti(nimi, sisalto);
+        PreparedStatement stmt1 = connection.prepareStatement(
+                "INSERT INTO Keskustelu (alue_id, otsikko) VALUES (?, ?)");
+        PreparedStatement stmt2 = connection.prepareStatement(
+                "INSERT INTO Viesti (keskustelu_id, kayttaja, sisalto) VALUES ((SELECT MAX(id) FROM Keskustelu), ?, ?)");
+        stmt1.setInt(1, alue_id);
+        stmt1.setString(2, otsikko);
+        stmt2.setString(1, kayttaja);
+        stmt2.setString(2, sisalto);
+
+        stmt1.execute();
+        stmt2.execute();
+        connection.commit();
+
+        connection.setAutoCommit(true);
+        stmt1.close();
+        stmt2.close();
+        connection.close();
     }
 }
-
-//    @Override
-//    public List<Keskustelu> findRange(int first, int count) throws SQLException {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
-
