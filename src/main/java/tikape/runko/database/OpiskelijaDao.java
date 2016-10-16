@@ -45,7 +45,7 @@ public class OpiskelijaDao implements Dao<Opiskelija, Integer> {
         return o;
     }
 
-    @Override
+
     public List<Opiskelija> findAll() throws SQLException {
 
         Connection connection = database.getConnection();
