@@ -16,9 +16,9 @@
         -->        
         <p th:each="alue : ${alueet}">
             <a th:href="${'/alue/' + alue.id}">
-                <span th:text="${alue.nimi}">Alueen nimi</span>
+                <span th:text="${alue.nimi} + '  --  '">Alueen nimi</span>
 <!--                <span>Viestejä: </span>-->
-                <span th:text="'Viestej&auml;: ' + ${alue.viestienLkm}">Viestien lukumäärä</span>
+                <span th:text="'Viestej&auml;: ' + ${alue.viestienLkm} + ' - '">Viestien lukumäärä</span>
 <!--                <span>Viimeisin viesti: </span>-->
                 <span th:text="'Viimeisin viesti l&auml;hetetty: ' + ${alue.viimeisinAika}">Viimeisimmän viestin aika</span>      
             </a>
