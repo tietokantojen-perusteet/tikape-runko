@@ -2,13 +2,10 @@ package tikape.runko.database;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
+import java.util.TimeZone;
 import tikape.runko.domain.Alue;
 import tikape.runko.domain.Keskustelu;
 
@@ -22,6 +19,7 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
         this.alueDao = alueDao;
     }
 
+    @Override
     public Keskustelu findOne(Integer key) throws SQLException {
         return (Keskustelu) database.queryAndCollect("SELECT * FROM Keskustelu WHERE id = ?",
                 rs -> new Keskustelu(rs.getInt("id"),
@@ -85,7 +83,7 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
                         alue,
                         rs.getString("otsikko"),
                         rs.getInt("viestienLkm"),
-                        rs.getTimestamp("viimeisinAika")),
+                        rs.getTimestamp("viimeisinAika", Calendar.getInstance(TimeZone.getTimeZone("UTC")))),
                 alue_id, uusimpienLkm);
     }
 
@@ -100,7 +98,7 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
                         alue,
                         rs.getString("otsikko"),
                         rs.getInt("viestienLkm"),
-                        rs.getTimestamp("viimeisinAika")),
+                        rs.getTimestamp("viimeisinAika", Calendar.getInstance(TimeZone.getTimeZone("UTC")))),
                 alue_id);
     }
 

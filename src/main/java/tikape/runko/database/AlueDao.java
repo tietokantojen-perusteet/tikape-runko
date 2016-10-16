@@ -1,17 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tikape.runko.database;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 import tikape.runko.domain.Alue;
 
 public class AlueDao implements Dao<Alue, Integer> {
@@ -50,19 +42,12 @@ public class AlueDao implements Dao<Alue, Integer> {
 //        return alueet;
 //    }
     public List<Alue> findEtusivunAlueet() throws SQLException {
-//        return database.queryAndCollect(
-//                "SELECT Alue.*, COUNT(Viesti.id) AS viestienLkm, MAX(Viesti.aika) AS viimeisinAika "
-//                + "FROM Alue LEFT JOIN Keskustelu ON Alue.id = Keskustelu.alue_id "
-//                + "LEFT JOIN Viesti ON Keskustelu.id = Viesti.keskustelu_id "
-//                + "GROUP BY Alue.id",
-//                rs -> new Alue(rs.getInt("id"), rs.getString("nimi"), rs.getInt("viestienLkm"), rs.getTimestamp("viimeisinAika")));
-        // Ajan palautus getTimestamp-metodin haluamassa muodossa:
         return database.queryAndCollect(
                 "SELECT Alue.*, COUNT(Viesti.id) AS viestienLkm, MAX(Viesti.aika) AS viimeisinAika "
                 + "FROM Alue LEFT JOIN Keskustelu ON Alue.id = Keskustelu.alue_id "
                 + "LEFT JOIN Viesti ON Keskustelu.id = Viesti.keskustelu_id "
                 + "GROUP BY Alue.id ORDER BY Alue.nimi",
-                rs -> new Alue(rs.getInt("id"), rs.getString("nimi"), rs.getInt("viestienLkm"), rs.getTimestamp("viimeisinAika")));
+                rs -> new Alue(rs.getInt("id"), rs.getString("nimi"), rs.getInt("viestienLkm"), rs.getTimestamp("viimeisinAika", Calendar.getInstance(TimeZone.getTimeZone("UTC")))));
     }
 
 //    public void delete(Integer key) throws SQLException {

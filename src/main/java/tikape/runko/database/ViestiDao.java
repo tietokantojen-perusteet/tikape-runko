@@ -1,13 +1,9 @@
 package tikape.runko.database;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
-import tikape.runko.domain.Alue;
+import java.util.TimeZone;
 import tikape.runko.domain.Keskustelu;
 import tikape.runko.domain.Viesti;
 
@@ -26,7 +22,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         return (Viesti) database.queryAndCollect("SELECT * FROM Viesti WHERE id = ?",
                 rs -> new Viesti(rs.getInt("id"),
                         this.keskusteluDao.findOne(rs.getInt("keskustelu_id")),
-                        rs.getTimestamp("aika"),
+                        rs.getTimestamp("aika", Calendar.getInstance(TimeZone.getTimeZone("UTC"))),
                         rs.getString("kayttaja"),
                         rs.getString("sisalto")),
                 key).get(0);
@@ -69,7 +65,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
                 "SELECT * FROM Viesti WHERE keskustelu_id = ? ORDER BY id LIMIT ? OFFSET ?",
                 rs -> new Viesti(rs.getInt("id"),
                         keskustelu,
-                        rs.getTimestamp("aika"),
+                        rs.getTimestamp("aika", Calendar.getInstance(TimeZone.getTimeZone("UTC"))),
                         rs.getString("kayttaja"),
                         rs.getString("sisalto")),
                 keskustelu_id, viestienLkmSivulla, (sivunumero - 1) * viestienLkmSivulla);
@@ -81,7 +77,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
                 "SELECT * FROM Viesti WHERE keskustelu_id = ? ORDER BY id",
                 rs -> new Viesti(rs.getInt("id"),
                         keskustelu,
-                        rs.getTimestamp("aika"),
+                        rs.getTimestamp("aika", Calendar.getInstance(TimeZone.getTimeZone("UTC"))),
                         rs.getString("kayttaja"),
                         rs.getString("sisalto")),
                 keskustelu_id);
