@@ -6,21 +6,21 @@ public class Viesti {
 
     private Integer id;
     private Keskustelu keskustelu;
-    private Timestamp aika;
+    private SuomenAika aika;
     private String kayttaja;
     private String sisalto;
 
-    public Viesti(Integer id, Timestamp aika, String kayttaja, String sisalto) {
+    public Viesti(Integer id, Timestamp timestamp, String kayttaja, String sisalto) {
         this.id = id;
-        this.aika = aika;
+        this.aika = new SuomenAika(timestamp);
         this.kayttaja = kayttaja;
         this.sisalto = sisalto;
     }
 
-    public Viesti(Integer id, Keskustelu keskustelu, Timestamp aika, String kayttaja, String sisalto) {
+    public Viesti(Integer id, Keskustelu keskustelu, Timestamp timestamp, String kayttaja, String sisalto) {
         this.id = id;
         this.keskustelu = keskustelu;
-        this.aika = aika;
+        this.aika = new SuomenAika(timestamp);
         this.kayttaja = kayttaja;
         this.sisalto = sisalto;
     }
@@ -41,15 +41,12 @@ public class Viesti {
         this.keskustelu = keskustelu;
     }
 
-    public String getAika() {
-        if (this.aika == null) {
-            return "Aika ei tiedossa";
-        }
-        return this.aika.toString();
+    public SuomenAika getAika() {
+        return aika;
     }
 
-    public void setAika(Timestamp aika) {
-        this.aika = aika;
+    public void setAika(Timestamp timestamp) {
+        this.aika = new SuomenAika(timestamp);
     }
 
     public String getKayttaja() {
