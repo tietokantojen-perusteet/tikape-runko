@@ -23,15 +23,22 @@ public class Main {
         if (System.getenv("PORT") != null) {
             port(Integer.valueOf(System.getenv("PORT")));
         }
-        Database database = new Database("jdbc:sqlite:keskustelualue.db");
-        database.init();
 
+        String jdbcOsoite = "jdbc:sqlite:keskustelualue.db";
+        if (System.getenv("DATABASE_URL") != null) {
+            jdbcOsoite = System.getenv("DATABASE_URL");
+        }
+
+        Database database = new Database(jdbcOsoite);
+
+        //Database database = new Database("jdbc:sqlite:keskustelualue.db");
+        //database.init();
         staticFileLocation("/public");
 
         AlueDao alueDao = new AlueDao(database);
         KeskusteluDao keskusteluDao = new KeskusteluDao(database, alueDao);
         ViestiDao viestiDao = new ViestiDao(database, keskusteluDao);
-        
+
         int viestienLkmSivulla = 10;
 
         Spark.get("/", (req, res) -> {
@@ -104,12 +111,11 @@ public class Main {
 
         Spark.get("keskustelu/:id", (req, res) -> {
             int keskustelu_id = Integer.parseInt(req.params("id"));
-            
 
             Map map = new HashMap();
             map.put("keskustelu", keskusteluDao.findOne(keskustelu_id));
             map.put("alue", alueDao.findOne(keskusteluDao.findOne(keskustelu_id).getAlue().getId()));
-            
+
             List<Viesti> list = new ArrayList();
 
             if (req.queryParams("page") != null) {
@@ -121,14 +127,13 @@ public class Main {
                 map.put("sivu", 0);
             }
             map.put("viestit", list);
-            
+
 //            List<Viesti> viestilista = viestiDao.findAll();
 //            for (Viesti viesti : viestilista) {
 //                if (viesti.getKeskustelu() == Integer.parseInt(req.params("id"))) {
 //                    list.add(viesti);
 //                }
 //            }
-
             ModelAndView model = new ModelAndView(map, "keskustelu");
             return model;
         }, new ThymeleafTemplateEngine());
