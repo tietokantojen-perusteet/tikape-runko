@@ -93,9 +93,12 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
 
     public void lisaaKeskustelu(Integer alue_id, String otsikko, String aloittaja, String aloitusviesti) throws SQLException {
         Connection conn = database.getConnection();
-        Statement stmt = conn.createStatement();
-        stmt.execute("INSERT INTO Keskustelu (omaalue, otsikko, aloittaja, aloitusviesti) VALUES (" + alue_id + ",'" + otsikko + "','" + aloittaja + "','" + aloitusviesti + "')");
-
+        PreparedStatement stmt = conn.prepareStatement("INSERT INTO Keskustelu (omaalue, otsikko, aloittaja, aloitusviesti) VALUES (?, ?, ?, ?)");
+        stmt.setObject(1, alue_id);
+        stmt.setObject(2, otsikko);
+        stmt.setObject(3, aloittaja);
+        stmt.setObject(4, aloitusviesti);
+        
         conn.close();
     }
 

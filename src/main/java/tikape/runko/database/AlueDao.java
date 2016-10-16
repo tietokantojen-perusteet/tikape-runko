@@ -69,11 +69,11 @@ public class AlueDao implements Dao<Alue, Integer>{
 
         return alueet;
     }
-    public void lisaaAlue( String nimi) throws SQLException{
-         Connection conn = database.getConnection();
-        Statement stmt = conn.createStatement();
-        stmt.execute("INSERT INTO Alue (nimi)VALUES ('"+nimi+ "')");
-
+    public void lisaaAlue(String nimi) throws SQLException{
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("INSERT INTO Alue (nimi)VALUES (?)");
+        stmt.setObject(1, nimi);
+        
         conn.close();
     }
     @Override

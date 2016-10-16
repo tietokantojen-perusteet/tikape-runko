@@ -1,10 +1,13 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
-
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
     <head>
-        <title>Foooorumi</title>
-        <meta charset="utf-8" />
+        <title>Fooorumi</title>
+        <meta charset="UTF-8"/>
         <style>
             textarea.one, select {
                 width: 50%;
@@ -50,13 +53,20 @@
             table.one {
                 float:left;
                 font-family: arial, sans-serif;
-                width:33%;
+                width:15%;
                 border-collapse: collapse;                
             }
+           
             table.two {
                 float:left;
                 font-family: arial, sans-serif;
-                width:34%;
+                width:60%;
+                border-collapse: collapse;                
+            }
+            table.three {
+                float:left;
+                font-family: arial, sans-serif;
+                width:25%;
                 border-collapse: collapse;                
             }
             td, th {
@@ -71,68 +81,64 @@
             }
         </style>
     </head>
-
-    <body>                    
-        <h1>Foorumi</h1>
+    <body>
+        <h1 th:text = "${keskustelunnimi}"></h1>
+        
         <p id="demo"></p>
-        <table class="two">
+        <table class="one">
             <tr>
-                <th th:text="|Alue: ${alueennimi}|"></th>
-            </tr>            
-            <tr th:each="kesk : ${keskustelu}">
-                <td> 
-                    <a href="/keskustelu.html" th:href="|/alue/keskustelu/${kesk.id}|">
-                        <div th:text="${kesk.otsikko}" style="height: 100%;width: 100%"></div>
-                    </a>
+                <th> Nimimerkki</th>
+            </tr>  
+            <tr>
+                <td th:text ="${omakeskus.aloittaja}"> aloitus </td>
+            </tr>
+            <tr th:each="viest : ${viesti}">
+                <td th:text ="${viest.kirjoittaja}"> 
+                 nimimerkki   
                 </td>
             </tr>
         </table>
 
-        <table class="one">
+        <table class="three">
             <tr>
-                <th>Viestejä yhteensä</th>
+                <th>Julkaistu</th>
             </tr>
-
-            <tr th:each="luku: ${yht}">
-                <td th:text="${luku}">ViestejaYht</td>
+            <tr>
+                <td th:text ="${julkaisuaika}"> aloitus </td>
+            </tr>
+            <tr th:each="viest: ${viesti}">
+                <td th:text="${viest.aika}">ViestejaYht</td>
             </tr>
 
         </table>
 
-        <table class="one">
+        <table class="two">
             <tr>
-                <th>Viimeisin viesti</th>
+                <th> Viesti </th>
             </tr>
-
-            <tr th:each="viim: ${viim}">
-                <td th:text="${viim}">Viimeisin viesti</td>                
+            <tr>
+                <td th:text ="${omakeskus.aloitusviesti}"> aloitus </td>
+            </tr>
+            <tr th:each="viest: ${viesti}">
+                <td th:text="${viest.teksti}">Teksti</td>                
             </tr>
 
         </table>
-        
-        <div>
-        ---    
-        </div>
-        
-        <h3>Uusi keskustelu</h3>
+        <h3>Uusi viesti</h3>
         
         <div class="one">
             
-            <form method="POST" action="/alue/:id">
-                Otsikko:<br/>
-                <input type="text" name="otsikko" maxlength="100"/><br/>
+            <form method="POST" action="/alue/keskustelu/:id">
+                
                 
                 Viesti:<br/>
                 <textarea class ="one" name="viesti" maxlength="50000" rows="10" cols="50"></textarea><br/>
 
                 Nimimerkki:<br/>
                 <input type="text" name="nimi" maxlength="40"/><br/>
-                <input type="submit" value="Lisää uusi keskustelu"/>
+                <input type="submit" value="Lisää uusi viesti"/>
             </form>
             
         </div>
-        
-        <br/>
-        <a href="/">Takaisin aluelistaukseen.</a>
     </body>
 </html>

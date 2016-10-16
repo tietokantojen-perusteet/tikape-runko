@@ -48,6 +48,10 @@ public class Viesti implements Comparable<Viesti>{
     public void setViestiTime(Timestamp aika) {
         this.julkaisuaika = aika;
     }
+    public String getAika(){
+        return this.julkaisuaika.toString();
+    }
+    
     public String getKirjoittaja() {
         return kirjoittaja;
     }

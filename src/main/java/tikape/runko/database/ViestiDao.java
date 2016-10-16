@@ -293,10 +293,12 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         return yrite;
     }
 
-    public void lisaaViesti(Keskustelu kesk, String kirjoittaja, String teksti) throws SQLException {
+    public void lisaaViesti(Integer keskusteluid, String kirjoittaja, String teksti) throws SQLException {
         Connection conn = database.getConnection();
-        Statement stmt = conn.createStatement();
-        stmt.execute("INSERT INTO Viesti (omakeskustelu, kirjoittaja, teksti)VALUES ('" + kesk + "," + kirjoittaja + "," + teksti + "')");
+        PreparedStatement stmt = conn.prepareStatement("INSERT INTO Viesti (omakeskustelu, kirjoittaja, teksti)VALUES (?, ?, ?)");
+        stmt.setObject(1, keskusteluid);
+        stmt.setObject(2, kirjoittaja);
+        stmt.setObject(3, teksti);
 
         conn.close();
     }
