@@ -129,7 +129,7 @@ public class Main {
 //                }
 //            }
 
-            ModelAndView model = new ModelAndView(map, "Keskustelu");
+            ModelAndView model = new ModelAndView(map, "keskustelu");
             return model;
         }, new ThymeleafTemplateEngine());
 
