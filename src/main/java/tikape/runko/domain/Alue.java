@@ -1,8 +1,6 @@
 package tikape.runko.domain;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Alue {
 
@@ -10,7 +8,7 @@ public class Alue {
     private String nimi;
     //private List<Keskustelu> keskustelut;
     private Integer viestienLkm;
-    private Timestamp viimeisinAika;
+    private SuomenAika viimeisinAika;
 
     public Alue(Integer id, String nimi) {
         this.id = id;
@@ -18,11 +16,11 @@ public class Alue {
         //this.keskustelut = new ArrayList();
     }
 
-    public Alue(Integer id, String nimi, Integer viestienLkm, Timestamp viimeisinAika) {
+    public Alue(Integer id, String nimi, Integer viestienLkm, Timestamp timestamp) {
         this.id = id;
         this.nimi = nimi;
         this.viestienLkm = viestienLkm;
-        this.viimeisinAika = viimeisinAika;
+        this.viimeisinAika = new SuomenAika(timestamp);
     }
 
     public Integer getId() {
@@ -52,15 +50,12 @@ public class Alue {
         this.viestienLkm = viestienLkm;
     }
 
-    public String getViimeisinAika() {
-        if(this.viimeisinAika == null) {
-            return "Ei viestejä";
-        }
-        return this.viimeisinAika.toString();
+    public SuomenAika getViimeisinAika() {
+        return viimeisinAika;
     }
 
-    public void setViimeisinAika(Timestamp viimeisinAika) {
-        this.viimeisinAika = viimeisinAika;
+    public void setViimeisinAika(Timestamp timestamp) {
+        this.viimeisinAika = new SuomenAika(timestamp);
     }
 
 }
