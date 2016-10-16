@@ -15,7 +15,7 @@
 
         <div class="viesti" th:each="viesti, iterStat : ${viestit}">
 
-            <b>#<span th:text="${iterStat.count} + ${sivu}">1</span>           </b>
+            <b>#<span th:text="${iterStat.count} + ${sivunviestit}">1</span>           </b>
 
             <p th:text="${viesti.sisalto}">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc cursus lacinia ipsum, ac posuere nunc efficitur non. Donec imperdiet diam id vulputate venenatis. Vivamus mattis sit amet ligula cursus tempor. Ut id quam est. Ut sit amet egestas mauris. Curabitur lorem quam, tincidunt ac porttitor in, consequat ac felis. Donec tortor sem, imperdiet a gravida in, maximus non sapien.
@@ -31,7 +31,11 @@
 
             <hr/>
 
+
         </div>
+        <a th:if="${previouspage} != null" th:href="${'/keskustelu/' + keskustelu.id} + '?page=' + ${previouspage}">Edellinen sivu</a>
+        <a th:if="${nextpage} != null" th:href="${'/keskustelu/' + keskustelu.id} + '?page=' + ${nextpage}">Seuraava sivu</a>
+        
 
 
         <!--    <div class="viesti" th:each="viesti.id: ${viesti.id}">

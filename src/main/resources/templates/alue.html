@@ -25,61 +25,11 @@
                     <span th:text="'Viestej&auml;: ' + ${keskustelu.viestienLkm} + ' - '">Viestien lukumäärä</span>
                     <span th:text="'Viimeisin viesti l&auml;hetetty: ' + ${keskustelu.viimeisinAika}">Viimeisimmän viestin aika</span> 
                 </a>
-
-                <!--                <div class="name" th:text="viesti.kayttaja : ${viesti.kayttaja}"></div>
-                                <div>Viimeinen julkaisu: 
-                                    <span class="lastmsg" th:each="viesti.aika  : ${.viesti.aika }"></span><span>&nbsp;|&nbsp;</span>
-                                </div>-->
-
+                
             </li>
-            <!--
             
-            -->
-
-            <!-- ESIMERKKI (KOLME KESKUSTELUA) -->
-
-            <!--            <li th:each="keskustelu.otsikko: ${keskustelu.otsikko}">
-            
-                            <a th:href="${'/keskustelu.otsikko/' + keskustelu.id}">
-                                <span th:text="${otsikko.nimi}">Helsinki on paras!</span>
-                            </a>
-            
-                            <div class="name" th:each="viesti.kayttaja : ${viesti.kayttaja}">Kenneth</div>
-                            <div>Viimeinen julkaisu: 
-                                <span class="lastmsg" th:each="viesti.aika  : ${.viesti.aika }">8.10.2016</span><span>&nbsp;|&nbsp;</span>
-                            </div>
-            
-                        </li>
-            
-                        <li th:each="keskustelu.otsikko: ${keskustelu.otsikko}">
-            
-                            <a th:href="${'/keskustelu.otsikko/' + keskustelu.id}">
-                                <span th:text="${otsikko.nimi}">Helsinki on paras!</span>
-                            </a>
-            
-                            <div class="name" th:each="viesti.kayttaja : ${viesti.kayttaja}">Kenneth</div>
-                            <div>Viimeinen julkaisu: 
-                                <span class="lastmsg" th:each="viesti.aika  : ${.viesti.aika }">8.10.2016</span><span>&nbsp;|&nbsp;</span>
-                            </div>
-            
-                        </li>
-            
-                        <li th:each="keskustelu.otsikko: ${keskustelu.otsikko}">
-            
-                            <a th:href="${'/keskustelu.otsikko/' + keskustelu.id}">
-                                <span th:text="${otsikko.nimi}">Helsinki on paras!</span>
-                            </a>
-            
-                            <div class="name" th:each="viesti.kayttaja : ${viesti.kayttaja}">Kenneth</div>
-                            <div>Viimeinen julkaisu: 
-                                <span class="lastmsg" th:each="viesti.aika  : ${.viesti.aika }">8.10.2016</span><span>&nbsp;|&nbsp;</span>
-                            </div>
-            
-                        </li>-->
-
-            <!-- ESIMERKIN LOPPU -->
-
         </ul>
+        <p th:if="${kaikki} != 1">N&auml;ytet&auml;&auml;n korkeintaan kymmenen tuoreinta keskustelua. <a th:href="${'/alue/' + alue.id} + '/kaikki'">N&auml;yt&auml; kaikki</a></p>
 
         <hr/>
         <h4>Luo uusi keskustelunavaus</h4>
