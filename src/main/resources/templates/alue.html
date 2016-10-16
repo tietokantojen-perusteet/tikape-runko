@@ -9,6 +9,8 @@
     </head>
 
     <body>
+        <nav><a href="/">Etusivu</a> > <span th:text="${alue.nimi}">Alueen nimi</span><br/></nav>
+
         <h2>Alueen <span th:text="${alue.nimi}">Alueen nimi</span> keskustelut</h2>
 
         <ul>
@@ -19,8 +21,8 @@
             <li th:each="keskustelu: ${keskustelut}">
 
                 <a th:href="${'/keskustelu/' + keskustelu.id}">
-                    <span th:text="${keskustelu.otsikko}">Helsinki on paras</span>
-                    <span th:text="'Viestej&auml;: ' + ${keskustelu.viestienLkm}">Viestien lukumäärä</span>
+                    <span th:text="${keskustelu.otsikko} + '  --  '">Helsinki on paras</span>
+                    <span th:text="'Viestej&auml;: ' + ${keskustelu.viestienLkm} + ' - '">Viestien lukumäärä</span>
                     <span th:text="'Viimeisin viesti l&auml;hetetty: ' + ${keskustelu.viimeisinAika}">Viimeisimmän viestin aika</span> 
                 </a>
 
