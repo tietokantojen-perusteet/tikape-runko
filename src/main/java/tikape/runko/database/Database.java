@@ -62,9 +62,9 @@ public class Database<T> {
 
         // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
         lista.add("CREATE TABLE Alue (id integer PRIMARY KEY, nimi varchar(100) NOT NULL);");
-        lista.add("INSERT INTO Alue (nimi) VALUES ('Platon');");
-        lista.add("INSERT INTO Alue (nimi) VALUES ('Aristoteles');");
-        lista.add("INSERT INTO Alue (nimi) VALUES ('Homeros');");
+        lista.add("INSERT INTO Alue (nimi) VALUES ('Kevyt-Platon');");
+        lista.add("INSERT INTO Alue (nimi) VALUES ('Kevyt-Aristoteles');");
+        lista.add("INSERT INTO Alue (nimi) VALUES ('Kevyt-Homeros');");
 
         lista.add("CREATE TABLE Keskustelu (id integer PRIMARY KEY, alue_id integer NOT NULL, otsikko varchar(100) NOT NULL, FOREIGN KEY(alue_id) REFERENCES Alue(id));");
 
@@ -82,9 +82,9 @@ public class Database<T> {
         ArrayList<String> lista = new ArrayList<>();
 
         lista.add("CREATE TABLE Alue (id SERIAL PRIMARY KEY, nimi varchar(100) NOT NULL);");
-        lista.add("INSERT INTO Alue (nimi) VALUES ('Platon');");
-        lista.add("INSERT INTO Alue (nimi) VALUES ('Aristoteles');");
-        lista.add("INSERT INTO Alue (nimi) VALUES ('Homeros');");
+        lista.add("INSERT INTO Alue (nimi) VALUES ('Postgre-Platon');");
+        lista.add("INSERT INTO Alue (nimi) VALUES ('Postgre-Aristoteles');");
+        lista.add("INSERT INTO Alue (nimi) VALUES ('Postgre-Homeros');");
 
         lista.add("CREATE TABLE Keskustelu (id SERIAL PRIMARY KEY, alue_id integer NOT NULL, otsikko varchar(100) NOT NULL, FOREIGN KEY(alue_id) REFERENCES Alue(id));");
 

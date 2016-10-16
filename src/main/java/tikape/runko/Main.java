@@ -116,7 +116,8 @@ public class Main {
 
         });
 
-        post("keskustelu/:id", (req, res) -> {
+        Spark.post("keskustelu/:id", (req, res) -> {
+            String nykyinen_sivu = req.queryParams("nykyinen_sivu");
             if (req.queryParams("sisalto").isEmpty()) {
                 return "Ei tyhjiä viestejä, kiitos. :(";
             }
@@ -127,13 +128,22 @@ public class Main {
                 return "Jokin meni pieleen.. :(";
             }
 
-            res.redirect("/keskustelu/" + req.params("id") + "?page=" + req.queryParams("nykyinen_sivu"));
+            if (nykyinen_sivu != null && !nykyinen_sivu.isEmpty()) {
+                res.redirect("/keskustelu/" + req.params("id") + "?page=" + req.queryParams("nykyinen_sivu"));
+            } else {
+                res.redirect("/keskustelu/" + req.params("id"));
+            }
             return "OK";
 
         });
 
         Spark.get("keskustelu/:id", (req, res) -> {
-            int keskustelu_id = Integer.parseInt(req.params("id"));
+            int keskustelu_id = 1;
+            try {
+                keskustelu_id = Integer.parseInt(req.params("id"));
+            } catch (Exception e) {
+                res.redirect("/");
+            }
 
             Map map = new HashMap();
             map.put("keskustelu", keskusteluDao.findOne(keskustelu_id));
@@ -141,8 +151,14 @@ public class Main {
 
             List<Viesti> list = new ArrayList();
 
-            if (req.queryParams("page") != null) {
-                int sivunumero = Integer.parseInt(req.queryParams("page"));
+            if (req.queryParams("page") != null && !req.queryParams("page").isEmpty()) {
+                int sivunumero = 1;
+                try {
+                    sivunumero = Integer.parseInt(req.queryParams("page"));
+                } catch (Exception e) {
+                    res.redirect("/");
+                }
+                
                 list.addAll(viestiDao.findKeskustelunViestitSivullinen(keskustelu_id, sivunumero, viestienLkmSivulla));
                 map.put("sivunviestit", (sivunumero - 1) * 10);
                 map.put("page", sivunumero);
