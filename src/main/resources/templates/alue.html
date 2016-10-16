@@ -29,7 +29,7 @@
             </li>
             
         </ul>
-        <p th:if="${kaikki} != 1">N&auml;ytet&auml;&auml;n korkeintaan kymmenen tuoreinta keskustelua. <a th:href="${'/alue/' + alue.id} + '/kaikki'">N&auml;yt&auml; kaikki</a></p>
+        <p th:if="${kaikki} != 1">N&auml;ytet&auml;&auml;n korkeintaan kymmenen tuoreinta keskustelua. <a th:href="${'/alue/' + alue.id} + '?kaikki=1'">N&auml;yt&auml; kaikki</a></p>
 
         <hr/>
         <h4>Luo uusi keskustelunavaus</h4>

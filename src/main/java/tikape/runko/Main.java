@@ -60,41 +60,45 @@ public class Main {
 
         Spark.get("alue/:id", (req, res) -> {
             List<Keskustelu> list = new ArrayList<>();
+            HashMap map = new HashMap();
             int id = Integer.parseInt(req.params("id"));
-
-            list.addAll(keskusteluDao.findAlueenKeskustelutUusimmat(id));
+            if (req.queryParams("kaikki") != null) {
+                list.addAll(keskusteluDao.findAlueenKeskustelutKaikki(id));
+                map.put("kaikki", 1);
+            } else {
+                list.addAll(keskusteluDao.findAlueenKeskustelutUusimmat(id));
+            }
 
 //            for (Keskustelu keskustelu : keskusteluDao.findAll()) {
 //                if (Integer.parseInt(req.params("id")) == keskustelu.getAlue_id()) {
 //                    list.add(keskustelu);
 //                }
 //            }
-            HashMap map = new HashMap();
             map.put("keskustelut", list);
             map.put("alue", alueDao.findOne(Integer.parseInt(req.params("id"))));
+
             return new ModelAndView(map, "alue");
 
         }, new ThymeleafTemplateEngine());
 
-        Spark.get("alue/:id/kaikki", (req, res) -> {
-            List<Keskustelu> list = new ArrayList<>();
-            int id = Integer.parseInt(req.params("id"));
-
-            list.addAll(keskusteluDao.findAlueenKeskustelutKaikki(id));
-
-//            for (Keskustelu keskustelu : keskusteluDao.findAll()) {
-//                if (Integer.parseInt(req.params("id")) == keskustelu.getAlue_id()) {
-//                    list.add(keskustelu);
-//                }
-//            }
-            HashMap map = new HashMap();
-            map.put("keskustelut", list);
-            map.put("alue", alueDao.findOne(Integer.parseInt(req.params("id"))));
-            map.put("kaikki", 1);
-            return new ModelAndView(map, "alue");
-
-        }, new ThymeleafTemplateEngine());
-
+//        Spark.get("alue/:id/kaikki", (req, res) -> {
+//            List<Keskustelu> list = new ArrayList<>();
+//            int id = Integer.parseInt(req.params("id"));
+//
+//            
+//
+////            for (Keskustelu keskustelu : keskusteluDao.findAll()) {
+////                if (Integer.parseInt(req.params("id")) == keskustelu.getAlue_id()) {
+////                    list.add(keskustelu);
+////                }
+////            }
+//            HashMap map = new HashMap();
+//            map.put("keskustelut", list);
+//            map.put("alue", alueDao.findOne(Integer.parseInt(req.params("id"))));
+//            map.put("kaikki", 1);
+//            return new ModelAndView(map, "alue");
+//
+//        }, new ThymeleafTemplateEngine());
         Spark.post("alue/:id", (req, res) -> {
             if (req.queryParams("sisalto").isEmpty()
                     || req.queryParams("otsikko").isEmpty()) {
@@ -143,9 +147,9 @@ public class Main {
                 map.put("sivunviestit", (sivunumero - 1) * 10);
                 map.put("page", sivunumero);
                 if (list.size() > 9) {
-                    if(!viestiDao.findKeskustelunViestitSivullinen(keskustelu_id, sivunumero + 1, viestienLkmSivulla).isEmpty()) {
+                    if (!viestiDao.findKeskustelunViestitSivullinen(keskustelu_id, sivunumero + 1, viestienLkmSivulla).isEmpty()) {
                         map.put("nextpage", sivunumero + 1);
-                    }  
+                    }
                 }
                 if (sivunumero > 1) {
                     map.put("previouspage", sivunumero - 1);
@@ -158,7 +162,7 @@ public class Main {
                 }
                 map.put("sivunviestit", 0);
             }
-            if(list.isEmpty()) {
+            if (list.isEmpty()) {
                 res.redirect("/keskustelu/" + keskustelu_id);
             }
             map.put("viestit", list);
