@@ -76,6 +76,25 @@ public class Main {
 
         }, new ThymeleafTemplateEngine());
 
+        Spark.get("alue/:id/kaikki", (req, res) -> {
+            List<Keskustelu> list = new ArrayList<>();
+            int id = Integer.parseInt(req.params("id"));
+
+            list.addAll(keskusteluDao.findAlueenKeskustelutKaikki(id));
+
+//            for (Keskustelu keskustelu : keskusteluDao.findAll()) {
+//                if (Integer.parseInt(req.params("id")) == keskustelu.getAlue_id()) {
+//                    list.add(keskustelu);
+//                }
+//            }
+            HashMap map = new HashMap();
+            map.put("keskustelut", list);
+            map.put("alue", alueDao.findOne(Integer.parseInt(req.params("id"))));
+            map.put("kaikki", 1);
+            return new ModelAndView(map, "alue");
+
+        }, new ThymeleafTemplateEngine());
+
         Spark.post("alue/:id", (req, res) -> {
             if (req.queryParams("sisalto").isEmpty()
                     || req.queryParams("otsikko").isEmpty()) {
@@ -119,12 +138,26 @@ public class Main {
             List<Viesti> list = new ArrayList();
 
             if (req.queryParams("page") != null) {
-                int sivunumero = Integer.parseInt(req.params("page"));
+                int sivunumero = Integer.parseInt(req.queryParams("page"));
                 list.addAll(viestiDao.findKeskustelunViestitSivullinen(keskustelu_id, sivunumero, viestienLkmSivulla));
-                map.put("sivu", (sivunumero - 1) * 10);
+                map.put("sivunviestit", (sivunumero - 1) * 10);
+                map.put("page", sivunumero);
+                if (list.size() > 9) {
+                    map.put("nextpage", sivunumero + 1);
+                }
+                if (sivunumero > 1) {
+                    map.put("previouspage", sivunumero - 1);
+                }
+
             } else {
                 list.addAll(viestiDao.findKeskustelunViestitKaikki(keskustelu_id));
-                map.put("sivu", 0);
+                if (list.size() > 9) {
+                    res.redirect("/keskustelu/" + req.params("id") + "?page=1");
+                }
+                map.put("sivunviestit", 0);
+            }
+            if(list.isEmpty()) {
+                res.redirect("/keskustelu/" + keskustelu_id);
             }
             map.put("viestit", list);
 
