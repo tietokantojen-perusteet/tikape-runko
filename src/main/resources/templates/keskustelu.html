@@ -35,66 +35,15 @@
         </div>
         <a th:if="${previouspage} != null" th:href="${'/keskustelu/' + keskustelu.id} + '?page=' + ${previouspage}">Edellinen sivu</a>
         <a th:if="${nextpage} != null" th:href="${'/keskustelu/' + keskustelu.id} + '?page=' + ${nextpage}">Seuraava sivu</a>
-        
 
 
-        <!--    <div class="viesti" th:each="viesti.id: ${viesti.id}">
-        
-                   <b th:text="${viesti.id}">
-                        <span>#</span>
-                        2
-                    </b>
-        
-                    <p th:text="${viesti.sisalto}">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc cursus lacinia ipsum, ac posuere nunc efficitur non. Donec imperdiet diam id vulputate venenatis. Vivamus mattis sit amet ligula cursus tempor. Ut id quam est. Ut sit amet egestas mauris. Curabitur lorem quam, tincidunt ac porttitor in, consequat ac felis. Donec tortor sem, imperdiet a gravida in, maximus non sapien.
-                    </p>
-        
-                <div class="name" th:each="viesti.kayttaja : ${viesti.kayttaja}">
-                    Kenneth
-                </div>
-                
-                <div>Julkaistu: 
-                    <span class="lastmsg" th:each="viesti.aika  : ${viesti.aika }">8.10.2016</span>
-                </div>
-        
-            <hr/>
-        
-            </div>
-            
-        
-                <div class="viesti" th:each="viesti.id: ${viesti.id}">
-        
-                   <b th:text="${viesti.id}">
-                        <span>#</span>
-                        3
-                    </b>
-        
-                    <p th:text="${viesti.sisalto}">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc cursus lacinia ipsum, ac posuere nunc efficitur non. Donec imperdiet diam id vulputate venenatis. Vivamus mattis sit amet ligula cursus tempor. Ut id quam est. Ut sit amet egestas mauris. Curabitur lorem quam, tincidunt ac porttitor in, consequat ac felis. Donec tortor sem, imperdiet a gravida in, maximus non sapien.
-                    </p>
-        
-                <div class="name" th:each="viesti.kayttaja : ${viesti.kayttaja}">
-                    Kenneth
-                </div>
-                
-                <div>Julkaistu: 
-                    <span class="lastmsg" th:each="viesti.aika  : ${viesti.aika }">8.10.2016</span>
-                </div>
-        
-            <hr/>
-        
-            </div>
-        
-             ESIMERKIN LOPPU 
-                
-        
-            <br/>
-        -->    <h4>Vastaa viestiin</h4>
+        <h4>Vastaa viestiin</h4>
         <form method="post">
             <b>Nimimerkki</b>
             <input type="text" name="nimi"/>
             <b>Viesti</b>
             <textarea rows="5" cols="50" name="sisalto"></textarea>
+            <input type="hidden" name="nykyinen_sivu" th:value="${page}"/>
             <input type="submit" value="Vastaa"/>
         </form>    <!--
 

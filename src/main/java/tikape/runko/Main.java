@@ -123,7 +123,7 @@ public class Main {
                 return "Jokin meni pieleen.. :(";
             }
 
-            res.redirect("/keskustelu/" + req.params("id"));
+            res.redirect("/keskustelu/" + req.params("id") + "?page=" + req.queryParams("nykyinen_sivu"));
             return "OK";
 
         });
@@ -143,7 +143,9 @@ public class Main {
                 map.put("sivunviestit", (sivunumero - 1) * 10);
                 map.put("page", sivunumero);
                 if (list.size() > 9) {
-                    map.put("nextpage", sivunumero + 1);
+                    if(!viestiDao.findKeskustelunViestitSivullinen(keskustelu_id, sivunumero + 1, viestienLkmSivulla).isEmpty()) {
+                        map.put("nextpage", sivunumero + 1);
+                    }  
                 }
                 if (sivunumero > 1) {
                     map.put("previouspage", sivunumero - 1);
