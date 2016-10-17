@@ -33,8 +33,10 @@
 
 
         </div>
-        <a th:if="${previouspage} != null" th:href="${'/keskustelu/' + keskustelu.id} + '?page=' + ${previouspage}">Edellinen sivu</a>
-        <a th:if="${nextpage} != null" th:href="${'/keskustelu/' + keskustelu.id} + '?page=' + ${nextpage}">Seuraava sivu</a>
+        <p>
+            <a th:if="${previouspage} != null" th:href="${'/keskustelu/' + keskustelu.id} + '?page=' + ${previouspage}">&lt; Edellinen sivu</a>
+            <a th:if="${nextpage} != null" th:href="${'/keskustelu/' + keskustelu.id} + '?page=' + ${nextpage}">Seuraava sivu &gt;</a>
+        </p>
 
 
         <h4>Vastaa viestiin</h4>
