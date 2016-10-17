@@ -1,10 +1,5 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>Fooorumi</title>
         <meta charset="UTF-8"/>
@@ -19,7 +14,7 @@ and open the template in the editor.
                 box-sizing: border-box;
                 resize: none;
             }
-            
+
             input[type=text], select {
                 width: 50%;
                 padding: 12px 20px;
@@ -56,7 +51,7 @@ and open the template in the editor.
                 width:15%;
                 border-collapse: collapse;                
             }
-           
+
             table.two {
                 float:left;
                 font-family: arial, sans-serif;
@@ -83,7 +78,7 @@ and open the template in the editor.
     </head>
     <body>
         <h1 th:text = "${keskustelunnimi}"></h1>
-        
+
         <p id="demo"></p>
         <table class="one">
             <tr>
@@ -94,7 +89,7 @@ and open the template in the editor.
             </tr>
             <tr th:each="viest : ${viesti}">
                 <td th:text ="${viest.kirjoittaja}"> 
-                 nimimerkki   
+                    nimimerkki   
                 </td>
             </tr>
         </table>
@@ -125,12 +120,11 @@ and open the template in the editor.
 
         </table>
         <h3>Uusi viesti</h3>
-        
+
         <div class="one">
-            
-            <form method="POST" action="/alue/keskustelu/:id">
-                
-                
+
+            <form method="POST" action="#" th:action="|${omakeskus.id}|">
+
                 Viesti:<br/>
                 <textarea class ="one" name="viesti" maxlength="50000" rows="10" cols="50"></textarea><br/>
 
@@ -138,7 +132,9 @@ and open the template in the editor.
                 <input type="text" name="nimi" maxlength="40"/><br/>
                 <input type="submit" value="Lisää uusi viesti"/>
             </form>
-            
+
         </div>
+        <br/>
+        <a href="/alue.html" th:href="|/alue/${omakeskus.omaalue.id}|" th:text="|Takaisin alueen: ${omakeskus.omaalue.nimi} keskustelulistaukseen.|"></a>
     </body>
 </html>

@@ -86,6 +86,7 @@ public class Kayttoliittyma {
         Keskustelu kesk = keskusteluDao.findOne(keskusteluId);
         String keskusnimi = kesk.getOtsikko();
         String aika = kesk.getTime().toString();
+        aika = aika.substring(0,19);
         String aloitti = kesk.getAloittaja();
         String tekstii = kesk.getAloitusviesti();
         
@@ -128,7 +129,7 @@ public class Kayttoliittyma {
             String nimi = req.queryParams("nimi");
             String otsikko = req.queryParams("otsikko");
             String viesti = req.queryParams("viesti");
-            keskusteluDao.lisaaKeskustelu(alueDao.findOne(Integer.parseInt(req.params("id"))).getId(), otsikko, viesti, viesti);
+            keskusteluDao.lisaaKeskustelu(alueDao.findOne(Integer.parseInt(req.params("id"))).getId(), otsikko, nimi, viesti);
             HashMap map = getAluepage(Integer.parseInt(req.params("id")));
             return new ModelAndView(map, "alue");
         }, new ThymeleafTemplateEngine());
@@ -138,7 +139,7 @@ public class Kayttoliittyma {
             String viesti = req.queryParams("viesti");
             viestiDao.lisaaViesti(keskusteluDao.findOne(Integer.parseInt(req.params("id"))).getId(), nimi, viesti);
             HashMap map = getKeskustelupage(Integer.parseInt(req.params("id")));
-            return new ModelAndView(map, "alue");
+            return new ModelAndView(map, "keskustelu");
         }, new ThymeleafTemplateEngine());
 
     }
