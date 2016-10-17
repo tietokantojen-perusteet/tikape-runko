@@ -64,17 +64,17 @@ public class Database {
         lista.add("INSERT INTO Alue (alue_id, nimi) "
                 + "VALUES (2, 'Matematiikka');");
         lista.add("INSERT INTO Keskustelu (keskustelu_id, omaalue, otsikko, paivamaara, aloittaja, aloitusviesti)"
-                + "VALUES (1,1,'Rodunjalostus on väärin', '2016-12-12 11:40:51.000','Seppo','Jep');");
+                + "VALUES (1,1,'Rodunjalostus on väärin', '2016-10-12 11:40:51.000','Seppo','Jep');");
         lista.add("INSERT INTO Keskustelu (keskustelu_id, omaalue, otsikko, paivamaara, aloittaja, aloitusviesti)"
-                + "VALUES (2, 2, 'Algebra on meh', '2016-12-12 11:41:50.000', 'Ella', 'ei se oo kivaa');");
+                + "VALUES (2, 2, 'Algebra on meh', '2016-10-12 11:41:50.000', 'Ella', 'ei se oo kivaa');");
         lista.add("INSERT INTO Keskustelu (keskustelu_id, omaalue, otsikko, paivamaara, aloittaja, aloitusviesti)"
-                + "VALUES (3, 2, 'Algebra on jee', '2016-12-12 11:42:51.000', 'Ella', 'jee kivaa');");
+                + "VALUES (3, 2, 'Algebra on jee', '2016-10-12 11:42:51.000', 'Ella', 'jee kivaa');");
         lista.add("INSERT INTO Keskustelu (omaalue, otsikko, aloittaja, aloitusviesti)"
                 + "VALUES (2, 'Lukuteoria on kivaa', 'Pyry', 'moi');");
         lista.add("INSERT INTO Viesti (viesti_id, omakeskustelu, julkaisuaika, kirjoittaja, teksti)"
-                + "VALUES (1,1,'2016-12-12 11:44:51.01', 'Anna', 'Itse tykkään jalostaa kissoja');");
+                + "VALUES (1,1,'2016-10-12 11:44:51.01', 'Anna', 'Itse tykkään jalostaa kissoja');");
         lista.add("INSERT INTO Viesti (viesti_id, omakeskustelu, julkaisuaika, kirjoittaja, teksti)"
-                + "VALUES (2, 2, '2016-12-12 11:45:51.01','Ella', 'oon eri mielt');");
+                + "VALUES (2, 2, '2016-10-12 11:45:51.01','Ella', 'oon eri mielt');");
         
         return lista;
     }

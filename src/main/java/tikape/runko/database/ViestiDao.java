@@ -157,7 +157,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         Collections.sort(keskustelut, new Comparator<Keskustelu>() {
             public int compare(Keskustelu k1, Keskustelu k2) {
                 try {
-                    return keskustelunUusin(k1.getId()).compareTo(keskustelunUusin(k2.getId()));
+                    return keskustelunUusin(k2.getId()).compareTo(keskustelunUusin(k1.getId()));
                 } catch (Exception e) {
                     System.out.println("");
                 }
