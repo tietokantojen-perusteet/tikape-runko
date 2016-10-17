@@ -73,6 +73,7 @@ public class AlueDao implements Dao<Alue, Integer>{
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn.prepareStatement("INSERT INTO Alue (nimi)VALUES (?)");
         stmt.setObject(1, nimi);
+        stmt.execute();
         
         conn.close();
     }

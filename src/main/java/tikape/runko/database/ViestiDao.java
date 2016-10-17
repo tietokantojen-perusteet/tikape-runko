@@ -299,6 +299,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         stmt.setObject(1, keskusteluid);
         stmt.setObject(2, kirjoittaja);
         stmt.setObject(3, teksti);
+        stmt.execute();
 
         conn.close();
     }

@@ -118,7 +118,7 @@
         
         <div class="one">
             
-            <form method="POST" action="/alue/:id">
+            <form method="POST" action="/alue/:id" th:action="|/alue/${alueid}|">
                 Otsikko:<br/>
                 <input type="text" name="otsikko" maxlength="100"/><br/>
                 

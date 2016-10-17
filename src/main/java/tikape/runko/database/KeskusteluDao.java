@@ -98,6 +98,7 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
         stmt.setObject(2, otsikko);
         stmt.setObject(3, aloittaja);
         stmt.setObject(4, aloitusviesti);
+        stmt.execute();
         
         conn.close();
     }
