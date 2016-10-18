@@ -50,6 +50,10 @@ public class AlueDao implements Dao<Alue, Integer> {
                 rs -> new Alue(rs.getInt("id"), rs.getString("nimi"), rs.getInt("viestienLkm"), rs.getTimestamp("viimeisinAika", Calendar.getInstance(TimeZone.getTimeZone("UTC")))));
     }
 
+    public void lisaaAlue(String nimi) throws SQLException {
+        database.update("INSERT INTO Alue (nimi) VALUES (?)", nimi);
+    }
+
 //    public void delete(Integer key) throws SQLException {
 //        // ei toteutettu
 //    }
