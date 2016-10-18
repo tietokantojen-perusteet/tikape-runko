@@ -61,34 +61,31 @@ public class Main {
         Spark.get("alue/:id", (req, res) -> {
             List<Keskustelu> list = new ArrayList<>();
             HashMap map = new HashMap();
-            int id = Integer.parseInt(req.params("id"));
+            int id = 1;
             try {
-                if (Integer.parseInt(req.queryParams("kaikki")) == 1) {
-                    list.addAll(keskusteluDao.findAlueenKeskustelutKaikki(id));
-                    if (list.size() > 10) {
-                        map.put("kaikki", 1);
-                    }
-                } else {
-                    list.addAll(keskusteluDao.findAlueenKeskustelutUusimmat(id));
-                    if (list.size() == 10) {
-                        if (keskusteluDao.findAlueenKeskustelutKaikki(id).size() > 10) {
-                            map.put("kaikki", 0);
-                        }
-                    } else {
-                        map.put("kaikki", -1);
-                    }
-                }
+                id = Integer.parseInt(req.params("id"));
             } catch (Exception e) {
+                res.redirect("/");
+            }
+            int kaikki = 0;
+            try {
+                kaikki = Integer.parseInt(req.queryParams("kaikki"));
+            } catch (Exception e) {
+            }
+            if (kaikki == 1) {
+                list.addAll(keskusteluDao.findAlueenKeskustelutKaikki(id));
+                if (list.size() > 10) {
+                    map.put("kaikki", 1);
+                }
+            } else {
                 list.addAll(keskusteluDao.findAlueenKeskustelutUusimmat(id));
-                if (list.size() == 10) {
-                    if (keskusteluDao.findAlueenKeskustelutKaikki(id).size() > 10) {
-                        map.put("kaikki", 0);
-                    }
+                if (list.size() == 11) {
+                    list.remove(10);
+                    map.put("kaikki", 0);
                 } else {
                     map.put("kaikki", -1);
                 }
             }
-
             map.put("keskustelut", list);
             map.put("alue", alueDao.findOne(Integer.parseInt(req.params("id"))));
 

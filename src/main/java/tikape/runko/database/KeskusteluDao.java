@@ -72,7 +72,7 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
 //        return keskustelut;
 //    }
     public List<Keskustelu> findAlueenKeskustelutUusimmat(int alue_id) throws SQLException {
-        int uusimpienLkm = 10;
+        int uusimpienLkm = 11;
         Alue alue = alueDao.findOne(alue_id);
         return database.queryAndCollect(
                 "SELECT Keskustelu.*, COUNT(Viesti.id) AS viestienLkm, MAX(Viesti.aika) AS viimeisinAika "
