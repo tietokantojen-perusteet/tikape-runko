@@ -25,9 +25,9 @@
                     <span th:text="'Viestej&auml;: ' + ${keskustelu.viestienLkm} + ' - '">Viestien lukumäärä</span>
                     <span th:text="'Viimeisin viesti l&auml;hetetty: ' + ${keskustelu.viimeisinAika}">Viimeisimmän viestin aika</span> 
                 </a>
-                
+
             </li>
-            
+
         </ul>
         <span th:if="${kaikki} == 0">N&auml;ytet&auml;&auml;n kymmenen uusinta keskustelua. <a th:href="${'/alue/' + alue.id} + '?kaikki=1'">N&auml;yt&auml; kaikki</a></span>
         <span th:if="${kaikki} == 1">N&auml;ytet&auml;&auml;n kaikki alueen keskustelut. <a th:href="${'/alue/' + alue.id} + '?kaikki=0'">N&auml;yt&auml; vain uusimmat</a></span>
