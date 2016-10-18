@@ -58,6 +58,21 @@ public class Main {
 
         }, new ThymeleafTemplateEngine());
 
+        Spark.get("/uusialue", (req, res) -> {
+            HashMap map = new HashMap();
+            res.type("text/html;charset=UTF-8");
+            return new ModelAndView(map, "uusialue");
+        }, new ThymeleafTemplateEngine());
+
+        Spark.post("/uusialue", (req, res) -> {
+            if (req.queryParams("nimi").isEmpty()) {
+                return "Virheellinen alueen nimi";
+            }
+            alueDao.lisaaAlue(req.queryParams("nimi"));
+            res.redirect("/");
+            return "";
+        });
+
         Spark.get("alue/:id", (req, res) -> {
             List<Keskustelu> list = new ArrayList<>();
             HashMap map = new HashMap();
