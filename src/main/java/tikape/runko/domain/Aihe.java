@@ -89,4 +89,20 @@ public class Aihe {
     public void setViestit(List<Viesti> viestit) {
         this.viestit = viestit;
     }
+    
+    public Integer getViestimaara() {
+        return viestimaara;
+    }
+    
+    public void setViestimaara(Integer viestimaara) {
+        this.viestimaara = viestimaara;
+    }
+    
+    public Timestamp getViimeisinViesti() {
+        return viimeisin_viesti;
+    }
+    
+    public void setViimeisinViesti(Timestamp viimeisin_viesti) {
+        this.viimeisin_viesti = viimeisin_viesti;
+    }
 }

@@ -48,12 +48,9 @@ public class AiheDao implements Dao<Aihe, Integer> {
         Connection connection = database.getConnection();
         
         PreparedStatement stmt = connection.prepareStatement(
-            "SELECT a.*, viimeisin_viesti, viestimaara FROM Aihe a"
-          + "   INNER JOIN("
-          + "       SELECT MAX(lahetetty) as viimeisin_viesti, COUNT(*) as viestimaara, aihe"
-          + "       FROM Viesti GROUP BY aihe"
-          + "   ) v ON a.tunnus = v.aihe"
-          + "WHERE tunnus = ?"
+            "SELECT a.*, MAX(lahetetty) as uusin_viesti, COUNT(*) as viestimaara FROM Aihe a"
+	  + "INNER JOIN Viesti v ON a.tunnus = v.aihe"
+	  + "WHERE a.tunnus = ?;"
         );
         
         stmt.setInt(1, key);
@@ -89,11 +86,9 @@ public class AiheDao implements Dao<Aihe, Integer> {
         Connection connection = database.getConnection();
         
         PreparedStatement stmt = connection.prepareStatement(
-            "SELECT a.*, viimeisin_viesti, viestimaara FROM Aihe a"
-          + "   INNER JOIN("
-          + "       SELECT MAX(lahetetty) as viimeisin_viesti, COUNT(*) as viestimaara, aihe"
-          + "       FROM Viesti GROUP BY aihe"
-          + "   ) v ON a.tunnus = v.aihe"
+            "SELECT a.*, MAX(lahetetty) as uusin_viesti, COUNT(*) as viestimaara FROM Aihe a"
+	  + "INNER JOIN Viesti v ON a.tunnus = v.aihe"
+	  + "GROUP BY a.tunnus;"
         );
         
         ResultSet rs = stmt.executeQuery();
@@ -156,12 +151,9 @@ public class AiheDao implements Dao<Aihe, Integer> {
         Connection connection = database.getConnection();
         
         PreparedStatement stmt = connection.prepareStatement(
-            "SELECT a.*, viimeisin_viesti, viestimaara FROM Aihe a"
-          + "   INNER JOIN("
-          + "       SELECT MAX(lahetetty) as viimeisin_viesti, COUNT(*) as viestimaara, aihe"
-          + "       FROM Viesti GROUP BY aihe"
-          + "   ) v ON a.tunnus = v.aihe"
-          + "WHERE tunnus IN (" + arvot + ")"
+            "SELECT a.*, MAX(lahetetty) as uusin_viesti, COUNT(*) as viestimaara FROM Aihe a"
+	  + "INNER JOIN Viesti v ON a.tunnus = v.aihe"
+	  + "WHERE a.tunnus IN  = (" + arvot + ") GROUP BY a.tunnus;"
         );
 
         int laskuri = 1;
@@ -215,12 +207,9 @@ public class AiheDao implements Dao<Aihe, Integer> {
         Connection connection = database.getConnection();
         
         PreparedStatement stmt = connection.prepareStatement(
-            "SELECT a.*, viimeisin_viesti, viestimaara FROM Aihe a"
-          + "   INNER JOIN("
-          + "       SELECT MAX(lahetetty) as viimeisin_viesti, COUNT(*) as viestimaara, aihe"
-          + "       FROM Viesti GROUP BY aihe"
-          + "   ) v ON a.tunnus = v.aihe"
-          + "WHERE a.alue = ?;"
+            "SELECT a.*, MAX(lahetetty) as uusin_viesti, COUNT(*) as viestimaara FROM Aihe a"
+	  + "INNER JOIN Viesti v ON a.tunnus = v.aihe"
+	  + "WHERE a.alue = ? GROUP BY a.tunnus;"
         );
         
         stmt.setInt(1, alue.getTunnus());
@@ -256,12 +245,10 @@ public class AiheDao implements Dao<Aihe, Integer> {
         Connection connection = database.getConnection();
          
         PreparedStatement stmt = connection.prepareStatement(
-            "SELECT a.*, viimeisin_viesti, viestimaara FROM Aihe a"
-          + "   INNER JOIN("
-          + "       SELECT MAX(lahetetty) as viimeisin_viesti, COUNT(*) as viestimaara, aihe"
-          + "       FROM Viesti GROUP BY aihe"
-          + "   ) v ON a.tunnus = v.aihe"
-          + "WHERE a.alue = ? ORDER BY v.viimeisin_viesti DESC LIMIT ?, ?;"
+            "SELECT a.*, MAX(lahetetty) as uusin_viesti, COUNT(*) as viestimaara FROM Aihe a"
+	  + "INNER JOIN Viesti v ON a.tunnus = v.aihe"
+	  + "WHERE a.alue = ? GROUP BY a.tunnus" 
+          + "ORDER BY v.viimeisin_viesti DESC LIMIT ?, ?;"
         );
         
         stmt.setInt(1, alue.getTunnus());

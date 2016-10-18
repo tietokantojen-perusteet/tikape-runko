@@ -23,7 +23,10 @@ public class AlueDao implements Dao<Alue, Integer>{
         Connection connection = database.getConnection();
         
         PreparedStatement stmt = connection.prepareStatement(
-            "SELECT * FROM Alue WHERE tunnus = ?"
+            "SELECT al.*, MAX(lahetetty) as uusin_viesti, COUNT(*) as viestimaara FROM Alue al"
+          + "INNER JOIN Aihe ai ON al.tunnus = ai.alue"
+          + "INNER JOIN Viesti v ON ai.tunnus = v.aihe"
+          + "WHERE al.tunnus = ? GROUP BY al.tunnus;"
         );
         
         stmt.setInt(1, key);
@@ -37,8 +40,10 @@ public class AlueDao implements Dao<Alue, Integer>{
 
         String nimi = rs.getString("nimi");
         String kuvaus = rs.getString("kuvaus");
+        Timestamp viimViesti = rs.getTimestamp("viimeisin_viesti");
+        Integer viestimaara = rs.getInt("viestimaara");
 
-        Alue alue = new Alue(key, nimi, kuvaus);
+        Alue alue = new Alue(key, nimi, kuvaus, viimViesti, viestimaara);
 
         rs.close();
         stmt.close();
@@ -52,7 +57,10 @@ public class AlueDao implements Dao<Alue, Integer>{
         Connection connection = database.getConnection();
         
         PreparedStatement stmt = connection.prepareStatement(
-            "SELECT * FROM Alue"
+            "SELECT al.*, MAX(lahetetty) as uusin_viesti, COUNT(*) as viestimaara FROM Alue al"
+          + "INNER JOIN Aihe ai ON al.tunnus = ai.alue"
+          + "INNER JOIN Viesti v ON ai.tunnus = v.aihe"
+          + "GROUP BY al.tunnus ORDER BY al.name;"
         );
         
         ResultSet rs = stmt.executeQuery();
@@ -63,8 +71,10 @@ public class AlueDao implements Dao<Alue, Integer>{
             Integer tunnus = rs.getInt("tunnus");
             String nimi = rs.getString("nimi");
             String kuvaus = rs.getString("kuvaus");
-            
-            alueet.add(new Alue(tunnus, nimi, kuvaus));
+            Timestamp viimViesti = rs.getTimestamp("viimeisin_viesti");
+            Integer viestimaara = rs.getInt("viestimaara");
+
+            alueet.add(new Alue(tunnus, nimi, kuvaus, viimViesti, viestimaara));
         }
         
         rs.close();
@@ -88,7 +98,10 @@ public class AlueDao implements Dao<Alue, Integer>{
         Connection connection = database.getConnection();
         
         PreparedStatement stmt = connection.prepareStatement(
-            "SELECT * FROM Alue WHERE tunnus IN (" + arvot + ")"
+            "SELECT al.*, MAX(lahetetty) as uusin_viesti, COUNT(*) as viestimaara FROM Alue al"
+          + "INNER JOIN Aihe ai ON al.tunnus = ai.alue"
+          + "INNER JOIN Viesti v ON ai.tunnus = v.aihe"
+          + "WHERE al.tunnus IN (" + arvot + ") = ? GROUP BY al.tunnus;"
         );
         
         int laskuri = 1;
@@ -105,8 +118,10 @@ public class AlueDao implements Dao<Alue, Integer>{
             Integer tunnus = rs.getInt("tunnus");
             String nimi = rs.getString("nimi");
             String kuvaus = rs.getString("kuvaus");
-            
-            alueet.add(new Alue(tunnus, nimi, kuvaus));
+            Timestamp viimViesti = rs.getTimestamp("viimeisin_viesti");
+            Integer viestimaara = rs.getInt("viestimaara");
+
+            alueet.add(new Alue(tunnus, nimi, kuvaus, viimViesti, viestimaara));
         }
         
         rs.close();
