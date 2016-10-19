@@ -231,7 +231,7 @@ public class Main {
             if (sivunumero > 1) {
                 map.put("previouspage", sivunumero - 1);
             }
-
+            
             map.put("viestit", list);
             ModelAndView model = new ModelAndView(map, "keskustelu");
             return model;
