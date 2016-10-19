@@ -3,6 +3,9 @@ package tikape.runko.database;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+import org.sqlite.SQLiteConfig;
+import org.sqlite.SQLiteConfig.Pragma;
 
 public class Database<T> {
 
@@ -18,7 +21,11 @@ public class Database<T> {
     }
 
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(databaseAddress);
+        SQLiteConfig sqLiteConfig = new SQLiteConfig();
+        Properties properties = sqLiteConfig.toProperties();
+        properties.setProperty(Pragma.DATE_STRING_FORMAT.pragmaName, "yyyy-MM-dd HH:mm:ss");
+        
+        return DriverManager.getConnection(databaseAddress, properties);
     }
 
     public void init() {

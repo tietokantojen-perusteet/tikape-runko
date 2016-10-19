@@ -23,7 +23,7 @@ public class AlueDao implements Dao<Alue, Integer>{
         Connection connection = database.getConnection();
         
         PreparedStatement stmt = connection.prepareStatement(
-            "SELECT al.*, MAX(lahetetty) as uusin_viesti, COUNT(*) as viestimaara FROM Alue al "
+            "SELECT al.*, MAX(lahetetty) as viimeisin_viesti, COUNT(*) as viestimaara FROM Alue al "
           + "INNER JOIN Aihe ai ON al.tunnus = ai.alue "
           + "INNER JOIN Viesti v ON ai.tunnus = v.aihe "
           + "WHERE al.tunnus = ? GROUP BY al.tunnus;"
@@ -57,10 +57,10 @@ public class AlueDao implements Dao<Alue, Integer>{
         Connection connection = database.getConnection();
         
         PreparedStatement stmt = connection.prepareStatement(
-            "SELECT al.*, MAX(lahetetty) as uusin_viesti, COUNT(*) as viestimaara FROM Alue al "
+            "SELECT al.*, MAX(lahetetty) as viimeisin_viesti, COUNT(*) as viestimaara FROM Alue al "
           + "INNER JOIN Aihe ai ON al.tunnus = ai.alue "
           + "INNER JOIN Viesti v ON ai.tunnus = v.aihe "
-          + "GROUP BY al.tunnus ORDER BY al.name;"
+          + "GROUP BY al.tunnus ORDER BY al.nimi;"
         );
         
         ResultSet rs = stmt.executeQuery();
@@ -98,7 +98,7 @@ public class AlueDao implements Dao<Alue, Integer>{
         Connection connection = database.getConnection();
         
         PreparedStatement stmt = connection.prepareStatement(
-            "SELECT al.*, MAX(lahetetty) as uusin_viesti, COUNT(*) as viestimaara FROM Alue al "
+            "SELECT al.*, MAX(lahetetty) as viimeisin_viesti, COUNT(*) as viestimaara FROM Alue al "
           + "INNER JOIN Aihe ai ON al.tunnus = ai.alue "
           + "INNER JOIN Viesti v ON ai.tunnus = v.aihe "
           + "WHERE al.tunnus IN (" + arvot + ") = ? GROUP BY al.tunnus;"

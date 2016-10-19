@@ -48,7 +48,7 @@ public class AiheDao implements Dao<Aihe, Integer> {
         Connection connection = database.getConnection();
         
         PreparedStatement stmt = connection.prepareStatement(
-            "SELECT a.*, MAX(lahetetty) as uusin_viesti, COUNT(*) as viestimaara FROM Aihe a "
+            "SELECT a.*, MAX(lahetetty) as viimeisin_viesti, COUNT(*) as viestimaara FROM Aihe a "
 	  + "INNER JOIN Viesti v ON a.tunnus = v.aihe "
 	  + "WHERE a.tunnus = ?;"
         );
@@ -86,7 +86,7 @@ public class AiheDao implements Dao<Aihe, Integer> {
         Connection connection = database.getConnection();
         
         PreparedStatement stmt = connection.prepareStatement(
-            "SELECT a.*, MAX(lahetetty) as uusin_viesti, COUNT(*) as viestimaara FROM Aihe a "
+            "SELECT a.*, MAX(lahetetty) as viimeisin_viesti, COUNT(*) as viestimaara FROM Aihe a "
 	  + "INNER JOIN Viesti v ON a.tunnus = v.aihe "
 	  + "GROUP BY a.tunnus;"
         );
@@ -151,7 +151,7 @@ public class AiheDao implements Dao<Aihe, Integer> {
         Connection connection = database.getConnection();
         
         PreparedStatement stmt = connection.prepareStatement(
-            "SELECT a.*, MAX(lahetetty) as uusin_viesti, COUNT(*) as viestimaara FROM Aihe a "
+            "SELECT a.*, MAX(lahetetty) as viimeisin_viesti, COUNT(*) as viestimaara FROM Aihe a "
 	  + "INNER JOIN Viesti v ON a.tunnus = v.aihe "
 	  + "WHERE a.tunnus IN  = (" + arvot + ") GROUP BY a.tunnus;"
         );
@@ -207,7 +207,7 @@ public class AiheDao implements Dao<Aihe, Integer> {
         Connection connection = database.getConnection();
         
         PreparedStatement stmt = connection.prepareStatement(
-            "SELECT a.*, MAX(lahetetty) as uusin_viesti, COUNT(*) as viestimaara FROM Aihe a "
+            "SELECT a.*, MAX(lahetetty) as viimeisin_viesti, COUNT(*) as viestimaara FROM Aihe a "
 	  + "INNER JOIN Viesti v ON a.tunnus = v.aihe "
 	  + "WHERE a.alue = ? GROUP BY a.tunnus;"
         );
@@ -245,7 +245,7 @@ public class AiheDao implements Dao<Aihe, Integer> {
         Connection connection = database.getConnection();
          
         PreparedStatement stmt = connection.prepareStatement(
-            "SELECT a.*, MAX(lahetetty) as uusin_viesti, COUNT(*) as viestimaara FROM Aihe a "
+            "SELECT a.*, MAX(lahetetty) as viimeisin_viesti, COUNT(*) as viestimaara FROM Aihe a "
 	  + "INNER JOIN Viesti v ON a.tunnus = v.aihe "
 	  + "WHERE a.alue = ? GROUP BY a.tunnus "
           + "ORDER BY v.viimeisin_viesti DESC LIMIT ?, ?;"
