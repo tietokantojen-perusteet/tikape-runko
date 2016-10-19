@@ -23,7 +23,7 @@
             <tr th:each="alue : ${alueet}">
 
                 <td> 
-                    <a th:href="@{~/{id}(id=${alue.nimi})}">
+                    <a th:href="@{~/{id}(id=${alue.tunnus})}">
                         <span th:text="${alue.nimi}">Aluen nimi</span>
                     </a>
                 </td>
