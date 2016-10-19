@@ -25,7 +25,7 @@
             <tr th:each="aihe : ${aiheet}">
 
                 <td>
-                    <span th:text="${aihe.nimi}"> </span>
+                    <span th:text="${aihe.otsikko}"> </span>
                 </td>
                 
                 
@@ -34,9 +34,7 @@
                 </td>
                 
                 <td>
-                    <span>
-                        Tähän timestamp
-                    </span>
+                    <span th:tex="${aihe.viimeisinviesti}"></span>
                 </td>
             </tr>
         </table>
