@@ -23,9 +23,9 @@ public class AlueDao implements Dao<Alue, Integer>{
         Connection connection = database.getConnection();
         
         PreparedStatement stmt = connection.prepareStatement(
-            "SELECT al.*, MAX(lahetetty) as uusin_viesti, COUNT(*) as viestimaara FROM Alue al"
-          + "INNER JOIN Aihe ai ON al.tunnus = ai.alue"
-          + "INNER JOIN Viesti v ON ai.tunnus = v.aihe"
+            "SELECT al.*, MAX(lahetetty) as uusin_viesti, COUNT(*) as viestimaara FROM Alue al "
+          + "INNER JOIN Aihe ai ON al.tunnus = ai.alue "
+          + "INNER JOIN Viesti v ON ai.tunnus = v.aihe "
           + "WHERE al.tunnus = ? GROUP BY al.tunnus;"
         );
         
@@ -57,9 +57,9 @@ public class AlueDao implements Dao<Alue, Integer>{
         Connection connection = database.getConnection();
         
         PreparedStatement stmt = connection.prepareStatement(
-            "SELECT al.*, MAX(lahetetty) as uusin_viesti, COUNT(*) as viestimaara FROM Alue al"
-          + "INNER JOIN Aihe ai ON al.tunnus = ai.alue"
-          + "INNER JOIN Viesti v ON ai.tunnus = v.aihe"
+            "SELECT al.*, MAX(lahetetty) as uusin_viesti, COUNT(*) as viestimaara FROM Alue al "
+          + "INNER JOIN Aihe ai ON al.tunnus = ai.alue "
+          + "INNER JOIN Viesti v ON ai.tunnus = v.aihe "
           + "GROUP BY al.tunnus ORDER BY al.name;"
         );
         
@@ -98,9 +98,9 @@ public class AlueDao implements Dao<Alue, Integer>{
         Connection connection = database.getConnection();
         
         PreparedStatement stmt = connection.prepareStatement(
-            "SELECT al.*, MAX(lahetetty) as uusin_viesti, COUNT(*) as viestimaara FROM Alue al"
-          + "INNER JOIN Aihe ai ON al.tunnus = ai.alue"
-          + "INNER JOIN Viesti v ON ai.tunnus = v.aihe"
+            "SELECT al.*, MAX(lahetetty) as uusin_viesti, COUNT(*) as viestimaara FROM Alue al "
+          + "INNER JOIN Aihe ai ON al.tunnus = ai.alue "
+          + "INNER JOIN Viesti v ON ai.tunnus = v.aihe "
           + "WHERE al.tunnus IN (" + arvot + ") = ? GROUP BY al.tunnus;"
         );
         
