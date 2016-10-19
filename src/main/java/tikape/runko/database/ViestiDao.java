@@ -70,6 +70,18 @@ public class ViestiDao implements Dao<Viesti, Integer> {
                         rs.getString("sisalto")),
                 keskustelu_id, viestienLkmSivulla, (sivunumero - 1) * viestienLkmSivulla);
     }
+    
+        public List<Viesti> findKeskustelunViestitSivullinenPlusYlimaaraiset(int keskustelu_id, int sivunumero, int viestienLkmSivulla, int ylimaaraistenViestienMaara) throws SQLException {
+        Keskustelu keskustelu = keskusteluDao.findOne(keskustelu_id);
+        return database.queryAndCollect(
+                "SELECT * FROM Viesti WHERE keskustelu_id = ? ORDER BY id LIMIT ? OFFSET ?",
+                rs -> new Viesti(rs.getInt("id"),
+                        keskustelu,
+                        rs.getTimestamp("aika", Calendar.getInstance(TimeZone.getTimeZone("UTC"))),
+                        rs.getString("kayttaja"),
+                        rs.getString("sisalto")),
+                keskustelu_id, viestienLkmSivulla + ylimaaraistenViestienMaara, (sivunumero - 1) * viestienLkmSivulla);
+    }
 
     public List<Viesti> findKeskustelunViestitKaikki(int keskustelu_id) throws SQLException {
         Keskustelu keskustelu = keskusteluDao.findOne(keskustelu_id);
