@@ -1,0 +1,48 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+
+    <head>
+        <title>Yksisarvisten keskustelufoorumi - Alue  </title>
+        <meta charset="utf-8" />
+
+        <style>
+            table, tr, th, td {border: 1px solid black; border-collapse: collapse}
+        </style>
+    </head>
+
+
+    <body>
+
+        <h1> Alue, jossa listattuna alueella olevat viestit </h1>
+        <table>
+            <tr>
+                <th>Alue: *mikä alue*</th>
+                <th>Viestejä</th>
+                <th>Viimeisin viesti</th>
+            </tr>
+
+            <tr th:each="aihe : ${aiheet}">
+
+                <td>
+                    <span th:text="${aihe.nimi}"> </span>
+                </td>
+                
+                
+                <td>
+                    <span th:text="${aihe.viestimaara}"></span>
+                </td>
+                
+                <td>
+                    <span>
+                        Tähän timestamp
+                    </span>
+                </td>
+            </tr>
+        </table>
+
+
+
+        <a href="/">Paluu</a>
+    </body>
+</html>
