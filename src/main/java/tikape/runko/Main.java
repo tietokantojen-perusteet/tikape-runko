@@ -62,12 +62,21 @@ public class Main {
 
         Spark.post("/uusialue", (req, res) -> {
             if (req.queryParams("nimi").isEmpty()) {
-                return "Virheellinen alueen nimi";
+                return "<!DOCTYPE html>"
+                        + "<head><meta charset='utf-8'/><title>Virhe lisäämisessä</title>"
+                        + "<link rel=\"stylesheet\" type=\"text/css\" href=\"/styles.css\"/></head>"
+                        + "<body><h1>Alueen nimi ei voi olla tyhjä.</h1>"
+                        + "<a href='/uusialue'> Takaisin alueen lisäämiseen</a></body></html>";
             }
             try {
                 alueDao.lisaaAlue(req.queryParams("nimi"));
             } catch (Exception e) {
-                return "Jokin meni pieleen :( Alueen nimi saa olla korkeintaan 100 merkkiä pitkä";
+                return "<!DOCTYPE html>"
+                        + "<head><meta charset='utf-8'/><title>Virhe lisäämisessä</title>"
+                        + "<link rel=\"stylesheet\" type=\"text/css\" href=\"/styles.css\"/></head>"
+                        + "<body><h1>Jokin meni pieleen :/ Alueen nimi saa olla korkeintaan 100 merkkiä pitkä.</h1>"
+                        + "<a href='/uusialue'> Takaisin alueen lisäämiseen</a></body></html>";
+
             }
 
             res.redirect("/");
@@ -81,7 +90,7 @@ public class Main {
             HashMap map = new HashMap();
             int id = 1;
             int kaikki = 0;
-            
+
             try {
                 kaikki = Integer.parseInt(req.queryParams("kaikki"));
             } catch (Exception e) {
@@ -134,7 +143,11 @@ public class Main {
         Spark.post("alue/:id", (req, res) -> {
             if (req.queryParams("sisalto").isEmpty()
                     || req.queryParams("otsikko").isEmpty()) {
-                return "Ei tyhjiä viestejä tai keskusteluja ilman otsikkoa, kiitos. :(";
+                return "<!DOCTYPE html>"
+                        + "<head><meta charset='utf-8'/><title>Virhe lisäämisessä</title>"
+                        + "<link rel=\"stylesheet\" type=\"text/css\" href=\"/styles.css\"/></head>"
+                        + "<body><h1>Ei tyhjiä viestejä tai keskusteluja ilman otsikkoa, kiitos.</h1>"
+                        + "<a href='/alue/" + req.params("id") + "'> Takaisin alueelle</a></body></html>";
             }
             int id = -1;
             try {
@@ -149,7 +162,7 @@ public class Main {
             try {
                 keskusteluDao.lisaaKeskustelunavaus(id, otsikko, nimi, sisalto);
             } catch (Exception e) {
-                return "Jokin meni vikaan :(. Nimierkki ja keskustelun otsikko saavat olla korkeintaan 100 merkkiä pitkiä";
+                return "Jokin meni vikaan :/. Nimierkki ja keskustelun otsikko saavat olla korkeintaan 100 merkkiä pitkiä";
             }
 
             res.redirect("/alue/" + id);
@@ -166,7 +179,11 @@ public class Main {
             }
 
             if (req.queryParams("sisalto").isEmpty()) {
-                return "Ei tyhjiä viestejä, kiitos. :(";
+                return "<!DOCTYPE html>"
+                        + "<head><meta charset='utf-8'/><title>Virhe lisäämisessä</title>"
+                        + "<link rel=\"stylesheet\" type=\"text/css\" href=\"/styles.css\"/></head>"
+                        + "<body><h1>Ei tyhjiä viestejä, kiitos.</h1>"
+                        + "<a href='/keskustelu/" + req.params("id") + "'> Takaisin keskusteluun</a></body></html>";
             }
 
             try {
@@ -231,7 +248,7 @@ public class Main {
             if (sivunumero > 1) {
                 map.put("previouspage", sivunumero - 1);
             }
-            
+
             map.put("viestit", list);
             ModelAndView model = new ModelAndView(map, "keskustelu");
             return model;
