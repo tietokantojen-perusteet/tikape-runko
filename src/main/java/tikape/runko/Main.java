@@ -35,5 +35,13 @@ public class Main {
             return new ModelAndView(data, "area");
         }, new ThymeleafTemplateEngine());
         
+        get("/:aid/:id", (req, res) -> {
+            HashMap<String, Object> data = new HashMap();
+            data.put("alueTunnus", req.params(":aid"));
+            data.put("alueNimi", alueDao.findOne(Integer.parseInt(req.params(":aid"))).getNimi());
+            data.put("aiheNimi", aiheDao.findOne(Integer.parseInt(req.params(":id"))).getOtsikko());
+            data.put("viestit", viestiDao.findAllInAihe(aiheDao.findOne(Integer.parseInt(req.params(":id")))));
+            return new ModelAndView(data, "thread");
+        }, new ThymeleafTemplateEngine());
     }
 }
