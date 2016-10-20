@@ -21,6 +21,7 @@ public class Viesti {
         this.aihe = null;
         this.teksti = teksti;
         this.lahetetty = lahetetty;
+        this.lahettaja = lahettaja
     }
     
     public Integer getTunnus() {
