@@ -25,7 +25,9 @@
             <tr th:each="aihe : ${aiheet}">
 
                 <td>
-                    <span th:text="${aihe.otsikko}"> </span>
+                   <a th:href="@{~/{aid}/{id}(aid=${alueId}, id=${aihe.tunnus})}">
+                        <span th:text="${aihe.otsikko}"> </span>
+                    </a>
                 </td>
                 
                 
