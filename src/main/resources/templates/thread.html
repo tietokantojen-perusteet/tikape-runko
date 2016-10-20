@@ -1,0 +1,28 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Some crappy title</title>
+        <meta charset="utf-8" />
+
+        <style>
+            table, tr, th, td {border: 1px solid black; border-collapse: collapse}
+        </style>
+    </head>
+
+    <body>
+        <h1>Aihe </h1>
+        <h3>Alue: <span th:text="${alueNimi}"></span> -> <span th:text="${aiheNimi}"></span></h3>
+        
+        
+        <!-- VIESTIEN NUMERONTI, EI TOIMI, KORJAA -->
+        <ol type="1" th:each="msg : ${viestit}">
+            <li>
+                <span th:text="${msg.teksti}"></span> t. <span th:text="${msg.lahettaja}"></span>
+            </li>         
+        </ol>
+         
+         <a th:href="@{~/{tmp} (tmp=${alueTunnus})}">Paluu</a>
+      
+    </body>
+</html>
