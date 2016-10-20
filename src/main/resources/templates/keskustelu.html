@@ -48,22 +48,11 @@
             table.one {
                 float:left;
                 font-family: arial, sans-serif;
-                width:15%;
+                width:100%;
                 border-collapse: collapse;                
             }
 
-            table.two {
-                float:left;
-                font-family: arial, sans-serif;
-                width:60%;
-                border-collapse: collapse;                
-            }
-            table.three {
-                float:left;
-                font-family: arial, sans-serif;
-                width:25%;
-                border-collapse: collapse;                
-            }
+            
             td, th {
                 border: 1px solid #dddddd;
                 text-align: left;
@@ -77,53 +66,33 @@
         </style>
     </head>
     <body>
-        <h1 th:text = "${keskustelunnimi}"></h1>
+        <h1 th:text = "${omakeskus.otsikko}"></h1>
 
         <p id="demo"></p>
         <table class="one">
+             
             <tr>
-                <th> Nimimerkki</th>
-            </tr>  
-            <tr>
+                <td th:text ="${julkaisuaika}"> aloitus </td>
                 <td th:text ="${omakeskus.aloittaja}"> aloitus </td>
+                <td th:text ="${omakeskus.aloitusviesti}"> aloitusteksti </td>
+                
             </tr>
             <tr th:each="viest : ${viesti}">
+                <td th:text="${viest.aika}">Viestinaika</td>
                 <td th:text ="${viest.kirjoittaja}"> 
                     nimimerkki   
                 </td>
+                <td th:text="${viest.teksti}">Teksti</td>
+                
             </tr>
         </table>
-
-        <table class="three">
-            <tr>
-                <th>Julkaistu</th>
-            </tr>
-            <tr>
-                <td th:text ="${julkaisuaika}"> aloitus </td>
-            </tr>
-            <tr th:each="viest: ${viesti}">
-                <td th:text="${viest.aika}">ViestejaYht</td>
-            </tr>
-
-        </table>
-
-        <table class="two">
-            <tr>
-                <th> Viesti </th>
-            </tr>
-            <tr>
-                <td th:text ="${omakeskus.aloitusviesti}"> aloitus </td>
-            </tr>
-            <tr th:each="viest: ${viesti}">
-                <td th:text="${viest.teksti}">Teksti</td>                
-            </tr>
-
-        </table>
+        
+        
         <h3>Uusi viesti</h3>
 
         <div class="one">
 
-            <form method="POST" action="#" th:action="|${omakeskus.id}|">
+            <form method="POST" th:action="|/alue/keskustelu/${omakeskus.id}|" >
 
                 Viesti:<br/>
                 <textarea class ="one" name="viesti" maxlength="50000" rows="10" cols="50"></textarea><br/>
