@@ -18,13 +18,20 @@
                 padding: 30px;
                 display: inline-block;
             }
-            
+            div{
+                padding: 30px;
+            }
+
 
         </style>
     </head>
 
     <body>
-        
+        <div>
+            <a href="/etusivu"> etusivulle</a>
+        </div>
+
+
 
         <ol type='text/css'>
             <li th:each="viesti: ${viestit}"> 
@@ -38,7 +45,7 @@
 
 
         </ul>
-        
+
 
         <h1> Vastaa aiheeseen: </h1>
         <form method="POST">

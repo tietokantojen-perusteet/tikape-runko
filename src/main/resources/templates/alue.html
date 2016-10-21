@@ -16,16 +16,20 @@ and open the template in the editor.
 
                 display: inline-block;
             }
-            
+            div{
+                padding: 30px;
+            }
+
 
         </style>
-        
+
         <title> aihe  </title>
     </head>
-    
+
     <body>
-        <a href="/etusivu"> etusivulle</a>
-        
+        <div>
+            <a href="/etusivu"> etusivulle</a>
+        </div>
         <ul>
             Aiheet:
             <li th:each="aihe : ${aiheet}">
@@ -44,13 +48,13 @@ and open the template in the editor.
                 <a th:text="${String}">aika</a>
             </li>
         </ul>
-        
+
         <h1>Uusi aihe:</h1>
         <form method="POST">
             <input type="text" name="aihe"/>
             <input type="submit" value="Aloita!"/>
         </form>
 
-        
+
     </body>
 </html>
