@@ -24,14 +24,26 @@ public class Main {
 
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
-            List<String> viestimaara = new ArrayList<>();
+
+            List<String> viimeisimmat = new ArrayList<>();
+            for (Alue alue : alueDao.findAll()) {
+                viimeisimmat.add("" + alueDao.getViimeisin(alue.getId()));
+            }
+
+            List<String> viestimaarat = new ArrayList<>();
+            for (Alue alue : alueDao.findAll()) {
+                viestimaarat.add("" + alueDao.getLukumaara(alue.getId()));
+            }
+
             map.put("alueet", alueDao.findAll());
+            map.put("viestimaarat", viestimaarat);
+            map.put("viimeisimmat", viimeisimmat);
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
 
         get("/:id", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("aihelista", aiheDao.findAll());
+            map.put("aihelista", aiheDao.findAlueesta(Integer.parseInt(req.params(":id"))));
             return new ModelAndView(map, "aiheet");
         }, new ThymeleafTemplateEngine());
     }

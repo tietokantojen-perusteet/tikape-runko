@@ -15,7 +15,18 @@
                 <a th:href="@{~/{id}(id=${alue.id})}"><span th:text="${alue.nimi}">Alueen nimi</span></a>
             </li>
         </ul>
-
+        
+        <ul>
+            <li th:each="viestimaara : ${viestimaarat}">
+           <span th:text="${viestimaara}">viestimaara</span>
+            </li>
+        </ul>
+        
+        <ul>
+            <li th:each="viimeisin : ${viimeisimmat}">
+           <span th:text="${viimeisin}">viimeisin</span>
+            </li>
+        </ul>
 
 
     </body>
