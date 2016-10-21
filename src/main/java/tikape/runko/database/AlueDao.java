@@ -24,26 +24,20 @@ public class AlueDao implements Dao<Alue, Integer>{
         
         PreparedStatement stmt = connection.prepareStatement(
             "SELECT al.*, MAX(lahetetty) as viimeisin_viesti, COUNT(*) as viestimaara FROM Alue al "
-          + "INNER JOIN Aihe ai ON al.tunnus = ai.alue "
-          + "INNER JOIN Viesti v ON ai.tunnus = v.aihe "
+          + "LEFT JOIN Aihe ai ON al.tunnus = ai.alue "
+          + "LEFT JOIN Viesti v ON ai.tunnus = v.aihe "
           + "WHERE al.tunnus = ? GROUP BY al.tunnus;"
         );
         
         stmt.setInt(1, key);
 
         ResultSet rs = stmt.executeQuery();
-        boolean hasOne = rs.next();
         
-        if (!hasOne) {
+        if (!rs.next()) {
             return null;
         }
-
-        String nimi = rs.getString("nimi");
-        String kuvaus = rs.getString("kuvaus");
-        Timestamp viimViesti = rs.getTimestamp("viimeisin_viesti");
-        Integer viestimaara = rs.getInt("viestimaara");
-
-        Alue alue = new Alue(key, nimi, kuvaus, viimViesti, viestimaara);
+        
+        Alue alue = collect(rs);
 
         rs.close();
         stmt.close();
@@ -58,9 +52,9 @@ public class AlueDao implements Dao<Alue, Integer>{
         
         PreparedStatement stmt = connection.prepareStatement(
             "SELECT al.*, MAX(lahetetty) as viimeisin_viesti, COUNT(*) as viestimaara FROM Alue al "
-          + "INNER JOIN Aihe ai ON al.tunnus = ai.alue "
-          + "INNER JOIN Viesti v ON ai.tunnus = v.aihe "
-          + "GROUP BY al.tunnus ORDER BY al.nimi;"
+          + "LEFT JOIN Aihe ai ON al.tunnus = ai.alue "
+          + "LEFT JOIN Viesti v ON ai.tunnus = v.aihe "
+          + "GROUP BY al.tunnus ORDER BY LOWER(al.nimi) DESC;"
         );
         
         ResultSet rs = stmt.executeQuery();
@@ -68,13 +62,7 @@ public class AlueDao implements Dao<Alue, Integer>{
         List<Alue> alueet = new ArrayList();
         
         while (rs.next()) {
-            Integer tunnus = rs.getInt("tunnus");
-            String nimi = rs.getString("nimi");
-            String kuvaus = rs.getString("kuvaus");
-            Timestamp viimViesti = rs.getTimestamp("viimeisin_viesti");
-            Integer viestimaara = rs.getInt("viestimaara");
-
-            alueet.add(new Alue(tunnus, nimi, kuvaus, viimViesti, viestimaara));
+            alueet.add(collect(rs));
         }
         
         rs.close();
@@ -99,8 +87,8 @@ public class AlueDao implements Dao<Alue, Integer>{
         
         PreparedStatement stmt = connection.prepareStatement(
             "SELECT al.*, MAX(lahetetty) as viimeisin_viesti, COUNT(*) as viestimaara FROM Alue al "
-          + "INNER JOIN Aihe ai ON al.tunnus = ai.alue "
-          + "INNER JOIN Viesti v ON ai.tunnus = v.aihe "
+          + "LEFT JOIN Aihe ai ON al.tunnus = ai.alue "
+          + "LEFT JOIN Viesti v ON ai.tunnus = v.aihe "
           + "WHERE al.tunnus IN (" + arvot + ") = ? GROUP BY al.tunnus;"
         );
         
@@ -115,13 +103,7 @@ public class AlueDao implements Dao<Alue, Integer>{
         List<Alue> alueet = new ArrayList<>();
         
         while (rs.next()) {
-            Integer tunnus = rs.getInt("tunnus");
-            String nimi = rs.getString("nimi");
-            String kuvaus = rs.getString("kuvaus");
-            Timestamp viimViesti = rs.getTimestamp("viimeisin_viesti");
-            Integer viestimaara = rs.getInt("viestimaara");
-
-            alueet.add(new Alue(tunnus, nimi, kuvaus, viimViesti, viestimaara));
+            alueet.add(collect(rs));
         }
         
         rs.close();
@@ -136,4 +118,16 @@ public class AlueDao implements Dao<Alue, Integer>{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+    public Alue collect(ResultSet rs) throws SQLException {
+        Integer tunnus = rs.getInt("tunnus");
+        String nimi = rs.getString("nimi");
+        String kuvaus = rs.getString("kuvaus");
+        Timestamp viimViesti = rs.getTimestamp("viimeisin_viesti");
+        Integer viestimaara = rs.getInt("viestimaara");
+        if (viimViesti == null) {
+            viestimaara = 0;
+        }
+
+        return new Alue(tunnus, nimi, kuvaus, viimViesti, viestimaara);
+    }
 }

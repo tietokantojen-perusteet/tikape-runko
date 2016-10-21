@@ -55,18 +55,14 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         stmt.setInt(1, key);
 
         ResultSet rs = stmt.executeQuery();
-        boolean hasOne = rs.next();
         
-        if (!hasOne) {
+        if (!rs.next()) {
             return null;
         }
 
+        Viesti viesti = collect(rs);
+            
         Integer aiheTunnus = rs.getInt("aihe");
-        String teksti = rs.getString("teksti");
-        String lahettaja = rs.getString("lahettaja");
-        Timestamp lahetetty = rs.getTimestamp("lahetetty");
-
-        Viesti viesti = new Viesti(key, teksti, lahettaja, lahetetty);
         viesti.setAihe(aiheDao.findOne(aiheTunnus));
         
         rs.close();
@@ -90,14 +86,10 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         List<Viesti> viestit = new ArrayList<>();
         
         while (rs.next()) {
-            Integer tunnus = rs.getInt("tunnus");
-            Integer aiheTunnus = rs.getInt("aihe");
-            String teksti = rs.getString("teksti");
-            String lahettaja = rs.getString("lahettaja");
-            Timestamp lahetetty = rs.getTimestamp("lahetetty");
-            
-            Viesti viesti = new Viesti(tunnus, teksti, lahettaja, lahetetty);
+            Viesti viesti = collect(rs);
             viestit.add(viesti);
+            
+            Integer aiheTunnus = rs.getInt("aihe");
             
             if (!aiheidenViestit.containsKey(aiheTunnus)) {
                 aiheidenViestit.put(aiheTunnus, new ArrayList<>());
@@ -142,12 +134,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         List<Viesti> viestit = new ArrayList<>();
         
         while (rs.next()) {
-            Integer tunnus = rs.getInt("tunnus");
-            String teksti = rs.getString("teksti");
-            String lahettaja = rs.getString("lahettaja");
-            Timestamp lahetetty = rs.getTimestamp("lahetetty");
-            
-            Viesti viesti = new Viesti(tunnus, teksti, lahettaja, lahetetty);
+            Viesti viesti = collect(rs);
             viesti.setAihe(aihe);
             
             viestit.add(viesti);
@@ -175,12 +162,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         List<Viesti> viestit = new ArrayList<>();
         
         while (rs.next()) {
-            Integer tunnus = rs.getInt("tunnus");
-            String teksti = rs.getString("teksti");
-            String lahettaja = rs.getString("lahettaja");
-            Timestamp lahetetty = rs.getTimestamp("lahetetty");
-            
-            Viesti viesti = new Viesti(tunnus, teksti, lahettaja, lahetetty);
+            Viesti viesti = collect(rs);
             viesti.setAihe(aihe);
             
             viestit.add(viesti);
@@ -191,5 +173,14 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         connection.close();
 
         return viestit;
+    }
+    
+    public Viesti collect(ResultSet rs) throws SQLException {
+        Integer tunnus = rs.getInt("tunnus");
+        String teksti = rs.getString("teksti");
+        String lahettaja = rs.getString("lahettaja");
+        Timestamp lahetetty = rs.getTimestamp("lahetetty");
+
+        return new Viesti(tunnus, teksti, lahettaja, lahetetty);
     }
 }
