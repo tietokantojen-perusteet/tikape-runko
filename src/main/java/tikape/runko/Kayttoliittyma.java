@@ -32,48 +32,49 @@ public class Kayttoliittyma {
     public HashMap getIndexpage() throws Exception {
         HashMap map = new HashMap<>();
         List<Alue> alueet = viestiDao.alueetJarjestys();
-        ArrayList<String> viestejaYht = new ArrayList<>();
-        ArrayList<String> viimViesti = new ArrayList<>();
+        ArrayList<Object> alueTiedot = new ArrayList<>();
 
         for (Alue a : alueet) {
-            viestejaYht.add(Integer.toString(viestiDao.alueenViestienmaara(a.getId())));
+            String viestMaara = Integer.toString(viestiDao.alueenViestienmaara(a.getId()));
+            String aika = "-";
+            
             if (viestiDao.alueenUusin(a.getId()) != null) {
                 String str = viestiDao.alueenUusin(a.getId()).toString();
-                viimViesti.add(str.substring(0, 19));
-            } else {
-                viimViesti.add("-");
+                aika = str.substring(0, 19);
             }
+            alueTiedot.add(new Tempolio(a, viestMaara, aika));
         }
 
         map.put("alue", alueet);
-        map.put("yht", viestejaYht);
-        map.put("viim", viimViesti);
+        map.put("aluetiedot", alueTiedot);
 
         return map;
     }
 
     public HashMap getAluepage(int alueId) throws Exception {
         HashMap map = new HashMap<>();
+        
         List<Keskustelu> keskustelut = viestiDao.keskustelutJarjestys(alueId);
-        ArrayList<String> viestejaYht = new ArrayList<>();
-        ArrayList<String> viimViesti = new ArrayList<>();
+        ArrayList<Object> keskTiedot = new ArrayList<>();
         String aluenimi = alueDao.findOne(alueId).getNimi();
         
         for (Keskustelu k : keskustelut) {
-            viestejaYht.add(Integer.toString(viestiDao.keskustelunViestienmaara(k.getId())));
-
+            String viestMaara = Integer.toString(viestiDao.keskustelunViestienmaara(k.getId()));
+            String aika;
+            
             if (viestiDao.keskustelunUusin(k.getId()) != null) {
                 String str = viestiDao.keskustelunUusin(k.getId()).toString();
-                viimViesti.add(str.substring(0, 19));
+                aika = str.substring(0, 19);
             } else {
                 String str = keskusteluDao.findOne(k.getId()).getTime().toString();
-                viimViesti.add(str.substring(0, 19));
+                aika = str.substring(0, 19);
             }
+            
+            keskTiedot.add(new Tempolio(k, viestMaara, aika));
         }
+        
         map.put("alueennimi", aluenimi);
-        map.put("keskustelu", keskustelut);
-        map.put("yht", viestejaYht);
-        map.put("viim", viimViesti);
+        map.put("kesktiedot", keskTiedot);
         map.put("alueid", alueId);
 
         return map;
@@ -84,11 +85,9 @@ public class Kayttoliittyma {
         HashMap map = new HashMap<>();
         List<Viesti> viesti = viestiDao.viestitJarjestys(keskusteluId);
         Keskustelu kesk = keskusteluDao.findOne(keskusteluId);
-        String keskusnimi = kesk.getOtsikko();
+
         String aika = kesk.getTime().toString();
         aika = aika.substring(0,19);
-        String aloitti = kesk.getAloittaja();
-        String tekstii = kesk.getAloitusviesti();
         
         map.put("viesti", viesti);
         map.put("omakeskus", kesk);

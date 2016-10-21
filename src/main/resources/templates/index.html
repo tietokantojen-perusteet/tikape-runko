@@ -8,13 +8,7 @@
             table.one {
                 float:left;
                 font-family: arial, sans-serif;
-                width:33%;
-                border-collapse: collapse;                
-            }
-            table.two {
-                float:left;
-                font-family: arial, sans-serif;
-                width:34%;
+                width:100%;
                 border-collapse: collapse;                
             }
             td, th {
@@ -33,39 +27,22 @@
     <body>                    
         <h1>Foorumi</h1>
 
-        <table class="two">
+        <table class="one">
             <tr>
                 <th>Alue</th>
-            </tr>
-            <tr th:each="alue : ${alue}">
-                <td> 
-                    <a href="/alue.html" th:href="|/alue/${alue.id}|">
-                        <div th:text="${alue.nimi}" style="height: 100%;width: 100%"></div>
-                    </a>
-                </td>
-            </tr>
-        </table>
-
-        <table class="one">
-            <tr>
                 <th>Viestejä yhteensä</th>
-            </tr>
-
-            <tr th:each="luku: ${yht}">
-                <td th:text="${luku}">ViestejaYht</td>
-            </tr>
-
-        </table>
-
-        <table class="one">
-            <tr>
                 <th>Viimeisin viesti</th>
             </tr>
-
-            <tr th:each="viim: ${viim}">
-                <td th:text="${viim}">Viimeisin viesti</td>                
+            <tr th:each="alue : ${aluetiedot}">
+                <td> 
+                    <a href="/alue.html" th:href="|/alue/${alue.obj1.id}|">
+                        <div th:text="${alue.obj1.nimi}" style="height: 100%;width: 100%"></div>
+                    </a>
+                </td>
+                <td th:text ="${alue.obj2}"> Viestienmäärä </td>
+                <td th:text ="${alue.obj3}"> Aika </td>
             </tr>
-
+            
         </table>
         
         <form method="POST" action="/">
@@ -73,5 +50,6 @@
             <input type="text" name="nimi"  maxlength="40"/><br/>
             <input type="submit" value="Lisää alue"/>
         </form>
+        
     </body>
 </html>

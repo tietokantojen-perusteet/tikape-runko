@@ -16,7 +16,7 @@
                 box-sizing: border-box;
                 resize: none;
             }
-            
+
             input[type=text], select {
                 width: 50%;
                 padding: 12px 20px;
@@ -50,13 +50,7 @@
             table.one {
                 float:left;
                 font-family: arial, sans-serif;
-                width:33%;
-                border-collapse: collapse;                
-            }
-            table.two {
-                float:left;
-                font-family: arial, sans-serif;
-                width:34%;
+                width:100%;
                 border-collapse: collapse;                
             }
             td, th {
@@ -72,56 +66,45 @@
         </style>
     </head>
 
-    <body>                    
+    <body>     
+        
         <h1>Foorumi</h1>
-        <p id="demo"></p>
-        <table class="two">
+
+        <table class="one">
+            
             <tr>
                 <th th:text="|Alue: ${alueennimi}|"></th>
-            </tr>            
-            <tr th:each="kesk : ${keskustelu}">
+                <th>Viestejä yhteensä</th>
+                <th>Viimeisin viesti</th>
+            </tr>   
+            
+            <tr th:each="kesk : ${kesktiedot}">
+                
                 <td> 
-                    <a href="/keskustelu.html" th:href="|/alue/keskustelu/${kesk.id}|">
-                        <div th:text="${kesk.otsikko}" style="height: 100%;width: 100%"></div>
+                    <a href="/keskustelu.html" th:href="|/alue/keskustelu/${kesk.obj1.id}|">
+                        <div th:text="${kesk.obj1.otsikko}" style="height: 100%;width: 100%"></div>
                     </a>
                 </td>
+                
+                <td th:text ="${kesk.obj2}"> Viestienmäärä </td>
+                <td th:text ="${kesk.obj3}"> Aika </td>
+
             </tr>
-        </table>
-
-        <table class="one">
-            <tr>
-                <th>Viestejä yhteensä</th>
-            </tr>
-
-            <tr th:each="luku: ${yht}">
-                <td th:text="${luku}">ViestejaYht</td>
-            </tr>
-
-        </table>
-
-        <table class="one">
-            <tr>
-                <th>Viimeisin viesti</th>
-            </tr>
-
-            <tr th:each="viim: ${viim}">
-                <td th:text="${viim}">Viimeisin viesti</td>                
-            </tr>
-
-        </table>
-        
-        <div>
-        ---    
-        </div>
-        
-        <h3>Uusi keskustelu</h3>
-        
-        <div class="one">
             
+        </table>
+
+        <div>
+            ---    
+        </div>
+
+        <h3>Uusi keskustelu</h3>
+
+        <div class="one">
+
             <form method="POST" th:action="|/alue/${alueid}|" >
                 Otsikko:<br/>
                 <input type="text" name="otsikko" maxlength="100"/><br/>
-                
+
                 Viesti:<br/>
                 <textarea class ="one" name="viesti" maxlength="50000" rows="10" cols="50"></textarea><br/>
 
@@ -129,9 +112,9 @@
                 <input type="text" name="nimi" maxlength="40"/><br/>
                 <input type="submit" value="Lisää uusi keskustelu"/>
             </form>
-            
+
         </div>
-        
+
         <br/>
         <a href="/">Takaisin aluelistaukseen.</a>
     </body>
