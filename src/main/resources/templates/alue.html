@@ -48,15 +48,18 @@
                 padding: 20px;
             }
             table.one {
-                float:left;
                 font-family: arial, sans-serif;
                 width:100%;
-                border-collapse: collapse;                
+                border-collapse: collapse;
+                table-layout: fixed;
             }
             td, th {
                 border: 1px solid #dddddd;
                 text-align: left;
                 padding: 8px;
+            }
+            td {
+                word-wrap:break-word;
             }
 
             tr:nth-child(even) {
