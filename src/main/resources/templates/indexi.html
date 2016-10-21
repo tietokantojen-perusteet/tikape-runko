@@ -1,5 +1,17 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <style>
+        section {
+            float: left;
+            margin: 0 1%;
+            width: 10%;
+        }
+        ul { 
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        }
+    </style>
 
     <head>
         <title>TiKaPe-foorumi</title>
@@ -8,14 +20,33 @@
 
     <body>
         <h1>TiKaPe-foorumi</h1>
-        
-        <p>Aihealu    Viesteja yhteensa     Viimeisin viesti</p>
-        <ul>
-            <li th:each="alue : ${alueet}">
-                <a th:href="@{~/{id}(id=${alue.id})}"><span th:text="${alue.nimi}">Alueen nimi</span></a>
-            </li>
-        </ul>
 
-        
+
+        <section>
+            <p>Aihealue</p>
+            <ul>
+                <li th:each="alue : ${alueet}">
+                    <a th:href="@{~/{id}(id=${alue.id})}"><span th:text="${alue.nimi}">Alueen nimi</span></a>
+                </li>
+            </ul>
+        </section>
+        <section>
+            <p>Viesteja yhteensa</p>
+            <ul>
+                <li th:each="viestimaara : ${viestimaarat}">
+                    <span th:text="${viestimaara}">viestimaara</span>
+                </li>
+            </ul>
+        </section>
+        <section>
+            <p>Viimeisin viesti</p>
+            <ul>
+                <li th:each="viimeisin : ${viimeisimmat}">
+                    <span th:text="${viimeisin}">viimeisin</span>
+                </li>
+            </ul>
+        </section>
+
+
     </body>
 </html>

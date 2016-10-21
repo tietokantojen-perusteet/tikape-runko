@@ -38,7 +38,7 @@ public class Main {
             map.put("alueet", alueDao.findAll());
             map.put("viestimaarat", viestimaarat);
             map.put("viimeisimmat", viimeisimmat);
-            return new ModelAndView(map, "index");
+            return new ModelAndView(map, "indexi");
         }, new ThymeleafTemplateEngine());
 
         get("/:id", (req, res) -> {
