@@ -21,7 +21,9 @@
             div{
                 padding: 30px;
             }
-
+            textarea{
+               resize: none;
+            }
 
         </style>
     </head>
@@ -49,7 +51,7 @@
 
         <h1> Vastaa aiheeseen: </h1>
         <form method="POST">
-            <input type="text" name="viesti"/>
+            <textarea rows="4" cols="50"  name="viesti"/>
             <input type="submit" value="Postaa!"/>
         </form>
 
