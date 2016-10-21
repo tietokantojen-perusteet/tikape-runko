@@ -2,23 +2,35 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <head>
-        <title>Some crappy title</title>
+        <!--Tänne pitäisi ehkä saada alueen sekä aiheen nimi?-->
+        <title>Yksisarvisten keskustelufoorumi - Alue - Aihe</title>
         <meta charset="utf-8" />
+        
+        <style>
+            .author {font-weight: bold}
+        </style>
     </head>
 
     <body>
-        <h1>Aihe </h1>
-        <h3>Alue: <span th:text="${alueNimi}"></span> -> <span th:text="${aiheNimi}"></span></h3>
-        
+
+        <h1>Yksisarvisten keskustelufoorumi</h1>
+        <h2>
+            <a th:href="@{~/}">Koti</a> -> 
+            <a th:href="@{~/{id}(id=${alue.tunnus})}">
+                <span th:text="${alue.nimi}">Alue</span>
+            </a> -> 
+            <span th:text="${aihe.otsikko}">Aihe</span>
+        </h2>
         
         <!-- VIESTIEN NUMERONTI, EI TOIMI, KORJAA -->
         <ol type="1" th:each="msg : ${viestit}">
             <li>
-                <span th:text="${msg.teksti}"></span> t. <span th:text="${msg.lahettaja}"></span>
+                <span th:text="${msg.lahettaja}" class="author"></span><br />
+                <span th:text="${msg.teksti}"></span>
             </li>         
         </ol>
          
-         <a th:href="@{~/{tmp} (tmp=${alueTunnus})}">Paluu</a>
+         <a th:href="@{~/{tmp} (tmp=${alue.tunnus})}">Paluu</a>
       
     </body>
 </html>

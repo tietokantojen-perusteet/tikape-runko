@@ -22,25 +22,34 @@ public class Main {
         
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
+
             map.put("alueet", alueDao.findAll());
 
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
         
-        get("/:id", (req, res) -> {
-            
+        get("/:id", (req, res) -> {            
             HashMap<String, Object> data = new HashMap<>();
-            data.put("aiheet", aiheDao.findAllInAlue(alueDao.findOne(Integer.parseInt(req.params(":id")))));
+
+            Alue alue = alueDao.findOne(Integer.parseInt(req.params(":id")));
+            
+            data.put("alue", alue);
+            data.put("aiheet", aiheDao.findAllInAlue(alue));
             
             return new ModelAndView(data, "area");
         }, new ThymeleafTemplateEngine());
         
         get("/:aid/:id", (req, res) -> {
             HashMap<String, Object> data = new HashMap();
-            data.put("alueTunnus", req.params(":aid"));
-            data.put("alueNimi", alueDao.findOne(Integer.parseInt(req.params(":aid"))).getNimi());
-            data.put("aiheNimi", aiheDao.findOne(Integer.parseInt(req.params(":id"))).getOtsikko());
-            data.put("viestit", viestiDao.findAllInAihe(aiheDao.findOne(Integer.parseInt(req.params(":id")))));
+
+            Alue alue = alueDao.findOne(Integer.parseInt(req.params(":aid")));
+            Aihe aihe = aiheDao.findOne(Integer.parseInt(req.params(":id")));
+            List<Viesti> viestit = viestiDao.findAllInAihe(aihe);
+            
+            data.put("alue", alue);
+            data.put("aihe", aihe);
+            data.put("viestit", viestit);
+
             return new ModelAndView(data, "thread");
         }, new ThymeleafTemplateEngine());
     }
