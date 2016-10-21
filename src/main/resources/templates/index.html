@@ -11,7 +11,9 @@
     </head>
 
     <body>
-        <h1>Tervehdys yksisarvinen!</h1>
+
+        <h1>Yksisarvisten keskustelufoorumi</h1>
+        <h2>Koti</h2>
 
         <table>
             <tr>
@@ -28,8 +30,8 @@
                     </a>
                 </td>
 
-                <td><span th:text="${alue.viestimaara}"></span></td>
-                <td><span th:text="${alue.viimeisinViesti}"></span></td>
+                <td><span th:text="${alue.viestimaara}"></span>0</td>
+                <td><span th:text="${alue.viimeisinViesti}"></span>-</td>
                 <!-- viimeisin viesti odottaa korjausta AlueDaon metodeihin -->
             </tr>
 

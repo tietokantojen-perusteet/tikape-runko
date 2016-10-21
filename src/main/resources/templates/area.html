@@ -1,9 +1,9 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-
     <head>
-        <title>Yksisarvisten keskustelufoorumi - Alue  </title>
+        <!--Tänne pitäisi ehkä saada alueen nimi?-->
+        <title>Yksisarvisten keskustelufoorumi - Alue</title>
         <meta charset="utf-8" />
 
         <style>
@@ -11,13 +11,13 @@
         </style>
     </head>
 
-
     <body>
 
-        <h1> Alue, jossa listattuna alueella olevat viestit </h1>
+        <h1>Yksisarvisten keskustelufoorumi</h1>
+        <h2><a th:href="@{~/}">Koti</a> -> <span th:text="${alue.nimi}">Alue</span></h2>
         <table>
             <tr>
-                <th>Alue: <span th:text="${alueNimi}"></span></th>
+                <th>Aihe</th>
                 <th>Viestejä</th>
                 <th>Viimeisin viesti</th>
             </tr>
@@ -25,7 +25,7 @@
             <tr th:each="aihe : ${aiheet}">
 
                 <td>
-                   <a th:href="@{~/{aid}/{id}(aid=${alueId}, id=${aihe.tunnus})}">
+                   <a th:href="@{~/{aid}/{id}(aid=${alue.tunnus}, id=${aihe.tunnus})}">
                         <span th:text="${aihe.otsikko}"> </span>
                     </a>
                 </td>
