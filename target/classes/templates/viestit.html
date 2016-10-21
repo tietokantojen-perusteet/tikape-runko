@@ -1,0 +1,50 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>FOORUMI</title>
+        <meta charset="utf-8" />
+        <style>
+            body{
+                font-family: arial;
+                background-color: mediumpurple;
+            }
+            ol {
+                padding: 30px;
+
+                display: inline-block;
+            }
+            ul {
+                padding: 30px;
+                display: inline-block;
+            }
+            
+
+        </style>
+    </head>
+
+    <body>
+        
+
+        <ol type='text/css'>
+            <li th:each="viesti: ${viestit}"> 
+                <a th:text="${viesti.sisalto}" ></a> 
+            </li>
+        </ol>
+        <ul style="list-style-type:none">
+            <li th:each="String: ${ajat}"> 
+                <a th:text="${String}">aika</a> 
+            </li>
+
+
+        </ul>
+        
+
+        <h1> Vastaa aiheeseen: </h1>
+        <form method="POST">
+            <input type="text" name="viesti"/>
+            <input type="submit" value="Postaa!"/>
+        </form>
+
+    </body>
+</html>

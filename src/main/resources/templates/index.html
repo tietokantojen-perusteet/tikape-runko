@@ -1,0 +1,53 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <style>
+            body{
+                font-family: arial;
+                background-color: mediumpurple;
+            }
+            ul {
+                padding: 30px;
+
+                display: inline-block;
+            }
+            
+
+        </style>
+        <title>FOORUMI</title>
+        <meta charset="utf-8" />
+    </head>
+
+    <body>
+        <img style="float: right;" src="https://imgflip.com/s/meme/Hide-the-Pain-Harold.jpg" alt="kansi"></img>
+        <h1>TiKaPe Foorumi 1.0</h1>
+        
+        <ul>
+            Alueet:
+            <li th:each="alue: ${alueet}">
+                <a th:href="@{~/alue/{name}(name= ${alue.id})}" th:text="${alue.nimi}">name</a> 
+            </li>
+        </ul>
+        <ul style="list-style-type:none">
+            Viestejä:
+            <li th:each="String: ${viestit}">
+                
+                <a th:text="${String}">viestit</a>
+            </li>
+        </ul>
+        <ul>
+            Viimeisin viesti:
+            <li th:each="String : ${ajat}">
+                <a th:text ="${String}">aika</a>
+            </li>
+        </ul>
+        
+        <h1>Uusi alue:</h1>
+        <form method="POST">
+            <input type="text" name="alue"/>
+            <input type="submit" value="Aloita!"/>
+        </form>
+
+    </body>
+</html>
