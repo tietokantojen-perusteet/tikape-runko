@@ -7,11 +7,11 @@ public class Viesti {
     private Integer id;
     private String nimi;
     private String text;
-    private Timestamp time;
+    private String time;
     private Aihe aihe;
     
 
-    public Viesti(Aihe aihe, Integer id, String nimi, String text, Timestamp time) {
+    public Viesti(Aihe aihe, Integer id, String nimi, String text, String time) {
         this.aihe = aihe;
         this.id = id;
         this.nimi = nimi;
@@ -66,14 +66,14 @@ public class Viesti {
     /**
      * @return the time
      */
-    public Timestamp getTime() {
+    public String getTime() {
         return time;
     }
 
     /**
      * @param time the time to set
      */
-    public void setTime(Timestamp time) {
+    public void setTime(String time) {
         this.time = time;
     }
 

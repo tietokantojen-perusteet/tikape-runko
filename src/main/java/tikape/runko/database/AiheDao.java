@@ -47,6 +47,28 @@ public class AiheDao implements Dao<Aihe, Integer> {
         return o;
     }
 
+    public String findAlueid(String key) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT alue_id FROM Aihe WHERE id = ?");
+        stmt.setObject(1, key);
+
+        ResultSet rs = stmt.executeQuery();
+        boolean hasOne = rs.next();
+        if (!hasOne) {
+            return null;
+        }
+
+        Integer alue = rs.getInt("alue_id");
+
+        String palauta = "" + alue;
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return palauta;
+    }
+
     public List<Aihe> findAlueesta(Integer key) throws SQLException {
 
         Connection connection = database.getConnection();
@@ -91,6 +113,52 @@ public class AiheDao implements Dao<Aihe, Integer> {
         connection.close();
 
         return aiheet;
+    }
+
+    public void create(String alueid, String nimi) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Aihe (alue_id, nimi) VALUES (" + alueid + ", '" + nimi + "')");
+
+        stmt.executeUpdate();
+
+        stmt.close();
+        connection.close();
+    }
+    
+    public Integer getLukumaara(Integer key) throws SQLException {
+
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT COUNT(*) AS viestit FROM Viesti, Aihe, Alue WHERE Viesti.aihe_id = Aihe.id AND Aihe.alue_id = Alue.id AND Aihe.id = ?");
+        stmt.setObject(1, key);
+
+        ResultSet rs = stmt.executeQuery();
+        int palauta = rs.getInt("viestit");
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return palauta;
+    }
+
+    public String getViimeisin(Integer aiheid) throws SQLException {
+
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT Viesti.time FROM Viesti, Aihe, Alue WHERE Viesti.aihe_id = Aihe.id AND Aihe.alue_id = Alue.id AND Aihe.id = " + aiheid + " ORDER BY Viesti.time DESC LIMIT 1");
+
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.isClosed()) {
+            return "ei viesteja";
+        }
+
+        String palauta = rs.getString("time");
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return palauta;
+
     }
 
     @Override

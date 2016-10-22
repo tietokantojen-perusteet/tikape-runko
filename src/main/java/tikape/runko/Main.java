@@ -10,7 +10,9 @@ import tikape.runko.database.AiheDao;
 import tikape.runko.database.Database;
 import tikape.runko.database.AlueDao;
 import tikape.runko.database.ViestiDao;
+import tikape.runko.domain.Aihe;
 import tikape.runko.domain.Alue;
+import tikape.runko.domain.Viesti;
 
 public class Main {
 
@@ -40,19 +42,55 @@ public class Main {
             map.put("viimeisimmat", viimeisimmat);
             return new ModelAndView(map, "indexi");
         }, new ThymeleafTemplateEngine());
-        
+
         post("/", (req, res) -> {
             alueDao.create(req.queryParams("name"));
             res.redirect("/");
             return "";
         });
-        
+
+        post("/alue/:id", (req, res) -> {
+            aiheDao.create(req.params(":id"), req.queryParams("name"));
+            res.redirect("/alue/" + req.params(":id"));
+            return "";
+        });
+
+        post("/aihe/:id", (req, res) -> {
+            viestiDao.create(req.params(":id"), req.queryParams("name"), req.queryParams("viesti"));
+            res.redirect("/aihe/" + req.params(":id"));
+            return "";
+        });
+
         get("/alue/:id", (req, res) -> {
             HashMap map = new HashMap<>();
+
+            List<String> viimeisimmat = new ArrayList<>();
+            for (Aihe aihe : aiheDao.findAlueesta(Integer.parseInt(req.params(":id")))) {
+                viimeisimmat.add("" + aiheDao.getViimeisin(aihe.getId()));
+            }
+
+            List<String> viestimaarat = new ArrayList<>();
+            for (Aihe aihe : aiheDao.findAlueesta(Integer.parseInt(req.params(":id")))) {
+                viestimaarat.add("" + aiheDao.getLukumaara(aihe.getId()));
+            }
+
+            map.put("viestimaarat", viestimaarat);
+            map.put("viimeisimmat", viimeisimmat);
             String alueid = req.params(":id");
             map.put("alueid", alueid);
             map.put("aihelista", aiheDao.findAlueesta(Integer.parseInt(req.params(":id"))));
             return new ModelAndView(map, "aiheet");
+        }, new ThymeleafTemplateEngine());
+
+        get("/aihe/:id", (req, res) -> {
+            HashMap map = new HashMap<>();
+            List<Viesti> viestilista = viestiDao.findAiheesta(Integer.parseInt(req.params(":id")));
+            String aiheid = req.params(":id");
+            String alueid = aiheDao.findAlueid(aiheid);
+            map.put("alueid", alueid);
+            map.put("aiheid", aiheid);
+            map.put("viestilista", viestilista);
+            return new ModelAndView(map, "aihe");
         }, new ThymeleafTemplateEngine());
 
     }

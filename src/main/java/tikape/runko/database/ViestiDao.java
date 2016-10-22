@@ -26,14 +26,13 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
     public List<Viesti> findAiheesta(Integer key) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE aihe_id = ?");
-        stmt.setObject(1, key);
-
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE aihe_id = " + key);
+//        stmt.setObject(1, key);
         ResultSet rs = stmt.executeQuery();
         boolean hasOne = rs.next();
-        if (!hasOne) {
-            return null;
-        }
+//        if (!hasOne) {
+//            return null;
+//        }
 
         AiheDao ad = new AiheDao(this.database);
         List<Viesti> viestit = new ArrayList<>();
@@ -43,7 +42,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
             Integer id = rs.getInt("id");
             String nimi = rs.getString("nimi");
             String text = rs.getString("text");
-            Timestamp time = rs.getTimestamp("time");
+            String time = rs.getString("time");
 
             Viesti o = new Viesti(aihe, id, nimi, text, time);
             viestit.add(o);
@@ -54,6 +53,21 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         connection.close();
 
         return viestit;
+    }
+
+    public void create(String aiheid, String nimi, String text) throws SQLException {
+        
+        if (nimi.isEmpty() || text.isEmpty()) {
+            return;
+        }
+        
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Viesti (aihe_id, nimi, text) VALUES (" + aiheid + ", '" + nimi + "', '" + text + "')");
+
+        stmt.executeUpdate();
+
+        stmt.close();
+        connection.close();
     }
 
     @Override

@@ -19,31 +19,56 @@
             margin: 0;
         }
     </style>
-
-
     <head>
-        <title>Otsikko</title>
+        <title>TiKaPe-foorumi</title>
         <meta charset="utf-8" />
     </head>
+
     <body>
-        <h2>Aiheet</h2>
+        <h1>Aiheet</h1>
 
 
+        <section>
+            <p>Aihe</p>
 
-        <ul>
-            <li th:each="aihe: ${aihelista}">
-                <a th:href="@{~/aihe/{id}(id=${aihe.id})}"><span th:text="${aihe.nimi}">aiheen nimi</span></a>
-            </li>
-        </ul>
+            <ul>
+                <li th:each="aihe: ${aihelista}">
+                    <a th:href="@{~/aihe/{id}(id=${aihe.id})}"><span th:text="${aihe.nimi}">aiheen nimi</span></a>
+                </li>
+            </ul>
+        </section>
+        <section>
+            <p>Viesteja yhteensa</p>
+            <ul>
+                <li th:each="viestimaara : ${viestimaarat}">
+                    <span th:text="${viestimaara}">viestimaara</span>
+                </li>
+            </ul>
+        </section>
+        <section>
+            <p>Viimeisin viesti</p>
+            <ul>
+                <li th:each="viimeisin : ${viimeisimmat}">
+                    <span th:text="${viimeisin}">viimeisin</span>
+                </li>
+            </ul>
+        </section>
 
+                
         <div class="fixed">
+
+            <br></br>
+            <form method='GET' th:action="@{~/}">
+                <input type="submit" value="Takaisin aihealueisiin" />
+            </form>
 
             <h3>Lisaa aihe</h3>
 
-            <form method="POST" th:action="@{~/alue/}">
+            <form method="POST" th:action="@{~/alue/__${alueid}__}">
                 <input type="text" name="name"/>
                 <input type="submit" value="Lisaa!"/>
             </form>
+
         </div>
     </body>
 </html>
