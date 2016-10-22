@@ -26,6 +26,11 @@ public class Alue {
         this.viestimaara = viestimaara;
     }
     
+    public Alue(String nimi, String kuvaus) {
+        this.nimi = nimi;
+        this.kuvaus = kuvaus;
+    }
+    
     public Integer getTunnus() {
         return tunnus;
     }

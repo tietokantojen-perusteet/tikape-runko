@@ -53,14 +53,23 @@ public class Main {
             return new ModelAndView(data, "thread");
         }, new ThymeleafTemplateEngine());
         
+        post("/addAlue", (req, res) -> {
+            String alueOtsikko = req.queryParams("alueOtsikko");
+            String alueKuvaus = req.queryParams("alueKuvaus");
+            Alue alue = new Alue(alueOtsikko, alueKuvaus);
+            
+            alue = alueDao.create(alue);
+
+            res.redirect("/" + alue.getTunnus());
+            return ""; 
+        });
+        
         post("/:alueTunnus/addAihe", (req, res) -> {
             Alue alue = alueDao.findOne(Integer.parseInt(req.params(":alueTunnus")));
             String aiheAloittaja = req.queryParams("aiheAloittaja");
             String aiheOtsikko = req.queryParams("aiheOtsikko");
             String aiheSisalto = req.queryParams("aiheSisalto");
             String viestiTeksti = req.queryParams("viesti");
-            
-            System.out.println(aiheOtsikko);
             
             Aihe aihe = new Aihe(alue ,aiheAloittaja, aiheSisalto, aiheOtsikko);
             aihe = aiheDao.create(aihe);

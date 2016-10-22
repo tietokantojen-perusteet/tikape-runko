@@ -14,8 +14,28 @@ public class AlueDao implements Dao<Alue, Integer>{
     }
     
     @Override
-    public Alue create(Alue t) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Alue create(Alue a) throws SQLException {
+        Connection conn = database.getConnection();
+        
+        PreparedStatement stmt = conn.prepareStatement(
+                "INSERT INTO Alue (nimi, kuvaus) VALUES (?, ?);", 
+                Statement.RETURN_GENERATED_KEYS);
+        
+        stmt.setString(1, a.getNimi());
+        stmt.setString(2, a.getKuvaus());
+        
+        stmt.executeUpdate();
+        
+        // Haetaan alueelle annettu avain ja asetetaan se olion tunnukseksi
+        ResultSet rs = stmt.getGeneratedKeys();
+        rs.next();
+        a.setTunnus(rs.getInt(1));
+        
+        rs.close();
+        stmt.close();
+        conn.close();
+        
+        return a;
     }
 
     @Override

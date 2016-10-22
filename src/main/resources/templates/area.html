@@ -18,15 +18,16 @@
             }
             
             table {
-              border: 1px solid black;
-              font-size: 16px;
+                border: 1px solid black;
+                font-size: 16px;
 
-              margin-left: 20px;
-              margin-right: 20px;
-              caption-side: bottom;
-              border-spacing: 0;
-              color: #333;
-              box-shadow: 0 0 6px 1px rgba(100, 100, 100, 0.5)
+                margin-left: 20px;
+                margin-right: 20px;
+                margin-bottom: 20px;
+                caption-side: bottom;
+                border-spacing: 0;
+                color: #333;
+                box-shadow: 0 0 6px 1px rgba(100, 100, 100, 0.5)
             }
             
             tr, td, th {
@@ -65,26 +66,32 @@
                 </td>
             </tr>
         </table>
-
-        <h3>Lisää uusi aihe:</h3>
         
-        <form method="POST" th:action="@{~/{alueTunnus}/addAihe(alueTunnus=${alue.tunnus})}">
-            Nimesi: <br/>
-            <input type="text" name="aiheAloittaja"/> <br/>
-            
-            Aihen otsikko: <br/>
-            <input type="text" name="aiheOtsikko"/> <br/>
+        <table>
+            <tr>
+                <td>
 
-            Aihen sisältö: <br/>
-            <input type="text" name="aiheSisalto"/> <br/>
-            
-            Viesti: <br/>
-            <input type="text" name="viesti"/><br/>
-            
-            <input type="submit" value="Lisää!"/>
-        </form>
-        
-        <br/>
+                    <h3>Lisää uusi aihe:</h3>
+
+                    <form method="POST" th:action="@{~/{alueTunnus}/addAihe(alueTunnus=${alue.tunnus})}">
+                        Nimesi (max 20 merkkejä): <br/>
+                        <input type="text" name="aiheAloittaja"/> <br/>
+
+                        Aihen otsikko (max 30 merkkejä): <br/>
+                        <input type="text" name="aiheOtsikko"/> <br/>
+
+                        Aihen sisältö (max 255 merkkejä): <br/>
+                        <input type="text" name="aiheSisalto"/> <br/>
+
+                        Viesti (max 255 merkkejä): <br/>
+                        <input type="text" name="viesti"/><br/>
+
+                        <input type="submit" value="Lisää aihe"/>
+                    </form>
+
+                </td>
+            </tr>
+        </table>
         
         <a href="/">Paluu</a>
     </body>
