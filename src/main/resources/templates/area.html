@@ -66,8 +66,26 @@
             </tr>
         </table>
 
+        <h3>Lisää uusi aihe:</h3>
+        
+        <form method="POST" th:action="@{~/{alueTunnus}/addAihe(alueTunnus=${alue.tunnus})}">
+            Nimesi: <br/>
+            <input type="text" name="aiheAloittaja"/> <br/>
+            
+            Aihen otsikko: <br/>
+            <input type="text" name="aiheOtsikko"/> <br/>
 
-
+            Aihen sisältö: <br/>
+            <input type="text" name="aiheSisalto"/> <br/>
+            
+            Viesti: <br/>
+            <input type="text" name="viesti"/><br/>
+            
+            <input type="submit" value="Lisää!"/>
+        </form>
+        
+        <br/>
+        
         <a href="/">Paluu</a>
     </body>
 </html>
