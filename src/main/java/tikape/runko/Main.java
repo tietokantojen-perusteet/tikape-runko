@@ -40,11 +40,20 @@ public class Main {
             map.put("viimeisimmat", viimeisimmat);
             return new ModelAndView(map, "indexi");
         }, new ThymeleafTemplateEngine());
-
-        get("/:id", (req, res) -> {
+        
+        post("/", (req, res) -> {
+            alueDao.create(req.queryParams("name"));
+            res.redirect("/");
+            return "";
+        });
+        
+        get("/alue/:id", (req, res) -> {
             HashMap map = new HashMap<>();
+            String alueid = req.params(":id");
+            map.put("alueid", alueid);
             map.put("aihelista", aiheDao.findAlueesta(Integer.parseInt(req.params(":id"))));
             return new ModelAndView(map, "aiheet");
         }, new ThymeleafTemplateEngine());
+
     }
 }

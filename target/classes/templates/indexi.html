@@ -3,16 +3,22 @@
     <style>
         section {
             float: left;
-            margin: 0 1%;
-            width: 10%;
+            margin: 0 0%;
+            width: 14%;
         }
+        div.fixed {
+            position: fixed;
+            bottom: 0;
+            left: 5px;
+            width: 200px;
+        }
+
         ul { 
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
         }
     </style>
-
     <head>
         <title>TiKaPe-foorumi</title>
         <meta charset="utf-8" />
@@ -26,7 +32,7 @@
             <p>Aihealue</p>
             <ul>
                 <li th:each="alue : ${alueet}">
-                    <a th:href="@{~/{id}(id=${alue.id})}"><span th:text="${alue.nimi}">Alueen nimi</span></a>
+                    <a th:href="@{~/alue/{id}(id=${alue.id})}"><span th:text="${alue.nimi}">Alueen nimi</span></a>
                 </li>
             </ul>
         </section>
@@ -46,7 +52,15 @@
                 </li>
             </ul>
         </section>
-
-
+        
+        <div class="fixed">
+            
+                <h3>Lisaa alue</h3>
+            
+            <form method="POST" th:action="@{~/}">
+                <input type="text" name="name"/>
+                <input type="submit" value="Lisaa!"/>
+            </form>
+        </div>
     </body>
 </html>

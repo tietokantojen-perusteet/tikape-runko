@@ -104,6 +104,16 @@ public class AlueDao implements Dao<Alue, Integer> {
 
     }
 
+    public void create(String nimi) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Alue (nimi) VALUES ('" + nimi + "')");
+
+        stmt.executeUpdate();
+
+        stmt.close();
+        connection.close();
+    }
+
     @Override
     public void delete(Integer key) throws SQLException {
         // ei toteutettu
