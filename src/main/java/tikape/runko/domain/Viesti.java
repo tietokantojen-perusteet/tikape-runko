@@ -11,9 +11,9 @@ public class Viesti {
     private String lahettaja;
     private Timestamp lahetetty;
     
-    public Viesti(String teksti, String lahettaja, Timestamp lahetetty) {
-        this(null, teksti, lahettaja, lahetetty);
-    }
+//    public Viesti(String teksti, String lahettaja, Timestamp lahetetty) {
+//        this(null, teksti, lahettaja, lahetetty);
+//    }
     
     public Viesti(Integer tunnus, String teksti, String lahettaja, Timestamp lahetetty) {
         
@@ -22,6 +22,13 @@ public class Viesti {
         this.teksti = teksti;
         this.lahetetty = lahetetty;
         this.lahettaja = lahettaja;
+    }
+    
+    public Viesti(Aihe aihe, String teksti, String lahettaja, Timestamp lahetetty) {
+        this.aihe = aihe;
+        this.teksti = teksti;
+        this.lahettaja = lahettaja;
+        this.lahetetty = lahetetty;
     }
     
     public Integer getTunnus() {

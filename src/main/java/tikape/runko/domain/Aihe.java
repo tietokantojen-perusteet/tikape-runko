@@ -3,6 +3,8 @@ package tikape.runko.domain;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Aihe {
     private Integer tunnus;
@@ -32,6 +34,20 @@ public class Aihe {
         this.viestit = new ArrayList<>();
         this.viimeisin_viesti = viimeisin_viesti;
         this.viestimaara = viestimaara;
+    }
+    
+    public Aihe(Alue alue, String aloittaja, String sisalto, String otsikko) {
+        this.tunnus = null;
+        this.alue = alue;
+        this.aloittaja = aloittaja;
+        this.sisalto = sisalto;
+        this.otsikko = otsikko;
+        
+        Calendar calendar = Calendar.getInstance();
+        Date now = calendar.getTime();
+        this.luotu = new java.sql.Timestamp(now.getTime());
+        System.out.println(this.luotu.toString());
+
     }
     
     public Integer getTunnus() {
