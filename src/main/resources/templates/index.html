@@ -17,15 +17,16 @@
             }
             
             table {
-              border: 1px solid black;
-              font-size: 16px;
+                border: 1px solid black;
+                font-size: 16px;
 
-              margin-left: 20px;
-              margin-right: 20px;
-              caption-side: bottom;
-              border-spacing: 0;
-              color: #333;
-              box-shadow: 0 0 6px 1px rgba(100, 100, 100, 0.5)
+                margin-left: 20px;
+                margin-right: 20px;
+                margin-bottom: 20px;
+                caption-side: bottom;
+                border-spacing: 0;
+                color: #333;
+                box-shadow: 0 0 6px 1px rgba(100, 100, 100, 0.5)
             }
             
             tr, td, th {
@@ -62,5 +63,26 @@
             </tr>
 
         </table>
+        
+        <table>
+            <tr>
+                <td>
+                    
+                    <h3>Lisää uusi alue:</h3>
+
+                    <form method="POST" th:action="@{~/addAlue}">
+                        Aluen otsikko (max 20 merkkejä): <br/>
+                        <input type="text" name="alueOtsikko"/> <br/>
+
+                        Aluen kuvaus (max 100 merkkejä): <br/>
+                        <input type="text" name="alueKuvaus"/> <br/>
+
+                        <input type="submit" value="Lisää alue"/>
+                    </form>
+                    
+                </td>
+            </tr>
+        </table>
+        
     </body>
 </html>
