@@ -15,61 +15,40 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     public ViestiDao(Database d, String osoite) {
         this.tietokantaosoite = osoite;
     }
+    
+    public List<Viesti> findTen() throws SQLException {
+
+        List<Viesti> viestit = new ArrayList<>();
+        Connection conn = DriverManager.getConnection(tietokantaosoite);
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM Viesti GROUP BY aika ORDER BY aika DESC LIMIT 10;");
+        while (rs.next()) {
+            viestit.add(new Viesti(rs.getString("aihe_id"), rs.getString("sisältö"), rs.getString("aika")));
+        }
+        return viestit;
+    }
 
     @Override
     public Viesti findOne(Integer key) throws SQLException {
-//        Connection conn = DriverManager.getConnection(tietokantaosoite);
-//        Statement stmt = conn.createStatement();
-//        stmt.setObject(1, key);
-//
-//        ResultSet rs = stmt.executeQuery();
-//        boolean hasOne = rs.next();
-//
-//        if (!hasOne) {
-//            return null;
-//        }
-//
-//        int id = rs.getInt("id");
-//        String aihe = rs.getString("aihe");
-//        String sisalto = rs.getString("sisältö");
-//        Timestamp aika = rs.getTimestamp("aika");
-//
-//        Viesti v = new Viesti(id, aihe, sisalto, aika);
-//
-//        rs.close();
-//        stmt.close();
-//        conn.close();
-//
-//        return v;
-        return null;
+        Connection conn = DriverManager.getConnection(tietokantaosoite);
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM Viesti WHERE id = " + key);
+        return new Viesti(rs.getString("aihe_id"), rs.getString("sisältö"), rs.getString("aika"));
+
     }
 
     @Override
     public List<Viesti> findAll() throws SQLException {
-        return null;
+
+        List<Viesti> viestit = new ArrayList<>();
+        Connection conn = DriverManager.getConnection(tietokantaosoite);
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM Viesti;");
+        while (rs.next()) {
+            viestit.add(new Viesti(rs.getString("aihe_id"), rs.getString("sisältö"), rs.getString("aika")));
+        }
+        return viestit;
     }
-//        Connection conn = DriverManager.getConnection(tietokantaosoite);
-//
-//        Statement stmt = conn.createStatement();
-//        ResultSet rs = stmt.executeQuery(("SELECT * FROM Viesti"));
-//
-//        List<Viesti> viestit = new ArrayList<>();
-//
-//        while (rs.next()) {
-//            int id = rs.getInt("id");
-//            String aihe = rs.getString("aihe");
-//            String sisalto = rs.getString("sisältö");
-//            Timestamp aika = rs.getTimestamp("aika");
-//
-//            Viesti v = new Viesti(id, aihe, sisalto, aika);
-//            viestit.add(v);
-//        }
-//        rs.close();
-//        stmt.close();
-//        conn.close();
-//
-//        return viestit;
-//    }
 
     public void lisaa(String sisalto, String aihe_id, String lahettaja) throws SQLException {
         java.util.Date date = new java.util.Date();
