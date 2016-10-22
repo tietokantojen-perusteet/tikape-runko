@@ -46,8 +46,6 @@ public class Aihe {
         Calendar calendar = Calendar.getInstance();
         Date now = calendar.getTime();
         this.luotu = new java.sql.Timestamp(now.getTime());
-        System.out.println(this.luotu.toString());
-
     }
     
     public Integer getTunnus() {
