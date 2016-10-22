@@ -87,7 +87,7 @@ public class Main {
 
         //lisää viesti
         Spark.post("/aihe/:nimi", (req, res) -> {
-            viestiDao.lisaa(req.queryParams("viesti"), req.params(":nimi"));
+            viestiDao.lisaa(req.queryParams("viesti"), req.params(":nimi"), req.queryParams("nimimerkki"));
 
             String nimi = req.params(":nimi");
 
@@ -98,7 +98,8 @@ public class Main {
             return new ModelAndView(map, "viestit");
         }, new ThymeleafTemplateEngine());
 
-        post("/alue/:nimi", (req, res) -> {     //luodaan aihe
+        //luodaan aihe
+        post("/alue/:nimi", (req, res) -> {     
             Alue alue = alueDao.findOne(req.params(":nimi"));
             aiheDao.lisaa(req.queryParams("aihe"), alue.getId() + " ");
 

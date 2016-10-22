@@ -71,10 +71,14 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 //        return viestit;
 //    }
 
-    public void lisaa(String sisalto, String aihe_id) throws SQLException {
+    public void lisaa(String sisalto, String aihe_id, String lahettaja) throws SQLException {
         java.util.Date date = new java.util.Date();
         Connection conn = DriverManager.getConnection(tietokantaosoite);
         Statement stmt = conn.createStatement();
+        if (lahettaja.length() == 0) {
+            lahettaja = "Unindentified";
+        }
+        sisalto = sisalto + " t. " + lahettaja;
         stmt.execute("INSERT INTO Viesti (aihe_id, sisältö, aika) VALUES ('" + aihe_id + "', '" + sisalto
                 + "', CURRENT_TIMESTAMP)");
         stmt.close();
