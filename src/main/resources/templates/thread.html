@@ -5,9 +5,39 @@
         <!--Tänne pitäisi ehkä saada alueen sekä aiheen nimi?-->
         <title>Yksisarvisten keskustelufoorumi - Alue - Aihe</title>
         <meta charset="utf-8" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
         
         <style>
-            .author {font-weight: bold}
+            h1 {
+                padding-left: 20px;
+            }
+            h2 {
+                font-size: 22px;
+                padding-left: 20px;
+            }
+            
+            .author {
+                font-weight: bold
+            }
+            
+            div {
+              border: 1px solid black;
+              box-shadow: 0 0 6px 1px rgba(100, 100, 100, 0.5);
+              margin-left: 20px;
+              margin-right: 20px;
+              width: 800px;
+              
+            }
+            
+            ol {
+              font-size: 15px;
+              margin-top: 10px;
+              margin-left: 10px;
+              margin-right: 20px;
+              border-spacing: 0;
+              color: #333;
+            }
         </style>
     </head>
 
@@ -23,12 +53,14 @@
         </h2>
         
         <!-- VIESTIEN NUMERONTI, EI TOIMI, KORJAA -->
-        <ol type="1" th:each="msg : ${viestit}">
-            <li>
-                <span th:text="${msg.lahettaja}" class="author"></span><br />
-                <span th:text="${msg.teksti}"></span>
-            </li>         
-        </ol>
+        <div>
+            <ol type="1" th:each="msg : ${viestit}">
+                <li>
+                    <span th:text="${msg.lahettaja}" class="author"></span><br />
+                    <span th:text="${msg.teksti}"></span>
+                </li>         
+            </ol>
+        </div>
          
          <a th:href="@{~/{tmp} (tmp=${alue.tunnus})}">Paluu</a>
       
