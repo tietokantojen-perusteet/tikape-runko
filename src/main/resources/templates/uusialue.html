@@ -1,18 +1,27 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    
+
     <head>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+   
         <title>Alueen lisäys</title>
         <meta charset="utf-8" />
-        <link rel="stylesheet" type="text/css" href="/styles.css"/>
+        <link rel="stylesheet" type="text/css" href="../public/styles.css"/>
     </head>
     <body>
-        <nav><a href="/">Etusivu</a><br/></nav>
 
-        <h4>Lis&auml;&auml; uusi alue</h4>
-        <form method="post">
-            <b>Alueen nimi:</b>
-            <input type="text" name="nimi"/>
-            <input type="submit" value="L&auml;het&auml;"/>
-        </form>
+    <div id="container">
+            <nav><a href="/">Etusivu</a><br/></nav>
+
+            <h4>Lis&auml;&auml; uusi alue</h4>
+            <form method="post">
+                <b>Alueen nimi:</b>
+                <input type="text" name="nimi"/>
+                <input type="submit" value="Lis&auml;&auml; Alue"/>
+            </form>
+    </div>
+
     </body>
+    
 </html>
