@@ -9,20 +9,36 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
         
         <style>
-            h1 {
-                padding-left: 20px;
-            }
-            h2 {
-                font-size: 22px;
-                padding-left: 20px;
+            div.container {
+                width: 100%;
+                max-width: 1000px;
+                margin: auto;
+                padding-bottom: 6px;
             }
             
+            h2 {
+                font-size: 22px;
+                /*padding-left: 20px;*/
+            }
+            
+            .pBold {
+                font-weight: bold;
+            }
+            
+            .author {
+                font-weight: bold;
+            }
+            
+            .time {
+                font-style: italic;
+            }
+
             table {
+                table-layout: fixed;
+                width: 100%;
                 border: 1px solid black;
                 font-size: 16px;
 
-                margin-left: 20px;
-                margin-right: 20px;
                 margin-bottom: 20px;
                 caption-side: bottom;
                 border-spacing: 0;
@@ -32,67 +48,85 @@
             
             tr, td, th {
               border: thin solid rgba(100, 100, 100, 0.6);
-              padding: 5px;
+              padding: 6px;
+            }
+            
+            input[type=text] {
+                margin-bottom: 6px;
+            }
+            
+            input[type=text].long {
+                width: 500px;
+                max-width: 100%;
+            }
+            
+            input[type=text].big {
+                width: 500px;
+                height: 150px;
+                max-width: 100%;
             }
         </style>
     </head>
 
     <body>
-
-        <h1>Yksisarvisten keskustelufoorumi</h1>
-        <h2><a th:href="@{~/}">Koti</a> -> <span th:text="${alue.nimi}">Alue</span></h2>
-        <table>
-            <tr>
-                <th>Aihe</th>
-                <th>Viestejä</th>
-                <th>Viimeisin viesti</th>
-            </tr>
-
-            <tr th:each="aihe : ${aiheet}">
-
-                <td>
-                   <a th:href="@{~/{aid}/{id}(aid=${alue.tunnus}, id=${aihe.tunnus})}">
-                        <span th:text="${aihe.otsikko}"> </span>
-                    </a>
-                </td>
-                
-                
-                <td>
-                    <span th:text="${aihe.viestimaara}"></span>
-                </td>
-                
-                <td>
-                    <span th:text="${aihe.viimeisinViesti}"></span>
-                </td>
-            </tr>
-        </table>
         
-        <table>
-            <tr>
-                <td>
+        <div class="container">
 
-                    <h3>Lisää uusi aihe:</h3>
+            <h1>Yksisarvisten keskustelufoorumi</h1>
+            <h3><a th:href="@{~/}">Koti</a> > <span th:text="${alue.nimi}">Alue</span></h3>
+            <table>
+                <tr>
+                    <th style="width: 60%">Aihe</th>
+                    <th>Viestejä</th>
+                    <th>Viimeisin viesti</th>
+                </tr>
 
-                    <form method="POST" th:action="@{~/{alueTunnus}/addAihe(alueTunnus=${alue.tunnus})}">
-                        Nimesi (max 20 merkkejä): <br/>
-                        <input type="text" name="aiheAloittaja"/> <br/>
+                <tr th:each="aihe : ${aiheet}">
 
-                        Aihen otsikko (max 30 merkkejä): <br/>
-                        <input type="text" name="aiheOtsikko"/> <br/>
+                    <td>
+                       <a th:href="@{~/{aid}/{id}(aid=${alue.tunnus}, id=${aihe.tunnus})}">
+                            <span th:text="${aihe.otsikko}"> </span>
+                        </a>
+                    </td>
 
-                        Aihen sisältö (max 255 merkkejä): <br/>
-                        <input type="text" name="aiheSisalto"/> <br/>
 
-                        Viesti (max 255 merkkejä): <br/>
-                        <input type="text" name="viesti"/><br/>
+                    <td>
+                        <span th:text="${aihe.viestimaara}"></span>
+                    </td>
 
-                        <input type="submit" value="Lisää aihe"/>
-                    </form>
+                    <td>
+                        <span th:text="${aihe.viimeisinViesti}"></span>
+                    </td>
+                </tr>
+            </table>
 
-                </td>
-            </tr>
-        </table>
-        
-        <a href="/">Paluu</a>
+            <table>
+                <tr>
+                    <td>
+
+                        <p class="pBold">Lisää uusi aihe:</p>
+
+                        <form method="POST" th:action="@{~/{alueTunnus}/addAihe(alueTunnus=${alue.tunnus})}">
+                            Nimesi (max 20 merkkejä): <br/>
+                            <input type="text" name="aiheAloittaja" maxlength="20"/> <br/>
+
+                            Aihen otsikko (max 30 merkkejä): <br/>
+                            <input type="text" name="aiheOtsikko" maxlength="30"/> <br/>
+
+                            Aihen sisältö (max 255 merkkejä): <br/>
+                            <input type="text" class="long" name="aiheSisalto" maxlength="255"/> <br/>
+
+                            Viesti (max 255 merkkejä): <br/>
+                            <input type="text" class="big" name="viesti" maxlength="255"/><br/>
+
+                            <input type="submit" value="Lisää aihe"/>
+                        </form>
+
+                    </td>
+                </tr>
+            </table>
+
+            <a href="/">Paluu</a>
+        </div>
     </body>
 </html>
