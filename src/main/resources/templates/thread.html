@@ -54,8 +54,8 @@
         
         <!-- VIESTIEN NUMERONTI, EI TOIMI, KORJAA -->
         <div>
-            <ol type="1" th:each="msg : ${viestit}">
-                <li>
+            <ol type="1">
+                <li  th:each="msg : ${viestit}">
                     <span th:text="${msg.lahettaja}" class="author"></span><br />
                     <span th:text="${msg.teksti}"></span>
                 </li>         
