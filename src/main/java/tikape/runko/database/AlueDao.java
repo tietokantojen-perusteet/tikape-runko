@@ -113,6 +113,7 @@ public class AlueDao implements Dao<Alue, Integer> {
         stmt.close();
         connection.close();
     }
+    
 
     @Override
     public void delete(Integer key) throws SQLException {

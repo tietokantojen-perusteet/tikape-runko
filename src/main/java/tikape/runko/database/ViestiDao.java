@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +70,36 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         stmt.close();
         connection.close();
     }
+    
+    //Tähän viestin poistometodi opettajan luennolla käytetyn todo-esimerkin pohjalta
+    public void poista(String id) throws Exception {
+        Connection connection = database.getConnection();
+        Statement statement = connection.createStatement();
+        try {
+            Integer.parseInt(id);
+        } catch (Throwable t) {
+            return;
+        }
+
+        statement.execute("DELETE FROM Viesti WHERE id = " + id);
+        connection.close();
+    }
+    
+    public String getAiheId(String id) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT aihe_id FROM Viesti WHERE id = " + id);
+        
+        ResultSet rs = stmt.executeQuery();
+
+        String aiheid = rs.getString("aihe_id");
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return aiheid;
+    }
+    
 
     @Override
     public void delete(Integer key) throws SQLException {

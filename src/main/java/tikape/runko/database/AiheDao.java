@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import tikape.runko.domain.Aihe;
@@ -48,25 +49,9 @@ public class AiheDao implements Dao<Aihe, Integer> {
     }
 
     public String findAlueid(String key) throws SQLException {
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT alue_id FROM Aihe WHERE id = ?");
-        stmt.setObject(1, key);
-
-        ResultSet rs = stmt.executeQuery();
-        boolean hasOne = rs.next();
-        if (!hasOne) {
-            return null;
-        }
-
-        Integer alue = rs.getInt("alue_id");
-
-        String palauta = "" + alue;
-
-        rs.close();
-        stmt.close();
-        connection.close();
-
-        return palauta;
+        Aihe aihe = findOne(Integer.parseInt(key));
+        String alueid = "" + aihe.getAlue();
+        return alueid;
     }
 
     public List<Aihe> findAlueesta(Integer key) throws SQLException {
@@ -124,7 +109,7 @@ public class AiheDao implements Dao<Aihe, Integer> {
         stmt.close();
         connection.close();
     }
-    
+
     public Integer getLukumaara(Integer key) throws SQLException {
 
         Connection connection = database.getConnection();
@@ -159,6 +144,20 @@ public class AiheDao implements Dao<Aihe, Integer> {
 
         return palauta;
 
+    }
+
+    public void poista(String id) throws Exception {
+        Connection connection = database.getConnection();
+        Statement statement = connection.createStatement();
+        try {
+            Integer.parseInt(id);
+        } catch (Throwable t) {
+            return;
+        }
+
+        statement.execute("DELETE FROM Viesti WHERE aihe_id = " + id);
+        statement.execute("DELETE FROM Aihe WHERE id = " + id);
+        connection.close();
     }
 
     @Override

@@ -74,10 +74,14 @@ public class Main {
                 viestimaarat.add("" + aiheDao.getLukumaara(aihe.getId()));
             }
 
+            String alueid = req.params(":id");
+            Alue alue = alueDao.findOne(Integer.parseInt(alueid));
+            String aluenimi = alue.getNimi();
+            
             map.put("viestimaarat", viestimaarat);
             map.put("viimeisimmat", viimeisimmat);
-            String alueid = req.params(":id");
             map.put("alueid", alueid);
+            map.put("aluenimi", aluenimi);
             map.put("aihelista", aiheDao.findAlueesta(Integer.parseInt(req.params(":id"))));
             return new ModelAndView(map, "aiheet");
         }, new ThymeleafTemplateEngine());
@@ -87,11 +91,33 @@ public class Main {
             List<Viesti> viestilista = viestiDao.findAiheesta(Integer.parseInt(req.params(":id")));
             String aiheid = req.params(":id");
             String alueid = aiheDao.findAlueid(aiheid);
+            Aihe aihe = aiheDao.findOne(Integer.parseInt(aiheid));
+            String aihenimi = aihe.getNimi();
+            
             map.put("alueid", alueid);
             map.put("aiheid", aiheid);
+            map.put("aihenimi", aihenimi);
             map.put("viestilista", viestilista);
             return new ModelAndView(map, "aihe");
         }, new ThymeleafTemplateEngine());
+        
+        // Tässä aiheen poistamiseen
+        post("/aihe/poista/:id", (req, res) -> {
+            String alue_id = aiheDao.findAlueid(req.params(":id"));
+            
+            aiheDao.poista(req.params(":id"));
+            res.redirect("/alue/" + alue_id);
+            return "";
+            
+        });
+        // Tässä viestin poistamiseen
+        post("/viesti/poista/:id", (req, res) -> {
+            String aihe_id = viestiDao.getAiheId(req.params(":id"));
+       
+            viestiDao.poista(req.params(":id"));
+            res.redirect("/aihe/" + aihe_id);
+            return "";
+        });
 
     }
 }

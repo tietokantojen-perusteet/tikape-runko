@@ -25,7 +25,7 @@
     </head>
 
     <body>
-        <h1>Aihe</h1>
+    <h1 th:text="${aihenimi}">Aiheen nimi</h1>
 
 
         <section>
@@ -53,7 +53,18 @@
             </ul>
         </section>
 
-
+        <section>
+            <center>
+            <p>Poista viesti</p>
+            <ul>
+                <li th:each="viesti : ${viestilista}">
+                        <form method="POST" th:action="@{~/viesti/poista/__${viesti.id}__}">
+                        <input type="submit" value="" style="width:15px; height: 15px;" />                        
+                    </form>
+                </li>
+            </ul>
+            </center>
+        </section>
 
         <div class="fixed">
 

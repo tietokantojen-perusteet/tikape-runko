@@ -20,12 +20,12 @@
         }
     </style>
     <head>
-        <title>TiKaPe-foorumi</title>
+        <title>Aiheet</title>
         <meta charset="utf-8" />
     </head>
 
     <body>
-        <h1>Aiheet</h1>
+        <h1 th:text="${aluenimi}">Alueen nimi</h1>
 
 
         <section>
@@ -52,6 +52,18 @@
                     <span th:text="${viimeisin}">viimeisin</span>
                 </li>
             </ul>
+        </section>
+        <section>
+            <center>
+            <p>Poista aihe</p>
+            <ul>
+                <li th:each="aihe : ${aihelista}">
+                        <form method="POST" th:action="@{~/aihe/poista/__${aihe.id}__}">
+                        <input type="submit" value="" style="width:15px; height: 15px;" />                        
+                    </form>
+                </li>
+            </ul>
+            </center>
         </section>
 
                 
