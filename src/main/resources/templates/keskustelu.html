@@ -2,40 +2,48 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <head>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
         <title>Viestit</title>
         <meta charset="utf-8" />
-        <link rel="stylesheet" type="text/css" href="/styles.css"/>
+        <link rel="stylesheet" type="text/css" href="../public/styles.css"/>
     </head>
 
     <body>
 
-        <nav><a href="/">Etusivu</a> > <a th:href="${'/alue/' + alue.id}"><span th:text="${alue.nimi} + ' > '"></span></a><span th:text="${keskustelu.otsikko}">Keskustelun otsikko</span></nav>
+     <div id="container">
+
+        <nav><a href="/">Etusivu</a> > <a th:href="${'/alue/' + alue.id}"><span th:text="${alue.nimi} + ' > '"></span></a><span class="keskusteluotsikko" th:text="${keskustelu.otsikko}">Keskustelun otsikko</span></nav>
 
         <h2><span th:text="${keskustelu.otsikko}">Helsinki on paras!</span></h2>
 
         <div class="viesti" th:each="viesti, iterStat : ${viestit}">
 
-            <b>#<span th:text="${iterStat.count} + ${sivunviestit}">1</span>           </b>
+            <b>
+                <span class="numero">
+                    <span th:text="${iterStat.count} + ${sivunviestit}">1</span>
+                </span>
+            </b>
 
-            <p th:text="${viesti.sisalto}">
+            <p class="viesti" th:text="${viesti.sisalto}">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc cursus lacinia ipsum, ac posuere nunc efficitur non. Donec imperdiet diam id vulputate venenatis. Vivamus mattis sit amet ligula cursus tempor. Ut id quam est. Ut sit amet egestas mauris. Curabitur lorem quam, tincidunt ac porttitor in, consequat ac felis. Donec tortor sem, imperdiet a gravida in, maximus non sapien.
             </p>
 
-            <div class="name" th:text="${viesti.kayttaja}">
+            <div th:text="${viesti.kayttaja}">
                 Kenneth
             </div>
 
-            <div>Julkaistu: 
-                <span class="lastmsg" th:text="${viesti.aika}">8.10.2016</span>
+            <div>
+                <span class="timestampviestissa" th:text="${viesti.aika}">8.10.2016 15.13</span>
             </div>
-
             <hr/>
+
+
 
 
         </div>
         <p>
-            <a th:if="${previouspage} != null" th:href="${'/keskustelu/' + keskustelu.id} + '?page=' + ${previouspage}"> Edellinen sivu</a>
-            <a th:if="${nextpage} != null" th:href="${'/keskustelu/' + keskustelu.id} + '?page=' + ${nextpage}">Seuraava sivu</a>
+            <a id="uusialue" th:if="${previouspage} != null" th:href="${'/keskustelu/' + keskustelu.id} + '?page=' + ${previouspage}"> Edellinen sivu</a>
+            <a id="uusialue" th:if="${nextpage} != null" th:href="${'/keskustelu/' + keskustelu.id} + '?page=' + ${nextpage}">Seuraava sivu</a>
         </p>
 
 
@@ -47,8 +55,10 @@
             <textarea rows="5" cols="50" name="sisalto"></textarea>
             <input type="hidden" name="nykyinen_sivu" th:value="${page}"/>
             <input type="submit" value="Vastaa"/>
-        </form>    <!--
+        </form>
+
+        </div>
 
 
-        -->    </body>
+         </body>
 </html>
