@@ -2,14 +2,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <head>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
         <title>Keskustelut</title>
         <!--        <meta charset="UTF-8"></meta>-->
         <meta charset="utf-8" />
-        <link rel="stylesheet" type="text/css" href="/styles.css"/>
+        <link rel="stylesheet" type="text/css" href="../public/styles.css"/>
     </head>
 
     <body>
-        <nav><a href="/">Etusivu</a> > <span th:text="${alue.nimi}">Alueen nimi</span><br/></nav>
+
+    <div id="container">
+        <nav><a  href="/">Etusivu</a> > <span th:text="${alue.nimi}">Alueen nimi</span><br/></nav>
 
         <h2>Alueen <span th:text="${alue.nimi}">Alueen nimi</span> keskustelut</h2>
 
@@ -20,17 +23,17 @@
             -->           
             <li th:each="keskustelu: ${keskustelut}">
 
-                <a th:href="${'/keskustelu/' + keskustelu.id}">
-                    <span th:text="${keskustelu.otsikko} + '  --  '">Helsinki on paras</span>
-                    <span th:text="'Viestej&auml;: ' + ${keskustelu.viestienLkm} + ' - '">Viestien lukumäärä</span>
-                    <span th:text="'Viimeisin viesti l&auml;hetetty: ' + ${keskustelu.viimeisinAika}">Viimeisimmän viestin aika</span> 
+                <a class="keskusteluotsikko" th:href="${'/keskustelu/' + keskustelu.id}">
+                    <span class="otsikko" th:text="${keskustelu.otsikko} + '  --  '">Helsinki on paras</span>
+                    <span class="otsikko_metadata" th:text="'Viestej&auml;: ' + ${keskustelu.viestienLkm} + ' - '">Viestejä: 2</span>
+                    <span class="otsikko_metadata" th:text="'Viimeisin viesti l&auml;hetetty: ' + ${keskustelu.viimeisinAika}">Viimeisin viesti lähetetty: 23.10.2016</span> 
                 </a>
 
             </li>
 
         </ul>
-        <span th:if="${kaikki} == 0">N&auml;ytet&auml;&auml;n kymmenen uusinta keskustelua. <a th:href="${'/alue/' + alue.id} + '?kaikki=1'">N&auml;yt&auml; kaikki</a></span>
-        <span th:if="${kaikki} == 1">N&auml;ytet&auml;&auml;n kaikki alueen keskustelut. <a th:href="${'/alue/' + alue.id} + '?kaikki=0'">N&auml;yt&auml; vain uusimmat</a></span>
+        <span id="uusialue" th:if="${kaikki} == 0">N&auml;ytet&auml;&auml;n kymmenen uusinta keskustelua. <a th:href="${'/alue/' + alue.id} + '?kaikki=1'">N&auml;yt&auml; kaikki</a></span>
+        <span id="uusialue" th:if="${kaikki} == 1">N&auml;ytet&auml;&auml;n kaikki alueen keskustelut. <a th:href="${'/alue/' + alue.id} + '?kaikki=0'">N&auml;yt&auml; vain uusimmat</a></span>
 
         <hr/>
         <h4>Luo uusi keskustelunavaus</h4>
@@ -43,6 +46,6 @@
             <textarea rows="5" cols="50" name="sisalto"></textarea>
             <input type="submit" value="L&auml;het&auml;"/>
         </form>       
-
+    </div>
     </body>
 </html>
