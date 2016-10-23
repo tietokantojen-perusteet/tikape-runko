@@ -38,6 +38,19 @@
               border-spacing: 0;
               color: #333;
             }
+            
+            table {
+                border: 1px solid black;
+                font-size: 16px;
+
+                margin-left: 20px;
+                margin-right: 20px;
+                margin-bottom: 20px;
+                caption-side: bottom;
+                border-spacing: 0;
+                color: #333;
+                box-shadow: 0 0 6px 1px rgba(100, 100, 100, 0.5)
+            }
         </style>
     </head>
 
@@ -56,10 +69,32 @@
             <ol type="1">
                 <li  th:each="msg : ${viestit}">
                     <span th:text="${msg.lahettaja}" class="author"></span><br />
+                    <span th:text="${msg.lahetetty}"></span><br />
                     <span th:text="${msg.teksti}"></span>
                 </li>         
             </ol>
         </div>
+        
+        <table>
+            <tr>
+                <td>
+
+                    <h3>Kirjoita viesti:</h3>
+
+                    <form method="POST" 
+                          th:action="@{~/{alueTunnus}/{aiheTunnus}/addViesti(alueTunnus=${alue.tunnus}, aiheTunnus=${aihe.tunnus})}">
+                        Nimesi (max 20 merkkejä): <br/>
+                        <input type="text" name="viestiLahettaja"/> <br/>
+
+                        Viesti (max 255 merkkejä): <br/>
+                        <input type="text" name="teksti"/><br/>
+
+                        <input type="submit" value="Lähetä viesti"/>
+                    </form>
+
+                </td>
+            </tr>
+        </table>
          
          <a th:href="@{~/{tmp} (tmp=${alue.tunnus})}">Paluu</a>
       

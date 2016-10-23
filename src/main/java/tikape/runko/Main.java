@@ -80,5 +80,18 @@ public class Main {
             res.redirect("/" + req.params(":alueTunnus") + "/" + aihe.getTunnus());
             return ""; 
         });
+        
+        post("/:alueTunnus/:aiheTunnus/addViesti", (req, res) -> {
+            Alue alue = alueDao.findOne(Integer.parseInt(req.params(":alueTunnus")));
+            Aihe aihe = aiheDao.findOne(Integer.parseInt(req.params(":aiheTunnus")));
+            String viestiTeksti = req.queryParams("teksti");
+            String viestiLahettaja = req.queryParams("viestiLahettaja");
+            
+            Viesti viesti = new Viesti(aihe, viestiTeksti, viestiLahettaja);
+            viesti = viestiDao.create(viesti);
+            
+            res.redirect("/" + alue.getTunnus() + "/" + aihe.getTunnus());
+            return "";
+        });
     }
 }
