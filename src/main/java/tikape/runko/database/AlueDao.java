@@ -74,7 +74,7 @@ public class AlueDao implements Dao<Alue, Integer>{
             "SELECT al.*, MAX(lahetetty) as viimeisin_viesti, COUNT(*) as viestimaara FROM Alue al "
           + "LEFT JOIN Aihe ai ON al.tunnus = ai.alue "
           + "LEFT JOIN Viesti v ON ai.tunnus = v.aihe "
-          + "GROUP BY al.tunnus ORDER BY LOWER(al.nimi) DESC;"
+          + "GROUP BY al.tunnus ORDER BY LOWER(al.nimi);"
         );
         
         ResultSet rs = stmt.executeQuery();
