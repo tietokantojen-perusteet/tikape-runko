@@ -6,22 +6,38 @@
         <meta charset="utf-8" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
-        
-        <style>    
-            h1 {
-                padding-left: 20px;
-            }
-            h2 {
-                font-size: 22px;
-                padding-left: 20px;
+              
+        <style>
+            div.container {
+                width: 100%;
+                max-width: 1000px;
+                margin: auto;
+                padding-bottom: 6px;
             }
             
+            h2 {
+                font-size: 22px;
+                /*padding-left: 20px;*/
+            }
+            
+            .pBold {
+                font-weight: bold;
+            }
+            
+            .author {
+                font-weight: bold;
+            }
+            
+            .time {
+                font-style: italic;
+            }
+
             table {
+                table-layout: fixed;
+                width: 100%;
                 border: 1px solid black;
                 font-size: 16px;
 
-                margin-left: 20px;
-                margin-right: 20px;
                 margin-bottom: 20px;
                 caption-side: bottom;
                 border-spacing: 0;
@@ -31,58 +47,73 @@
             
             tr, td, th {
               border: thin solid rgba(100, 100, 100, 0.6);
-              padding: 5px;
+              padding: 6px;
             }
-
+            
+            input[type=text] {
+                margin-bottom: 6px;
+            }
+            
+            input[type=text].long {
+                width: 500px;
+                max-width: 100%;
+            }
+            
+            input[type=text].big {
+                width: 500px;
+                height: 150px;
+                max-width: 100%;
+            }
         </style>
     </head>
 
     <body>
+        <div class="container">
+            <h1>Yksisarvisten keskustelufoorumi</h1>
+            <h3>Koti</h3>
 
-        <h1>Yksisarvisten keskustelufoorumi</h1>
-        <h2>Koti</h2>
+            <table>
+                <tr>
+                    <th style="width: 60%">Alue</th>
+                    <th>Viestejä yhteensä</th>
+                    <th>Viimeisin viesti</th>
+                </tr>
 
-        <table>
-            <tr>
-                <th>Alue</th>
-                <th>Viestejä yhteensä</th>
-                <th>Viimeisin viesti</th>
-            </tr>
+                <tr th:each="alue : ${alueet}">
 
-            <tr th:each="alue : ${alueet}">
+                    <td> 
+                        <a th:href="@{~/{id}(id=${alue.tunnus})}">
+                            <span th:text="${alue.nimi}">Aluen nimi</span>
+                        </a>
+                    </td>
 
-                <td> 
-                    <a th:href="@{~/{id}(id=${alue.tunnus})}">
-                        <span th:text="${alue.nimi}">Aluen nimi</span>
-                    </a>
-                </td>
+                    <td><span th:text="${alue.viestimaara}">0</span></td>
+                    <td><span th:text="${alue.viimeisinViesti}">-</span></td>
+                    <!-- viimeisin viesti odottaa korjausta AlueDaon metodeihin -->
+                </tr>
 
-                <td><span th:text="${alue.viestimaara}">0</span></td>
-                <td><span th:text="${alue.viimeisinViesti}">-</span></td>
-                <!-- viimeisin viesti odottaa korjausta AlueDaon metodeihin -->
-            </tr>
+            </table>
 
-        </table>
-        
-        <table>
-            <tr>
-                <td>
-                    
-                    <h3>Lisää uusi alue:</h3>
+            <table>
+                <tr>
+                    <td>
 
-                    <form method="POST" th:action="@{~/addAlue}">
-                        Aluen otsikko (max 20 merkkejä): <br/>
-                        <input type="text" name="alueOtsikko"/> <br/>
+                        <p class="pBold">Lisää uusi alue</p>
 
-                        Aluen kuvaus (max 100 merkkejä): <br/>
-                        <input type="text" name="alueKuvaus"/> <br/>
+                        <form method="POST" th:action="@{~/addAlue}">
+                            Aluen otsikko (max 20 merkkejä): <br/>
+                            <input type="text" name="alueOtsikko" maxlength="20"/> <br/>
 
-                        <input type="submit" value="Lisää alue"/>
-                    </form>
-                    
-                </td>
-            </tr>
-        </table>
+                            Aluen kuvaus (max 100 merkkejä): <br/>
+                            <input type="text" class="long" name="alueKuvaus" maxlength="100"/> <br/>
+
+                            <input type="submit" value="Lisää alue"/>
+                        </form>
+
+                    </td>
+                </tr>
+            </table>
+        </div>
         
     </body>
 </html>
