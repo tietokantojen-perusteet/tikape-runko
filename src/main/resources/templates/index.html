@@ -14,7 +14,7 @@
         <div id="container">
             <h2>Keskustelualueet</h2>
 
-            <div class="alueboksi">
+            <div class="alueboksi" th:each="alue : ${alueet}">
                 <p th:each="alue : ${alueet}">
                     <a th:href="${'/alue/' + alue.id}">
                         <span class="alueotsikko" th:text="${alue.nimi} + '  --  '">Alueen nimi</span>
