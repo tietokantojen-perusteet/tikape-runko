@@ -6,137 +6,38 @@
         <title>Keskustelualue</title>
         <!--<meta http-equiv="content-type" content="text/html; charset=UTF-8"></meta>-->
         <meta charset="utf-8" th:charset="UTF-8"/>
-        <link rel="stylesheet" type="text/css" href="../public/styles.css" />
+        <link rel="stylesheet" type="text/css" href="/styles.css" />
     </head>
 
     <body>
 
-    <div id="container">
-        <h2>Keskustelualueet</h2>
+        <div id="container">
+            <h2>Keskustelualueet</h2>
 
-        <div class="alueboksi">
-            <p th:each="alue : ${alueet}">
-            <a th:href="${'/alue/' + alue.id}">
-                <span class="alueotsikko" th:text="${alue.nimi} + '  --  '">Alueen nimi</span>
-                <span>Viestejä: 
-                    <span class="viestilukumaara" th:text="'Viestej&auml;: ' + ${alue.viestienLkm} + ' - '">
-                    15
-                    </span>
-                </span>
-                
-                <span class="viimeisin_viesti">Viimeisin viesti:  
-                    <span class="timestamp" th:text="Viimeisin viesti l&auml;hetetty: ' + ${alue.viimeisinAika}">
-                    23.10.2016 14.45
-                    </span>
-                </span>
-                  
-            </a>
-        </p>
-        </div>
+            <div class="alueboksi">
+                <p th:each="alue : ${alueet}">
+                    <a th:href="${'/alue/' + alue.id}">
+                        <span class="alueotsikko" th:text="${alue.nimi} + '  --  '">Alueen nimi</span>
+                        <span>Viestejä: 
+                            <span class="viestilukumaara" th:text="'Viestej&auml;: ' + ${alue.viestienLkm} + ' - '">
+                                15
+                            </span>
+                        </span>
 
-<div class="alueboksi">
-            <p th:each="alue : ${alueet}">
-            <a th:href="${'/alue/' + alue.id}">
-                <span class="alueotsikko" th:text="${alue.nimi} + '  --  '">Alueen nimi</span>
-                <span>Viestejä: 
-                    <span class="viestilukumaara" th:text="'Viestej&auml;: ' + ${alue.viestienLkm} + ' - '">
-                    15
-                    </span>
-                </span>
-                
-                <span class="viimeisin_viesti">Viimeisin viesti:  
-                    <span class="timestamp" th:text="Viimeisin viesti l&auml;hetetty: ' + ${alue.viimeisinAika}">
-                    23.10.2016 14.45
-                    </span>
-                </span>
-                  
-            </a>
-        </p>
-        </div>
+                        <span class="viimeisin_viesti">Viimeisin viesti:  
+                            <span class="timestamp" th:text="'Viimeisin viesti l&auml;hetetty: ' + ${alue.viimeisinAika}">
+                                23.10.2016 14.45
+                            </span>
+                        </span>
 
-        <div class="alueboksi">
-            <p th:each="alue : ${alueet}">
-            <a th:href="${'/alue/' + alue.id}">
-                <span class="alueotsikko" th:text="${alue.nimi} + '  --  '">Alueen nimi</span>
-                <span>Viestejä: 
-                    <span class="viestilukumaara" th:text="'Viestej&auml;: ' + ${alue.viestienLkm} + ' - '">
-                    15
-                    </span>
-                </span>
-                
-                <span class="viimeisin_viesti">Viimeisin viesti:  
-                    <span class="timestamp" th:text="Viimeisin viesti l&auml;hetetty: ' + ${alue.viimeisinAika}">
-                    23.10.2016 14.45
-                    </span>
-                </span>
-                  
-            </a>
-        </p>
-        </div>
-        <div class="alueboksi">
-            <p th:each="alue : ${alueet}">
-            <a th:href="${'/alue/' + alue.id}">
-                <span class="alueotsikko" th:text="${alue.nimi} + '  --  '">Alueen nimi</span>
-                <span>Viestejä: 
-                    <span class="viestilukumaara" th:text="'Viestej&auml;: ' + ${alue.viestienLkm} + ' - '">
-                    15
-                    </span>
-                </span>
-                
-                <span class="viimeisin_viesti">Viimeisin viesti:  
-                    <span class="timestamp" th:text="Viimeisin viesti l&auml;hetetty: ' + ${alue.viimeisinAika}">
-                    23.10.2016 14.45
-                    </span>
-                </span>
-                  
-            </a>
-        </p>
-        </div>
-        <div class="alueboksi">
-            <p th:each="alue : ${alueet}">
-            <a th:href="${'/alue/' + alue.id}">
-                <span class="alueotsikko" th:text="${alue.nimi} + '  --  '">Alueen nimi</span>
-                <span>Viestejä: 
-                    <span class="viestilukumaara" th:text="'Viestej&auml;: ' + ${alue.viestienLkm} + ' - '">
-                    15
-                    </span>
-                </span>
-                
-                <span class="viimeisin_viesti">Viimeisin viesti:  
-                    <span class="timestamp" th:text="Viimeisin viesti l&auml;hetetty: ' + ${alue.viimeisinAika}">
-                    23.10.2016 14.45
-                    </span>
-                </span>
-                  
-            </a>
-        </p>
-        </div>
-        <div class="alueboksi">
-            <p th:each="alue : ${alueet}">
-            <a th:href="${'/alue/' + alue.id}">
-                <span class="alueotsikko" th:text="${alue.nimi} + '  --  '">Alueen nimi</span>
-                <span>Viestejä: 
-                    <span class="viestilukumaara" th:text="'Viestej&auml;: ' + ${alue.viestienLkm} + ' - '">
-                    15
-                    </span>
-                </span>
-                
-                <span class="viimeisin_viesti">Viimeisin viesti:  
-                    <span class="timestamp" th:text="Viimeisin viesti l&auml;hetetty: ' + ${alue.viimeisinAika}">
-                    23.10.2016 14.45
-                    </span>
-                </span>
-                  
-            </a>
-        </p>
-        </div>
+                    </a>
+                </p>
+            </div>
 
+            <a id="uusialue" href="/uusialue">Lis&auml;&auml; uusi alue</a><br/>
+            <p class="Copyright"> TeamTableTurners ver. 2.0 </p>
 
-        
-        <a id="uusialue" href="/uusialue">Lis&auml;&auml; uusi alue</a><br/>
-        <p class="Copyright"> TeamTableTurners ver. 2.0 </p>
-
-    </div>
+        </div>
 
     </body>
 </html>
