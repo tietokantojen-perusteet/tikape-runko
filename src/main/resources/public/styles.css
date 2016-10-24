@@ -9,7 +9,7 @@ p.Copyright {
 
 
 body {
-	background:url("../public/background_img.png") repeat;
+	background:url("/background_img.png") repeat;
 	font-family: 'Open Sans', sans-serif;
 	}
 
