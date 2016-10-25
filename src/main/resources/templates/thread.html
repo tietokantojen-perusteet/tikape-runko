@@ -107,10 +107,10 @@
 
                         <form method="POST" 
                               th:action="@{~/{alueTunnus}/{aiheTunnus}/addViesti(alueTunnus=${alue.tunnus}, aiheTunnus=${aihe.tunnus})}">
-                            Nimesi (max 20 merkkej&auml;): <br/>
+                            Nimesi (max 20 merkki&auml;): <br/>
                             <input type="text" name="viestiLahettaja" maxlength="20"/> <br/>
 
-                            Viesti (max 255 merkkej&auml;): <br/>
+                            Viesti (max 255 merkki&auml;): <br/>
                             <input type="text" class="big" name="teksti" maxlength="255"/><br/>
 
                             <input type="submit" value="L&auml;het&auml; viesti"/>
