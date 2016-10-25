@@ -24,7 +24,7 @@
             <li th:each="keskustelu: ${keskustelut}">
 
                 <a class="keskusteluotsikko" th:href="${'/keskustelu/' + keskustelu.id}">
-                    <span class="otsikko" th:text="${keskustelu.otsikko} + '  --  '">Helsinki on paras</span>
+                    <span class="otsikko" th:text="${keskustelu.otsikko}">Helsinki on paras</span>
                     <span class="otsikko_metadata" th:text="'Viestej&auml;: ' + ${keskustelu.viestienLkm} + ' - '">Viestejä: 2</span>
                     <span class="otsikko_metadata" th:text="'Viimeisin viesti l&auml;hetetty: ' + ${keskustelu.viimeisinAika}">Viimeisin viesti lähetetty: 23.10.2016</span> 
                 </a>
