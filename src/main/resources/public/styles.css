@@ -11,7 +11,11 @@ p.Copyright {
 body {
 	background:url("/background_img.png") repeat;
 	font-family: 'Open Sans', sans-serif;
-	}
+}
+
+body a {
+    text-decoration: none !important;
+}
 
 h2 {
 	text-align: left;
@@ -42,16 +46,25 @@ h4 {
 	text-align: center;
 
 }
+
+span#uusialue a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.viesti {
+    margin-top: -25px;
+}
+
 /* FRONT PAGE ALUE BOX*/
 .alueboksi {
-	width: 20%;
-	height: 135px;
+	width: 45%;
 	background: #efefef;
 	border: none;
 	text-align: center;
 	border-radius: 5px;
 	display: inline-block;
-	margin: 1%;
+	margin: 1% 1% 1% 0;
 }
 /*VIESTIT POSTS*/
 p.viesti {
@@ -59,6 +72,7 @@ p.viesti {
 	padding: 2% 2% 1% 2%;
 	width: 40%;
 	border-radius: 5px;
+        
 }
 /* CHATBOX TRIANGLE lisätään tyhjä komlio, ja käännetään, :after tarkoittaa p.viestin jälkeen */
 p.viesti:after {
@@ -117,6 +131,7 @@ a.keskusteluotsikko {
 	border: none;
 	display: inline-block;
 	color: #333;
+        text-decoration:none !important;
 }
 
 /*HEADLINE CHAT CATEGORY*/
@@ -127,7 +142,10 @@ span.alueotsikko {
 	text-transform: uppercase;
 	font-weight: bold;
 	margin: 4% 0;
-	padding: 2%;	
+	padding: 2%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
 }
 
 span.keskustelunotsikko {
