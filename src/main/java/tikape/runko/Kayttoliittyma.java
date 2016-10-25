@@ -31,8 +31,8 @@ public class Kayttoliittyma {
 
     public HashMap getIndexpage() throws Exception {
         HashMap map = new HashMap<>();
-        List<Alue> alueet = viestiDao.alueetJarjestys();
-        ArrayList<Object> alueTiedot = new ArrayList<>();
+        ArrayList<Alue> alueet = viestiDao.alueetJarjestys();
+        ArrayList<Tempolio> alueTiedot = new ArrayList<>();
 
         for (Alue a : alueet) {
             String viestMaara = Integer.toString(viestiDao.alueenViestienmaara(a.getId()));
@@ -54,8 +54,8 @@ public class Kayttoliittyma {
     public HashMap getAluepage(int alueId) throws Exception {
         HashMap map = new HashMap<>();
         
-        List<Keskustelu> keskustelut = viestiDao.keskustelutJarjestys(alueId);
-        ArrayList<Object> keskTiedot = new ArrayList<>();
+        ArrayList<Keskustelu> keskustelut = viestiDao.keskustelutJarjestys(alueId);
+        ArrayList<Tempolio> keskTiedot = new ArrayList<>();
         String aluenimi = alueDao.findOne(alueId).getNimi();
         
         for (Keskustelu k : keskustelut) {
@@ -81,17 +81,49 @@ public class Kayttoliittyma {
     }
 
 
-    public HashMap getKeskustelupage(int keskusteluId) throws Exception {
+    public HashMap getKeskustelupage(int keskusteluId, int sivunumero) throws Exception {
         HashMap map = new HashMap<>();
-        List<Viesti> viesti = viestiDao.viestitJarjestys(keskusteluId);
+        ArrayList<Viesti> viesti = viestiDao.viestitJarjestys(keskusteluId);
+        ArrayList<Viesti> valmis = new ArrayList<>();
+        int pituussivulla = viesti.size()- 10*(sivunumero-1);
+        if(pituussivulla < 10){
+            for(int i =0; i <pituussivulla; i++ ){
+           
+                valmis.add(viesti.get((sivunumero-1)*10 + i));
+            }
+        }else{
+           for(int i =0; i <10; i++ ){
+           
+                valmis.add(viesti.get((sivunumero-1)*10 + i));
+            } 
+        }    
         Keskustelu kesk = keskusteluDao.findOne(keskusteluId);
 
         String aika = kesk.getTime().toString();
         aika = aika.substring(0,19);
         
-        map.put("viesti", viesti);
+        
+        map.put("viesti", valmis);
+        map.put("numeroseur", sivunumero+1);
         map.put("omakeskus", kesk);
-        map.put("julkaisuaika", aika);
+        if(sivunumero ==1){
+            map.put("aloittaja", kesk.getAloittaja());
+            map.put("aloitusviesti", kesk.getAloitusviesti());
+            map.put("julkaisuaika", aika);
+        }else{
+            map.put("aloittaja", "");
+            map.put("aloitusviesti", "");
+            map.put("julkaisuaika", "");
+            
+        }
+        map.put("omasivu", sivunumero);
+        
+        if(sivunumero > 1){
+             map.put("numeroedel", sivunumero -1);
+        }else{
+             map.put("numeroedel", 1);
+        }
+        
 
 
         return map;
@@ -111,8 +143,8 @@ public class Kayttoliittyma {
             return new ModelAndView(map, "alue");
         }, new ThymeleafTemplateEngine());
         
-        get("/alue/keskustelu/:id", (req, res) -> {
-            HashMap map = getKeskustelupage(Integer.parseInt(req.params("id")));
+        get("/alue/keskustelu/:id/:numero", (req, res) -> {
+            HashMap map = getKeskustelupage(Integer.parseInt(req.params(":id")), Integer.parseInt(req.params(":numero")));
             return new ModelAndView(map, "keskustelu");
             
         }, new ThymeleafTemplateEngine());
@@ -128,16 +160,16 @@ public class Kayttoliittyma {
             String nimi = req.queryParams("nimi");
             String otsikko = req.queryParams("otsikko");
             String viesti = req.queryParams("viesti");
-            keskusteluDao.lisaaKeskustelu(alueDao.findOne(Integer.parseInt(req.params("id"))).getId(), otsikko, nimi, viesti);
-            HashMap map = getAluepage(Integer.parseInt(req.params("id")));
+            keskusteluDao.lisaaKeskustelu(alueDao.findOne(Integer.parseInt(req.params(":id"))).getId(), otsikko, nimi, viesti);
+            HashMap map = getAluepage(Integer.parseInt(req.params(":id")));
             return new ModelAndView(map, "alue");
         }, new ThymeleafTemplateEngine());
         
-        post("/alue/keskustelu/:id", (req, res) -> {
+        post("/alue/keskustelu/:id/:numero", (req, res) -> {
             String nimi = req.queryParams("nimi");
             String viesti = req.queryParams("viesti");
-            viestiDao.lisaaViesti(keskusteluDao.findOne(Integer.parseInt(req.params("id"))).getId(), nimi, viesti);
-            HashMap map = getKeskustelupage(Integer.parseInt(req.params("id")));
+            viestiDao.lisaaViesti(keskusteluDao.findOne(Integer.parseInt(req.params(":id"))).getId(), nimi, viesti);
+            HashMap map = getKeskustelupage(Integer.parseInt(req.params(":id")), Integer.parseInt(req.params(":numero")));
             return new ModelAndView(map, "keskustelu");
         }, new ThymeleafTemplateEngine());
 

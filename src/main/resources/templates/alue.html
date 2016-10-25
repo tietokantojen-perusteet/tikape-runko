@@ -81,16 +81,16 @@
                 <th>Viimeisin viesti</th>
             </tr>   
             
-            <tr th:each="kesk : ${kesktiedot}">
+            <tr th:each="keskuste : ${kesktiedot}">
                 
                 <td> 
-                    <a href="/keskustelu.html" th:href="|/alue/keskustelu/${kesk.obj1.id}|">
-                        <div th:text="${kesk.obj1.otsikko}" style="height: 100%;width: 100%"></div>
+                    <a href="/keskustelu.html" th:href="|/alue/keskustelu/${keskuste.obj1.id}/${1}|">
+                        <div th:text="${keskuste.obj1.otsikko}" style="height: 100%;width: 100%"></div>
                     </a>
                 </td>
                 
-                <td th:text ="${kesk.obj2}"> Viestienmäärä </td>
-                <td th:text ="${kesk.obj3}"> Aika </td>
+                <td th:text ="${keskuste.obj2}"> Viestienmäärä </td>
+                <td th:text ="${keskuste.obj3}"> Aika </td>
 
             </tr>
             

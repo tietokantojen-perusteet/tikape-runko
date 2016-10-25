@@ -47,6 +47,7 @@
             }
             table.one {
                 font-family: arial, sans-serif;
+                float:left;
                 width:100%;
                 border-collapse: collapse;
                 table-layout: fixed;
@@ -75,8 +76,8 @@
              
             <tr>
                 <td th:text ="${julkaisuaika}"> aloitus </td>
-                <td th:text ="${omakeskus.aloittaja}"> aloitus </td>
-                <td th:text ="${omakeskus.aloitusviesti}"> aloitusteksti </td>
+                <td th:text ="${aloittaja}"> aloitus </td>
+                <td th:text ="${aloitusviesti}"> aloitusteksti </td>
                 
             </tr>
             <tr th:each="viest : ${viesti}">
@@ -94,7 +95,7 @@
 
         <div class="one">
 
-            <form method="POST" th:action="|/alue/keskustelu/${omakeskus.id}|" >
+            <form method="POST" th:action="|/alue/keskustelu/${omakeskus.id}/${omasivu}|" >
 
                 Viesti:<br/>
                 <textarea class ="one" name="viesti" maxlength="50000" rows="10" cols="50"></textarea><br/>
@@ -106,6 +107,14 @@
 
         </div>
         <br/>
+        
+        <a href="/keskustelu.html" th:href="|/alue/keskustelu/${omakeskus.id}/${numeroedel}|" th:text="|Sivulle numero ${numeroedel}|"></a>
+        <br/>
+        <a href="/keskustelu.html" th:href="|/alue/keskustelu/${omakeskus.id}/${numeroseur}|" th:text="|Sivulle numero ${numeroseur}|"></a>
+        
+        <br/>
+        
+        
         <a href="/alue.html" th:href="|/alue/${omakeskus.omaalue.id}|" th:text="|Takaisin alueen: ${omakeskus.omaalue.nimi} keskustelulistaukseen.|"></a>
     </body>
 </html>

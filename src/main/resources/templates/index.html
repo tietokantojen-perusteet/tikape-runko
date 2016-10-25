@@ -36,14 +36,15 @@
                 <th>Viestejä yhteensä</th>
                 <th>Viimeisin viesti</th>
             </tr>
-            <tr th:each="alue : ${aluetiedot}">
+            <tr th:each="aluetie : ${aluetiedot}">
+                
                 <td> 
-                    <a href="/alue.html" th:href="|/alue/${alue.obj1.id}|">
-                        <div th:text="${alue.obj1.nimi}" style="height: 100%;width: 100%"></div>
+                    <a href="/alue.html" th:href="|/alue/${aluetie.obj1.id}|">
+                        <div th:text="${aluetie.obj1.nimi}" style="height: 100%;width: 100%"></div>
                     </a>
                 </td>
-                <td th:text ="${alue.obj2}"> Viestienmäärä </td>
-                <td th:text ="${alue.obj3}"> Aika </td>
+                <td th:text ="${aluetie.obj2}"> Viestienmäärä </td>
+                <td th:text ="${aluetie.obj3}"> Aika </td>
             </tr>
             
         </table>

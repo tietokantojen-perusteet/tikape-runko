@@ -99,13 +99,13 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         return viestit;
     }
 
-    public List<Viesti> viestitJarjestys(Integer keskusteluid) throws SQLException {
+    public ArrayList<Viesti> viestitJarjestys(Integer keskusteluid) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE omakeskustelu = ?");
         stmt.setObject(1, keskusteluid);
 
         ResultSet rs = stmt.executeQuery();
-        List<Viesti> viestit = new ArrayList<>();
+        ArrayList<Viesti> viestit = new ArrayList<>();
         
         while (rs.next()) {
             
@@ -131,13 +131,13 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     }
 
     // antaa keskustelut järjestettynä viimeisimmän viestin mukaan
-    public List<Keskustelu> keskustelutJarjestys(Integer alueid) throws SQLException {
+    public ArrayList<Keskustelu> keskustelutJarjestys(Integer alueid) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Keskustelu WHERE omaalue = ?");
         stmt.setObject(1, alueid);
 
         ResultSet rs = stmt.executeQuery();
-        List<Keskustelu> keskustelut = new ArrayList<>();
+        ArrayList<Keskustelu> keskustelut = new ArrayList<>();
 
         while (rs.next()) {
             
@@ -172,12 +172,12 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     }
 
     // antaa alueet järjestettynä viimeisimmän viestin mukaan
-    public List<Alue> alueetJarjestys() throws SQLException {
+    public ArrayList<Alue> alueetJarjestys() throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue");
 
         ResultSet rs = stmt.executeQuery();
-        List<Alue> alueet = new ArrayList<>();
+        ArrayList<Alue> alueet = new ArrayList<>();
         while (rs.next()) {
             Integer id = rs.getInt("alue_id");
             String nimi = rs.getString("nimi");
