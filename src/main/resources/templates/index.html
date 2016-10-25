@@ -14,7 +14,7 @@
         <div id="container">
             <h2>Keskustelualueet</h2>
 
-            <div th:each="alue : ${alueet}">
+            <!--<div th:each="alue : ${alueet}">-->
                 <p class="alueboksi" th:each="alue : ${alueet}">
                     <a th:href="${'/alue/' + alue.id}">
                         <span class="alueotsikko" th:text="${alue.nimi}"></span>
@@ -32,7 +32,7 @@
 
                     </a>
                 </p>
-            </div>
+            <!--</div>-->
 
             <a id="uusialue" href="/uusialue">Lis&auml;&auml; uusi alue</a><br/>
             <p class="Copyright"> TeamTableTurners ver. 2.0 </p>
