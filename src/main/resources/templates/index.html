@@ -14,17 +14,17 @@
         <div id="container">
             <h2>Keskustelualueet</h2>
 
-            <div class="alueboksi" th:each="alue : ${alueet}">
-                <p th:each="alue : ${alueet}">
+            <div th:each="alue : ${alueet}">
+                <p class="alueboksi" th:each="alue : ${alueet}">
                     <a th:href="${'/alue/' + alue.id}">
-                        <span class="alueotsikko" th:text="${alue.nimi} + '  --  '">Alueen nimi</span>
-                        <span>Viestejä: 
-                            <span class="viestilukumaara" th:text="'Viestej&auml;: ' + ${alue.viestienLkm} + ' - '">
+                        <span class="alueotsikko" th:text="${alue.nimi}"></span>
+                        <span> 
+                            <span class="viestilukumaara" th:text="'Viestej&auml;: ' + ${alue.viestienLkm}">
                                 15
                             </span>
                         </span>
 
-                        <span class="viimeisin_viesti">Viimeisin viesti:  
+                        <span class="viimeisin_viesti">  
                             <span class="timestamp" th:text="'Viimeisin viesti l&auml;hetetty: ' + ${alue.viimeisinAika}">
                                 23.10.2016 14.45
                             </span>
