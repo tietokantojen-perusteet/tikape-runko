@@ -55,10 +55,19 @@ public class Kayttoliittyma {
         HashMap map = new HashMap<>();
         
         ArrayList<Keskustelu> keskustelut = viestiDao.keskustelutJarjestys(alueId);
+        ArrayList<Keskustelu> valmiit = new ArrayList<>();
+        int montako = keskustelut.size();
+        if(montako > 10){
+            for(int i = 0; i<10; i++){
+                valmiit.add(keskustelut.get(i));
+            }
+        }else{
+            valmiit = keskustelut;
+        }
         ArrayList<Tempolio> keskTiedot = new ArrayList<>();
         String aluenimi = alueDao.findOne(alueId).getNimi();
         
-        for (Keskustelu k : keskustelut) {
+        for (Keskustelu k : valmiit) {
             String viestMaara = Integer.toString(viestiDao.keskustelunViestienmaara(k.getId()));
             String aika;
             
