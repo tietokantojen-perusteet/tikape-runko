@@ -72,6 +72,7 @@ p.viesti {
 	padding: 2% 2% 1% 2%;
 	width: 40%;
 	border-radius: 5px;
+	word-wrap: break-word;
         
 }
 /* CHATBOX TRIANGLE lisätään tyhjä komlio, ja käännetään, :after tarkoittaa p.viestin jälkeen */
