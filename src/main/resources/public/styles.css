@@ -1,16 +1,16 @@
 /* STYLES CSS FILE */
 
 p.Copyright {
-	font-size: .8em;
-	float: right;
+    font-size: .8em;
+    float: right;
 }
 
 /* new */
 
 
 body {
-	background:url("/background_img.png") repeat;
-	font-family: 'Open Sans', sans-serif;
+    background:url("/background_img.png") repeat;
+    font-family: 'Open Sans', sans-serif;
 }
 
 body a {
@@ -18,32 +18,32 @@ body a {
 }
 
 h2 {
-	text-align: left;
-	background: #fff;
-	width: 100%;
-	margin: 2% auto;
-	text-transform: uppercase;
-	padding: 1%;
+    text-align: left;
+    background: #fff;
+    width: 100%;
+    margin: 2% auto;
+    text-transform: uppercase;
+    padding: 1%;
 }
 
 h4 {
-	margin: 5% 0 2% 0;
-	display: block;
+    margin: 5% 0 2% 0;
+    display: block;
 }
 
 /* BUTTONS */
 #uusialue, input[type="submit"] {
-	max-width: 300px;
-	display:block;
-	padding: 15px;
-	margin: 15px 0px;
-	color: #FFF;
-	font-size: 12px;
-	text-transform: uppercase;
-	background-color: rgba(0,0,0,0.5);
-	border: none;
-	text-decoration: none;
-	text-align: center;
+    max-width: 300px;
+    display: inline;
+    padding: 15px;
+    margin: 15px 0px;
+    color: #FFF;
+    font-size: 12px;
+    text-transform: uppercase;
+    background-color: rgba(0,0,0,0.5);
+    border: none;
+    text-decoration: none;
+    text-align: center;
 
 }
 
@@ -58,184 +58,184 @@ span#uusialue a {
 
 /* FRONT PAGE ALUE BOX*/
 .alueboksi {
-	width: 45%;
-	background: #efefef;
-	border: none;
-	text-align: center;
-	border-radius: 5px;
-	display: inline-block;
-	margin: 1% 1% 1% 0;
+    width: 45%;
+    background: #efefef;
+    border: none;
+    text-align: center;
+    border-radius: 5px;
+    display: inline-block;
+    margin: 1% 1% 1% 0;
 }
 /*VIESTIT POSTS*/
 p.viesti {
-	background: #cecece;
-	padding: 2% 2% 1% 2%;
-	width: 40%;
-	border-radius: 5px;
-	word-wrap: break-word;
-        
+    background: #cecece;
+    padding: 2% 2% 1% 2%;
+    width: 40%;
+    border-radius: 5px;
+    word-wrap: break-word;
+
 }
 /* CHATBOX TRIANGLE lisätään tyhjä komlio, ja käännetään, :after tarkoittaa p.viestin jälkeen */
 p.viesti:after {
-	content: '';
-	height: 10px;
-	width: 10px;
-	display: block;
-	width: 0;
-	height: 0;
-	border-style: solid;
-	border-width: 0 15px 15px 15px;
-	border-color: transparent transparent #cecece transparent;
-	position: relative;
-	top: 16px;
-	left: -5px;
-	-ms-transform: rotate(180deg);
-	-webkit-transform: rotate(180deg);
-	transform: rotate(180deg);
+    content: '';
+    height: 10px;
+    width: 10px;
+    display: block;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 15px 15px 15px;
+    border-color: transparent transparent #cecece transparent;
+    position: relative;
+    top: 16px;
+    left: -5px;
+    -ms-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
 }
 
 hr {
-	display: block;
-	margin: 2.5% 0 5%;
-	width: 100%;
+    display: block;
+    margin: 2.5% 0 5%;
+    width: 100%;
 }
 
 /* TIMESTAMP ON MESSAGE */
 .timestampviestissa {
-	font-size: .75em;
+    font-size: .75em;
 }
 
 /* NUMBERBOX ON POST*/
 span.numero {
-	background: #cecece;
-	height: 40px;
-	width: 40px;
-	display: block;
-	text-align: center;
-	border-radius: 50%;
-	float: right;
-	position: relative;
-	top: 30px;	
+    background: #cecece;
+    height: 40px;
+    width: 40px;
+    display: block;
+    text-align: center;
+    border-radius: 50%;
+    float: right;
+    position: relative;
+    top: 30px;	
 }
 
 /* NUMBER IN NUMBERBOX*/
 span.numero span {
-	position: relative;
-	top: 10px;
+    position: relative;
+    top: 10px;
 }
 
 /*HEADLINE CHAT*/
 a.keskusteluotsikko {
-	width: 95%;
-	padding: 2%;
-	background: #efefef;
-	border: none;
-	display: inline-block;
-	color: #333;
-        text-decoration:none !important;
+    width: 95%;
+    padding: 2%;
+    background: #efefef;
+    border: none;
+    display: inline-block;
+    color: #333;
+    text-decoration:none !important;
 }
 
 /*HEADLINE CHAT CATEGORY*/
 span.alueotsikko {
-	text-align: center;
-	display: block;
-	color: #000;
-	text-transform: uppercase;
-	font-weight: bold;
-	margin: 4% 0;
-	padding: 2%;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+    text-align: center;
+    display: block;
+    color: #000;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin: 4% 0;
+    padding: 2%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 span.keskustelunotsikko {
-	display: block;
-	font-size: 1.25em;
-	margin: 1% 0;
+    display: block;
+    font-size: 1.25em;
+    margin: 1% 0;
 }
 
 span.viestinumero {
-	font-size: .75em;
+    font-size: .75em;
 }
 
 span.viestitimestamp {
-	float: right;
-	font-size: .75em;	
+    float: right;
+    font-size: .75em;	
 }
 
 span.timestamp{
-	text-align: center;
-	font-size: .75em;
-	margin: 15px 0 0 0;
+    text-align: center;
+    font-size: .75em;
+    margin: 15px 0 0 0;
 }
 
 span.viestilukumaara {
-	text-align: center;
-	color: #000;
-	margin: 20px 0 0 0;
+    text-align: center;
+    color: #000;
+    margin: 20px 0 0 0;
 }
 
 nav {
-	font-size: .8em;
+    font-size: .8em;
 }
 
 nav a {
-	color: #666;
+    color: #666;
 }
 
 #container {
-	max-width: 768px;
-	margin: 2.5% auto;
-	background: #B0B3B1;
-	padding: 2.5% 5% 2.5% 5%;
+    max-width: 768px;
+    margin: 2.5% auto;
+    background: #B0B3B1;
+    padding: 2.5% 5% 2.5% 5%;
 }
 
 form b ,form input, form textarea {
-	display: block;
+    display: block;
 }
 
 form {
-	font-size: .9em;
+    font-size: .9em;
 }
 
 
 
 form b {
-	margin: 5px 0;
+    margin: 5px 0;
 }
 
 
 ul li {
-	list-style: none;
-	margin: .5% 0;
-	display: block;
+    list-style: none;
+    margin: .5% 0;
+    display: block;
 }
 
 ul {
-	position: relative;
+    position: relative;
     left: -40px;
     width: 100%
 }
 
 ul div {
-	float: right;
-	font-size: .9em;
-	font-style: italic;
+    float: right;
+    font-size: .9em;
+    font-style: italic;
 
 }
 
 span.otsikko {
-	display: block;
-	font-weight: bold;
+    display: block;
+    font-weight: bold;
 }
 
 span.otsikko_metadata {
-	font-size: 0.8em;
+    font-size: 0.8em;
 
 
 }
 
 .viimeisin_viesti {
-	display: block;
+    display: block;
 }
