@@ -95,7 +95,12 @@ public class Kayttoliittyma {
         ArrayList<Viesti> viesti = viestiDao.viestitJarjestys(keskusteluId);
         ArrayList<Viesti> valmis = new ArrayList<>();
         int pituussivulla = viesti.size()- 10*(sivunumero-1);
-        if(pituussivulla < 10){
+        if(pituussivulla >= 9 && sivunumero ==1){
+            for(int i =0; i <9; i++ ){
+           
+                valmis.add(viesti.get(i));
+            }
+        }else if(pituussivulla <= 10){
             for(int i =0; i <pituussivulla; i++ ){
            
                 valmis.add(viesti.get((sivunumero-1)*10 + i));
@@ -113,7 +118,7 @@ public class Kayttoliittyma {
         
         
         map.put("viesti", valmis);
-        map.put("numeroseur", sivunumero+1);
+       
         map.put("omakeskus", kesk);
         if(sivunumero ==1){
             map.put("aloittaja", kesk.getAloittaja());
@@ -132,7 +137,11 @@ public class Kayttoliittyma {
         }else{
              map.put("numeroedel", 1);
         }
-        
+        if(pituussivulla <= 10){
+           map.put("numeroseur", sivunumero);
+        }else{
+           map.put("numeroseur", sivunumero+1); 
+        }
 
 
         return map;
