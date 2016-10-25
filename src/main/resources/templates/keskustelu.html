@@ -43,8 +43,8 @@
 
         </div>
         <p>
-            <a id="uusialue" th:if="${previouspage} != null" th:href="${'/keskustelu/' + keskustelu.id} + '?page=' + ${previouspage}"> Edellinen sivu</a>
-            <a id="uusialue" th:if="${nextpage} != null" th:href="${'/keskustelu/' + keskustelu.id} + '?page=' + ${nextpage}">Seuraava sivu</a>
+            <a id="sivunvaihto" th:if="${previouspage} != null" th:href="${'/keskustelu/' + keskustelu.id} + '?page=' + ${previouspage}"> Edellinen sivu</a>
+            <a id="sivunvaihto" th:if="${nextpage} != null" th:href="${'/keskustelu/' + keskustelu.id} + '?page=' + ${nextpage}">Seuraava sivu</a>
         </p>
 
 

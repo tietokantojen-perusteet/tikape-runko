@@ -46,6 +46,20 @@ h4 {
     text-align: center;
 
 }
+#sivunvaihto, input[type="submit"] {
+    max-width: 300px;
+    display: inline;
+    padding: 15px;
+    margin: 15px 0px;
+    color: #FFF;
+    font-size: 12px;
+    text-transform: uppercase;
+    background-color: rgba(0,0,0,0.5);
+    border: none;
+    text-decoration: none;
+    text-align: center;
+
+}
 
 span#uusialue a {
     color: #fff;
