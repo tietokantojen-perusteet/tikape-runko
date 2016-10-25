@@ -34,7 +34,7 @@ h4 {
 /* BUTTONS */
 #uusialue, input[type="submit"] {
     max-width: 300px;
-    display: inline;
+    display: block;
     padding: 15px;
     margin: 15px 0px;
     color: #FFF;
