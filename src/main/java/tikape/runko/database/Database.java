@@ -47,24 +47,37 @@ public class Database<T> {
         }
     }
     
-    public List<T> queryAndCollect(String query, Collector<T> col) throws SQLException {
+    public List<T> queryAndCollect(String query, Collector<T> col, Object... params) throws SQLException {
+        Connection conn = getConnection();
+        if (debug) {
+            System.out.println("---");
+            System.out.println("Executing: " + query);
+            System.out.println("---");
+        }
+
         List<T> rows = new ArrayList<>();
-        Statement stmt = getConnection().createStatement();
-        ResultSet rs = stmt.executeQuery(query);
-        
-        while(rs.next()) {
+        PreparedStatement stmt = conn.prepareStatement(query);
+        for (int i = 0; i < params.length; i++) {
+            stmt.setObject(i + 1, params[i]);
+        }
+
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
             if (debug) {
                 System.out.println("---");
-                System.out.println("query");
+                System.out.println(query);
                 debug(rs);
                 System.out.println("---");
             }
-            
+
             rows.add(col.collect(rs));
         }
-        
+
         rs.close();
         stmt.close();
+        conn.close();
+
         return rows;
     }
 
