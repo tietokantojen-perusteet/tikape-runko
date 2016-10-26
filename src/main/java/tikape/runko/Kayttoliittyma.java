@@ -18,7 +18,13 @@ public class Kayttoliittyma {
     private static ViestiDao viestiDao;
 
     public Kayttoliittyma() throws Exception {
-        this.database = new Database("jdbc:sqlite:foorumi.db");
+        String jdbcOsoite = "jdbc:sqlite:foorumi.db";
+        if (System.getenv("DATABASE_URL") != null) {
+            jdbcOsoite = System.getenv("DATABASE_URL");
+        } 
+
+        this.database = new Database(jdbcOsoite);
+        
         database.init();
         this.alueDao = new AlueDao(database);
         this.keskusteluDao = new KeskusteluDao(database, alueDao);
