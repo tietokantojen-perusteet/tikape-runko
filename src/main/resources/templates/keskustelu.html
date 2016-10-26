@@ -10,57 +10,65 @@
 
     <body>
 
-     <div id="container">
+        <div id="container">
 
-        <nav><a href="/">Etusivu</a> > <a th:href="${'/alue/' + alue.id}"><span th:text="${alue.nimi} + ' > '"></span></a><span class="keskusteluotsikko" th:text="${keskustelu.otsikko}">Keskustelun otsikko</span></nav>
+            <nav>
+                <a href="/">Etusivu</a> > <a th:href="${'/alue/' + alue.id}">
+                    <span th:text="${alue.nimi}"></span>
+                </a>
+                >
+                <span th:if="${previouspage} == null" th:text="${keskustelu.otsikko}" >Keskustelun otsikko</span>
+                <a th:if="${previouspage} != null" th:text="${keskustelu.otsikko}" th:href="${'/keskustelu/' + keskustelu.id} + '?page=1'">Keskustelun otsikko</a>
+                <span th:if="${previouspage} != null" th:text="' > sivu ' + ${page}" >Sivunumero</span>
+            </nav>
 
-        <h2><span th:text="${keskustelu.otsikko}">Helsinki on paras!</span></h2>
-<br/><br/>
-        <div class="viesti" th:each="viesti, iterStat : ${viestit}">
+            <h2><span th:text="${keskustelu.otsikko}">Helsinki on paras!</span></h2>
+            <br/><br/>
+            <div class="viesti" th:each="viesti, iterStat : ${viestit}">
 
-            <b>
-                <span class="numero">
-                    <span th:text="${iterStat.count} + ${sivunviestit}">1</span>
-                </span>
-            </b>
+                <b>
+                    <span class="numero">
+                        <span th:text="${iterStat.count} + ${sivunviestit}">1</span>
+                    </span>
+                </b>
 
-            <p class="viesti" th:text="${viesti.sisalto}">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc cursus lacinia ipsum, ac posuere nunc efficitur non. Donec imperdiet diam id vulputate venenatis. Vivamus mattis sit amet ligula cursus tempor. Ut id quam est. Ut sit amet egestas mauris. Curabitur lorem quam, tincidunt ac porttitor in, consequat ac felis. Donec tortor sem, imperdiet a gravida in, maximus non sapien.
+                <p class="viesti" th:text="${viesti.sisalto}">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc cursus lacinia ipsum, ac posuere nunc efficitur non. Donec imperdiet diam id vulputate venenatis. Vivamus mattis sit amet ligula cursus tempor. Ut id quam est. Ut sit amet egestas mauris. Curabitur lorem quam, tincidunt ac porttitor in, consequat ac felis. Donec tortor sem, imperdiet a gravida in, maximus non sapien.
+                </p>
+
+
+                <div th:text="${viesti.kayttaja}">
+                    Kenneth
+                </div>
+
+                <div>
+                    <span class="timestampviestissa" th:text="${viesti.aika}">8.10.2016 15.13</span>
+                </div>
+                <hr/>
+
+
+
+
+            </div>
+            <p>
+                <a class="sivunvaihto" th:if="${previouspage} != null" th:href="${'/keskustelu/' + keskustelu.id} + '?page=' + ${previouspage}">Edellinen sivu</a><span class="disabledbutton" th:if="${previouspage} == null"> Edellinen sivu </span>
+                <a class="sivunvaihto" th:if="${nextpage} != null" th:href="${'/keskustelu/' + keskustelu.id} + '?page=' + ${nextpage}">Seuraava sivu</a><span class="disabledbutton" th:if="${nextpage} == null"> Seuraava sivu </span>
+                <a id="viimeinensivu" th:if="${nextpage} != null" th:href="${'/keskustelu/' + keskustelu.id} + '?page=viimeinen'">Viimeinen sivu</a><span id="disabledviimeinen" th:if="${nextpage} == null"> Viimeinen sivu </span>
             </p>
 
 
-            <div th:text="${viesti.kayttaja}">
-                Kenneth
-            </div>
-
-            <div>
-                <span class="timestampviestissa" th:text="${viesti.aika}">8.10.2016 15.13</span>
-            </div>
-            <hr/>
-
-
-
-
-        </div>
-        <p>
-            <a class="sivunvaihto" th:if="${previouspage} != null" th:href="${'/keskustelu/' + keskustelu.id} + '?page=' + ${previouspage}">Edellinen sivu</a><span class="disabledbutton" th:if="${previouspage} == null"> Edellinen sivu </span>
-            <a class="sivunvaihto" th:if="${nextpage} != null" th:href="${'/keskustelu/' + keskustelu.id} + '?page=' + ${nextpage}">Seuraava sivu</a><span class="disabledbutton" th:if="${nextpage} == null"> Seuraava sivu </span>
-            <a id="viimeinensivu" th:if="${nextpage} != null" th:href="${'/keskustelu/' + keskustelu.id} + '?page=viimeinen'">Viimeinen sivu</a><span id="disabledviimeinen" th:if="${nextpage} == null"> Viimeinen sivu </span>
-        </p>
-
-
-        <h4 th:if="${nextpage} == null">Vastaa keskusteluun</h4>
-        <form th:if="${nextpage} == null" method="post">
-            <b>Nimimerkki</b>
-            <input type="text" name="nimi"/>
-            <b>Viesti</b>
-            <textarea rows="5" cols="50" name="sisalto" required=""></textarea>
-            <!--<input type="hidden" name="nykyinen_sivu" th:value="${page}"/>-->
-            <input type="submit" value="Vastaa"/>
-        </form>
+            <h4 th:if="${nextpage} == null">Vastaa keskusteluun</h4>
+            <form th:if="${nextpage} == null" method="post">
+                <b>Nimimerkki</b>
+                <input type="text" name="nimi"/>
+                <b>Viesti</b>
+                <textarea rows="5" cols="50" name="sisalto" required=""></textarea>
+                <!--<input type="hidden" name="nykyinen_sivu" th:value="${page}"/>-->
+                <input type="submit" value="Vastaa"/>
+            </form>
 
         </div>
 
 
-         </body>
+    </body>
 </html>
