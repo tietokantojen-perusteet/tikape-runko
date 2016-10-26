@@ -2,11 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <head>
-        <title>Yksisarvisten keskustelufoorumi</title>
+        <!--Tänne pitäisi ehkä saada alueen sekä aiheen nimi?-->
+        <title>Yksisarvisten keskustelufoorumi - Alue - Aihe</title>
         <meta charset="utf-8" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
-              
+        
         <style>
             div.container {
                 width: 100%;
@@ -50,6 +51,10 @@
               padding: 6px;
             }
             
+            li {
+                margin-bottom: 6px;
+            }
+            
             input[type=text] {
                 margin-bottom: 6px;
             }
@@ -57,63 +62,62 @@
             input[type=text].long {
                 width: 500px;
                 max-width: 100%;
-            }
-            
-            input[type=text].big {
-                width: 500px;
-                height: 150px;
-                max-width: 100%;
-            }
+            }            
         </style>
     </head>
 
     <body>
+        
         <div class="container">
+
             <h1>Yksisarvisten keskustelufoorumi</h1>
-            <h3>Koti</h3>
+            <h3>
+                <a th:href="@{~/}">Koti</a> > 
+                <a th:href="@{~/{id}(id=${alue.tunnus})}">
+                    <span th:text="${alue.nimi}">Alue</span>
+                </a> > 
+                <span th:text="${aihe.otsikko}">Aihe</span>
+            </h3>
 
             <table>
                 <tr>
-                    <th style="width: 60%">Alue</th>
-                    <th>Viestej&auml; yhteens&auml;</th>
-                    <th>Viimeisin viesti</th>
-                </tr>
-
-                <tr th:each="alue : ${alueet}">
-
-                    <td> 
-                        <a th:href="@{~/{id}(id=${alue.tunnus})}">
-                            <span th:text="${alue.nimi}">Aluen nimi</span>
-                        </a>
+                    <td>
+                <ol type="1">
+                    <li  th:each="msg : ${viestit}">
+                        <span th:text="${msg.lahettaja}" class="author"></span>
+                        <span th:text="${msg.lahetetty}" class="time"></span><br />
+                        <span th:text="${msg.teksti}"></span>
+                    </li>         
+                </ol>
                     </td>
-
-                    <td><span th:text="${alue.viestimaara}">0</span></td>
-                    <td><span th:text="${alue.viimeisinViesti}">-</span></td>
-                    <!-- viimeisin viesti odottaa korjausta AlueDaon metodeihin -->
                 </tr>
-
             </table>
 
             <table>
                 <tr>
                     <td>
 
-                        <p class="pBold">Lis&auml;&auml; uusi alue</p>
+                        <p class="pBold">Kirjoita viesti</p>
 
-                        <form method="POST" th:action="@{~/addAlue}">
-                            Aluen otsikko (max 20 merkkej&auml;): <br/>
-                            <input type="text" name="alueOtsikko" maxlength="20"/> <br/>
+                        <form method="POST" 
+                              th:action="@{~/{alueTunnus}/{aiheTunnus}/addViesti(alueTunnus=${alue.tunnus}, aiheTunnus=${aihe.tunnus})}">
+                            Nimesi (max 20 merkki&auml;): <br/>
+                            <input type="text" name="viestiLahettaja" maxlength="20"/> <br/>
 
-                            Aluen kuvaus (max 100 merkkej&auml;): <br/>
-                            <input type="text" class="long" name="alueKuvaus" maxlength="100"/> <br/>
+                            Viesti (max 255 merkki&auml;): <br/>
+                            <!--staattinen leveys, tämä vois skaalata ikkunan mukaan-->
+                            <textarea cols="53" rows="5" name="teksti" maxlength="255"/><br/>
 
-                            <input type="submit" value="Lis&auml;&auml; alue"/>
+                            <input type="submit" value="L&auml;het&auml; viesti"/>
                         </form>
 
                     </td>
                 </tr>
             </table>
+
+            <a th:href="@{~/{tmp} (tmp=${alue.tunnus})}">Paluu</a>
+         
         </div>
-        
+      
     </body>
 </html>

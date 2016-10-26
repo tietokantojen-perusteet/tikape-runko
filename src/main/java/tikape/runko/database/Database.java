@@ -3,17 +3,29 @@ package tikape.runko.database;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+import org.sqlite.SQLiteConfig;
+import org.sqlite.SQLiteConfig.Pragma;
 
-public class Database {
+public class Database<T> {
 
+    private boolean debug;
     private String databaseAddress;
+    
+    public void setDebugMode(boolean d) {
+        this.debug = d;
+    }
 
     public Database(String databaseAddress) throws ClassNotFoundException {
         this.databaseAddress = databaseAddress;
     }
 
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(databaseAddress);
+        SQLiteConfig sqLiteConfig = new SQLiteConfig();
+        Properties properties = sqLiteConfig.toProperties();
+        properties.setProperty(Pragma.DATE_STRING_FORMAT.pragmaName, "yyyy-MM-dd HH:mm:ss");
+        
+        return DriverManager.getConnection(databaseAddress, properties);
     }
 
     public void init() {
@@ -34,16 +46,55 @@ public class Database {
             System.out.println("Error >> " + t.getMessage());
         }
     }
+    
+    public List<T> queryAndCollect(String query, Collector<T> col, Object... params) throws SQLException {
+        Connection conn = getConnection();
+        if (debug) {
+            System.out.println("---");
+            System.out.println("Executing: " + query);
+            System.out.println("---");
+        }
+
+        List<T> rows = new ArrayList<>();
+        PreparedStatement stmt = conn.prepareStatement(query);
+        for (int i = 0; i < params.length; i++) {
+            stmt.setObject(i + 1, params[i]);
+        }
+
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            if (debug) {
+                System.out.println("---");
+                System.out.println(query);
+                debug(rs);
+                System.out.println("---");
+            }
+
+            rows.add(col.collect(rs));
+        }
+
+        rs.close();
+        stmt.close();
+        conn.close();
+
+        return rows;
+    }
 
     private List<String> sqliteLauseet() {
         ArrayList<String> lista = new ArrayList<>();
 
-        // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
-        lista.add("CREATE TABLE Opiskelija (id integer PRIMARY KEY, nimi varchar(255));");
-        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Platon');");
-        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Aristoteles');");
-        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Homeros');");
-
         return lista;
+    }
+    
+    private void debug(ResultSet rs) throws SQLException {
+        int columns = rs.getMetaData().getColumnCount();
+        for (int i = 0; i < columns; i++) {
+            System.out.print(
+                    rs.getObject(i + 1) + ":"
+                    + rs.getMetaData().getColumnName(i + 1) + "  ");
+        }
+
+        System.out.println();
     }
 }

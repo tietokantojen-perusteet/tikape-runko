@@ -2,11 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <head>
-        <title>Yksisarvisten keskustelufoorumi</title>
+        <!--Tänne pitäisi ehkä saada alueen nimi?-->
+        <title>Yksisarvisten keskustelufoorumi - Alue</title>
         <meta charset="utf-8" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
-              
+        
         <style>
             div.container {
                 width: 100%;
@@ -58,62 +59,69 @@
                 width: 500px;
                 max-width: 100%;
             }
-            
-            input[type=text].big {
-                width: 500px;
-                height: 150px;
-                max-width: 100%;
-            }
         </style>
     </head>
 
     <body>
+        
         <div class="container">
-            <h1>Yksisarvisten keskustelufoorumi</h1>
-            <h3>Koti</h3>
 
+            <h1>Yksisarvisten keskustelufoorumi</h1>
+            <h3><a th:href="@{~/}">Koti</a> > <span th:text="${alue.nimi}">Alue</span></h3>
             <table>
                 <tr>
-                    <th style="width: 60%">Alue</th>
-                    <th>Viestej&auml; yhteens&auml;</th>
+                    <th style="width: 60%">Aihe</th>
+                    <th>Viestej&auml;</th>
                     <th>Viimeisin viesti</th>
                 </tr>
 
-                <tr th:each="alue : ${alueet}">
+                <tr th:each="aihe : ${aiheet}">
 
-                    <td> 
-                        <a th:href="@{~/{id}(id=${alue.tunnus})}">
-                            <span th:text="${alue.nimi}">Aluen nimi</span>
+                    <td>
+                       <a th:href="@{~/{aid}/{id}(aid=${alue.tunnus}, id=${aihe.tunnus})}">
+                            <span th:text="${aihe.otsikko}"> </span>
                         </a>
                     </td>
 
-                    <td><span th:text="${alue.viestimaara}">0</span></td>
-                    <td><span th:text="${alue.viimeisinViesti}">-</span></td>
-                    <!-- viimeisin viesti odottaa korjausta AlueDaon metodeihin -->
-                </tr>
 
+                    <td>
+                        <span th:text="${aihe.viestimaara}"></span>
+                    </td>
+
+                    <td>
+                        <span th:text="${aihe.viimeisinViesti}"></span>
+                    </td>
+                </tr>
             </table>
 
             <table>
                 <tr>
                     <td>
 
-                        <p class="pBold">Lis&auml;&auml; uusi alue</p>
+                        <p class="pBold">Lis&auml;&auml; uusi aihe</p>
 
-                        <form method="POST" th:action="@{~/addAlue}">
-                            Aluen otsikko (max 20 merkkej&auml;): <br/>
-                            <input type="text" name="alueOtsikko" maxlength="20"/> <br/>
+                        <form method="POST" th:action="@{~/{alueTunnus}/addAihe(alueTunnus=${alue.tunnus})}">
+                            Nimesi (max 20 merkki&auml;): <br/>
+                            <input type="text" name="aiheAloittaja" maxlength="20"/> <br/>
 
-                            Aluen kuvaus (max 100 merkkej&auml;): <br/>
-                            <input type="text" class="long" name="alueKuvaus" maxlength="100"/> <br/>
+                            Aiheen otsikko (max 30 merkki&auml;): <br/>
+                            <input type="text" name="aiheOtsikko" maxlength="30"/> <br/>
 
-                            <input type="submit" value="Lis&auml;&auml; alue"/>
+                            Aiheen sis&auml;lt&ouml; (max 255 merkki&auml;): <br/>
+                            <input type="text" class="long" name="aiheSisalto" maxlength="255"/> <br/>
+
+                            Viesti (max 255 merkki&auml;): <br/>
+                            <!--staattinen leveys, tämä vois skaalata ikkunan mukaan-->
+                            <textarea cols="53" rows="5" name="viesti" maxlength="255"/><br/>
+
+                            <input type="submit" value="Lis&auml;&auml; aihe"/>
                         </form>
 
                     </td>
                 </tr>
             </table>
+
+            <a href="/">Paluu</a>
         </div>
-        
     </body>
 </html>
