@@ -59,12 +59,6 @@
                 width: 500px;
                 max-width: 100%;
             }
-            
-            input[type=text].big {
-                width: 500px;
-                height: 150px;
-                max-width: 100%;
-            }
         </style>
     </head>
 
@@ -117,7 +111,8 @@
                             <input type="text" class="long" name="aiheSisalto" maxlength="255"/> <br/>
 
                             Viesti (max 255 merkki&auml;): <br/>
-                            <input type="text" class="big" name="viesti" maxlength="255"/><br/>
+                            <!--staattinen leveys, tämä vois skaalata ikkunan mukaan-->
+                            <textarea cols="53" rows="5" name="viesti" maxlength="255"/><br/>
 
                             <input type="submit" value="Lis&auml;&auml; aihe"/>
                         </form>
