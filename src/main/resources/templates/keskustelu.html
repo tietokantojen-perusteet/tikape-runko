@@ -43,18 +43,19 @@
 
         </div>
         <p>
-            <a id="sivunvaihto" th:if="${previouspage} != null" th:href="${'/keskustelu/' + keskustelu.id} + '?page=' + ${previouspage}"> Edellinen sivu</a>
-            <a id="sivunvaihto" th:if="${nextpage} != null" th:href="${'/keskustelu/' + keskustelu.id} + '?page=' + ${nextpage}">Seuraava sivu</a>
+            <a class="sivunvaihto" th:if="${previouspage} != null" th:href="${'/keskustelu/' + keskustelu.id} + '?page=' + ${previouspage}">Edellinen sivu</a><span class="disabledbutton" th:if="${previouspage} == null"> Edellinen sivu </span>
+            <a class="sivunvaihto" th:if="${nextpage} != null" th:href="${'/keskustelu/' + keskustelu.id} + '?page=' + ${nextpage}">Seuraava sivu</a><span class="disabledbutton" th:if="${nextpage} == null"> Seuraava sivu </span>
+            <a id="viimeinensivu" th:if="${nextpage} != null" th:href="${'/keskustelu/' + keskustelu.id} + '?page=viimeinen'">Viimeinen sivu</a><span id="disabledviimeinen" th:if="${nextpage} == null"> Viimeinen sivu </span>
         </p>
 
 
-        <h4>Vastaa keskusteluun</h4>
-        <form method="post">
+        <h4 th:if="${nextpage} == null">Vastaa keskusteluun</h4>
+        <form th:if="${nextpage} == null" method="post">
             <b>Nimimerkki</b>
             <input type="text" name="nimi"/>
             <b>Viesti</b>
             <textarea rows="5" cols="50" name="sisalto" required=""></textarea>
-            <input type="hidden" name="nykyinen_sivu" th:value="${page}"/>
+            <!--<input type="hidden" name="nykyinen_sivu" th:value="${page}"/>-->
             <input type="submit" value="Vastaa"/>
         </form>
 
