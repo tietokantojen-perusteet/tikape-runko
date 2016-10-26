@@ -102,6 +102,12 @@ public class AiheDao implements Dao<Aihe, Integer> {
 
     public void create(String alueid, String nimi) throws SQLException {
         Connection connection = database.getConnection();
+        
+        nimi = nimi.trim(); //poistaa välilyönnit
+        if (nimi.isEmpty()) { //varmistaa, ettei voi luoda nimetöntä aihetta
+            return;
+        }
+      
         PreparedStatement stmt = connection.prepareStatement("INSERT INTO Aihe (alue_id, nimi) VALUES (" + alueid + ", '" + nimi + "')");
 
         stmt.executeUpdate();

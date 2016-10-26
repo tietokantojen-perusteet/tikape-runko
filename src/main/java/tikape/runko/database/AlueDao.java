@@ -53,19 +53,19 @@ public class AlueDao implements Dao<Alue, Integer> {
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue");
 
         ResultSet rs = stmt.executeQuery();
-        List<Alue> opiskelijat = new ArrayList<>();
+        List<Alue> alueet = new ArrayList<>();
         while (rs.next()) {
             Integer id = rs.getInt("id");
             String nimi = rs.getString("nimi");
 
-            opiskelijat.add(new Alue(id, nimi));
+            alueet.add(new Alue(id, nimi));
         }
 
         rs.close();
         stmt.close();
         connection.close();
 
-        return opiskelijat;
+        return alueet;
     }
 
     public Integer getLukumaara(Integer key) throws SQLException {
@@ -106,6 +106,12 @@ public class AlueDao implements Dao<Alue, Integer> {
 
     public void create(String nimi) throws SQLException {
         Connection connection = database.getConnection();
+        
+        nimi = nimi.trim(); //poistaa välilyönnit
+        if (nimi.isEmpty()) { //varmistaa, ettei voi luoda nimetöntä aluetta
+            return;
+        }
+        
         PreparedStatement stmt = connection.prepareStatement("INSERT INTO Alue (nimi) VALUES ('" + nimi + "')");
 
         stmt.executeUpdate();

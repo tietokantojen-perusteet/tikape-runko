@@ -58,7 +58,10 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
     public void create(String aiheid, String nimi, String text) throws SQLException {
         
-        if (nimi.isEmpty() || text.isEmpty()) {
+        nimi = nimi.trim(); //ylimääräiset välilyönnit pois
+        text = text.trim();
+        
+        if (nimi.isEmpty() || text.isEmpty()) { //jos nimi- tai viestikentissä ei ole mitään, viestiä ei luoda
             return;
         }
         
