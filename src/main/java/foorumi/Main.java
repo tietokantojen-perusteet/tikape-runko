@@ -75,10 +75,10 @@ public class Main {
         }, new ThymeleafTemplateEngine());
 
         //aiheen viestit;
-        get("/aihe/:nimi", (req, res) -> {
+        get("/aihe/:nimi/:sivu", (req, res) -> {
             HashMap<String, Object> map = new HashMap<>();
-            List<Viesti> viestit = viestiDao.findWithAihe(req.params(":nimi"));
-            List<String> ajat = viestiDao.findAikaViesteilleAiheesta(req.params(":nimi"));
+            List<Viesti> viestit = viestiDao.findWithAihe(req.params(":nimi"), req.params(":sivu"));        //haetaan nyt sivulta 2, voi muuttaa
+            List<String> ajat = viestiDao.findAikaViesteilleAiheesta(req.params(":nimi"), req.params(":sivu"));     //haetaan nyt sivulta 2, voi muuttaaa
             
             map.put("viestit", viestit);
             map.put("ajat", ajat);
