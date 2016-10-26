@@ -118,10 +118,10 @@
             <form method="POST" th:action="|/alue/keskustelu/${omakeskus.id}/${omasivu}|" >
 
                 Viesti:<br/>
-                <textarea class ="one" name="viesti" maxlength="50000" rows="10" cols="50"></textarea><br/>
+                <textarea required="required" class ="one" name="viesti" maxlength="50000" rows="10" cols="50"></textarea><br/>
 
                 Nimimerkki:<br/>
-                <input type="text" name="nimi" maxlength="40"/><br/>
+                <input required="required" type="text" name="nimi" maxlength="40"/><br/>
                 <input type="submit" value="Lisää uusi viesti"/>
             </form>
 

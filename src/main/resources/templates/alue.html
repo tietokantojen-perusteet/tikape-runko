@@ -106,13 +106,13 @@
 
             <form method="POST" th:action="|/alue/${alueid}|" >
                 Otsikko:<br/>
-                <input type="text" name="otsikko" maxlength="100"/><br/>
+                <input type="text" name="otsikko" required="required" maxlength="100"/><br/>
 
                 Viesti:<br/>
-                <textarea class ="one" name="viesti" maxlength="50000" rows="10" cols="50"></textarea><br/>
+                <textarea class ="one" required="required" name="viesti" maxlength="50000" rows="10" cols="50"></textarea><br/>
 
                 Nimimerkki:<br/>
-                <input type="text" name="nimi" maxlength="40"/><br/>
+                <input type="text" required="required" name="nimi" maxlength="40"/><br/>
                 <input type="submit" value="Lisää uusi keskustelu"/>
             </form>
 
