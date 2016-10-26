@@ -1,15 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tikape.runko.domain;
-import java.sql.Time;
+
 import java.sql.Timestamp;
-// *
- //* @author tamella
- //*/
-public class Viesti implements Comparable<Viesti>{
+
+public class Viesti implements Comparable<Viesti> {
+
     private Integer viesti_id;
     private Keskustelu omakeskustelu;
     private Timestamp julkaisuaika;
@@ -22,10 +16,12 @@ public class Viesti implements Comparable<Viesti>{
         this.kirjoittaja = kirjo;
         this.teksti = tekstii;
     }
+
     @Override
     public int compareTo(Viesti v) {
-    return getViestiTime().compareTo(v.getViestiTime());
-  }
+        return getViestiTime().compareTo(v.getViestiTime());
+    }
+
     public Integer getId() {
         return viesti_id;
     }
@@ -41,6 +37,7 @@ public class Viesti implements Comparable<Viesti>{
     public void setOmakeskustelu(Keskustelu mess) {
         this.omakeskustelu = mess;
     }
+
     public Timestamp getViestiTime() {
         return julkaisuaika;
     }
@@ -48,17 +45,19 @@ public class Viesti implements Comparable<Viesti>{
     public void setViestiTime(Timestamp aika) {
         this.julkaisuaika = aika;
     }
-    public String getAika(){
+
+    public String getAika() {
         return this.julkaisuaika.toString().substring(0, 19);
     }
-    
+
     public String getKirjoittaja() {
         return kirjoittaja;
     }
 
     public void setKirjoittaja(String kirjo) {
-        this.kirjoittaja= kirjo;
+        this.kirjoittaja = kirjo;
     }
+
     public String getTeksti() {
         return teksti;
     }

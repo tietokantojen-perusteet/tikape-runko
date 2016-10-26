@@ -1,9 +1,9 @@
 package tikape.runko.domain;
 
 public class Tempolio {
-    private Object o1;
-    private Object o2;
-    private Object o3;
+    private final Object o1;
+    private final Object o2;
+    private final Object o3;
 
     public Tempolio(Object o1,Object o2,Object o3) {
         this.o1 = o1;

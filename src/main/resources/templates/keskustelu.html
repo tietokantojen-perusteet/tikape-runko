@@ -47,39 +47,50 @@
             }
             table.one {
                 float:left;
-                font-family: arial, sans-serif;
-               
+                font-family: arial, sans-serif;               
                 width:100%;
-                border-collapse: collapse;
-                
+                border-collapse: collapse;                
             }
 
-            
+
             td, th {
                 border: 1px solid #dddddd;
                 text-align: left;
                 padding: 8px;
             }
+
             td {
                 word-wrap:break-word;
             }
 
             tr:nth-child(even) {
                 background-color: #dddddd;
-
             }
+
+            a.left {
+                float:left;
+                margin:0px;
+                padding:0px;
+            }
+            
+            a.right {
+                float:right;
+                margin:0px;
+                padding:0px;
+            }
+
         </style>
     </head>
     <body>
         <h1 th:text = "${omakeskus.otsikko}"></h1>
 
         <table class="one">
-             
+
             <tr>
                 <td th:text ="${julkaisuaika}"> aloitus </td>
                 <td th:text ="${aloittaja}"> aloitus </td>
                 <td th:text ="${aloitusviesti}"> aloitusteksti </td>
-                
+
             </tr>
             <tr th:each="viest : ${viesti}">
                 <td th:text="${viest.aika}">Viestinaika</td>
@@ -87,11 +98,19 @@
                     nimimerkki   
                 </td>
                 <td th:text="${viest.teksti}">Teksti</td>
-                
+
             </tr>
         </table>
-        
-        
+
+        <br/>
+
+        <div> 
+            <a href="/keskustelu.html" th:href="|/alue/keskustelu/${omakeskus.id}/${numeroedel}|" th:text="|Sivulle numero ${numeroedel}|" th:if="${omasivu}-1 == ${numeroedel}"></a>
+            <a href="/keskustelu.html" th:href="|/alue/keskustelu/${omakeskus.id}/${numeroseur}|" th:text="|Sivulle numero ${numeroseur}|" th:if="${omasivu}+1 == ${numeroseur}"></a>
+        </div>
+
+        <br/>
+
         <h3>Uusi viesti</h3>
 
         <div class="one">
@@ -107,15 +126,8 @@
             </form>
 
         </div>
-        <br/>
-        
-        <a href="/keskustelu.html" th:href="|/alue/keskustelu/${omakeskus.id}/${numeroedel}|" th:text="|Sivulle numero ${numeroedel}|"></a>
-        <br/>
-        <a href="/keskustelu.html" th:href="|/alue/keskustelu/${omakeskus.id}/${numeroseur}|" th:text="|Sivulle numero ${numeroseur}|"></a>
-        
-        <br/>
-        
-        
+        <br/>      
+
         <a href="/alue.html" th:href="|/alue/${omakeskus.omaalue.id}|" th:text="|Takaisin alueen: ${omakeskus.omaalue.nimi} keskustelulistaukseen.|"></a>
     </body>
 </html>

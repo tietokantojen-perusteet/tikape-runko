@@ -9,18 +9,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import tikape.runko.domain.Alue;
 import tikape.runko.domain.Keskustelu;
-import java.util.Date;
 
-/**
- *
- * @author tamella
- */
 // tämä luokka koostuu niistä kyselyistä, joita taululle Keskustelut voidaan esittää
 public class KeskusteluDao implements Dao<Keskustelu, Integer> {
 

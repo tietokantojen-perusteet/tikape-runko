@@ -1,10 +1,7 @@
 package tikape.runko;
 
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
 import java.util.Scanner;
 import spark.ModelAndView;
 import static spark.Spark.*;
@@ -37,7 +34,7 @@ public class Kayttoliittyma {
         for (Alue a : alueet) {
             String viestMaara = Integer.toString(viestiDao.alueenViestienmaara(a.getId()));
             String aika = "-";
-            
+
             if (viestiDao.alueenUusin(a.getId()) != null) {
                 String str = viestiDao.alueenUusin(a.getId()).toString();
                 aika = str.substring(0, 19);
@@ -53,24 +50,27 @@ public class Kayttoliittyma {
 
     public HashMap getAluepage(int alueId) throws Exception {
         HashMap map = new HashMap<>();
-        
+
         ArrayList<Keskustelu> keskustelut = viestiDao.keskustelutJarjestys(alueId);
         ArrayList<Keskustelu> valmiit = new ArrayList<>();
         int montako = keskustelut.size();
-        if(montako > 10){
-            for(int i = 0; i<10; i++){
+
+        if (montako > 10) {
+            for (int i = 0; i < 10; i++) {
                 valmiit.add(keskustelut.get(i));
             }
-        }else{
+
+        } else {
             valmiit = keskustelut;
         }
+
         ArrayList<Tempolio> keskTiedot = new ArrayList<>();
         String aluenimi = alueDao.findOne(alueId).getNimi();
-        
+
         for (Keskustelu k : valmiit) {
             String viestMaara = Integer.toString(viestiDao.keskustelunViestienmaara(k.getId()));
             String aika;
-            
+
             if (viestiDao.keskustelunUusin(k.getId()) != null) {
                 String str = viestiDao.keskustelunUusin(k.getId()).toString();
                 aika = str.substring(0, 19);
@@ -78,10 +78,10 @@ public class Kayttoliittyma {
                 String str = keskusteluDao.findOne(k.getId()).getTime().toString();
                 aika = str.substring(0, 19);
             }
-            
+
             keskTiedot.add(new Tempolio(k, viestMaara, aika));
         }
-        
+
         map.put("alueennimi", aluenimi);
         map.put("kesktiedot", keskTiedot);
         map.put("alueid", alueId);
@@ -89,63 +89,66 @@ public class Kayttoliittyma {
         return map;
     }
 
-
     public HashMap getKeskustelupage(int keskusteluId, int sivunumero) throws Exception {
         HashMap map = new HashMap<>();
         ArrayList<Viesti> viesti = viestiDao.viestitJarjestys(keskusteluId);
         ArrayList<Viesti> valmis = new ArrayList<>();
-        int pituussivulla = viesti.size()- 10*(sivunumero-1);
-        if(pituussivulla >= 9 && sivunumero ==1){
-            for(int i =0; i <9; i++ ){
-           
+
+        int pituussivulla = viesti.size() - 10 * (sivunumero - 1);
+
+        if (pituussivulla >= 9 && sivunumero == 1) {
+            for (int i = 0; i < 9; i++) {
+
                 valmis.add(viesti.get(i));
             }
-        }else if(pituussivulla <= 10){
-            for(int i =0; i <pituussivulla; i++ ){
-           
-                valmis.add(viesti.get((sivunumero-1)*10 + i));
+        } else if (pituussivulla <= 10) {
+            for (int i = 0; i < pituussivulla; i++) {
+
+                valmis.add(viesti.get((sivunumero - 1) * 10 + i));
             }
-        }else{
-           for(int i =0; i <10; i++ ){
-           
-                valmis.add(viesti.get((sivunumero-1)*10 + i));
-            } 
-        }    
+        } else {
+            for (int i = 0; i < 10; i++) {
+
+                valmis.add(viesti.get((sivunumero - 1) * 10 + i));
+            }
+        }
+
         Keskustelu kesk = keskusteluDao.findOne(keskusteluId);
 
         String aika = kesk.getTime().toString();
-        aika = aika.substring(0,19);
-        
-        
+        aika = aika.substring(0, 19);
+
         map.put("viesti", valmis);
-       
+
         map.put("omakeskus", kesk);
-        if(sivunumero ==1){
+
+        if (sivunumero == 1) {
             map.put("aloittaja", kesk.getAloittaja());
             map.put("aloitusviesti", kesk.getAloitusviesti());
             map.put("julkaisuaika", aika);
-        }else{
+        } else {
             map.put("aloittaja", "");
             map.put("aloitusviesti", "");
             map.put("julkaisuaika", "");
-            
+
         }
         map.put("omasivu", sivunumero);
-        
-        if(sivunumero > 1){
-             map.put("numeroedel", sivunumero -1);
-        }else{
-             map.put("numeroedel", 1);
-        }
-        if(pituussivulla <= 10){
-           map.put("numeroseur", sivunumero);
-        }else{
-           map.put("numeroseur", sivunumero+1); 
+
+        if (sivunumero > 1) {
+            map.put("numeroedel", sivunumero - 1);
+        } else {
+            map.put("numeroedel", 1);
         }
 
+        if (pituussivulla <= 10) {
+            map.put("numeroseur", sivunumero);
+        } else {
+            map.put("numeroseur", sivunumero + 1);
+        }
 
         return map;
     }
+
     public void run() throws Exception {
         ArrayList<String> alueet = new ArrayList<>();
 
@@ -160,13 +163,13 @@ public class Kayttoliittyma {
             HashMap map = getAluepage(Integer.parseInt(req.params("id")));
             return new ModelAndView(map, "alue");
         }, new ThymeleafTemplateEngine());
-        
+
         get("/alue/keskustelu/:id/:numero", (req, res) -> {
             HashMap map = getKeskustelupage(Integer.parseInt(req.params(":id")), Integer.parseInt(req.params(":numero")));
             return new ModelAndView(map, "keskustelu");
-            
+
         }, new ThymeleafTemplateEngine());
-        
+
         post("/", (req, res) -> {
             String nimi = req.queryParams("nimi");
             alueDao.lisaaAlue(nimi);
@@ -182,7 +185,7 @@ public class Kayttoliittyma {
             HashMap map = getAluepage(Integer.parseInt(req.params(":id")));
             return new ModelAndView(map, "alue");
         }, new ThymeleafTemplateEngine());
-        
+
         post("/alue/keskustelu/:id/:numero", (req, res) -> {
             String nimi = req.queryParams("nimi");
             String viesti = req.queryParams("viesti");

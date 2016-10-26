@@ -1,21 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tikape.runko.database;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.DriverManager;
-import java.sql.Statement;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import tikape.runko.domain.Alue;
 import tikape.runko.domain.Keskustelu;
@@ -23,10 +13,6 @@ import tikape.runko.domain.Viesti;
 import java.util.Collections;
 import java.util.Comparator;
 
-/**
- *
- * @author tamella
- */
 // tämä luokka koostuu niistä kyselyistä, jotka taululle Viesti voidaan esittää
 public class ViestiDao implements Dao<Viesti, Integer> {
 
@@ -52,7 +38,6 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         }
 
         Integer id = rs.getInt("viesti_id");
-//        Date paivamaara = rs.getDate("julkaisuaika");
         Timestamp paivamaara = rs.getTimestamp("julkaisuaika");
         String kirjoittaja = rs.getString("kirjoittaja");
         String teksti = rs.getString("teksti");
@@ -78,9 +63,9 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
         ResultSet rs = stmt.executeQuery();
         List<Viesti> viestit = new ArrayList<>();
+
         while (rs.next()) {
             Integer id = rs.getInt("viesti_id");
-//            Date paivamaara = rs.getDate("julkaisuaika");
             Timestamp paivamaara = rs.getTimestamp("julkaisuaika");
             String kirjoittaja = rs.getString("kirjoittaja");
             String teksti = rs.getString("teksti");
@@ -106,9 +91,9 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
         ResultSet rs = stmt.executeQuery();
         ArrayList<Viesti> viestit = new ArrayList<>();
-        
+
         while (rs.next()) {
-            
+
             Integer id = rs.getInt("viesti_id");
             Timestamp aika = rs.getTimestamp("julkaisuaika");
             String kirjoittaja = rs.getString("kirjoittaja");
@@ -121,7 +106,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
             viesti.setOmakeskustelu(omakes);
             viestit.add(viesti);
         }
-        
+
         Collections.sort(viestit);
         rs.close();
         stmt.close();
@@ -140,7 +125,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         ArrayList<Keskustelu> keskustelut = new ArrayList<>();
 
         while (rs.next()) {
-            
+
             Integer id = rs.getInt("keskustelu_id");
             String otsikko = rs.getString("otsikko");
             String aloittaja = rs.getString("aloittaja");
@@ -155,6 +140,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
             keskustelut.add(palapala);
         }
         Collections.sort(keskustelut, new Comparator<Keskustelu>() {
+
             public int compare(Keskustelu k1, Keskustelu k2) {
                 try {
                     return keskustelunUusin(k2.getId()).compareTo(keskustelunUusin(k1.getId()));
@@ -186,6 +172,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
             alueet.add(alue);
         }
+
         Collections.sort(alueet, new Comparator<Alue>() {
             public int compare(Alue a1, Alue a2) {
                 try {
