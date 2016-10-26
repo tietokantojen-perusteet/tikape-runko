@@ -60,7 +60,7 @@ public class Main {
         }, new ThymeleafTemplateEngine());
 
         Spark.post("/uusialue", (req, res) -> {
-            if (req.queryParams("nimi").isEmpty()) {
+            if (req.queryParams("nimi").trim().isEmpty()) {
                 return virheilmoitus("/uusialue", "Takaisin alueen lisäämiseen", "Alueen nimi ei voi olla tyhjä");
             }
             try {
@@ -131,7 +131,7 @@ public class Main {
         }, new ThymeleafTemplateEngine());
 
         Spark.post("alue/:id", (req, res) -> {
-            if (req.queryParams("sisalto").isEmpty()
+            if (req.queryParams("sisalto").trim().isEmpty()
                     || req.queryParams("otsikko").isEmpty()) {
                  return virheilmoitus( "/alue/" + req.params("id"), "Takaisin alueelle",
                          "Ei tyhjiä viestejä tai keskusteluja ilman otsikkoa, kiitos.");
@@ -166,7 +166,7 @@ public class Main {
             } catch (Exception e) {
             }
 
-            if (req.queryParams("sisalto").isEmpty()) {
+            if (req.queryParams("sisalto").trim().isEmpty()) {
                 return virheilmoitus("/keskustelu/" + req.params("id"),"Takaisin viestin lisäämiseen" , 
                         "Ei tyhjiä viestejä, kiitos.");
             }
