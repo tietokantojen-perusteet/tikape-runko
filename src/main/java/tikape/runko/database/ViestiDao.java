@@ -23,13 +23,12 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn.prepareStatement(
             "INSERT INTO Viesti (aihe, teksti, lahettaja, lahetetty) " 
-          + "VALUES (?, ?, ?, ?);", 
+          + "VALUES (?, ?, ?, CURRENT_TIMESTAMP);", 
             Statement.RETURN_GENERATED_KEYS);
         
         stmt.setInt(1, v.getAihe().getTunnus());
         stmt.setString(2, v.getTeksti());
         stmt.setString(3, v.getLahettaja());
-        stmt.setTimestamp(4, v.getLahetetty());
         
         stmt.executeUpdate();
         

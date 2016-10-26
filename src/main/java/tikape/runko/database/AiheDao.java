@@ -20,14 +20,13 @@ public class AiheDao implements Dao<Aihe, Integer> {
         
         PreparedStatement stmt = conn.prepareStatement(
             "INSERT INTO Aihe (alue, aloittaja, sisalto, otsikko, luotu) "
-          + "VALUES (?, ?, ?, ?, ?);", 
+          + "VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP);", 
             Statement.RETURN_GENERATED_KEYS);
         
         stmt.setInt(1, a.getAlue().getTunnus());
         stmt.setString(2, a.getAloittaja());
         stmt.setString(3, a.getSisalto());
         stmt.setString(4, a.getOtsikko());
-        stmt.setTimestamp(5, a.getLuotu());
         
         stmt.executeUpdate();
         
