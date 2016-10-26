@@ -14,7 +14,7 @@
         <div id="container">
             <nav><a  href="/">Etusivu</a> > <span th:text="${alue.nimi}">Alueen nimi</span><br/></nav>
 
-            <h2>Alueen <span th:text="${alue.nimi}">Alueen nimi</span> keskustelut</h2>
+            <h2>Alueen '<span th:text="${alue.nimi}">Alueen nimi</span>' keskustelut</h2>
 
             <ul>
 
@@ -32,8 +32,8 @@
                 </li>
 
             </ul>
-            <span id="uusialue" th:if="${kaikki} == 0"><a th:href="${'/alue/' + alue.id} + '?kaikki=1'">N&auml;ytet&auml;&auml;n kymmenen uusinta keskustelua. N&auml;yt&auml; kaikki</a></span>
-            <span id="uusialue" th:if="${kaikki} == 1"><a th:href="${'/alue/' + alue.id} + '?kaikki=0'">N&auml;ytet&auml;&auml;n kaikki alueen keskustelut. N&auml;yt&auml; vain uusimmat</a></span>
+            <a th:if="${kaikki} == 0" th:href="${'/alue/' + alue.id} + '?kaikki=1'"><span id="uusialue">N&auml;ytet&auml;&auml;n kymmenen uusinta keskustelua. N&auml;yt&auml; kaikki</span></a>
+            <a th:if="${kaikki} == 1" th:href="${'/alue/' + alue.id} + '?kaikki=0'"><span id="uusialue">N&auml;ytet&auml;&auml;n kaikki alueen keskustelut. N&auml;yt&auml; vain uusimmat</span></a>
 
             <hr/>
             <h4>Luo uusi keskustelunavaus</h4>

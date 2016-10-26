@@ -44,11 +44,12 @@ h4 {
     border: none;
     text-decoration: none;
     text-align: center;
+    cursor: pointer;
 
 }
-#sivunvaihto, input[type="submit"] {
-    max-width: 300px;
-    display: inline;
+.sivunvaihto {
+    max-width: 20%;
+    display: inline-block;
     padding: 15px;
     margin: 15px 0px;
     color: #FFF;
@@ -60,15 +61,61 @@ h4 {
     text-align: center;
 
 }
+#viimeinensivu {
+    max-width: 20%;
+    display: inline-block;
+    padding: 15px;
+    margin: 15px 0px;
+    margin-left: 10%;
+    color: #FFF;
+    font-size: 12px;
+    text-transform: uppercase;
+    background-color: rgba(0,0,0,0.7);
+    border: none;
+    text-decoration: none;
+    text-align: center;
+
+}
+
+.disabledbutton {
+    max-width: 20%;
+    display: inline-block;
+    padding: 15px;
+    margin: 15px 0px;
+    color: rgba(0,0,0,0.2);
+    font-size: 12px;
+    text-transform: uppercase;
+    background-color: rgba(0,0,0,0.1);
+    border: none;
+    text-decoration: none;
+    text-align: center;
+
+}
+
+#disabledviimeinen {
+    max-width: 20%;
+    display: inline-block;
+    padding: 15px;
+    margin: 15px 0px;
+    margin-left: 10%;
+    color: rgba(0,0,0,0.2);
+    font-size: 12px;
+    text-transform: uppercase;
+    background-color: rgba(0,0,0,0.1);
+    border: none;
+    text-decoration: none;
+    text-align: center;
+
+}
 
 span#uusialue a {
     color: #fff;
     text-decoration: none;
 }
 
-.viesti {
+/*.viesti {
     margin-top: -25px;
-}
+}*/
 
 /* FRONT PAGE ALUE BOX*/
 .alueboksi {
@@ -84,7 +131,7 @@ span#uusialue a {
 p.viesti {
     background: #cecece;
     padding: 2% 2% 1% 2%;
-    width: 40%;
+    width: 60%;
     border-radius: 5px;
     word-wrap: break-word;
 
@@ -110,7 +157,7 @@ p.viesti:after {
 
 hr {
     display: block;
-    margin: 2.5% 0 5%;
+    margin: 2.5% 0 2.5%;
     width: 100%;
 }
 
