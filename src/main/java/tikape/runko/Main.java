@@ -10,6 +10,11 @@ import tikape.runko.database.Database;
 public class Main {
 
     public static void main(String[] args) throws Exception {
+        
+        if (System.getenv("PORT") != null) {
+            port(Integer.valueOf(System.getenv("PORT")));
+        }
+        
         Kayttoliittyma kaly = new Kayttoliittyma();
         kaly.run();
     }  
