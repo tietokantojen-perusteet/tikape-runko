@@ -132,7 +132,7 @@ public class Main {
 
         Spark.post("alue/:id", (req, res) -> {
             if (req.queryParams("sisalto").trim().isEmpty()
-                    || req.queryParams("otsikko").isEmpty()) {
+                    || req.queryParams("otsikko").trim().isEmpty()) {
                 return virheilmoitus("/alue/" + req.params("id"), "Takaisin alueelle",
                         "Ei tyhjiä viestejä tai keskusteluja ilman otsikkoa, kiitos.");
             }
@@ -150,7 +150,7 @@ public class Main {
                 keskusteluDao.lisaaKeskustelunavaus(id, otsikko, nimi, sisalto);
             } catch (Exception e) {
                 return virheilmoitus("/alue/" + req.params("id"), "Takaisin keskustelun lisäämiseen",
-                        "Jokin meni vikaan :/. Nimierkki ja keskustelun otsikko saavat olla korkeintaan 100 merkkiä pitkiä");
+                        "Jokin meni vikaan :/. Nimimerkki ja keskustelun otsikko saavat olla korkeintaan 100 merkkiä pitkiä");
             }
 
             res.redirect("/alue/" + id);
