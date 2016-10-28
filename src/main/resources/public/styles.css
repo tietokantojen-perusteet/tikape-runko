@@ -22,7 +22,7 @@ h2 {
     background: #fff;
     width: 100%;
     margin: 2% auto;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     padding: 1%;
 }
 
@@ -39,7 +39,7 @@ h4 {
     margin: 15px 0px;
     color: #FFF;
     font-size: 12px;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     background-color: rgba(0,0,0,0.5);
     border: none;
     text-decoration: none;
@@ -54,7 +54,7 @@ h4 {
     margin: 15px 0px;
     color: #FFF;
     font-size: 12px;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     background-color: rgba(0,0,0,0.5);
     border: none;
     text-decoration: none;
@@ -69,7 +69,7 @@ h4 {
     margin-left: 10%;
     color: #FFF;
     font-size: 12px;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     background-color: rgba(0,0,0,0.7);
     border: none;
     text-decoration: none;
@@ -84,7 +84,7 @@ h4 {
     margin: 15px 0px;
     color: rgba(0,0,0,0.2);
     font-size: 12px;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     background-color: rgba(0,0,0,0.1);
     border: none;
     text-decoration: none;
@@ -100,7 +100,7 @@ h4 {
     margin-left: 10%;
     color: rgba(0,0,0,0.2);
     font-size: 12px;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     background-color: rgba(0,0,0,0.1);
     border: none;
     text-decoration: none;
@@ -201,7 +201,7 @@ span.alueotsikko {
     text-align: center;
     display: block;
     color: #000;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     font-weight: bold;
     margin: 4% 0;
     padding: 2%;
