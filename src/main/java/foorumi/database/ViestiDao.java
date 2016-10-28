@@ -57,6 +57,12 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         if (lahettaja.length() == 0) {
             lahettaja = "Unindentified";
         }
+        String tempSisalto = sisalto;
+        tempSisalto.toLowerCase();
+       
+        if (tempSisalto.contains("delete from") || tempSisalto.contains("drop table") || tempSisalto.contains("select") || tempSisalto.contains("'")) {
+            sisalto = "yritin mahdollisesti jotain ilkeää :(";
+        }
         sisalto = sisalto + " t. " + lahettaja;
         stmt.execute("INSERT INTO Viesti (aihe_id, sisältö, aika) VALUES ('" + aihe_id + "', '" + sisalto
                 + "', CURRENT_TIMESTAMP)");
