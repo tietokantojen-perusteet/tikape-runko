@@ -1,4 +1,5 @@
-# tikape-runko
+# Keskustelualue
 
-Testaan pull requestia.
+Tietokannan perusteet -kurssin ryhmätyö.
 
+TeamTableTurners
