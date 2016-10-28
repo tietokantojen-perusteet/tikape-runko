@@ -27,7 +27,7 @@
         <ul>
             Alueet:
             <li th:each="alue: ${alueet}">
-                <a th:href="@{~/alue/{name}(name= ${alue.id})}" th:text="${alue.nimi}">name</a> 
+                <a th:href="@{~/alue/{name}/1(name= ${alue.id})}" th:text="${alue.nimi}">name</a> 
             </li>
         </ul>
         <ul style="list-style-type:none">

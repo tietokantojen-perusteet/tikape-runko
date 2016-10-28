@@ -1,4 +1,4 @@
-﻿package foorumi.database;
+package foorumi.database;
 
 import foorumi.Sisalto.Aihe;
 import foorumi.Sisalto.Viesti;
@@ -109,26 +109,26 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         return viestit;
        }
 
-    public List<Viesti> findWithAihe(String aihe_id, String sivu) throws SQLException {
-        List<Viesti> viestit = new ArrayList<>();
-        Connection conn = DriverManager.getConnection(tietokantaosoite);
-        Statement stmt = conn.createStatement();
-        int raja1 = (Integer.parseInt(sivu) - 1) * 10;
-        System.out.println(raja1);
-        int raja2 = raja1 + 10;
-        System.out.println(raja2);
-        String a = Integer.toString(raja1);
-        String b = Integer.toString(raja2);
-        String rajoitus = "LIMIT " + a + ", " + b;
-        ResultSet rs = stmt.executeQuery("SELECT * FROM Viesti WHERE aihe_id = '" + aihe_id + "'" + rajoitus);
-        while (rs.next()) {
-            viestit.add(new Viesti(aihe_id, rs.getString("sisältö"), "22.21.2012"));
-        }
-        rs.close();
-        stmt.close();
-        conn.close();
-        return viestit;
-    }
+//    public List<Viesti> findWithAihe(String aihe_id, String sivu) throws SQLException {
+//        List<Viesti> viestit = new ArrayList<>();
+//        Connection conn = DriverManager.getConnection(tietokantaosoite);
+//        Statement stmt = conn.createStatement();
+//        int raja1 = (Integer.parseInt(sivu) - 1) * 10;
+//        System.out.println(raja1);
+//        int raja2 = raja1 + 10;
+//        System.out.println(raja2);
+//        String a = Integer.toString(raja1);
+//        String b = Integer.toString(raja2);
+//        String rajoitus = "LIMIT " + a + ", " + b;
+//        ResultSet rs = stmt.executeQuery("SELECT * FROM Viesti WHERE aihe_id = '" + aihe_id + "'" + rajoitus);
+//        while (rs.next()) {
+//            viestit.add(new Viesti(aihe_id, rs.getString("sisältö"), "22.21.2012"));
+//        }
+//        rs.close();
+//        stmt.close();
+//        conn.close();
+//        return viestit;
+//    }
 
     public String laskeViestitAlueelta(String alue) throws SQLException {
         Connection conn = DriverManager.getConnection(tietokantaosoite);

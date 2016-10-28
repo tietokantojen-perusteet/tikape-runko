@@ -33,7 +33,7 @@ and open the template in the editor.
         <ul>
             Aiheet:
             <li th:each="aihe : ${aiheet}">
-                <a th:href="@{~/aihe/{name}(name= ${aihe.id})}" th:text="${aihe.nimi}">name</a> 
+                <a th:href="@{~/aihe/{name}/1(name= ${aihe.id})}" th:text="${aihe.nimi}">name</a> 
             </li>
         </ul>
         <ul style="list-style-type:none">

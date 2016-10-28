@@ -42,7 +42,7 @@ public class AiheDao implements Dao<Aihe, String> {
     public void lisaa(String nimi, String alue_id) throws SQLException {
 
         Connection conn = DriverManager.getConnection(tietokantaosoite);
-        Statement stmt = conn.createStatement();    
+        Statement stmt = conn.createStatement();
         stmt.execute("INSERT INTO Aihe (nimi, alue_id) "
                 + "VALUES ('" + nimi + "', " + alue_id + ");");
         stmt.close();
@@ -98,7 +98,29 @@ public class AiheDao implements Dao<Aihe, String> {
         }
         rs.close();
         stmt.close();
-        conn.close();    
+        conn.close();
+        return aiheet;
+    }
+
+    public List<Aihe> findWithId(String id, String sivu) throws SQLException {
+        List<Aihe> aiheet = new ArrayList<>();
+        Connection conn = DriverManager.getConnection(tietokantaosoite);
+        Statement stmt = conn.createStatement();
+        int raja1 = (Integer.parseInt(sivu) - 1) * 10;
+        System.out.println(raja1);
+        int raja2 = raja1 + 10;
+        System.out.println(raja2);
+        String a = Integer.toString(raja1);
+        String b = Integer.toString(raja2);
+        String rajoitus = " LIMIT " + a + ", " + b;
+
+        ResultSet rs = stmt.executeQuery("SELECT * FROM Aihe WHERE alue_id =  " + id + rajoitus);
+        while (rs.next()) {
+            aiheet.add(new Aihe(rs.getString("nimi"), rs.getString("Alue_id"), rs.getInt("id")));
+        }
+        rs.close();
+        stmt.close();
+        conn.close();
         return aiheet;
     }
 

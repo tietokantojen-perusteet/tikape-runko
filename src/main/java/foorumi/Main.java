@@ -54,7 +54,7 @@ public class Main {
         }, new ThymeleafTemplateEngine());
 
         //tietty alue
-        get("/alue/:id", (req, res) -> {
+        get("/alue/:id/:sivu", (req, res) -> {
             HashMap<String, Object> map = new HashMap<>();
             String id = req.params(":id");
             List<Aihe> aiheet = aiheDao.findWithId(id);
@@ -86,24 +86,24 @@ public class Main {
         }, new ThymeleafTemplateEngine());
 
         //lisää viesti
-        Spark.post("/aihe/:nimi", (req, res) -> {
+        Spark.post("/aihe/:nimi/:sivu", (req, res) -> {
             viestiDao.lisaa(req.queryParams("viesti"), req.params(":nimi"), req.queryParams("nimimerkki"));
-
+            
             String nimi = req.params(":nimi");
 
             HashMap<String, Object> map = new HashMap<>();
             List<Viesti> viestit = viestiDao.findWithAihe(req.params(":nimi"));
             map.put("viestit", viestit);
-            res.redirect("/aihe/" + req.params(":nimi"));
+            res.redirect("/aihe/" + req.params(":nimi") + "/" + req.params(":sivu"));
             return new ModelAndView(map, "viestit");
         }, new ThymeleafTemplateEngine());
 
-        //luodaan aihe
-        post("/alue/:nimi", (req, res) -> {     
+        //lisää aihe
+        post("/alue/:nimi/:sivu", (req, res) -> {     
             Alue alue = alueDao.findOne(req.params(":nimi"));
             aiheDao.lisaa(req.queryParams("aihe"), alue.getId() + " ");
 
-            res.redirect("/alue/" + req.params(":nimi"));
+            res.redirect("/alue/" + req.params(":nimi") + "/" + req.params(":sivu"));
             return "jee";
         });
 
