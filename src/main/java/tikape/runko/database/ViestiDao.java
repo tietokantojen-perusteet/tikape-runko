@@ -26,39 +26,8 @@ public class ViestiDao implements Dao<Viesti, Integer> {
                         rs.getString("kayttaja"),
                         rs.getString("sisalto")),
                 key).get(0);
-
-//        Connection connection = database.getConnection();
-//        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue WHERE id = ?");
-//        stmt.setObject(1, key);
-//
-//        ResultSet rs = stmt.executeQuery();
-//        boolean hasOne = rs.next();
-//        if (!hasOne) {
-//            return null;
-//        }
-//
-//        Integer id = rs.getInt("id");
-//        Timestamp aika = rs.getTimestamp("aika");
-//        String kayttaja = rs.getString("kayttaja");
-//        String sisalto = rs.getString("sisalto");
-//
-//        Viesti viesti = new Viesti(id, aika, kayttaja, sisalto);
-//
-//        Integer keskustelu = rs.getInt("keskustelu_id");
-//
-//        rs.close();
-//        stmt.close();
-//        connection.close();
-//
-//        viesti.setKeskustelu(this.keskusteluDao.findOne(keskustelu));
-//
-//        return viesti;
     }
 
-//    @Override
-//    public List findAll() throws SQLException {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
     public List<Viesti> findKeskustelunViestitSivullinen(int keskustelu_id, int sivunumero, int viestienLkmSivulla) throws SQLException {
         Keskustelu keskustelu = keskusteluDao.findOne(keskustelu_id);
         return database.queryAndCollect(
@@ -70,8 +39,8 @@ public class ViestiDao implements Dao<Viesti, Integer> {
                         rs.getString("sisalto")),
                 keskustelu_id, viestienLkmSivulla, (sivunumero - 1) * viestienLkmSivulla);
     }
-    
-        public List<Viesti> findKeskustelunViestitSivullinenPlusYlimaaraiset(int keskustelu_id, int sivunumero, int viestienLkmSivulla, int ylimaaraistenViestienMaara) throws SQLException {
+
+    public List<Viesti> findKeskustelunViestitSivullinenPlusYlimaaraiset(int keskustelu_id, int sivunumero, int viestienLkmSivulla, int ylimaaraistenViestienMaara) throws SQLException {
         Keskustelu keskustelu = keskusteluDao.findOne(keskustelu_id);
         return database.queryAndCollect(
                 "SELECT * FROM Viesti WHERE keskustelu_id = ? ORDER BY id LIMIT ? OFFSET ?",
