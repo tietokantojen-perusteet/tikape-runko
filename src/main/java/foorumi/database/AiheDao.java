@@ -107,12 +107,8 @@ public class AiheDao implements Dao<Aihe, String> {
         Connection conn = DriverManager.getConnection(tietokantaosoite);
         Statement stmt = conn.createStatement();
         int raja1 = (Integer.parseInt(sivu) - 1) * 10;
-        System.out.println(raja1);
-        int raja2 = raja1 + 10;
-        System.out.println(raja2);
         String a = Integer.toString(raja1);
-        String b = Integer.toString(raja2);
-        String rajoitus = " LIMIT " + a + ", " + b;
+        String rajoitus = " LIMIT " + 10 + " OFFSET " + a;
 
         ResultSet rs = stmt.executeQuery("SELECT * FROM Aihe WHERE alue_id =  " + id + rajoitus);
         while (rs.next()) {

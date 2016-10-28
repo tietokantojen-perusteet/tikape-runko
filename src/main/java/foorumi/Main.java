@@ -24,7 +24,6 @@ public class Main {
         ViestiDao viestiDao = new ViestiDao(database, "jdbc:sqlite:foorumi.db");
         AlueDao alueDao = new AlueDao("jdbc:sqlite:foorumi.db");
         List<String> lista = viestiDao.findAikaViesteilleAiheesta("jääkiekko");
-        System.out.println(lista.size());
 //
         Spark.get("/", (req, res) -> {
             res.redirect("/etusivu");
@@ -64,10 +63,13 @@ public class Main {
                 String aika = viestiDao.findUusinAikaAiheelta(i.getNimi());
                 ajat.add(aika);
                 String maara = viestiDao.laskeViestitAiheelta(i.getNimi());
-                
+
                 viestit.add(maara);
             }
-            System.out.println(aiheet);
+            String seuraavasivu = Integer.parseInt(req.params(":sivu")) + 1 + "";
+            map.put("alue", req.params(":id"));
+            map.put("seuraavasivu", seuraavasivu);
+            map.put("edellinensivu", Integer.toString(Integer.parseInt(seuraavasivu) - 2));
             map.put("aiheet", aiheet);
             map.put("ajat", ajat);
             map.put("viestit", viestit);
@@ -91,7 +93,7 @@ public class Main {
         //lisää viesti
         Spark.post("/aihe/:nimi/:sivu", (req, res) -> {
             viestiDao.lisaa(req.queryParams("viesti"), req.params(":nimi"), req.queryParams("nimimerkki"));
-            
+
             String nimi = req.params(":nimi");
 
             HashMap<String, Object> map = new HashMap<>();
@@ -102,7 +104,7 @@ public class Main {
         }, new ThymeleafTemplateEngine());
 
         //lisää aihe
-        post("/alue/:nimi/:sivu", (req, res) -> {     
+        post("/alue/:nimi/:sivu", (req, res) -> {
             Alue alue = alueDao.findOne(req.params(":nimi"));
             aiheDao.lisaa(req.queryParams("aihe"), alue.getId() + " ");
 

@@ -88,18 +88,15 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         return viestit;
     }
 
-     public List<Viesti> findWithAihe(String aihe_id, String sivu) throws SQLException {
+    public List<Viesti> findWithAihe(String aihe_id, String sivu) throws SQLException {
         List<Viesti> viestit = new ArrayList<>();
         Connection conn = DriverManager.getConnection(tietokantaosoite);
         Statement stmt = conn.createStatement();
         int raja1 = (Integer.parseInt(sivu) - 1) * 10;
-        System.out.println(raja1);
-        int raja2 = raja1 + 10;
-        System.out.println(raja2);
         String a = Integer.toString(raja1);
-        String b = Integer.toString(raja2);
-        String rajoitus = "LIMIT " + a + ", " + b;
-        ResultSet rs = stmt.executeQuery("SELECT * FROM Viesti WHERE aihe_id = '" + aihe_id + "'" + rajoitus);
+        String rajoitus = " LIMIT " + 10 + " OFFSET " + a;
+        ResultSet rs = stmt.executeQuery("SELECT * FROM Viesti WHERE aihe_id = '"
+                + aihe_id + "'" + rajoitus);
         while (rs.next()) {
             viestit.add(new Viesti(aihe_id, rs.getString("sisältö"), "22.21.2012"));
         }
@@ -107,28 +104,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         stmt.close();
         conn.close();
         return viestit;
-       }
-
-//    public List<Viesti> findWithAihe(String aihe_id, String sivu) throws SQLException {
-//        List<Viesti> viestit = new ArrayList<>();
-//        Connection conn = DriverManager.getConnection(tietokantaosoite);
-//        Statement stmt = conn.createStatement();
-//        int raja1 = (Integer.parseInt(sivu) - 1) * 10;
-//        System.out.println(raja1);
-//        int raja2 = raja1 + 10;
-//        System.out.println(raja2);
-//        String a = Integer.toString(raja1);
-//        String b = Integer.toString(raja2);
-//        String rajoitus = "LIMIT " + a + ", " + b;
-//        ResultSet rs = stmt.executeQuery("SELECT * FROM Viesti WHERE aihe_id = '" + aihe_id + "'" + rajoitus);
-//        while (rs.next()) {
-//            viestit.add(new Viesti(aihe_id, rs.getString("sisältö"), "22.21.2012"));
-//        }
-//        rs.close();
-//        stmt.close();
-//        conn.close();
-//        return viestit;
-//    }
+    }
 
     public String laskeViestitAlueelta(String alue) throws SQLException {
         Connection conn = DriverManager.getConnection(tietokantaosoite);
@@ -177,9 +153,9 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         List<String> ajat = new ArrayList<>();
         String aika = null;
         int raja1 = (Integer.parseInt(sivu) - 1) * 10;
-       
+
         int raja2 = raja1 + 10;
-        
+
         String a = Integer.toString(raja1);
         String b = Integer.toString(raja2);
         String rajoitus = "LIMIT " + a + ", " + b;
@@ -218,7 +194,6 @@ public class ViestiDao implements Dao<Viesti, Integer> {
                 + " GROUP BY Viesti.aika ORDER BY Viesti.aika DESC LIMIT 1");
         while (rs.next()) {
             aika = rs.getString("aika");
-            System.out.println(aika);
         }
         return aika;
     }

@@ -30,6 +30,13 @@ and open the template in the editor.
         <div>
             <a href="/etusivu"> etusivulle</a>
         </div>
+        <div>
+            <a th:href="@{~/alue/{alue}/{sivu}(alue= ${alue}, sivu= ${edellinensivu})}"> edellinen </a>
+
+            <a th:href="@{~/alue/{alue}/{sivu}(alue= ${alue}, sivu= ${seuraavasivu})}"> seuraava </a>
+
+        </div>
+
         <ul>
             Aiheet:
             <li th:each="aihe : ${aiheet}">
