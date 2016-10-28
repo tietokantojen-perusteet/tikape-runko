@@ -1,5 +1,4 @@
 # TT-forum
-tikape-runko
 
 TT-forum on netissä toimiva keskustelupalsta. Sovellus on toiminnassa osoitteessa http://tt-foorumi.herokuapp.com/
 
