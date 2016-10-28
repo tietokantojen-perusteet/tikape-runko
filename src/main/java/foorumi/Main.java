@@ -25,6 +25,11 @@ public class Main {
         AlueDao alueDao = new AlueDao("jdbc:sqlite:foorumi.db");
         List<String> lista = viestiDao.findAikaViesteilleAiheesta("jääkiekko");
 //
+        // asetetaan portti jos heroku antaa PORT-ympäristömuuttujan
+        if (System.getenv("PORT") != null) {
+            port(Integer.valueOf(System.getenv("PORT")));
+        }
+
         Spark.get("/", (req, res) -> {
             res.redirect("/etusivu");
             return "ok";
