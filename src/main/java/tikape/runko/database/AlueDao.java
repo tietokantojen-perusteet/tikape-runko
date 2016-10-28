@@ -20,27 +20,6 @@ public class AlueDao implements Dao<Alue, Integer> {
                 rs -> new Alue(rs.getInt("id"), rs.getString("nimi")), key).get(0);
     }
 
-//    @Override
-//    public List<Alue> findAll() throws SQLException {
-//
-//        Connection connection = database.getConnection();
-//        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue");
-//
-//        ResultSet rs = stmt.executeQuery();
-//        List<Alue> alueet = new ArrayList<>();
-//        while (rs.next()) {
-//            Integer id = rs.getInt("id");
-//            String nimi = rs.getString("nimi");
-//
-//            alueet.add(new Alue(id, nimi));
-//        }
-//
-//        rs.close();
-//        stmt.close();
-//        connection.close();
-//
-//        return alueet;
-//    }
     public List<Alue> findEtusivunAlueet() throws SQLException {
         return database.queryAndCollect(
                 "SELECT Alue.*, COUNT(Viesti.id) AS viestienLkm, MAX(Viesti.aika) AS viimeisinAika "
@@ -53,8 +32,4 @@ public class AlueDao implements Dao<Alue, Integer> {
     public void lisaaAlue(String nimi) throws SQLException {
         database.update("INSERT INTO Alue (nimi) VALUES (?)", nimi);
     }
-
-//    public void delete(Integer key) throws SQLException {
-//        // ei toteutettu
-//    }
 }

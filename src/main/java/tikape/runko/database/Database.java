@@ -62,19 +62,12 @@ public class Database<T> {
 
         // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
         lista.add("CREATE TABLE Alue (id integer PRIMARY KEY, nimi varchar(100) NOT NULL);");
-        lista.add("INSERT INTO Alue (nimi) VALUES ('Kevyt-Platon');");
-        lista.add("INSERT INTO Alue (nimi) VALUES ('Kevyt-Aristoteles');");
-        lista.add("INSERT INTO Alue (nimi) VALUES ('Kevyt-Homeros');");
 
         lista.add("CREATE TABLE Keskustelu (id integer PRIMARY KEY, alue_id integer NOT NULL, otsikko varchar(100) NOT NULL, FOREIGN KEY(alue_id) REFERENCES Alue(id));");
 
         // Aika-sarake hankalasti, jotta getTimestamp-metodin haluamassa muodossa:
         lista.add("CREATE TABLE Viesti (id integer PRIMARY KEY, keskustelu_id integer NOT NULL, aika timestamp DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now')), kayttaja varchar(30), sisalto varchar(10000) NOT NULL, FOREIGN KEY(keskustelu_id) REFERENCES Keskustelu(id))");
 
-//        Seuraavat kaksi komentoa ovat sovelluksen testaamista varten ja ne voi poistaa kun lisää-metodit ovat käytössä
-//        lista.add("INSERT INTO Keskustelu (alue_id, otsikko) VALUES (1, 'Testikeskustelu');");
-//        lista.add("INSERT INTO Viesti (keskustelu_id, kayttaja, sisalto) VALUES (1, 'Jippo444', "
-//                + "'Tämä on taulujen yhteydessä luotu testikeskustelu, jonka voi poistaa myöhemmin');");
         return lista;
     }
 
@@ -82,18 +75,11 @@ public class Database<T> {
         ArrayList<String> lista = new ArrayList<>();
 
         lista.add("CREATE TABLE Alue (id SERIAL PRIMARY KEY, nimi varchar(100) NOT NULL);");
-//        lista.add("INSERT INTO Alue (nimi) VALUES ('Postgre-Platon');");
-//        lista.add("INSERT INTO Alue (nimi) VALUES ('Postgre-Aristoteles');");
-//        lista.add("INSERT INTO Alue (nimi) VALUES ('Postgre-Homeros');");
 
         lista.add("CREATE TABLE Keskustelu (id SERIAL PRIMARY KEY, alue_id integer NOT NULL, otsikko varchar(100) NOT NULL, FOREIGN KEY(alue_id) REFERENCES Alue(id));");
 
         lista.add("CREATE TABLE Viesti (id SERIAL PRIMARY KEY, keskustelu_id integer NOT NULL, aika timestamp DEFAULT CURRENT_TIMESTAMP, kayttaja varchar(30), sisalto varchar(10000) NOT NULL, FOREIGN KEY(keskustelu_id) REFERENCES Keskustelu(id))");
 
-//        Seuraavat kaksi komentoa ovat sovelluksen testaamista varten ja ne voi poistaa kun lisää-metodit ovat käytössä
-//        lista.add("INSERT INTO Keskustelu (alue_id, otsikko) VALUES (1, 'Testikeskustelu');");
-//        lista.add("INSERT INTO Viesti (keskustelu_id, kayttaja, sisalto) VALUES (1, 'Jippo444', "
-//                + "'Tämä on taulujen yhteydessä luotu testikeskustelu, jonka voi poistaa myöhemmin');");
         return lista;
     }
 
