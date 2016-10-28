@@ -22,7 +22,7 @@
                 padding: 30px;
             }
             textarea{
-               resize: none;
+                resize: none;
             }
 
         </style>
@@ -31,8 +31,14 @@
     <body>
         <div>
             <a href="/etusivu"> etusivulle</a>
-        </div>
 
+        </div>
+        <div>
+            <a th:href="@{~/aihe/{aihe}/{sivu}(aihe= ${aihe}, sivu= ${edellinensivu})}"> edellinen </a>
+
+            <a th:href="@{~/aihe/{aihe}/{sivu}(aihe= ${aihe}, sivu= ${seuraavasivu})}"> seuraava </a>
+
+        </div>
 
 
         <ol type='text/css'>

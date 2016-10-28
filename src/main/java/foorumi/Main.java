@@ -79,7 +79,10 @@ public class Main {
             HashMap<String, Object> map = new HashMap<>();
             List<Viesti> viestit = viestiDao.findWithAihe(req.params(":nimi"), req.params(":sivu"));        //haetaan nyt sivulta 2, voi muuttaa
             List<String> ajat = viestiDao.findAikaViesteilleAiheesta(req.params(":nimi"), req.params(":sivu"));     //haetaan nyt sivulta 2, voi muuttaaa
-            
+            String seuraavasivu = Integer.parseInt(req.params(":sivu")) + 1 + "";
+            map.put("aihe", req.params(":nimi"));
+            map.put("seuraavasivu", seuraavasivu);
+            map.put("edellinensivu", Integer.toString(Integer.parseInt(seuraavasivu) - 2));
             map.put("viestit", viestit);
             map.put("ajat", ajat);
             return new ModelAndView(map, "viestit");
