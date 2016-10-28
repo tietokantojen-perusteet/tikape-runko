@@ -6,7 +6,5 @@ Sovellusta käytetään lisäämällä keskustelualueita, keskustelunavauksia ja
 
 Sovellus tarjoaa mahdollisuuden navigoida keskustelun eri sivuilla sekä keskusteluiden ja alueiden välillä sivun yläosasta löytyvän navigointipolun ja sivun alaosasta löytyvien painikkeiden avulla. Keskustelun jäljemmiltä sivuilta pääsee takaisin keskustelun ensimmäiselle sivulle klikkaamalla sivun yläosan navigointipolusta keskustelun nimeä.
 
-Tietokannan perusteet -kurssin ryhmätyö. Tekijät, TeamTableTurners: Kenneth Djupsjö, Tommi Hyyryläinen, Joonas Nuutinen ja Toni Salama
-
-
+Tietokannan perusteet -kurssin ryhmätyö. Tekijät: TeamTableTurners
 
