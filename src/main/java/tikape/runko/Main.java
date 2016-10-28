@@ -193,17 +193,6 @@ public class Main {
             }
 
             Map map = new HashMap();
-            try {
-                map.put("keskustelu", keskusteluDao.findOne(keskustelu_id));
-                map.put("alue", alueDao.findOne(keskusteluDao.findOne(keskustelu_id).getAlue().getId()));
-            } catch (Exception e) {
-                map.put("keskustelu", new Keskustelu(-5, "Virhe"));
-                map.put("alue", new Alue(-5, "Virhe"));
-                if (!redirect) {
-                    res.redirect("/");
-                    redirect = true;
-                }
-            }
 
             List<Viesti> list = new ArrayList();
             int sivunumero = 1;
@@ -234,6 +223,21 @@ public class Main {
                 res.redirect("/keskustelu/" + keskustelu_id + "?page=1");
                 redirect = true;
             }
+            
+            try {
+                map.put("keskustelu", list.get(0).getKeskustelu());
+                map.put("alue", list.get(0).getKeskustelu().getAlue());
+//                map.put("keskustelu", keskusteluDao.findOne(keskustelu_id));
+//                map.put("alue", alueDao.findOne(keskusteluDao.findOne(keskustelu_id).getAlue().getId()));
+            } catch (Exception e) {
+                map.put("keskustelu", new Keskustelu(-5, "Virhe"));
+                map.put("alue", new Alue(-5, "Virhe"));
+                if (!redirect) {
+                    res.redirect("/");
+                    redirect = true;
+                }
+            }
+            
             map.put("sivunviestit", (sivunumero - 1) * viestienLkmSivulla);
             map.put("page", sivunumero);
             if (list.size() == viestienLkmSivulla + 1) {
