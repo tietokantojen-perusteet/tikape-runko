@@ -78,15 +78,13 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     }
     
     //Viestien määrä 10 per sivu ja tuorein ylimpänä EI TOIMI VIELÄ!!!
-    public List<Viesti> findKymmenenViimeisintaViestia (Integer alueid, Integer aiheid, Integer sivunro) throws SQLException {
+    public List<Viesti> findKymmenenViimeisintaViestia (Integer aiheid, Integer sivunro) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti, Aihe, Alue WHERE Viesti.aihe_id = Aihe.id "
-                + "AND Aihe.alue_id = Alue.id AND Aihe.id = ? AND Alue.id = ? "
-                + "LIMIT 10 OFFSET ((( ? -1)*10));");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE aihe_id = ? "
+                + "ORDER BY Viesti.time DESC LIMIT 10 OFFSET ((( ? -1)*10));");
         
         stmt.setInt(1, aiheid);
-        stmt.setInt(2, alueid);
-        stmt.setInt(3, sivunro);
+        stmt.setInt(2, sivunro);
         
         ResultSet rs = stmt.executeQuery();
         

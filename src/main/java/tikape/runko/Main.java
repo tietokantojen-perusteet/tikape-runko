@@ -88,7 +88,7 @@ public class Main {
 
         get("/aihe/:id", (req, res) -> {
             HashMap map = new HashMap<>();
-            List<Viesti> viestilista = viestiDao.findAiheesta(Integer.parseInt(req.params(":id")));
+            List<Viesti> viestilista = viestiDao.findKymmenenViimeisintaViestia((Integer.parseInt(req.params(":id"))), 1);
             String aiheid = req.params(":id");
             String alueid = aiheDao.findAlueid(aiheid);
             Aihe aihe = aiheDao.findOne(Integer.parseInt(aiheid));
@@ -114,7 +114,7 @@ public class Main {
             String aihenimi = aihe.getNimi();
             Alue alue = alueDao.findOne(Integer.parseInt(alueid));
             String aluenimi = alue.getNimi();
-            List<Viesti> viestilista = viestiDao.findKymmenenViimeisintaViestia(Integer.parseInt(alueid), (Integer.parseInt(aiheid)), (Integer.parseInt(req.params(":sivunro"))));
+            List<Viesti> viestilista = viestiDao.findKymmenenViimeisintaViestia((Integer.parseInt(aiheid)), (Integer.parseInt(req.params(":sivunro"))));
             
             
             map.put("alueid", alueid);
