@@ -144,7 +144,7 @@ public class Main {
                 return virheilmoitusIlmanPaluulinkkia("Jokin meni vikaan.",
                         "Nimimerkki saa olla korkeintaan 30 merkkiä pitkä "
                         + "ja keskustelun otsikko korkeintaan 100 merkkiä pitkä. "
-                        + "Palaa takaisin keskustelunavauksen lisäykseen"
+                        + "Palaa takaisin keskustelunavauksen lisäykseen "
                         + "käyttämällä selaimen 'Edellinen sivu' -painiketta.");
             }
 
