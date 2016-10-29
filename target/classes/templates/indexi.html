@@ -1,0 +1,67 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <style>
+        section {
+            float: left;
+            margin: 0 0%;
+            width: 14%;
+        }
+        div.fixed {
+            position: fixed;
+            bottom: 8px;
+            left: 5px;
+            width: 200px;
+        }
+
+        ul { 
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+    
+    <head>
+        <title>TiKaPe-foorumi</title>
+        <meta charset="utf-8" />
+    </head>
+
+    <body>
+        <h1>TiKaPe-foorumi</h1>
+
+
+        <section>
+            <p>Aihealue</p>
+            <ul>
+                <li th:each="alue : ${alueet}">
+                    <a th:href="@{~/alue/{id}(id=${alue.id})}"><span th:text="${alue.nimi}">Alueen nimi</span></a>
+                </li>
+            </ul>
+        </section>
+        <section>
+            <p>Viestejä yhteensä</p>
+            <ul>
+                <li th:each="viestimaara : ${viestimaarat}">
+                    <span th:text="${viestimaara}">viestimaara</span>
+                </li>
+            </ul>
+        </section>
+        <section>
+            <p>Viimeisin viesti</p>
+            <ul>
+                <li th:each="viimeisin : ${viimeisimmat}">
+                    <span th:text="${viimeisin}">viimeisin</span>
+                </li>
+            </ul>
+        </section>
+        
+        <div class="fixed">
+            
+                <h3>Lis&auml;&auml; alue</h3>
+            
+            <form method="POST" th:action="@{~/}">
+                <input type="text" name="name"/>
+                <input type="submit" value="Lisaa!"/>
+            </form>
+        </div>
+    </body>
+</html>

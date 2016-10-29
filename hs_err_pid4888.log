@@ -1,0 +1,150 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (malloc) failed to allocate 1048576 bytes for AllocateHeap
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   In 32 bit mode, the process size limit was hit
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Use 64 bit Java on a 64 bit OS
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (memory/allocation.inline.hpp:61), pid=4888, tid=0x0000000000000658
+#
+# JRE version:  (8.0_101-b13) (build )
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (25.101-b13 mixed mode windows-amd64 compressed oops)
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x000000000203f000):  JavaThread "Unknown thread" [_thread_in_vm, id=1624, stack(0x0000000002190000,0x0000000002290000)]
+
+Stack: [0x0000000002190000,0x0000000002290000]
+[error occurred during error reporting (printing stack bounds), id 0xc0000005]
+
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+
+Other Threads:
+
+=>0x000000000203f000 (exited) JavaThread "Unknown thread" [_thread_in_vm, id=1624, stack(0x0000000002190000,0x0000000002290000)]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap:
+ PSYoungGen      total 18944K, used 327K [0x00000000eaf00000, 0x00000000ec400000, 0x0000000100000000)
+  eden space 16384K, 2% used [0x00000000eaf00000,0x00000000eaf51ec8,0x00000000ebf00000)
+  from space 2560K, 0% used [0x00000000ec180000,0x00000000ec180000,0x00000000ec400000)
+  to   space 2560K, 0% used [0x00000000ebf00000,0x00000000ebf00000,0x00000000ec180000)
+ ParOldGen       total 44032K, used 0K [0x00000000c0c00000, 0x00000000c3700000, 0x00000000eaf00000)
+  object space 44032K, 0% used [0x00000000c0c00000,0x00000000c0c00000,0x00000000c3700000)
+ Metaspace       used 769K, capacity 4480K, committed 4480K, reserved 1056768K
+  class space    used 75K, capacity 384K, committed 384K, reserved 1048576K
+
+Card table byte_map: [0x0000000011920000,0x0000000011b20000] byte_map_base: 0x000000001131a000
+
+Marking Bits: (ParMarkBitMap*) 0x000000005beba6d0
+ Begin Bits: [0x0000000012160000, 0x0000000013130000)
+ End Bits:   [0x0000000013130000, 0x0000000014100000)
+
+Polling page: 0x0000000000110000
+
+CodeCache: size=245760Kb used=327Kb max_used=327Kb free=245432Kb
+ bounds [0x0000000002560000, 0x00000000027d0000, 0x0000000011560000]
+ total_blobs=56 nmethods=0 adapters=38
+ compilation: enabled
+
+Compilation events (0 events):
+No events
+
+GC Heap History (0 events):
+No events
+
+Deoptimization events (0 events):
+No events
+
+Internal exceptions (0 events):
+No events
+
+Events (10 events):
+Event: 0.024 loading class java/lang/Short
+Event: 0.024 loading class java/lang/Short done
+Event: 0.024 loading class java/lang/Integer
+Event: 0.024 loading class java/lang/Integer done
+Event: 0.024 loading class java/lang/Long
+Event: 0.024 loading class java/lang/Long done
+Event: 0.025 loading class java/lang/NullPointerException
+Event: 0.025 loading class java/lang/NullPointerException done
+Event: 0.025 loading class java/lang/ArithmeticException
+Event: 0.025 loading class java/lang/ArithmeticException done
+
+
+Dynamic libraries:
+0x000000013f700000 - 0x000000013f737000 	C:\Program Files\Java\jdk1.8.0_101\bin\java.exe
+0x0000000077910000 - 0x0000000077aba000 	C:\Windows\SYSTEM32\ntdll.dll
+0x00000000776f0000 - 0x000000007780f000 	C:\Windows\system32\kernel32.dll
+0x000007fefd890000 - 0x000007fefd8fa000 	C:\Windows\system32\KERNELBASE.dll
+0x000007fefe9a0000 - 0x000007fefea7b000 	C:\Windows\system32\ADVAPI32.dll
+0x000007fefdcb0000 - 0x000007fefdd4f000 	C:\Windows\system32\msvcrt.dll
+0x000007fefdc90000 - 0x000007fefdcaf000 	C:\Windows\SYSTEM32\sechost.dll
+0x000007fefe110000 - 0x000007fefe23d000 	C:\Windows\system32\RPCRT4.dll
+0x0000000077810000 - 0x000000007790a000 	C:\Windows\system32\USER32.dll
+0x000007fefe930000 - 0x000007fefe997000 	C:\Windows\system32\GDI32.dll
+0x000007fefe0f0000 - 0x000007fefe0fe000 	C:\Windows\system32\LPK.dll
+0x000007fefea80000 - 0x000007fefeb4a000 	C:\Windows\system32\USP10.dll
+0x000007fefbce0000 - 0x000007fefbed4000 	C:\Windows\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.7601.18837_none_fa3b1e3d17594757\COMCTL32.dll
+0x000007feffba0000 - 0x000007feffc11000 	C:\Windows\system32\SHLWAPI.dll
+0x000007fefe0c0000 - 0x000007fefe0ee000 	C:\Windows\system32\IMM32.DLL
+0x000007fefdb80000 - 0x000007fefdc89000 	C:\Windows\system32\MSCTF.dll
+0x00000000637e0000 - 0x00000000638b2000 	C:\Program Files\Java\jdk1.8.0_101\jre\bin\msvcr100.dll
+0x000000005b6a0000 - 0x000000005bf3a000 	C:\Program Files\Java\jdk1.8.0_101\jre\bin\server\jvm.dll
+0x000007fefb0f0000 - 0x000007fefb0f9000 	C:\Windows\system32\WSOCK32.dll
+0x000007feffb50000 - 0x000007feffb9d000 	C:\Windows\system32\WS2_32.dll
+0x000007fefe100000 - 0x000007fefe108000 	C:\Windows\system32\NSI.dll
+0x000007fef8df0000 - 0x000007fef8e2b000 	C:\Windows\system32\WINMM.dll
+0x000007fefc730000 - 0x000007fefc73c000 	C:\Windows\system32\VERSION.dll
+0x0000000077ae0000 - 0x0000000077ae7000 	C:\Windows\system32\PSAPI.DLL
+0x0000000073da0000 - 0x0000000073daf000 	C:\Program Files\Java\jdk1.8.0_101\jre\bin\verify.dll
+0x0000000072740000 - 0x0000000072769000 	C:\Program Files\Java\jdk1.8.0_101\jre\bin\java.dll
+0x0000000072720000 - 0x0000000072736000 	C:\Program Files\Java\jdk1.8.0_101\jre\bin\zip.dll
+
+VM Arguments:
+java_command: tikape.runko.Main
+java_class_path (initial): C:\Users\Lauri\Documents\GitHub\tikapen_ryhmatyo\target\classes;C:\Users\Lauri\.m2\repository\com\sparkjava\spark-core\2.3\spark-core-2.3.jar;C:\Users\Lauri\.m2\repository\org\slf4j\slf4j-api\1.7.12\slf4j-api-1.7.12.jar;C:\Users\Lauri\.m2\repository\org\slf4j\slf4j-simple\1.7.12\slf4j-simple-1.7.12.jar;C:\Users\Lauri\.m2\repository\org\eclipse\jetty\jetty-server\9.3.2.v20150730\jetty-server-9.3.2.v20150730.jar;C:\Users\Lauri\.m2\repository\javax\servlet\javax.servlet-api\3.1.0\javax.servlet-api-3.1.0.jar;C:\Users\Lauri\.m2\repository\org\eclipse\jetty\jetty-http\9.3.2.v20150730\jetty-http-9.3.2.v20150730.jar;C:\Users\Lauri\.m2\repository\org\eclipse\jetty\jetty-util\9.3.2.v20150730\jetty-util-9.3.2.v20150730.jar;C:\Users\Lauri\.m2\repository\org\eclipse\jetty\jetty-io\9.3.2.v20150730\jetty-io-9.3.2.v20150730.jar;C:\Users\Lauri\.m2\repository\org\eclipse\jetty\jetty-webapp\9.3.2.v20150730\jetty-webapp-9.3.2.v20150730.jar;C:\Users\Lauri\.m2\repository\org\eclipse\jetty\jetty-xml\9.3.2.v20150730\jetty-xml-9.3.2.v20150730.jar;C:\Users\Lauri\.m2\repository\org\eclipse\jetty\jetty-servlet\9.3.2.v20150730\jetty-servlet-9.3.2.v20150730.jar;C:\Users\Lauri\.m2\repository\org\eclipse\jetty\jetty-security\9.3.2.v20150730\jetty-security-9.3.2.v20150730.jar;C:\Users\Lauri\.m2\repository\org\eclipse\jetty\websocket\websocket-server\9.3.2.v20150730\websocket-server-9.3.2.v20150730.jar;C:\Users\Lauri\.m2\repository\org\eclipse\jetty\websocket\websocket-common\9.3.2.v20150730\websocket-common-9.3.2.v20150730.jar;C:\Users\Lauri\.m2\repository\org\eclipse\jetty\websocket\websocket-client\9.3.2.v20150730\websocket-client-9.3.2.v20150730.jar;C:\Users\Lauri\.m2\repository\org\eclipse\jetty\websocket\websocket-servlet\9.3.2.v20150730\websocket-servlet-9.3.2.v20150730.jar;C:\Users\Lauri\.m2\repository\org\eclipse\jetty\websocket\websocket-api\9.3.2.v20150730\websocket-api-9.3.2.v20150730.jar;C:\Users\Lauri\.m2\repository\com\sparkjava\spark-template-thymeleaf\2.
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=C:\Program Files\Java\jdk1.8.0_101
+PATH=C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\
+USERNAME=Lauri
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 23 Stepping 10, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 7 , 64 bit Build 7601 (6.1.7601.23543)
+
+CPU:total 2 (2 cores per cpu, 1 threads per core) family 6 model 23 stepping 10, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, tsc
+
+Memory: 4k page, physical 4145052k(922672k free), swap 4474632k(5144k free)
+
+vm_info: Java HotSpot(TM) 64-Bit Server VM (25.101-b13) for windows-amd64 JRE (1.8.0_101-b13), built on Jun 22 2016 01:21:29 by "java_re" with MS VC++ 10.0 (VS2010)
+
+time: Sun Oct 23 01:28:04 2016
+elapsed time: 0 seconds (0d 0h 0m 0s)
+
