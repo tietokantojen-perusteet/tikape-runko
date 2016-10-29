@@ -37,7 +37,7 @@
             </ul>
         </section>
         <section>
-            <p>Viesteja yhteensa</p>
+            <p>Viestejä yhteensä</p>
             <ul>
                 <li th:each="viestimaara : ${viestimaarat}">
                     <span th:text="${viestimaara}">viestimaara</span>
@@ -55,7 +55,7 @@
         
         <div class="fixed">
             
-                <h3>Lisaa alue</h3>
+                <h3>Lisää alue</h3>
             
             <form method="POST" th:action="@{~/}">
                 <input type="text" name="name"/>
