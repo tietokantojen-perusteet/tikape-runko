@@ -99,21 +99,19 @@ public class AiheDao implements Dao<Aihe, Integer> {
 
         return aiheet;
     }
-    
+
     // Aiheet top 10 EI TOIMI VIELÄ!!!
-    public List<Aihe> findViimeisimmatKymmenenAihetta (Integer alueid) throws SQLException {
+    public List<Aihe> findViimeisimmatKymmenenAihetta(Integer alueid) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT Aihe.id, Aihe.nimi "
-                + "COUNT(Viesti.id) AS viestit FROM Aihe LEFT JOIN Viesti ON Viesti.aihe_id = Aihe.id "
-                + "WHERE Aihe.alue_id = ? GROUP BY Aihe.id ORDER BY Viesti.time DESC LIMIT 10;");
-        
+        PreparedStatement stmt = connection.prepareStatement("SELECT Aihe.alue_id, Aihe.id, Aihe.nimi, MAX(Viesti.time) AS time FROM Aihe LEFT JOIN Viesti ON Aihe.id = Viesti.aihe_id WHERE alue_id = ? GROUP BY Aihe.nimi ORDER BY time DESC LIMIT 10");
+
         stmt.setInt(1, alueid);
-        
+
         ResultSet rs = stmt.executeQuery();
-        
+
         List<Aihe> aiheet = new ArrayList<>();
-        
-         while (rs.next()) {
+
+        while (rs.next()) {
             Integer alue_id = rs.getInt("alue_id");
             Integer id = rs.getInt("id");
             String nimi = rs.getString("nimi");
@@ -127,16 +125,16 @@ public class AiheDao implements Dao<Aihe, Integer> {
 
         return aiheet;
     }
-    
+
     public void create(String alueid, String nimi) throws SQLException {
         Connection connection = database.getConnection();
-        
+
         nimi = nimi.trim(); //poistaa välilyönnit
         if (nimi.isEmpty()) { //varmistaa, ettei voi luoda nimetöntä aihetta
             return;
         }
-      
-        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Aihe (alue_id, nimi) VALUES (?, '?')");
+
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Aihe (alue_id, nimi) VALUES (?, ?)");
         stmt.setObject(1, alueid);
         stmt.setObject(2, nimi);
         stmt.executeUpdate();
@@ -164,9 +162,9 @@ public class AiheDao implements Dao<Aihe, Integer> {
 
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT Viesti.time FROM Viesti, Aihe, Alue WHERE Viesti.aihe_id = Aihe.id AND Aihe.alue_id = Alue.id AND Aihe.id = ? ORDER BY Viesti.time DESC LIMIT 1");
-        
+
         stmt.setObject(1, aiheid);
-        
+
         ResultSet rs = stmt.executeQuery();
 
         if (rs.isClosed()) {

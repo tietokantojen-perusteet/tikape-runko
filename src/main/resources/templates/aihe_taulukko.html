@@ -89,9 +89,9 @@
         <div class="fixed">
             
             
-            <form id="2" method='GET' th:action="@{'~/aihe/' + ${aiheid}+ '/sivu/' + ${edellinensivu}}" > 
+            <form id="2" method='POST' th:action="@{'~/aihe/' + ${aiheid}+ '/sivu/' + ${edellinensivu}}" > 
                 <input type="submit" value="&larr;"/></form> - - - - -
-            <form method='GET' th:action="@{'~/aihe/' + ${aiheid} + '/sivu/' + ${seuraavasivu}}"> 
+            <form method='POST' th:action="@{'~/aihe/' + ${aiheid} + '/sivu/' + ${seuraavasivu}}"> 
                 <input type='submit' value="&rarr;"/></form><br/>
             <br/>
             <form id="3" method='GET' th:action="@{~/alue/__${alueid}__}">
