@@ -126,10 +126,10 @@ public class AiheDao implements Dao<Aihe, Integer> {
         return aiheet;
     }
 
-    public void create(String alueid, String nimi) throws SQLException {
+    public void create(String alueid, String nimiSyote) throws SQLException {
         Connection connection = database.getConnection();
 
-        nimi = nimi.trim(); //poistaa välilyönnit
+        String nimi = nimiSyote.trim(); //poistaa välilyönnit
         if (nimi.isEmpty()) { //varmistaa, ettei voi luoda nimetöntä aihetta
             return;
         }
