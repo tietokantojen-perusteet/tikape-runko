@@ -38,8 +38,8 @@ public class Main {
             }
 
             map.put("alueet", alueDao.findAll());
-            map.put("viestimaarat", viestimaarat);
-            map.put("viimeisimmat", viimeisimmat);
+            map.put("viestimäärät", viestimaarat);
+            map.put("viimeisimmät", viimeisimmat);
             return new ModelAndView(map, "indexi");
         }, new ThymeleafTemplateEngine());
 
