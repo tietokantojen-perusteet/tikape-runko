@@ -108,7 +108,7 @@ h4 {
 
 }
 
-span#uusialue a {
+span #uusialue a {
     color: #fff;
     text-decoration: none;
 }
@@ -254,6 +254,8 @@ nav a {
 
 form b ,form input, form textarea {
     display: block;
+    font-family: 'Open Sans', sans-serif;
+    font-size: .9em;
 }
 
 form {

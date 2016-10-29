@@ -1,6 +1,6 @@
-# TT-forum
+# TT-foorumi
 
-TT-forum on netissä toimiva keskustelupalsta. Sovellus on toiminnassa osoitteessa http://tt-foorumi.herokuapp.com/
+TT-foorumi on netissä toimiva keskustelupalsta. Sovellus on toiminnassa osoitteessa http://tt-foorumi.herokuapp.com/
 
 Sovellusta käytetään lisäämällä keskustelualueita, keskustelunavauksia ja viestejä verkkoselaimella. Sovellus tarkistaa käyttäjän syötteet ja ohjeistaa käyttäjää, mikäli tämä yrittää syöttää sovellukseen vääränlaista sisältöä (esimerkiksi tyhjiä viestejä). Keskusteluun voi vastata ainoastaan kyseisen keskustelun viimeiseltä sivulta.
 

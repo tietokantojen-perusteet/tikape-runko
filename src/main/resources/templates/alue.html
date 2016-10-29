@@ -3,7 +3,7 @@
 
     <head>
         <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" />
-        <title>Keskustelut</title>
+        <title>TT-foorumi - Keskustelut</title>
         <!--        <meta charset="UTF-8"></meta>-->
         <meta charset="utf-8" />
         <link rel="stylesheet" type="text/css" href="/styles.css" />
@@ -36,7 +36,7 @@
             <a th:if="${kaikki} == 1" th:href="${'/alue/' + alue.id} + '?kaikki=0'"><span id="uusialue">N&auml;ytet&auml;&auml;n kaikki alueen keskustelut. N&auml;yt&auml; vain uusimmat</span></a>
 
             <hr/>
-            <h4>Luo uusi keskustelunavaus</h4>
+            <h4>Lis&auml;&auml; uusi keskustelunavaus</h4>
             <form method="post">
                 <b>Nimimerkki</b>
                 <input type="text" name="nimi"/>

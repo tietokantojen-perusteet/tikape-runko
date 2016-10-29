@@ -64,8 +64,10 @@ public class Main {
             try {
                 alueDao.lisaaAlue(req.queryParams("nimi"));
             } catch (Exception e) {
-                return virheilmoitus("/uusialue", "Takaisin alueen lisäämiseen",
-                        "Jokin meni pieleen :/ Alueen nimi saa olla korkeintaan 100 merkkiä pitkä.");
+                return virheilmoitusIlmanPaluulinkkia("Jokin meni pieleen.",
+                        "Alueen nimi saa olla korkeintaan 100 merkkiä pitkä. "
+                        + "Palaa takaisin alueen lisäämiseen "
+                        + "selaimen 'Edellinen sivu' -painikkeella.");
             }
             res.redirect("/");
             return "";
@@ -139,9 +141,11 @@ public class Main {
             try {
                 keskusteluDao.lisaaKeskustelunavaus(id, otsikko, nimi, sisalto);
             } catch (Exception e) {
-                return virheilmoitusIlmanPaluulinkkia("Jokin meni vikaan. Nimimerkki saa olla korkeintaan 30 merkkiä pitkä "
-                        + "ja keskustelun otsikko korkeintaan 100 merkkiä pitkä. Palaa takaisin keskustelunavauksen lisäukseen"
-                        + "käyttämällä selaimen 'Takaisin' -painiketta.");
+                return virheilmoitusIlmanPaluulinkkia("Jokin meni vikaan.",
+                        "Nimimerkki saa olla korkeintaan 30 merkkiä pitkä "
+                        + "ja keskustelun otsikko korkeintaan 100 merkkiä pitkä. "
+                        + "Palaa takaisin keskustelunavauksen lisäykseen"
+                        + "käyttämällä selaimen 'Edellinen sivu' -painiketta.");
             }
 
             res.redirect("/alue/" + id);
@@ -164,9 +168,11 @@ public class Main {
             try {
                 viestiDao.lisaaViesti(Integer.parseInt(req.params("id")), req.queryParams("nimi"), req.queryParams("sisalto"));
             } catch (Exception e) {
-                return virheilmoitusIlmanPaluulinkkia("Jokin meni pieleen.. Nimimerkki saa olla korkeintaan 30 merkkiä pitkä. "
-                        + "Viesti voi olla korkeintaan 10000 merkkiä pitkä. Palaa takaisin viestin lisäämiseen selaimen 'Takaisin' -painikkeella.");
-                        
+                return virheilmoitusIlmanPaluulinkkia("Jokin meni pieleen..",
+                        "Nimimerkki saa olla korkeintaan 30 merkkiä pitkä. "
+                        + "Viesti voi olla korkeintaan 10000 merkkiä pitkä. "
+                        + "Palaa takaisin viestin lisäämiseen selaimen 'Edellinen sivu' -painikkeella.");
+
             }
             res.redirect("/keskustelu/" + req.params("id") + "?page=viimeinen");
 
@@ -244,12 +250,14 @@ public class Main {
                 + "<body><h2>" + virheteksti + "</h2>"
                 + "<a href='" + paluuosoite + "'>" + paluulinkinTeksti + "</a></body></html>";
     }
-    
-        public static String virheilmoitusIlmanPaluulinkkia(String virheteksti) {
+
+    public static String virheilmoitusIlmanPaluulinkkia(String virheotsikko, String virheteksti) {
         return "<!DOCTYPE html>"
                 + "<head><meta charset='utf-8'/><title>Virhe lisäämisessä</title>"
                 + "<link rel=\"stylesheet\" type=\"text/css\" href=\"/styles.css\"/></head>"
-                + "<body><h2>" + virheteksti + "</h2>"
+                + "<body>"
+                + "<h2>" + virheotsikko + "</h2>"
+                + "<p>" + virheteksti + "</p>"
                 + "</body></html>";
     }
 }
