@@ -1,0 +1,51 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" />
+        <title>TT-foorumi - Keskustelut</title>
+        <!--        <meta charset="UTF-8"></meta>-->
+        <meta charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="/styles.css" />
+    </head>
+
+    <body>
+
+        <div id="container">
+            <nav><a  href="/">Etusivu</a> > <span th:text="${alue.nimi}">Alueen nimi</span><br/></nav>
+
+            <h2>Alueen '<span th:text="${alue.nimi}">Alueen nimi</span>' keskustelut</h2>
+
+            <ul>
+
+                <!-- TIETOKANNASTA DATAA
+                           
+                -->           
+                <li th:each="keskustelu: ${keskustelut}">
+
+                    <a class="keskusteluotsikko" th:href="${'/keskustelu/' + keskustelu.id}">
+                        <span class="otsikko" th:text="${keskustelu.otsikko}">Helsinki on paras</span>
+                        <span class="otsikko_metadata" th:text="'Viestej&auml;: ' + ${keskustelu.viestienLkm} + ' - '">Viestejä: 2</span>
+                        <span class="otsikko_metadata" th:text="'Viimeisin viesti l&auml;hetetty: ' + ${keskustelu.viimeisinAika}">Viimeisin viesti lähetetty: 23.10.2016</span> 
+                    </a>
+
+                </li>
+
+            </ul>
+            <a th:if="${kaikki} == 0" th:href="${'/alue/' + alue.id} + '?kaikki=1'"><span id="uusialue">N&auml;ytet&auml;&auml;n kymmenen uusinta keskustelua. N&auml;yt&auml; kaikki</span></a>
+            <a th:if="${kaikki} == 1" th:href="${'/alue/' + alue.id} + '?kaikki=0'"><span id="uusialue">N&auml;ytet&auml;&auml;n kaikki alueen keskustelut. N&auml;yt&auml; vain uusimmat</span></a>
+
+            <hr/>
+            <h4>Lis&auml;&auml; uusi keskustelunavaus</h4>
+            <form method="post">
+                <b>Nimimerkki</b>
+                <input type="text" name="nimi"/>
+                <b>Otsikko</b>
+                <input type="text" name="otsikko" size="40" required=""/>
+                <b>Viesti</b>
+                <textarea rows="5" cols="50" name="sisalto" required=""></textarea>
+                <input type="submit" value="L&auml;het&auml;"/>
+            </form>       
+        </div>
+    </body>
+</html>
