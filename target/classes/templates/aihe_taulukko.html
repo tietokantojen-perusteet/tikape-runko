@@ -1,0 +1,114 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <style>
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        th, td {
+            padding: 8px;
+        }
+        
+        form {
+            display: inline-block;
+        }
+
+        textarea {
+            resize: none;
+            float: left;
+        }
+
+        section {
+            float: left;
+            margin: 0 0%;
+            width: 14%;
+        }
+        div.fixed {
+            position: fixed;
+            bottom: 8px;
+            left: 8px;
+            width: 200px;
+        }
+
+        ul { 
+            list-style-type: none ;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+    
+    <head>
+        <title>Aihe</title>
+        <meta charset="utf-8" />
+    </head>
+
+    <body>
+    <h1 th:text="'TiKaPe-foorumi ' + ' &rarr; ' + ${aluenimi} + ' &rarr; ' + ${aihenimi}">Aiheen nimi</h1>
+
+        <table>
+            <tr>
+                <th align="left">Viesti</th>
+                <th align="left">L&auml;hettaja</th>
+                <th align="left">L&auml;hetetty</th>
+                <th align="center">Poista</th>
+            </tr>
+            <tr>
+                <td>
+                     <ul>
+                        <li th:each="viesti : ${viestilista}">
+                            <span th:text="${viesti.text}">viesti</span>
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li th:each="viesti : ${viestilista}">
+                            <span th:text="${viesti.nimi}">lahettaja</span>
+                        </li>
+                     </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li th:each="viesti : ${viestilista}">
+                            <span th:text="${viesti.time}">lahetysaika</span>
+                        </li>
+                    </ul>
+                </td>
+                <td align="center">
+                    <ul>
+                        <li th:each="viesti : ${viestilista}">
+                            <form method="POST" th:action="@{~/viesti/poista/__${viesti.id}__}">
+                            <input type="submit" value="" style="width:15px; height: 15px;" />                        
+                            </form>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+
+        <div class="fixed">
+            
+            
+            <form id="2" method='POST' th:action="@{'~/aihe/' + ${aiheid}+ '/sivu/' + ${edellinensivu}}" > 
+                <input type="submit" value="&larr;"/></form> - - - - -
+            <form method='POST' th:action="@{'~/aihe/' + ${aiheid} + '/sivu/' + ${seuraavasivu}}"> 
+                <input type='submit' value="&rarr;"/></form><br/>
+            <br/>
+            <form id="3" method='GET' th:action="@{~/alue/__${alueid}__}">
+                <input type="submit" value="Takaisin aiheisiin" />
+            </form>   
+
+            <h3>Lis&auml;&auml; viesti</h3>
+            
+            <textarea rows="3" cols="40" wrap="hard" name="viesti" form="1" maxlength='160' placeholder="Kirjoita viestisi, max 160 merkkia"></textarea><br/>
+            <form method="POST" th:action="@{~/aihe/__${aiheid}__}" id='1'>
+
+                Nimimerkki:
+                <input type="text" name="name"/>
+                <input type="submit" value="Lisaa!"/>
+            </form>
+        
+        </div>
+    </body>
+</html>

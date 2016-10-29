@@ -8,7 +8,7 @@
         }
         div.fixed {
             position: fixed;
-            bottom: 0;
+            bottom: 8px;
             left: 5px;
             width: 200px;
         }
@@ -19,6 +19,7 @@
             margin: 0;
         }
     </style>
+    
     <head>
         <title>TiKaPe-foorumi</title>
         <meta charset="utf-8" />
@@ -37,7 +38,7 @@
             </ul>
         </section>
         <section>
-            <p>Viesteja yhteensa</p>
+            <p>Viestejä yhteensä</p>
             <ul>
                 <li th:each="viestimaara : ${viestimaarat}">
                     <span th:text="${viestimaara}">viestimaara</span>
@@ -55,7 +56,7 @@
         
         <div class="fixed">
             
-                <h3>Lisaa alue</h3>
+                <h3>Lis&auml;&auml; alue</h3>
             
             <form method="POST" th:action="@{~/}">
                 <input type="text" name="name"/>

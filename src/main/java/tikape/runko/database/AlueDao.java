@@ -50,22 +50,22 @@ public class AlueDao implements Dao<Alue, Integer> {
     public List<Alue> findAll() throws SQLException {
 
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue ORDER BY Alue.nimi ASC");
 
         ResultSet rs = stmt.executeQuery();
-        List<Alue> opiskelijat = new ArrayList<>();
+        List<Alue> alueet = new ArrayList<>();
         while (rs.next()) {
             Integer id = rs.getInt("id");
             String nimi = rs.getString("nimi");
 
-            opiskelijat.add(new Alue(id, nimi));
+            alueet.add(new Alue(id, nimi));
         }
 
         rs.close();
         stmt.close();
         connection.close();
 
-        return opiskelijat;
+        return alueet;
     }
 
     public Integer getLukumaara(Integer key) throws SQLException {
@@ -86,8 +86,10 @@ public class AlueDao implements Dao<Alue, Integer> {
     public String getViimeisin(Integer key) throws SQLException {
 
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT Viesti.time FROM Viesti, Aihe, Alue WHERE Viesti.aihe_id = Aihe.id AND Aihe.alue_id = Alue.id AND Alue.id = " + key + " ORDER BY Viesti.time DESC LIMIT 1");
-
+        PreparedStatement stmt = connection.prepareStatement("SELECT Viesti.time FROM Viesti, Aihe, Alue WHERE Viesti.aihe_id = Aihe.id AND Aihe.alue_id = Alue.id AND Alue.id = ? ORDER BY Viesti.time DESC LIMIT 1");
+        
+        stmt.setObject(1, key);
+        
         ResultSet rs = stmt.executeQuery();
 
         if (rs.isClosed()) {
@@ -106,13 +108,21 @@ public class AlueDao implements Dao<Alue, Integer> {
 
     public void create(String nimi) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Alue (nimi) VALUES ('" + nimi + "')");
+        
+        nimi = nimi.trim(); //poistaa välilyönnit
+        if (nimi.isEmpty()) { //varmistaa, ettei voi luoda nimetöntä aluetta
+            return;
+        }
+        
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Alue (nimi) VALUES ('?')");
+        stmt.setObject(1, nimi);
 
         stmt.executeUpdate();
 
         stmt.close();
         connection.close();
     }
+    
 
     @Override
     public void delete(Integer key) throws SQLException {

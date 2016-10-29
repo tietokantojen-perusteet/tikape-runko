@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import tikape.runko.domain.Aihe;
@@ -48,25 +49,9 @@ public class AiheDao implements Dao<Aihe, Integer> {
     }
 
     public String findAlueid(String key) throws SQLException {
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT alue_id FROM Aihe WHERE id = ?");
-        stmt.setObject(1, key);
-
-        ResultSet rs = stmt.executeQuery();
-        boolean hasOne = rs.next();
-        if (!hasOne) {
-            return null;
-        }
-
-        Integer alue = rs.getInt("alue_id");
-
-        String palauta = "" + alue;
-
-        rs.close();
-        stmt.close();
-        connection.close();
-
-        return palauta;
+        Aihe aihe = findOne(Integer.parseInt(key));
+        String alueid = "" + aihe.getAlue();
+        return alueid;
     }
 
     public List<Aihe> findAlueesta(Integer key) throws SQLException {
@@ -115,16 +100,49 @@ public class AiheDao implements Dao<Aihe, Integer> {
         return aiheet;
     }
 
-    public void create(String alueid, String nimi) throws SQLException {
+    // Aiheet top 10 EI TOIMI VIELÄ!!!
+    public List<Aihe> findViimeisimmatKymmenenAihetta(Integer alueid) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Aihe (alue_id, nimi) VALUES (" + alueid + ", '" + nimi + "')");
+        PreparedStatement stmt = connection.prepareStatement("SELECT Aihe.alue_id, Aihe.id, Aihe.nimi, MAX(Viesti.time) AS time FROM Aihe LEFT JOIN Viesti ON Aihe.id = Viesti.aihe_id WHERE alue_id = ? GROUP BY Aihe.nimi ORDER BY time DESC LIMIT 10");
 
+        stmt.setInt(1, alueid);
+
+        ResultSet rs = stmt.executeQuery();
+
+        List<Aihe> aiheet = new ArrayList<>();
+
+        while (rs.next()) {
+            Integer alue_id = rs.getInt("alue_id");
+            Integer id = rs.getInt("id");
+            String nimi = rs.getString("nimi");
+
+            aiheet.add(new Aihe(id, nimi, alue_id));
+        }
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return aiheet;
+    }
+
+    public void create(String alueid, String nimiSyote) throws SQLException {
+        Connection connection = database.getConnection();
+
+        String nimi = nimiSyote.trim(); //poistaa välilyönnit
+        if (nimi.isEmpty()) { //varmistaa, ettei voi luoda nimetöntä aihetta
+            return;
+        }
+
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Aihe (alue_id, nimi) VALUES (?, ?)");
+        stmt.setObject(1, alueid);
+        stmt.setObject(2, nimi);
         stmt.executeUpdate();
 
         stmt.close();
         connection.close();
     }
-    
+
     public Integer getLukumaara(Integer key) throws SQLException {
 
         Connection connection = database.getConnection();
@@ -143,7 +161,9 @@ public class AiheDao implements Dao<Aihe, Integer> {
     public String getViimeisin(Integer aiheid) throws SQLException {
 
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT Viesti.time FROM Viesti, Aihe, Alue WHERE Viesti.aihe_id = Aihe.id AND Aihe.alue_id = Alue.id AND Aihe.id = " + aiheid + " ORDER BY Viesti.time DESC LIMIT 1");
+        PreparedStatement stmt = connection.prepareStatement("SELECT Viesti.time FROM Viesti, Aihe, Alue WHERE Viesti.aihe_id = Aihe.id AND Aihe.alue_id = Alue.id AND Aihe.id = ? ORDER BY Viesti.time DESC LIMIT 1");
+
+        stmt.setObject(1, aiheid);
 
         ResultSet rs = stmt.executeQuery();
 
@@ -159,6 +179,20 @@ public class AiheDao implements Dao<Aihe, Integer> {
 
         return palauta;
 
+    }
+
+    public void poista(String id) throws Exception {
+        Connection connection = database.getConnection();
+        Statement statement = connection.createStatement();
+        try {
+            Integer.parseInt(id);
+        } catch (Throwable t) {
+            return;
+        }
+
+        statement.execute("DELETE FROM Viesti WHERE aihe_id = " + id);
+        statement.execute("DELETE FROM Aihe WHERE id = " + id);
+        connection.close();
     }
 
     @Override

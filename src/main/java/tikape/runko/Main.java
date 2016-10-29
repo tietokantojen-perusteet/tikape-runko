@@ -17,6 +17,8 @@ import tikape.runko.domain.Viesti;
 public class Main {
 
     public static void main(String[] args) throws Exception {
+        port(getHerokuAssignedPort());
+
         Database database = new Database("jdbc:sqlite:foorumi.db");
         database.init();
 
@@ -64,34 +66,103 @@ public class Main {
         get("/alue/:id", (req, res) -> {
             HashMap map = new HashMap<>();
 
+            List<Aihe> aiheet = aiheDao.findViimeisimmatKymmenenAihetta(Integer.parseInt(req.params(":id")));
             List<String> viimeisimmat = new ArrayList<>();
-            for (Aihe aihe : aiheDao.findAlueesta(Integer.parseInt(req.params(":id")))) {
+
+            for (Aihe aihe : aiheet) {
                 viimeisimmat.add("" + aiheDao.getViimeisin(aihe.getId()));
             }
 
             List<String> viestimaarat = new ArrayList<>();
-            for (Aihe aihe : aiheDao.findAlueesta(Integer.parseInt(req.params(":id")))) {
+            for (Aihe aihe : aiheet) {
                 viestimaarat.add("" + aiheDao.getLukumaara(aihe.getId()));
             }
 
+            String alueid = req.params(":id");
+            Alue alue = alueDao.findOne(Integer.parseInt(alueid));
+            String aluenimi = alue.getNimi();
+
             map.put("viestimaarat", viestimaarat);
             map.put("viimeisimmat", viimeisimmat);
-            String alueid = req.params(":id");
             map.put("alueid", alueid);
-            map.put("aihelista", aiheDao.findAlueesta(Integer.parseInt(req.params(":id"))));
-            return new ModelAndView(map, "aiheet");
+            map.put("aluenimi", aluenimi);
+            map.put("aihelista", aiheet);
+            return new ModelAndView(map, "aiheet_taulukko");
         }, new ThymeleafTemplateEngine());
 
         get("/aihe/:id", (req, res) -> {
             HashMap map = new HashMap<>();
-            List<Viesti> viestilista = viestiDao.findAiheesta(Integer.parseInt(req.params(":id")));
+            List<Viesti> viestilista = viestiDao.findKymmenenViimeisintaViestia((Integer.parseInt(req.params(":id"))), 1);
             String aiheid = req.params(":id");
             String alueid = aiheDao.findAlueid(aiheid);
+            Aihe aihe = aiheDao.findOne(Integer.parseInt(aiheid));
+            String aihenimi = aihe.getNimi();
+            Alue alue = alueDao.findOne(Integer.parseInt(alueid));
+            String aluenimi = alue.getNimi();
+
             map.put("alueid", alueid);
             map.put("aiheid", aiheid);
+            map.put("aihenimi", aihenimi);
+            map.put("aluenimi", aluenimi);
             map.put("viestilista", viestilista);
-            return new ModelAndView(map, "aihe");
+            return new ModelAndView(map, "aihe_taulukko");
         }, new ThymeleafTemplateEngine());
 
+        //Sivunumerolliset hillitsemään ja hallitsemaan aihe- ja viestitulvaa
+        //Ei toimi vielä kunnolla!
+        get("alue/:id/aihe/:id/sivu/:sivunro", (req, res) -> {
+            HashMap map = new HashMap<>();
+            String aiheid = req.params(":id");
+            String alueid = aiheDao.findAlueid(aiheid);
+            Aihe aihe = aiheDao.findOne(Integer.parseInt(aiheid));
+            String aihenimi = aihe.getNimi();
+            Alue alue = alueDao.findOne(Integer.parseInt(alueid));
+            String aluenimi = alue.getNimi();
+            List<Viesti> viestilista = viestiDao.findKymmenenViimeisintaViestia((Integer.parseInt(aiheid)), (Integer.parseInt(req.params(":sivunro"))));
+
+            map.put("alueid", alueid);
+            map.put("aiheid", aiheid);
+            map.put("aihenimi", aihenimi);
+            map.put("aluenimi", aluenimi);
+            map.put("viestilista", viestilista);
+            map.put("seuraavasivu", Integer.toString(Integer.parseInt(req.params(":sivunro")) + 1));
+            map.put("edellinensivu", Integer.toString(Integer.parseInt(req.params(":sivunro")) - 1));
+            return new ModelAndView(map, "aihe_taulukko");
+        }, new ThymeleafTemplateEngine());
+
+        // viestien lähettäminen ja sivunumerot
+        post("/aihe/:aiheid/sivu/:sivunro", (req, res) -> {
+            viestiDao.create(req.params(":id"), req.queryParams("name"), req.queryParams("viesti"));
+            res.redirect("/aihe/" + Integer.parseInt(req.params(":aiheid")) + "/sivu/" + Integer.parseInt(req.params(":sivunro")));
+
+            return "ok";
+        });
+
+        // Tässä aiheen poistamiseen
+        post("/aihe/poista/:id", (req, res) -> {
+            String alue_id = aiheDao.findAlueid(req.params(":id"));
+
+            aiheDao.poista(req.params(":id"));
+            res.redirect("/alue/" + alue_id);
+            return "";
+
+        });
+        // Tässä viestin poistamiseen
+        post("/viesti/poista/:id", (req, res) -> {
+            String aihe_id = viestiDao.getAiheId(req.params(":id"));
+
+            viestiDao.poista(req.params(":id"));
+            res.redirect("/aihe/" + aihe_id);
+            return "";
+        });
+
+    }
+
+    static int getHerokuAssignedPort() {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        if (processBuilder.environment().get("PORT") != null) {
+            return Integer.parseInt(processBuilder.environment().get("PORT"));
+        }
+        return 4567; //return default port if heroku-port isn't set (i.e. on localhost)
     }
 }
