@@ -99,7 +99,35 @@ public class AiheDao implements Dao<Aihe, Integer> {
 
         return aiheet;
     }
+    
+    // Aiheet top 10 EI TOIMI VIELÄ!!!
+    public List<Aihe> findViimeisimmatKymmenenAihetta (Integer alueid) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT Aihe.id, Aihe.nimi "
+                + "COUNT(Viesti.id) AS viestit FROM Aihe LEFT JOIN Viesti ON Viesti.aihe_id = Aihe.id "
+                + "WHERE Aihe.alue_id = ? GROUP BY Aihe.id ORDER BY Viesti.time DESC LIMIT 10;");
+        
+        stmt.setInt(1, alueid);
+        
+        ResultSet rs = stmt.executeQuery();
+        
+        List<Aihe> aiheet = new ArrayList<>();
+        
+         while (rs.next()) {
+            Integer alue_id = rs.getInt("alue_id");
+            Integer id = rs.getInt("id");
+            String nimi = rs.getString("nimi");
 
+            aiheet.add(new Aihe(id, nimi, alue_id));
+        }
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return aiheet;
+    }
+    
     public void create(String alueid, String nimi) throws SQLException {
         Connection connection = database.getConnection();
         

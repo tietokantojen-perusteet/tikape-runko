@@ -83,7 +83,7 @@ public class Main {
             map.put("alueid", alueid);
             map.put("aluenimi", aluenimi);
             map.put("aihelista", aiheDao.findAlueesta(Integer.parseInt(req.params(":id"))));
-            return new ModelAndView(map, "aiheet");
+            return new ModelAndView(map, "aiheet_taulukko");
         }, new ThymeleafTemplateEngine());
 
         get("/aihe/:id", (req, res) -> {
@@ -93,13 +93,49 @@ public class Main {
             String alueid = aiheDao.findAlueid(aiheid);
             Aihe aihe = aiheDao.findOne(Integer.parseInt(aiheid));
             String aihenimi = aihe.getNimi();
+            Alue alue = alueDao.findOne(Integer.parseInt(alueid));
+            String aluenimi = alue.getNimi();
             
             map.put("alueid", alueid);
             map.put("aiheid", aiheid);
             map.put("aihenimi", aihenimi);
+            map.put("aluenimi", aluenimi);
             map.put("viestilista", viestilista);
-            return new ModelAndView(map, "aihe");
+            return new ModelAndView(map, "aihe_taulukko");
         }, new ThymeleafTemplateEngine());
+        
+        //Sivunumerolliset hillitsemään ja hallitsemaan aihe- ja viestitulvaa
+        //Ei toimi vielä kunnolla!
+        get("alue/:id/aihe/:id/sivu/:sivunro", (req, res) -> {
+            HashMap map = new HashMap<>();
+            String aiheid = req.params(":id");
+            String alueid = aiheDao.findAlueid(aiheid);
+            Aihe aihe = aiheDao.findOne(Integer.parseInt(aiheid));
+            String aihenimi = aihe.getNimi();
+            Alue alue = alueDao.findOne(Integer.parseInt(alueid));
+            String aluenimi = alue.getNimi();
+            List<Viesti> viestilista = viestiDao.findKymmenenViimeisintaViestia(Integer.parseInt(alueid), (Integer.parseInt(aiheid)), (Integer.parseInt(req.params(":sivunro"))));
+            
+            
+            map.put("alueid", alueid);
+            map.put("aiheid", aiheid);
+            map.put("aihenimi", aihenimi);
+            map.put("aluenimi", aluenimi);
+            map.put("viestilista", viestilista);
+            map.put("seuraavasivu", Integer.toString(Integer.parseInt(req.params(":sivunro"))+1)); 
+            map.put("edellinensivu", Integer.toString(Integer.parseInt(req.params(":sivunro"))-1)); 
+            return new ModelAndView(map, "aihe_taulukko");
+        }, new ThymeleafTemplateEngine());
+        
+        // viestien lähettäminen ja sivunumerot
+        post("/aihe/:aiheid/sivu/:sivunro", (req, res) -> {
+	viestiDao.create(req.params(":id"), req.queryParams("name"), req.queryParams("viesti"));
+	res.redirect("/aihe/" + Integer.parseInt(req.params(":aiheid")) + "/sivu/" + Integer.parseInt(req.params(":sivunro")));
+
+	return "ok";
+	});
+
+
         
         // Tässä aiheen poistamiseen
         post("/aihe/poista/:id", (req, res) -> {

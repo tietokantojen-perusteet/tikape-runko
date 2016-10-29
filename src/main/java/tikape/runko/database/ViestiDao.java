@@ -55,7 +55,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
         return viestit;
     }
-
+    
     public void create(String aiheid, String nimi, String text) throws SQLException {
         
         nimi = nimi.trim(); //ylimääräiset välilyönnit pois
@@ -74,7 +74,41 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         connection.close();
     }
     
-    //Tähän viestin poistometodi opettajan luennolla käytetyn todo-esimerkin pohjalta
+    //Viestien määrä 10 per sivu ja tuorein ylimpänä EI TOIMI VIELÄ!!!
+    public List<Viesti> findKymmenenViimeisintaViestia (Integer alueid, Integer aiheid, Integer sivunro) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti, Aihe, Alue WHERE Viesti.aihe_id = Aihe.id "
+                + "AND Aihe.alue_id = Alue.id AND Aihe.id = ? AND Alue.id = ? "
+                + "LIMIT 10 OFFSET ((( ? -1)*10));");
+        
+        stmt.setInt(1, aiheid);
+    stmt.setInt(2, alueid);
+    stmt.setInt(3, sivunro);
+        
+        ResultSet rs = stmt.executeQuery();
+        
+        List<Viesti> viestit = new ArrayList<>();
+        AiheDao ad = new AiheDao(this.database);
+
+    while (rs.next()) {
+        Integer id = rs.getInt("id");
+        String time = rs.getString("time");
+        String text = rs.getString("text");
+        String nimi = rs.getString("nimi");
+        Aihe aihe =  ad.findOne(rs.getInt("aihe_id"));
+
+        Viesti o = new Viesti(aihe, id, nimi, text, time);
+        viestit.add(o);
+    }
+
+    rs.close();
+    stmt.close();
+    connection.close();
+
+    return viestit;     
+    }
+    
+    //Poistaa viestin
     public void poista(String id) throws Exception {
         Connection connection = database.getConnection();
         Statement statement = connection.createStatement();
