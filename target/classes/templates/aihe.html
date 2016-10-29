@@ -1,0 +1,91 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <style>
+        section {
+            float: left;
+            margin: 0 0%;
+            width: 14%;
+        }
+        div.fixed {
+            position: fixed;
+            bottom: 0px;
+            left: 5px;
+            width: 200px;
+        }
+
+        ul { 
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+    <head>
+        <title>Aihe</title>
+        <meta charset="utf-8" />
+    </head>
+
+    <body>
+    <h1 th:text="${aihenimi}">Aiheen nimi</h1>
+
+
+        <section>
+            <p>Viesti</p>
+            <ul>
+                <li th:each="viesti : ${viestilista}">
+                    <span th:text="${viesti.text}">viesti</span>
+                </li>
+            </ul>
+        </section>
+        <section>
+            <p>Lahettaja</p>
+            <ul>
+                <li th:each="viesti : ${viestilista}">
+                    <span th:text="${viesti.nimi}">lahettaja</span>
+                </li>
+            </ul>
+        </section>
+        <section>
+            <p>Lahetetty</p>
+            <ul>
+                <li th:each="viesti : ${viestilista}">
+                    <span th:text="${viesti.time}">lahetysaika</span>
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <center>
+            <p>Poista viesti</p>
+            <ul>
+                <li th:each="viesti : ${viestilista}">
+                        <form method="POST" th:action="@{~/viesti/poista/__${viesti.id}__}">
+                        <input type="submit" value="" style="width:15px; height: 15px;" />                        
+                    </form>
+                </li>
+            </ul>
+            </center>
+        </section>
+
+        <div class="fixed">
+
+            <br></br>
+            <form method='GET' th:action="@{~/alue/__${alueid}__}">
+                <input type="submit" value="Takaisin aiheisiin" />
+            </form>   
+
+            <h3>Lisaa viesti</h3>
+
+            <form method="POST" th:action="@{~/aihe/__${aiheid}__}">
+                <fieldset>
+                    Nimimerkki:
+                    <input type="text" name="name"/>
+
+                    Viesti:
+                    <input type="text" name="viesti"/>
+
+                    <input type="submit" value="Lisaa!"/>
+                </fieldset>
+            </form>
+        </div>
+    </body>
+</html>
