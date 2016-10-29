@@ -86,8 +86,10 @@ public class AlueDao implements Dao<Alue, Integer> {
     public String getViimeisin(Integer key) throws SQLException {
 
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT Viesti.time FROM Viesti, Aihe, Alue WHERE Viesti.aihe_id = Aihe.id AND Aihe.alue_id = Alue.id AND Alue.id = " + key + " ORDER BY Viesti.time DESC LIMIT 1");
-
+        PreparedStatement stmt = connection.prepareStatement("SELECT Viesti.time FROM Viesti, Aihe, Alue WHERE Viesti.aihe_id = Aihe.id AND Aihe.alue_id = Alue.id AND Alue.id = ? ORDER BY Viesti.time DESC LIMIT 1");
+        
+        stmt.setObject(1, key);
+        
         ResultSet rs = stmt.executeQuery();
 
         if (rs.isClosed()) {
@@ -112,7 +114,8 @@ public class AlueDao implements Dao<Alue, Integer> {
             return;
         }
         
-        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Alue (nimi) VALUES ('" + nimi + "')");
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Alue (nimi) VALUES ('?')");
+        stmt.setObject(1, nimi);
 
         stmt.executeUpdate();
 

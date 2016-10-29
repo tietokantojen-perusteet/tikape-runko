@@ -27,8 +27,9 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
     public List<Viesti> findAiheesta(Integer key) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE aihe_id = " + key);
-//        stmt.setObject(1, key);
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE aihe_id = ?");
+        stmt.setObject(1, key);
+        
         ResultSet rs = stmt.executeQuery();
         boolean hasOne = rs.next();
 //        if (!hasOne) {
@@ -66,8 +67,10 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         }
         
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Viesti (aihe_id, nimi, text) VALUES (" + aiheid + ", '" + nimi + "', '" + text + "')");
-
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Viesti (aihe_id, nimi, text) VALUES (?, ?, ?)");
+        stmt.setObject(1, aiheid);
+        stmt.setObject(2, nimi);
+        stmt.setObject(3, text);
         stmt.executeUpdate();
 
         stmt.close();
@@ -82,8 +85,8 @@ public class ViestiDao implements Dao<Viesti, Integer> {
                 + "LIMIT 10 OFFSET ((( ? -1)*10));");
         
         stmt.setInt(1, aiheid);
-    stmt.setInt(2, alueid);
-    stmt.setInt(3, sivunro);
+        stmt.setInt(2, alueid);
+        stmt.setInt(3, sivunro);
         
         ResultSet rs = stmt.executeQuery();
         
@@ -124,7 +127,9 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     
     public String getAiheId(String id) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT aihe_id FROM Viesti WHERE id = " + id);
+        PreparedStatement stmt = connection.prepareStatement("SELECT aihe_id FROM Viesti WHERE id = ?");
+        
+        stmt.setString(1, id);
         
         ResultSet rs = stmt.executeQuery();
 

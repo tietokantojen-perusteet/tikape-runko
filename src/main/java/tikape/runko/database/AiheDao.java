@@ -136,8 +136,9 @@ public class AiheDao implements Dao<Aihe, Integer> {
             return;
         }
       
-        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Aihe (alue_id, nimi) VALUES (" + alueid + ", '" + nimi + "')");
-
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Aihe (alue_id, nimi) VALUES (?, '?')");
+        stmt.setObject(1, alueid);
+        stmt.setObject(2, nimi);
         stmt.executeUpdate();
 
         stmt.close();
@@ -162,8 +163,10 @@ public class AiheDao implements Dao<Aihe, Integer> {
     public String getViimeisin(Integer aiheid) throws SQLException {
 
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT Viesti.time FROM Viesti, Aihe, Alue WHERE Viesti.aihe_id = Aihe.id AND Aihe.alue_id = Alue.id AND Aihe.id = " + aiheid + " ORDER BY Viesti.time DESC LIMIT 1");
-
+        PreparedStatement stmt = connection.prepareStatement("SELECT Viesti.time FROM Viesti, Aihe, Alue WHERE Viesti.aihe_id = Aihe.id AND Aihe.alue_id = Alue.id AND Aihe.id = ? ORDER BY Viesti.time DESC LIMIT 1");
+        
+        stmt.setObject(1, aiheid);
+        
         ResultSet rs = stmt.executeQuery();
 
         if (rs.isClosed()) {
