@@ -1,5 +1,5 @@
 PRAGMA foreign_keys = ON;
 
-CREATE TABLE Aihealue (aihe String PRIMARY KEY NOT NULL UNIGUE);
+CREATE TABLE Aihealue (aihe String PRIMARY KEY NOT NULL UNIQUE);
 CREATE TABLE Ketju (ketju integer PRIMARY KEY, FOREIGN KEY (aihe) REFERENCES Aihealue (aihe));
 CREATE TABLE Viesti (FOREIGN KEY (aihe) REFERENCES Aihealue (aihe), kommentti string NOT NULL, kayttajanimi string, aika date);
