@@ -63,7 +63,7 @@ public class Database {
                 + "FOREIGN KEY(vastaus_id) REFERENCES Viesti(id)\n"
                 + ");")
                 
-//        Model for db tables
+//        Model for db tables/inserts
 //        lista.add("CREATE TABLE Opiskelija (id integer PRIMARY KEY, nimi varchar(255));");
 //        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Platon');");
 //        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Aristoteles');");
