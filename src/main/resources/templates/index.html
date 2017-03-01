@@ -7,10 +7,20 @@
     </head>
 
     <body>
-        <h1>Heippa vaan!</h1>
+        <h1>Aihealueet</h1>
 
-        <p>Ja .. <span th:text="${viesti}">jotain?</span></p>
+      
+         <table>
+      <tr th:each="Aihealue : ${aihealueet}">
+        <td><a th:href="@{~/Aihealue(id=${Aihealue.id},sivu=1)}" th:text="${Aihealue.aihe}">palsta</a><span th:text="| (${Aihealue.koko} viestiä) - ${Aihealue.viimeisin}|"></span></td>
+      </tr>
+    </table>
+        
+    <form method="POST">
+      <textarea name="aihe"></textarea>
+      <button type="submit"  >Lähetä</button>
+    </form>
 
-        <p><a href="/opiskelijat">Tästä opiskelijalistaukseen.</a></p>
     </body>
 </html>
+
