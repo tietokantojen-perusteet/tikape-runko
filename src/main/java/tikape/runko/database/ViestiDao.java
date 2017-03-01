@@ -72,4 +72,25 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         }
         return viestit;
     }
+    
+    public Viesti findByAlue(Aihealue a) {
+        // Ketjuissa ei ole viittausta Alueeseen joten tätä ei voida toteuttaa
+//        Connection conn = db.getConnection();
+//        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Viesti, WHERE ")
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public Viesti findMostRecent() throws SQLException {
+        Connection conn = db.getConnection();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM Viesti ORDER BY aika DESC LIMIT 1");
+        
+        Boolean hasOne = rs.next();
+        if (!hasOne) {
+            return null;
+        }
+        
+        Viesti v = new Viesti(rs.getInt("ketju_id"), rs.getString("kommentti"), rs.getString("kayttajanimi"), rs.getTimestamp("aika"));
+        return v;
+    }
 }
