@@ -24,7 +24,7 @@ public class ketjuDao implements Dao<Ketju, Integer>{
         this.database = database;
     }
 
-    
+      @Override
     public Ketju findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Ketju WHERE id = ?");
@@ -50,7 +50,7 @@ public class ketjuDao implements Dao<Ketju, Integer>{
         return k;
     }
 
- 
+    @Override
     public List<Ketju> findAll() throws SQLException {
 
         Connection connection = database.getConnection();
@@ -74,7 +74,7 @@ public class ketjuDao implements Dao<Ketju, Integer>{
         return ketjut;
     }
 
-   
+    
     public void poistaKetju(Integer ketju) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("DELETE FROM Ketju WHERE ketju = ?");
@@ -82,7 +82,7 @@ public class ketjuDao implements Dao<Ketju, Integer>{
         stmt.execute();
         connection.close();
     }
-    
+     
     public void luoKetju(int ketju, String nimi, String otsikko, String sisalto) throws Exception {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("INSERT INTO Ketju(ketju, nimi, otsikko, sisalto) "
