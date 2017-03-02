@@ -13,4 +13,24 @@ public class Viesti {
         this.kayttaja = kirjoittaja;
     }
     
+    public Kayttaja getKayttaja() {
+        return this.kayttaja;
+    }
+    
+    public String getOtsikko() {
+        return this.otsikko;
+    }
+    
+    public String getSisalto() {
+        return this.sisalto;
+    }
+    
+    public String getAika() {
+        return this.aika;
+    }
+    
+    public int getAlueenId() {
+        return this.alueenId;
+    }
+    
 }

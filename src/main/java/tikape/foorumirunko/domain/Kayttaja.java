@@ -9,5 +9,9 @@ public class Kayttaja {
         this.nimimerkki = nimi;
     }
     
+    public String getNimimerkki() {
+        return this.nimimerkki;
+    }
+    
     
 }
