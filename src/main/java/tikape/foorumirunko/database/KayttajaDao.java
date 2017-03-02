@@ -9,7 +9,7 @@ import tikape.foorumirunko.domain.Kayttaja;
  * @author eemitant
  * @author xvixvi
  */
-public class KayttajaDao implements Dao {
+public class KayttajaDao implements Dao<Kayttaja, String> {
 
     private Database database;
     
@@ -18,7 +18,7 @@ public class KayttajaDao implements Dao {
     }
     
     @Override
-    public Object findOne(Object key) throws SQLException {
+    public Kayttaja findOne(String key) throws SQLException {
         Connection con = database.getConnection();
         PreparedStatement stmt = con.prepareStatement("SELECT * FROM Kayttaja WHERE kayttajan_id = ?");
         stmt.setObject(1, key);
@@ -61,8 +61,8 @@ public class KayttajaDao implements Dao {
     }
 
     @Override
-    public void delete(Object key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void delete(String key) throws SQLException {
+        
     }
     
 }

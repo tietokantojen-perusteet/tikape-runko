@@ -7,13 +7,14 @@ package tikape.foorumirunko.database;
 
 import java.sql.SQLException;
 import java.util.List;
+import tikape.foorumirunko.domain.Alue;
 
 /**
  *
  * @author eemitant
  * @author xvixvi
  */
-public class AlueDao implements Dao {
+public class AlueDao implements Dao<Alue, Integer> {
     
     private Database database;
     
@@ -22,17 +23,17 @@ public class AlueDao implements Dao {
     }
     
     @Override
-    public Object findOne(Object key) throws SQLException {
+    public Alue findOne(Integer key) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void delete(Integer key) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public List findAll() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void delete(Object key) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
