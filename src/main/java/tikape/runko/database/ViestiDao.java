@@ -8,7 +8,9 @@ package tikape.runko.database;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import tikape.runko.domain.Aihealue;
 import tikape.runko.domain.Viesti;
+import tikape.runko.domain.Ketju;
 
 /**
  *
@@ -31,12 +33,11 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         stmt.executeUpdate();
         return v;
     };
-    
-    public 
 
     @Override
     public Viesti findOne(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new Viesti(null,null,null,null);
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -47,9 +48,9 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         List<Viesti> viestit = new ArrayList();
         while (rs.next()) {
             Viesti v = new Viesti(rs.getInt("ketju_id"), rs.getString("kommentti"), rs.getString("kayttajanimi"), rs.getTimestamp("aika"));
-            
+            viestit.add(v);
         }
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return viestit;
     }
 
     @Override
@@ -84,6 +85,21 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         Connection conn = db.getConnection();
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM Viesti ORDER BY aika DESC LIMIT 1");
+        
+        Boolean hasOne = rs.next();
+        if (!hasOne) {
+            return null;
+        }
+        
+        Viesti v = new Viesti(rs.getInt("ketju_id"), rs.getString("kommentti"), rs.getString("kayttajanimi"), rs.getTimestamp("aika"));
+        return v;
+    }
+    
+    public Viesti findMostRecentByKetju(Ketju k) throws SQLException {
+        Connection conn = db.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Viesti WHERE ketju_id = ? ORDER BY aika DESC LIMIT 1");
+        stmt.setObject(1, k.getKetju());
+        ResultSet rs = stmt.executeQuery();
         
         Boolean hasOne = rs.next();
         if (!hasOne) {
