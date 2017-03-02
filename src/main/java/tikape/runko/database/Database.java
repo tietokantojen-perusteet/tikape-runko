@@ -3,6 +3,7 @@ package tikape.runko.database;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
 
 public class Database {
 
@@ -37,13 +38,37 @@ public class Database {
 
     private List<String> sqliteLauseet() {
         ArrayList<String> lista = new ArrayList<>();
-
-        // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
-        lista.add("CREATE TABLE Opiskelija (id integer PRIMARY KEY, nimi varchar(255));");
-        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Platon');");
-        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Aristoteles');");
-        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Homeros');");
-
+        // Lauseet tietokantataulujen luomiseen
+        lista.add("CREATE TABLE Keskustelualue (" +
+                    "id integer PRIMARY KEY, " +
+                    "aihe varchar(50) NOT NULL UNIQUE);");
+        lista.add("CREATE TABLE Keskustelunavaus (" +
+                    "id integer PRIMARY KEY, " + 
+                    "alue integer NOT NULL, " +
+                    "aika timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL, " +
+                    "otsikko varchar(200) NOT NULL UNIQUE, " +
+                    "FOREIGN KEY(alue) REFERENCES Keskustelualue(id));");
+        lista.add("CREATE TABLE Viesti (" +
+                    "id integer PRIMARY KEY, " +
+                    "alue integer NOT NULL, " +
+                    "avaus integer NOT NULL, " + 
+                    "aika timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL, " +
+                    "nimimerkki varchar(20) NOT NULL, " + 
+                    "sisalto varchar(1000) NOT NULL, " +
+                    "FOREIGN KEY(avaus) REFERENCES Keskustelunavaus(id), " +
+                    "FOREIGN KEY(alue) REFERENCES Keskustelualue(id));");
         return lista;
+    }
+    
+    public void update(String query, Object... parameters) throws SQLException {
+        Connection conn = getConnection();
+        PreparedStatement st = conn.prepareStatement(query);
+            
+        for (int i = 0; i < parameters.length; i++) {
+            st.setObject(i + 1, parameters[i]);
+        }
+        
+        st.execute();
+        conn.close();
     }
 }
