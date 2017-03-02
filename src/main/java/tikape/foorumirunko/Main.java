@@ -1,4 +1,4 @@
-package tikape.a;
+package tikape.foorumirunko;
 
 import java.util.HashMap;
 import spark.ModelAndView;
@@ -10,6 +10,12 @@ import tikape.runko.database1.OpiskelijaDao;
 public class Main {
 
     public static void main(String[] args) throws Exception {
+        /* herokuun siirtymiseen liittyvä portinhakusetti
+        if (System.getenv("PORT") != null) {
+            port(Integer.valueOf(System.getenv("PORT")));
+        }
+        */
+        
         Database database = new Database("jdbc:sqlite:opiskelijat.db");
         database.init();
 
