@@ -1,11 +1,11 @@
-package tikape.runko;
+package tikape.a;
 
 import java.util.HashMap;
 import spark.ModelAndView;
 import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
-import tikape.runko.database.Database;
-import tikape.runko.database.OpiskelijaDao;
+import tikape.runko.database1.Database;
+import tikape.runko.database1.OpiskelijaDao;
 
 public class Main {
 
