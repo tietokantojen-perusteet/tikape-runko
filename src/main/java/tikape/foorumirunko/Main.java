@@ -1,11 +1,11 @@
 package tikape.foorumirunko;
 
-import java.util.HashMap;
+import java.util.*;
 import spark.ModelAndView;
 import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.foorumirunko.database.*;
-import tikape.runko.database1.OpiskelijaDao;
+import tikape.foorumirunko.domain.*;
 
 public class Main {
 
@@ -25,24 +25,30 @@ public class Main {
         AlueDao alueDao = new AlueDao(database);
 
         get("/", (req, res) -> {
+            List<Alue> alueet = alueDao.findAll();
+            String aihealueet = "";
+            for (Alue a : alueet) {
+                aihealueet += a.getNimi()+ "<br/>";
+            }
+            
             HashMap map = new HashMap<>();
-            map.put("viesti", "tervehdys");
+            map.put("alueet", aihealueet);
 
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
 
         get("/kayttajat", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("opiskelijat", kayttajaDao.findAll());
+            map.put("kayttajat", kayttajaDao.findAll());
 
-            return new ModelAndView(map, "opiskelijat");
+            return new ModelAndView(map, "kayttajat");
         }, new ThymeleafTemplateEngine());
 
-        get("/opiskelijat/:id", (req, res) -> {
+        get("/kayttaja/:id", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("opiskelija", kayttajaDao.findOne(req.params("id")));
+            map.put("kayttaja", kayttajaDao.findOne(req.params("id")));
 
-            return new ModelAndView(map, "opiskelija");
+            return new ModelAndView(map, "kayttaja");
         }, new ThymeleafTemplateEngine());
     }
 }

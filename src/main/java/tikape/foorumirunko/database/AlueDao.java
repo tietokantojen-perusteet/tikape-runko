@@ -5,8 +5,8 @@
  */
 package tikape.foorumirunko.database;
 
-import java.sql.SQLException;
-import java.util.List;
+import java.sql.*;
+import java.util.*;
 import tikape.foorumirunko.domain.Alue;
 
 /**
@@ -24,8 +24,26 @@ public class AlueDao implements Dao<Alue, Integer> {
     
     @Override
     public Alue findOne(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        Connection con = database.getConnection();
+        PreparedStatement stmt = con.prepareStatement("SELECT * FROM Alue WHERE alueen_id = ?");
+        stmt.setObject(1, key);
+        
+        ResultSet rs = stmt.executeQuery();
+        boolean hasOne = rs.next();
+        if (!hasOne) {
+            return null;
+        }
+
+        int id = Integer.parseInt(rs.getString("alueen_id"));
+        String nimi = rs.getString("alueen_nimi");
+
+        Alue a = new Alue(id, nimi);
+
+        rs.close();
+        stmt.close();
+        con.close();
+
+        return a;    }
 
     @Override
     public void delete(Integer key) throws SQLException {
@@ -33,8 +51,25 @@ public class AlueDao implements Dao<Alue, Integer> {
     }
 
     @Override
-    public List findAll() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public List<Alue> findAll() throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Kayttaja");
+        ResultSet rs = stmt.executeQuery();
+
+        List<Alue> alueet = new ArrayList<>();
+        while (rs.next()) {
+            int id = Integer.parseInt(rs.getString("alueen_id"));
+            String nimi = rs.getString("alueen_nimi");
+            int viestienMaara = Integer.parseInt(rs.getString("viestien_maara"));
+            Timestamp ts = Timestamp.valueOf(rs.getString("timestamp"));
+
+            alueet.add(new Alue(id, nimi, viestienMaara, ts));
+        }
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return alueet;    }
     
 }

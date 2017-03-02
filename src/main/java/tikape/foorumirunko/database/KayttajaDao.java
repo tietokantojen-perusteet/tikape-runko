@@ -18,10 +18,10 @@ public class KayttajaDao implements Dao<Kayttaja, String> {
     }
     
     @Override
-    public Kayttaja findOne(String key) throws SQLException {
+    public Kayttaja findOne(String nimimerkki) throws SQLException {
         Connection con = database.getConnection();
-        PreparedStatement stmt = con.prepareStatement("SELECT * FROM Kayttaja WHERE kayttajan_id = ?");
-        stmt.setObject(1, key);
+        PreparedStatement stmt = con.prepareStatement("SELECT * FROM Kayttaja WHERE nimimerkki = ?");
+        stmt.setObject(1, nimimerkki);
         
         ResultSet rs = stmt.executeQuery();
         boolean hasOne = rs.next();
@@ -29,9 +29,9 @@ public class KayttajaDao implements Dao<Kayttaja, String> {
             return null;
         }
 
-        String nimimerkki = rs.getString("nimimerkki");
+        String nimim = rs.getString("nimimerkki");
 
-        Kayttaja k = new Kayttaja(nimimerkki);
+        Kayttaja k = new Kayttaja(nimim);
 
         rs.close();
         stmt.close();
@@ -61,8 +61,16 @@ public class KayttajaDao implements Dao<Kayttaja, String> {
     }
 
     @Override
-    public void delete(String key) throws SQLException {
+    public void delete(String nimimerkki) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("DELETE FROM Kayttaja WHERE nimimerkki = ?");
+        stmt.setObject(1, nimimerkki);
         
+        int kuinkaMoneenRiviinVaikutettiin = stmt.executeUpdate();
+        System.out.println("KayttajaDao poisti käyttäjän " + nimimerkki + "muuttaen " + kuinkaMoneenRiviinVaikutettiin + "kpl rivejä");
+        
+        stmt.close();
+        connection.close();
     }
     
 }

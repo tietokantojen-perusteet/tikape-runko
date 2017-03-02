@@ -1,14 +1,25 @@
 
 package tikape.foorumirunko.domain;
 
+import java.sql.Timestamp;
+
 public class Alue {
     
+    private String nimi;
     private int id;
     private int viestienMaara;
-    private String viimeisinViesti;
+    private Timestamp viimeisinViestiTimestamp;
     
-    public Alue(int tunnus) {
+    public Alue(int tunnus, String namen) {
         this.id = tunnus;
+        nimi = namen;
+    }
+    
+    public Alue(int tunnus, String name, int viestienMaara, Timestamp ts) {
+        id = tunnus;
+        nimi = name;
+        this.viestienMaara = viestienMaara;
+        viimeisinViestiTimestamp = ts;
     }
     
     public int getId() {
@@ -19,8 +30,12 @@ public class Alue {
         return this.viestienMaara;
     }
     
-    public String getViimeisinViesti() {
-        return this.viimeisinViesti;
+    public Timestamp getViimeisinViesti() {
+        return viimeisinViestiTimestamp;
+    }
+    
+    public String getNimi() {
+        return nimi;
     }
     
 }
