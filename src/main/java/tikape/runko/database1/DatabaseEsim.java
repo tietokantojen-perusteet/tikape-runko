@@ -4,11 +4,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Database {
+public class DatabaseEsim {
 
     private String databaseAddress;
 
-    public Database(String databaseAddress) throws ClassNotFoundException {
+    public DatabaseEsim(String databaseAddress) throws ClassNotFoundException {
         this.databaseAddress = databaseAddress;
     }
 

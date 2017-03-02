@@ -11,9 +11,16 @@ import java.util.List;
 /**
  *
  * @author eemitant
+ * @author xvixvi
  */
 public class AlueDao implements Dao {
-
+    
+    private Database database;
+    
+    public AlueDao(Database d) {
+        database = d;
+    }
+    
     @Override
     public Object findOne(Object key) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

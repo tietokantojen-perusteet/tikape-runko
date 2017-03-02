@@ -11,8 +11,15 @@ import java.util.List;
 /**
  *
  * @author eemitant
+ * @authro xvixvi
  */
 public class ViestiDao implements Dao {
+    
+    private Database database;
+    
+    public ViestiDao(Database d) {
+        database = d;
+    }
 
     @Override
     public Object findOne(Object key) throws SQLException {

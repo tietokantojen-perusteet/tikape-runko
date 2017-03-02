@@ -16,9 +16,9 @@ import tikape.runko.domain1.Opiskelija;
 
 public class OpiskelijaDao implements Dao<Opiskelija, Integer> {
 
-    private Database database;
+    private DatabaseEsim database;
 
-    public OpiskelijaDao(Database database) {
+    public OpiskelijaDao(DatabaseEsim database) {
         this.database = database;
     }
 
