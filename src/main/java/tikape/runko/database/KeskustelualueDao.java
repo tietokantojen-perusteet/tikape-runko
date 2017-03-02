@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 import tikape.runko.domain.Keskustelualue;
 
 public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
@@ -18,7 +19,6 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
 
     @Override
     public Keskustelualue findOne(Integer key) throws SQLException {
-        
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Keskustelualue WHERE id = ?");
         stmt.setObject(1, key);
@@ -61,6 +61,19 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
 
         return keskustelualueet;
     }
+    
+    public void addOne(Integer key, String aihe) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Viesti VALUES (id = ?, aihe = ?)");
+        
+        stmt.setObject(1, key);
+        stmt.setObject(2, aihe);
+        
+        stmt.execute();
+        
+        stmt.close();
+        connection.close();
+    }
 
     @Override
     public void delete(Integer key) throws SQLException {
@@ -76,5 +89,52 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
         stmt1.execute();
         stmt2.execute();
         stmt3.execute();
-    }    
+        
+        stmt1.close();
+        stmt2.close();
+        stmt3.close();
+        connection.close();
+    }
+    
+    // Tämän metodin avulla saadaan etusivulle keskustelualueittain avauksien ja
+    // viestien lukumäärät ja uusimpien viestien lähetysajankohdat
+    public List<String[]> lukumaaratPerKA() throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT "
+                + "Keskustelualue.aihe AS aihe,"
+                + "Count (Viesti.avaus) AS avauksia, "
+                + "Count (*) AS viesteja,"
+                + "MAX (Viesti.aika) AS uusin"
+                + "FROM Keskustelualue JOIN Viesti"
+                + "ON Keskustelualue.id = Viesti.alue"
+                + "GROUP BY Viesti.alue");
+        
+        ResultSet rs = stmt.executeQuery();
+        List<String[]> keskustelualueet = new ArrayList<>();
+        
+        while (rs.next()) {
+            String aihe = rs.getString("aihe");
+            String avauksia = rs.getString("avauksia");
+            String viesteja = rs.getString("viesteja");
+            long uusin = rs.getLong("uusin");
+            
+            // timestampin luomisessa saattaa joutua kertomaan 1000:lla tai ei, riippuu, talletetaanko ms vai s
+            Date timestamp = new Date(uusin);
+            String uusinStr = timestamp.toString();
+            
+            String[] alueenTiedot = new String[4];
+            alueenTiedot[0] = aihe;
+            alueenTiedot[1] = avauksia;
+            alueenTiedot[2] = viesteja;
+            alueenTiedot[3] = uusinStr;
+            
+            keskustelualueet.add(alueenTiedot);
+        }
+
+        rs.close();
+        stmt.close();
+        connection.close();
+        
+        return keskustelualueet;
+    }
 }

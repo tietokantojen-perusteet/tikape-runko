@@ -70,6 +70,23 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
         return keskustelualueet;
     }
+    
+    public void addOne(Integer uusiId, Integer viestinAlue, Integer viestinAvaus, Integer viestinAika, String kirjoittajanNimimerkki, String viestinSisalto) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Viesti VALUES (id = ?, alue = ?, avaus = ?, aika = ?, nimimerkki = ?, sisalto = ?)");
+        
+        stmt.setObject(1, uusiId);
+        stmt.setObject(2, viestinAlue);
+        stmt.setObject(3, viestinAvaus);
+        stmt.setObject(4, viestinAika);
+        stmt.setObject(5, kirjoittajanNimimerkki);
+        stmt.setObject(6, viestinSisalto);
+        
+        stmt.execute();
+        
+        stmt.close();
+        connection.close();
+    }
 
     @Override
     public void delete(Integer key) throws SQLException {
@@ -78,5 +95,19 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         stmt.setObject(1, key);
         
         stmt.execute();
-        }
+        
+        stmt.close();
+        connection.close();
+    }
+    
+    public void delete(String nimimerkki) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("DELETE FROM Viesti WHERE nimimerkki = ?");
+        stmt.setObject(1, nimimerkki);
+        
+        stmt.execute();
+        
+        stmt.close();
+        connection.close();
+    }
 }
