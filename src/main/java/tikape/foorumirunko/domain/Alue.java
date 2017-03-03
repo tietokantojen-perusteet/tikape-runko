@@ -3,6 +3,11 @@ package tikape.foorumirunko.domain;
 
 import java.sql.Timestamp;
 
+/**
+ * 
+ * @author xvixvi
+*/
+
 public class Alue {
     
     private String nimi;

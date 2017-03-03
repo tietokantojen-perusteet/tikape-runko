@@ -53,17 +53,15 @@ public class AlueDao implements Dao<Alue, Integer> {
     @Override
     public List<Alue> findAll() throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Kayttaja");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue");
         ResultSet rs = stmt.executeQuery();
 
         List<Alue> alueet = new ArrayList<>();
         while (rs.next()) {
             int id = Integer.parseInt(rs.getString("alueen_id"));
             String nimi = rs.getString("alueen_nimi");
-            int viestienMaara = Integer.parseInt(rs.getString("viestien_maara"));
-            Timestamp ts = Timestamp.valueOf(rs.getString("timestamp"));
 
-            alueet.add(new Alue(id, nimi, viestienMaara, ts));
+            alueet.add(new Alue(id, nimi));
         }
 
         rs.close();

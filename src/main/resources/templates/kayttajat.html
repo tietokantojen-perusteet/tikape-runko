@@ -1,15 +1,15 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
     <head>
         <title>Foorumille rekisteröidyt käyttäjänimet</title>
         <meta charset="UTF-8"/>
     </head>
     <body>
-        <div>TODO write content</div>
+        <ol>
+            <li th:each="kayttaja: ${kayttajat}">
+                <span th:text="${kayttaja.nimimerkki}">kayttajan nimi</span> <a th:href="${'/kayttaja/' + kayttaja.nimimerkki}">linkki käyttäjän omalle sivulle, jota ei ole #jekku</a>
+            </li>
+        </ol>
     </body>
 </html>

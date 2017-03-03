@@ -9,8 +9,12 @@
     <body>
         <h1>Tervetuloa Databasee Foorumille!</h1>
 
-        <p>Aihealueet <span th:text="${alueet}">tähän pitäisi tulla aihealueet kiitos</span></p>
-
+        <ol>
+            <li th:each="aihe: ${alueet}">
+                <span th:text="${aihe.nimi}">aihealueen nimi</span> <a th:href="${'/'}">Osallistu keskusteluun</a> <!--alue/' + alue.id-->
+            </li>
+        </ol>
+        
         <p><a href="/kayttajat">Tästä kayttajalistaukseen.</a></p>
     </body>
 </html>

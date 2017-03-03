@@ -19,20 +19,15 @@ public class Main {
         Database database = new Database("jdbc:sqlite:foorumi.db");
         database.dropAllTables();
         database.init();
+        database.instantiateTestData();
 
         KayttajaDao kayttajaDao = new KayttajaDao(database);
         ViestiDao viestiDao = new ViestiDao(database);
         AlueDao alueDao = new AlueDao(database);
 
         get("/", (req, res) -> {
-            List<Alue> alueet = alueDao.findAll();
-            String aihealueet = "";
-            for (Alue a : alueet) {
-                aihealueet += a.getNimi()+ "<br/>";
-            }
-            
             HashMap map = new HashMap<>();
-            map.put("alueet", aihealueet);
+            map.put("alueet", alueDao.findAll());
 
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
