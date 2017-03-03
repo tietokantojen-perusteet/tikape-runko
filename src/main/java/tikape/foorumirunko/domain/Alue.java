@@ -18,6 +18,8 @@ public class Alue {
     public Alue(int tunnus, String namen) {
         this.id = tunnus;
         nimi = namen;
+        viestienMaara = 0;
+        viimeisinViestiTimestamp = new Timestamp(1,2,3,4,5,6,7);
     }
     
     public Alue(int tunnus, String name, int viestienMaara, Timestamp ts) {

@@ -22,6 +22,34 @@ public class AlueDao implements Dao<Alue, Integer> {
         database = d;
     }
     
+    public int kuinkaMontaAluetta() throws SQLException {
+        Connection connection = database.getConnection();
+        Statement stmt = connection.createStatement();
+        
+        ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM Alue");
+        int x = Integer.parseInt(rs.getString(1));
+        
+        rs.close();
+        stmt.close();
+        connection.close();
+        
+        return x;
+    }
+    
+    public void InsertOne(Alue a) throws SQLException {
+        Connection con = database.getConnection();
+        PreparedStatement stmt = con.prepareStatement("INSERT INTO Alue VALUES (?,?,?,?)");
+        stmt.setObject(1, a.getId());
+        stmt.setObject(2, a.getNimi());
+        stmt.setObject(3, a.getViestienMaara());
+        stmt.setObject(4, a.getViimeisinViesti());
+        
+        stmt.executeUpdate();
+        
+        stmt.close();
+        con.close();
+    }
+    
     @Override
     public Alue findOne(Integer key) throws SQLException {
         Connection con = database.getConnection();
@@ -43,7 +71,8 @@ public class AlueDao implements Dao<Alue, Integer> {
         stmt.close();
         con.close();
 
-        return a;    }
+        return a;
+    }
 
     @Override
     public void delete(Integer key) throws SQLException {
