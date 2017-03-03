@@ -101,12 +101,12 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
     public List<String[]> lukumaaratPerKA() throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT "
-                + "Keskustelualue.aihe AS aihe,"
+                + "Keskustelualue.aihe AS aihe, "
                 + "Count (Viesti.avaus) AS avauksia, "
-                + "Count (*) AS viesteja,"
-                + "MAX (Viesti.aika) AS uusin"
-                + "FROM Keskustelualue JOIN Viesti"
-                + "ON Keskustelualue.id = Viesti.alue"
+                + "Count (*) AS viesteja, "
+                + "MAX (Viesti.aika) AS uusin "
+                + "FROM Keskustelualue JOIN Viesti "
+                + "ON Keskustelualue.id = Viesti.alue "
                 + "GROUP BY Viesti.alue");
         
         ResultSet rs = stmt.executeQuery();
@@ -136,5 +136,16 @@ public class KeskustelualueDao implements Dao<Keskustelualue, Integer> {
         connection.close();
         
         return keskustelualueet;
+    }
+    
+    public String getIdByTopic(String topic) throws SQLException {
+        Connection connection = database.getConnection();
+        ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM Keskustelualue");
+        while (rs.next()) {
+            if (rs.getString("aihe").equals(topic)) {
+                return rs.getString("id");
+            }
+        }
+        return null;
     }
 }

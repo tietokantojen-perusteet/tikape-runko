@@ -110,4 +110,29 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         stmt.close();
         connection.close();
     }
+    
+    public List<Viesti> findAllTopic(String topicId) throws SQLException {
+        Connection connection = database.getConnection();
+        ResultSet rs = connection.createStatement().executeQuery(
+                "SELECT * FROM Viesti WHERE alue=" + topicId);
+        
+        List<Viesti> keskustelualueet = new ArrayList<>();
+        while (rs.next()) {
+            Integer id = rs.getInt("id");
+            int alue = rs.getInt("alue");
+            int avaus = rs.getInt("avaus");
+            int aika = rs.getInt("aika");
+            String nimimerkki = rs.getString("nimimerkki");
+            String sisalto = rs.getString("sisalto");
+        
+            Viesti v = new Viesti(id, alue, avaus, aika, nimimerkki, sisalto);
+
+            keskustelualueet.add(v);
+        }
+
+        rs.close();
+        connection.close();
+
+        return keskustelualueet;
+    }
 }

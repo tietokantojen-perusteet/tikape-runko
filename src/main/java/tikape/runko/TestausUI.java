@@ -10,8 +10,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import tikape.runko.database.Database;
+import tikape.runko.database.KeskustelualueDao;
+import tikape.runko.database.ViestiDao;
+import tikape.runko.domain.Keskustelualue;
 
 /**
  *
@@ -28,6 +32,10 @@ public class TestausUI {
         
         Database database = new Database("jdbc:sqlite:" + filename);
         database.init();
+        KeskustelualueDao alueDao = new KeskustelualueDao(database);
+        ViestiDao viestiDao = new ViestiDao(database);
+        
+        
         while(true) {
             System.out.println("Do you want to modify the database or test the forum?");
             System.out.println("mod\tmodify\ntest\ttest forum\nexit\tquit application");
@@ -40,13 +48,14 @@ public class TestausUI {
             } else if (modOrTest.equals("mod")) {
                 enterModifyState(database, sc);
             } else if (modOrTest.equals("test")) {
-                enterTestState(database, sc);
+                enterTestState(database, sc, alueDao, viestiDao);
             }
         }
         System.out.println("Bye.");
     }
     
-    private static void enterModifyState(Database db, Scanner sc) throws SQLException{
+    private static void enterModifyState(Database db, Scanner sc) throws SQLException {
+        System.out.println("Entering database modification.\n");
         System.out.println("q\tquery\nu\tupdate\nl\tlist all tables\n" +
                 "t\tlist contents of a single table\nexit\texit program\n" +
                 "help\tshow this list\n");
@@ -80,10 +89,6 @@ public class TestausUI {
                 
                 
                 try {
-                    // PreparedStatement pst = con.prepareStatement("SELECT * FROM " + table);
-                    // pst.setString(1, table);
-                    // ResultSet rs = pst.executeQuery();
-                    
                     ResultSet rs = con.createStatement().executeQuery(
                             "SELECT * FROM " + table);
                     
@@ -130,16 +135,48 @@ public class TestausUI {
                 } catch (Throwable t) {}
             } else {
                 System.out.println("Unknown command.");
-                System.out.println("q\tquery / u\tupdate / l\tlist all tables / " +
-                    "t\tlist contents of a single table / exit\texit program / " +
+                System.out.println("q\tquery\nu\tupdate\nl\tlist all tables\n" +
+                    "t\tlist contents of a single table\nexit\texit program\n" +
                     "help\tshow this list\n");
             }
         }
     }
     
-    private static void enterTestState(Database db, Scanner sc) {
+    private static void enterTestState(Database db, Scanner sc,
+            KeskustelualueDao ad, ViestiDao vd) throws SQLException {
         System.out.println("This is a testing UI for the forum");
+        List<String> topics = printAndGetTopics(ad);
+        while(true) {
+            System.out.println("Submit topic to enter or 'exit' to leave.");
+            String command = sc.nextLine();
+            
+            if (command.equals("exit")) {
+                break;
+            } else if (topics.contains(command)) {
+                enterTopic(ad.getIdByTopic(command));
+            } else {
+                System.out.println("Unknown command.");
+            }
+        }
         return;
+    }
+    
+    private static List<String> printAndGetTopics(KeskustelualueDao ad) throws SQLException {
+        List<String> names = new ArrayList<>();
+        for (String[] info : ad.lukumaaratPerKA()) {
+            System.out.format("%s\tthreads: %s\tmessages: %s\t%s\n",
+                    info[0], info[1], info[2], info[3]);
+            names.add(info[0]);
+        }
+        return names;
+    }
+    
+    private static void enterTopic(String topic) {
+        // todo
+    }
+    
+    private static List<String> printAndGetThreads() {
+        return null;
     }
     
 }
