@@ -27,7 +27,7 @@ public class KetjuDao implements Dao<Ketju, Integer>{
     @Override
     public Ketju findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Ketju WHERE id = ?");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Ketju WHERE ketju = ?");
         stmt.setObject(1, key);
 
         ResultSet rs = stmt.executeQuery();
