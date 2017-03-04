@@ -66,7 +66,7 @@ public class Ketju {
         this.aloitusaika = aloitusaika;
     }
     public String getKayttajanimi(){
-        return sisalto;
+        return this.kayttajanimi;
     } 
     
     public void setKayttajanimi(String kayttajanimi){
