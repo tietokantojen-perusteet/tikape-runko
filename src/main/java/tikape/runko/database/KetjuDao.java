@@ -56,7 +56,7 @@ public class KetjuDao implements Dao<Ketju, Integer>{
     public List<Ketju> findAll() throws SQLException {
 
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Ketju");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Ketju ORDER BY aloitusaika ASC");
 
         ResultSet rs = stmt.executeQuery();
         List<Ketju> ketjut = new ArrayList<>();
@@ -92,8 +92,22 @@ public class KetjuDao implements Dao<Ketju, Integer>{
         connection.close();
     }
 
-  
+        public void add(Ketju p) throws SQLException {
+        Connection connection = database.getConnection();
+        
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Ketju (ketju, aihe, otsikko, sisalto, aloitusaika, kayttajanimi) VALUES (?)");
+        stmt.setInt(1, p.getKetju());
+        stmt.setString(2, p.getAihe());
+        stmt.setString(3, p.getOtsikko());
+        stmt.setString(4, p.getSisalto());
+        stmt.setString(5, p.getAloitusaika());
+        stmt.setString(6, p.getKayttajanimi());
+        stmt.executeUpdate();
+        
+        stmt.close();
+        connection.close();
+    }
+
 
 }
-
 
