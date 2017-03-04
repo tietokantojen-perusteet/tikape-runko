@@ -51,7 +51,36 @@ public class KetjuDao implements Dao<Ketju, Integer>{
 
         return k;
     }
+    
+    
+    public Ketju findAihe(String key) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Ketju WHERE aihe = ?");
+        stmt.setObject(1, key);
 
+        ResultSet rs = stmt.executeQuery();
+        boolean hasOne = rs.next();
+        if (!hasOne) {
+            return null;
+        }
+
+        Integer ketju = rs.getInt("ketju");
+        String aihe = rs.getString("aihe");
+        String otsikko = rs.getString("otsikko");
+        String sisalto = rs.getString("sisalto");
+        String aloitusaika = rs.getString("aloitusaika");
+        String kayttajanimi = rs.getString("kayttajanimi");
+
+        Ketju k = new Ketju(ketju, aihe, otsikko, sisalto, aloitusaika, kayttajanimi);
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return k;
+    
+    }
+    
     @Override
     public List<Ketju> findAll() throws SQLException {
 
