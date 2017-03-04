@@ -12,7 +12,7 @@
       
          <table>
       <tr th:each="Aihealue : ${aihealueet}">
-        <td><a th:href="@{~/Aihealue(id=${Aihealue.id},sivu=1)}" th:text="${Aihealue.aihe}">palsta</a><span th:text="| (${Aihealue.koko} viestiä) - ${Aihealue.viimeisin}|"></span></td>
+        <td><a th:href="|/Aihealue/${Aihealue.id}|" th:text="${Aihealue.aihe}">palsta</a><span th:text="| (${Aihealue.koko} viestiä) - ${Aihealue.viimeisin}|"></span></td>
       </tr>
     </table>
         
