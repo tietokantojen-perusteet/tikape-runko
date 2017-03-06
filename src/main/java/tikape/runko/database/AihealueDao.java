@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AihealueDao implements Dao<Aihealue, Integer> {
+public class AihealueDao implements Dao<Aihealue, String> {
     
     private Database database;
     
@@ -18,7 +18,7 @@ public class AihealueDao implements Dao<Aihealue, Integer> {
         ArrayList<Aihealue> collection = new ArrayList<>();
         
         while (rs.next()) {
-            Aihealue p = new Aihealue(rs.getInt("aihealue_id"),rs.getString("aihe"));
+            Aihealue p = new Aihealue(rs.getString("aihe"));
             
             collection.add(p);
         }
@@ -27,11 +27,11 @@ public class AihealueDao implements Dao<Aihealue, Integer> {
     }
     
     @Override
-    public Aihealue findOne(Integer key) throws SQLException {
+    public Aihealue findOne(String key) throws SQLException {
         Connection connection = database.getConnection();
         
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Aihealue WHERE aihealue_id = ?");
-        stmt.setInt(1, key);
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Aihealue WHERE aihe = ?");
+        stmt.setString(1, key);
         
         ResultSet rs = stmt.executeQuery();
         
@@ -39,7 +39,7 @@ public class AihealueDao implements Dao<Aihealue, Integer> {
             return null;
         }
         
-        Aihealue p = new Aihealue(rs.getInt("aihealue_id"),rs.getString("aihe"));
+        Aihealue p = new Aihealue(rs.getString("aihe"));
         
         rs.close();
         stmt.close();
@@ -48,11 +48,42 @@ public class AihealueDao implements Dao<Aihealue, Integer> {
         return p;
     }
     
+//    public Integer viestienMaara(String key) throws SQLException {
+//        Connection connection = database.getConnection();
+//        
+//        PreparedStatement stmt = connection.prepareStatement("SELECT COUNT(*) FROM Aihealue, Ketju, Viesti WHERE Aihealue.aihe = ? AND Ketju.ketju = Aihealue.aihe AND Viesti.ketju = Ketju.ketju");
+//        stmt.setString(1, key);
+//        
+//        ResultSet rs = stmt.executeQuery();
+//        
+//        if (!rs.next()) {
+//            return null;
+//        }
+//        
+//        Integer pal = Integer.parseInt(rs.getString(1));
+//        
+//        rs.close();
+//        stmt.close();
+//        connection.close();
+//        
+//        return pal;
+//    }
+    
+//    public String viimeisinViesti() {
+//        
+//        ArrayList<Timestamp> al = new ArrayList<>();
+//        
+//        for (Ketju k : kDao) {
+//            
+//        }
+//        return "";
+//    }
+    
     @Override
     public List<Aihealue> findAll() throws SQLException {
         Connection connection = database.getConnection();
         
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Aihealue ORDER BY aihealue_id ASC");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Aihealue ORDER BY aihe ASC");
         ResultSet rs = stmt.executeQuery();
         
         List<Aihealue> collection = null;
@@ -72,26 +103,22 @@ public class AihealueDao implements Dao<Aihealue, Integer> {
     
 
     public void add(Aihealue p) throws SQLException {
-   try (Connection conn = database.getConnection()) {
-            Statement st = conn.createStatement();
-            PreparedStatement stmt = conn.prepareStatement("INSERT INTO aihealue (aihe) VALUES (?)");
-            stmt.setObject(1, p.getAihe());
-            stmt.executeUpdate();
-            stmt.close();
-            conn.close();
-
-        } catch (Throwable t) {
-            // jos tietokantataulu on jo olemassa, ei komentoja suoriteta
-            System.out.println("Error >> " + t.getMessage());
-        }
+        Connection connection = database.getConnection();
+        
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Aihealue (aihe) VALUES (?)");
+        stmt.setString(1, p.getAihe());
+        stmt.executeUpdate();
+        
+        stmt.close();
+        connection.close();
     }
 
     @Override
-        public void delete(Integer key) throws SQLException {
+        public void delete(String key) throws SQLException {
         Connection connection = database.getConnection();
         
-        PreparedStatement stmt = connection.prepareStatement("DELETE FROM Aihealue WHERE aihealue_id = ?");
-        stmt.setInt(1, key);
+        PreparedStatement stmt = connection.prepareStatement("DELETE FROM Aihealue WHERE aihe = ?");
+        stmt.setString(1, key);
         
         stmt.executeUpdate();
         

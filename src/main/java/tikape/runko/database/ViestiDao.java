@@ -23,15 +23,17 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         this.db = database;
     }
     
-    public Viesti create(Viesti v) throws SQLException {
+    public void add(Viesti v) throws SQLException {
         Connection conn = db.getConnection();
-        PreparedStatement stmt = conn.prepareStatement("INSERT INTO Viesti VALUES (?, ?, ?, ?);");
+        PreparedStatement stmt = conn.prepareStatement("INSERT INTO Viesti (ketju, kommentti, kayttajanimi) VALUES (?, ?, ?);");
         stmt.setObject(1, v.getKetju_id());
         stmt.setObject(2, v.getKommentti());
         stmt.setObject(3, v.getKayttajanimi());
-        stmt.setObject(4, v.getAika());
+//        stmt.setObject(4, v.getAika());
         stmt.executeUpdate();
-        return v;
+        
+        stmt.close();
+        conn.close();
     };
 
     @Override
@@ -47,7 +49,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         ResultSet rs = stmt.executeQuery("SELECT * FROM Viesti");
         List<Viesti> viestit = new ArrayList();
         while (rs.next()) {
-            Viesti v = new Viesti(rs.getInt("ketju_id"), rs.getString("kommentti"), rs.getString("kayttajanimi"), rs.getTimestamp("aika"));
+            Viesti v = new Viesti(rs.getInt("ketju"), rs.getString("kommentti"), rs.getString("kayttajanimi"));
             viestit.add(v);
         }
         return viestit;
@@ -63,12 +65,12 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     
     public List<Viesti> findByKetju(Ketju k) throws SQLException {
         Connection conn = db.getConnection();
-        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Viesti WHERE ketju_id = ?");
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Viesti WHERE ketju = ? ORDER BY aika ASC");
         stmt.setObject(1, k.getKetju());
         List<Viesti> viestit = new ArrayList();
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
-            Viesti viesti = new Viesti(rs.getInt("ketju_id"), rs.getString("kommentti"), rs.getString("kayttajanimi"), rs.getTimestamp("aika"));
+            Viesti viesti = new Viesti(rs.getInt("ketju"), rs.getString("kommentti"), rs.getString("kayttajanimi"));
             viestit.add(viesti);
         }
         return viestit;
@@ -81,23 +83,43 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    public Viesti findMostRecent() throws SQLException {
-        Connection conn = db.getConnection();
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM Viesti ORDER BY aika DESC LIMIT 1");
-        
-        Boolean hasOne = rs.next();
-        if (!hasOne) {
-            return null;
-        }
-        
-        Viesti v = new Viesti(rs.getInt("ketju_id"), rs.getString("kommentti"), rs.getString("kayttajanimi"), rs.getTimestamp("aika"));
-        return v;
-    }
+//    public Viesti findMostRecent() throws SQLException {
+//        Connection conn = db.getConnection();
+//        Statement stmt = conn.createStatement();
+//        ResultSet rs = stmt.executeQuery("SELECT * FROM Viesti ORDER BY aika DESC LIMIT 1");
+//        
+//        Boolean hasOne = rs.next();
+//        if (!hasOne) {
+//            return null;
+//        }
+//        
+//        Viesti v = new Viesti(rs.getInt("ketju"), rs.getString("kommentti"), rs.getString("kayttajanimi"));
+//        return v;
+//    }
+    
+//    public String getAika(Integer key) throws SQLException {
+//        Connection connection = db.getConnection();
+//        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE ketju = ? ");
+//        stmt.setInt(1, key);
+//
+//        ResultSet rs = stmt.executeQuery();
+//
+//        if (!rs.next()) {
+//            return null;
+//        }
+//
+//        String aika = rs.getString("aika");
+//
+//        rs.close();
+//        stmt.close();
+//        connection.close();
+//
+//        return aika;
+//    }
     
     public Viesti findMostRecentByKetju(Ketju k) throws SQLException {
         Connection conn = db.getConnection();
-        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Viesti WHERE ketju_id = ? ORDER BY aika DESC LIMIT 1");
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Viesti WHERE ketju = ? ORDER BY aika DESC LIMIT 1");
         stmt.setObject(1, k.getKetju());
         ResultSet rs = stmt.executeQuery();
         
@@ -106,7 +128,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
             return null;
         }
         
-        Viesti v = new Viesti(rs.getInt("ketju_id"), rs.getString("kommentti"), rs.getString("kayttajanimi"), rs.getTimestamp("aika"));
+        Viesti v = new Viesti(rs.getInt("ketju"), rs.getString("kommentti"), rs.getString("kayttajanimi"));
         return v;
     }
 }
