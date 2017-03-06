@@ -1,14 +1,6 @@
 package tikape.runko.domain;
 
 
-import java.sql.*;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  *
  * @author onniaarn
@@ -17,13 +9,19 @@ public class Viesti {
     private Integer ketju_id;
     private String kommentti;
     private String kayttajanimi;
-    private Timestamp aika;
+    private String aika;
     
-    public Viesti(Integer id, String kom, String kayttaja, Timestamp aika) {
+    public Viesti(Integer id, String kom, String kayttaja, String aika) {
         this.ketju_id = id;
         this.kommentti = kom;
         this.kayttajanimi = kayttaja;
-        this.aika = aika;
+//        this.aika = aika;
+    };
+    
+    public Viesti(Integer id, String kom, String kayttaja) {
+        this.ketju_id = id;
+        this.kommentti = kom;
+        this.kayttajanimi = kayttaja;
     };
 
     public Integer getKetju_id() {
@@ -50,13 +48,13 @@ public class Viesti {
         this.kayttajanimi = kayttajanimi;
     }
 
-    public Timestamp getAika() {
-        return aika;
-    }
-
-    public void setAika(Timestamp aika) {
-        this.aika = aika;
-    }
+//    public String getAika() {
+//        return aika;
+//    }
+//
+//    public void setAika(String aika) {
+//        this.aika = aika;
+//    }
     
     
 }

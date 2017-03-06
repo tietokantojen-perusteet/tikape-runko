@@ -16,6 +16,8 @@ public class Ketju {
     private String sisalto;
     private String aloitusaika;
     private String kayttajanimi;
+    private int koko;
+    private String viimeisin;
    
     public Ketju(Integer ketju, String aihe, String otsikko, String sisalto, String aloitusaika, String kayttajanimi) {
         this.ketju = ketju;
@@ -25,9 +27,27 @@ public class Ketju {
         this.aloitusaika = aloitusaika;
         this.kayttajanimi = kayttajanimi;
     }
+    
+    public Ketju(Integer ketju, String aihe, String otsikko, String sisalto, String kayttajanimi) {
+        this.ketju = ketju;
+        this.aihe = aihe;
+        this.otsikko = otsikko;
+        this.sisalto = sisalto;
+//        this.aloitusaika = aloitusaika;
+        this.kayttajanimi = kayttajanimi;
+    }
+    
+    public Ketju(Integer ketju, String aihe, String otsikko, String sisalto) {
+        this.ketju = ketju;
+        this.aihe = aihe;
+        this.otsikko = otsikko;
+        this.sisalto = sisalto;
+//        this.aloitusaika = aloitusaika;
+        this.kayttajanimi = "Anonyymi";
+    }
 
     public Integer getKetju() {
-        return ketju;
+        return this.ketju;
     }
 
     public void setKetju(Integer id) {
@@ -35,7 +55,7 @@ public class Ketju {
     }
 
     public String getAihe() {
-        return aihe;
+        return this.aihe;
     }
 
     public void setAihe(String nimi) {
@@ -43,7 +63,7 @@ public class Ketju {
     }
     
     public String getOtsikko(){
-        return otsikko;
+        return this.otsikko;
     }
     
     public void setOtsikko(String otsikko){
@@ -51,26 +71,43 @@ public class Ketju {
     }
     
     public String getSisalto(){
-        return sisalto;
+        return this.sisalto;
     } 
     
     public void setSisalto(String sisalto){
         this.sisalto = sisalto;
     }
     
+    public void setKoko(int koko){
+        this.koko = koko;
+    }
+    
+    public int getKoko(){
+        return this.koko;
+    }
+    
     public String getAloitusaika(){
-        return aloitusaika;
+        return this.aloitusaika;
     } 
     
     public void setAloitusaika(String aloitusaika){
         this.aloitusaika = aloitusaika;
     }
+    
     public String getKayttajanimi(){
         return this.kayttajanimi;
     } 
     
     public void setKayttajanimi(String kayttajanimi){
         this.kayttajanimi = kayttajanimi;
+    }
+    
+    public String getViimeisin(){
+        return this.viimeisin;
+    }
+    
+    public void setViimeisin(String v){
+        this.viimeisin = v;
     }
     
 }
