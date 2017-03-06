@@ -2,24 +2,32 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <head>
-        <title>Otsikko</title>
-        <meta charset="utf-8" />
+        <title>Ketjut</title>
+        <meta charset="iso-8859-1" />
     </head>
 
     <body>
-        <h1>Aihealueen alaiset ketjut</h1>
+        <h1><span th:text="${aihe}"></span></h1>
 
-      
-         <table>
-      <tr th:each="Ketju : ${ketjut}">
-      
-      </tr>
-    </table>
-        
-    <form method="POST">
-      <textarea name="Ketju"></textarea>
-      <button type="submit"  >L√§het√§</button>
-    </form>
+        <table style="width:50%">
+            <tr>
+                <td>Ketju</td>
+                <td>Viestien m‰‰r‰</td>
+                <td>Viimeisin viesti</td>
+            </tr>
+            <tr th:each="Ketju : ${ketjut}">
+                <td><a th:href="${'/' + Ketju.aihe + '/' + Ketju.ketju + '/1'}" th:text="${Ketju.otsikko}">otsikko</a></td>
+                <td><span th:text="${Ketju.koko}">viestien lkm</span></td>
+                <td><span th:text="${Ketju.viimeisin}">viimeisin viesti</span></td>
+            </tr>
+        </table>
+
+        <form method="POST">
+            <input name="Otsikko" placeholder="Ketjun otsikko"></input><br/>
+            <textarea name="Sisalto" placeholder="Ketjun keskustelunavaus"></textarea><br/>
+            <input name="Kayttajanimi" placeholder="Haluamasi k‰ytt‰j‰nimi"></input><br/>
+            <button type="submit">Lis‰‰</button>
+        </form>
 
     </body>
 </html>

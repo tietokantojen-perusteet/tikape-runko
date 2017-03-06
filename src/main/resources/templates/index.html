@@ -2,24 +2,32 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <head>
-        <title>Otsikko</title>
-        <meta charset="utf-8" />
+        <title>Foorumi</title>
+        <meta charset="iso-8859-1" />
     </head>
 
     <body>
         <h1>Aihealueet</h1>
 
-      
-         <table>
-      <tr th:each="Aihealue : ${aihealueet}">
-        <td><a th:href="|/Aihealue/${Aihealue.id}|" th:text="${Aihealue.aihe}">palsta</a><span th:text="| (${Aihealue.koko} viesti√§) - ${Aihealue.viimeisin}|"></span></td>
-      </tr>
-    </table>
-        
-    <form method="POST">
-      <textarea name="aihe"></textarea>
-      <button type="submit"  >L√§het√§</button>
-    </form>
+
+        <table style="width:50%">
+            <tr>
+                <td>Alue</td>
+                <td>Viestien m‰‰r‰</td>
+                <td>Viimeisin viesti</td>
+            </tr>
+            <tr th:each="Aihealue : ${aihealueet}">
+                <td><a th:href="${'/' + Aihealue.aihe}" th:text="${Aihealue.aihe}">palsta</a></td>
+                <td><span th:text="${Aihealue.koko}">viestien lkm</span></td>
+                <td><span th:text="${Aihealue.viimeisin}">viimeisin viesti</span></td>
+            </tr>
+        </table>
+
+
+        <form method="POST">
+            <textarea name="aihe" placeholder="Lis‰‰ aihe"></textarea>
+            <button type="submit">Lis‰‰</button>
+        </form>
 
     </body>
 </html>
