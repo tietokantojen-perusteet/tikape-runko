@@ -1,0 +1,30 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Viestit</title>
+        <meta charset="iso-8859-1" />
+    </head>
+
+    <body>
+        <h1><span th:text="${ketju.otsikko}"></span></h1>
+        
+        <ul>
+            <li th:each="Viesti : ${viestit}">
+                <span th:text="${Viesti.kommentti}"></span>&ensp;<span th:text="| - ${Viesti.kayttajanimi}"></span>
+            </li>
+        </ul>
+
+        <form method="POST">
+            <textarea name="Sisalto" placeholder="Viesti"></textarea><br/>
+            <input name="Kayttajanimi" placeholder="Haluamasi käyttäjänimi"></input>
+            <button type="submit">Lisää</button>
+        </form>
+        
+        <a th:if="${sivu &gt; 1}" th:href="'/' + ${ketju.aihe} + '/' + ${ketju.ketju} + '/' + ${sivu - 1}">Aiemmat viestit</a>
+        <a th:if="${sivu &lt; sivumaara}" th:href="'/' + ${ketju.aihe} + '/' + ${ketju.ketju} + '/' + ${sivu + 1}">Myöhemmät viestit</a>
+        
+    </body>
+</html>
+
+

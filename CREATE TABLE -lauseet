@@ -1,0 +1,5 @@
+CREATE TABLE Aihealue(aihe varchar PRIMARY KEY NOT NULL UNIQUE);
+
+CREATE TABLE Ketju(ketju integer PRIMARY KEY NOT NULL UNIQUE, aihe varchar NOT NULL, otsikko varchar NOT NULL, sisalto varchar NOT NULL, aloitusaika datetime DEFAULT CURRENT_TIMESTAMP, kayttajanimi varchar DEFAULT 'Anonyymi', FOREIGN KEY(aihe) REFERENCES Aihealue(aihe));
+
+CREATE TABLE Viesti (ketju integer NOT NULL, kommentti varchar NOT NULL, kayttajanimi varchar DEFAULT 'Anonyymi', aika datetime DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY(ketju) REFERENCES Ketju(ketju));
