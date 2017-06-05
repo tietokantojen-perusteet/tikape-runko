@@ -1,0 +1,29 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Otsikko</title>
+        <meta charset="utf-8" />
+    </head>
+
+
+    <body>
+        <h1>TSJTS Foorumi</h1>
+
+        <table>
+            <tr>
+                <th align="left">Alue: <span th:text="${alue.kuvaus}" > </span></th>
+                <th align="left">Viestejä</th>
+                <th align="left">Viimeisin viesti</th>
+            </tr>
+            <tr th:each="aihe: ${aiheet} ">
+                <td align="left"> <a th:href="${'/aiheet/' + aihe.aihe_id}"> 
+                    <span th:text="${aihe.otsikko}">alue kuvaus </span> 
+                    </a> </td> 
+                <td align="left" th:text="${aihe.viesteja}">Alueen viestejä</td>
+                <td align="left" th:text="${aihe.viimeisin}">viimeisin viesti</td>
+            </tr>
+        </table>
+        
+    </body>
+</html>
