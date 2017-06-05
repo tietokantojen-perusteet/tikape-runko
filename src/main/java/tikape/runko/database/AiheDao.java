@@ -20,7 +20,34 @@ public class AiheDao implements Dao<Aihe, Integer>{
 
     @Override
     public Aihe findOne(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT Aihe.aihe_id AS id, Aihe.otsikko AS otsikko, "
+                + "COUNT(Viesti.viesti_id) AS viesteja, MAX(Viesti.ajankohta) AS viimeisin, "
+                + "Aihe.alue_id AS alue_id "
+                + "FROM Aihe LEFT JOIN Viesti ON Aihe.aihe_id=Viesti.aihe_id WHERE Aihe.aihe_id = ? " 
+                + "GROUP BY Aihe.aihe_id ORDER BY MAX(Viesti.ajankohta) DESC;");
+        
+        stmt.setObject(1, key);
+        ResultSet rs = stmt.executeQuery();
+        
+        boolean hasOne = rs.next();
+        if (!hasOne) {
+            return null;
+        }
+        
+        int id = rs.getInt("id");
+        String otsikko = rs.getString("otsikko");
+        int viesteja = rs.getInt("viesteja");
+        String viimeisin = rs.getString("viimeisin");
+        int alue_id = rs.getInt("alue_id");
+
+        Aihe aihe = new Aihe(id, otsikko, viesteja, viimeisin, alue_id);
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return aihe; 
     }
 
     @Override
