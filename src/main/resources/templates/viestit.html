@@ -10,10 +10,11 @@
     <body>
         <h1>TSJTS Foorumi</h1>
 
-        <h2> Alue: <span th:text="${alue.kuvaus}" > alue kuvaus </span>
+        <h3> Alue: <span th:text="${alue.kuvaus}" > alue kuvaus </span>
+            <span> -> </span>
             <span th:text = "${aihe.otsikko}" > aiheen otsikko </span>
 
-        </h2>
+        </h3>
         
         <ol>
             <li th:each="viesti: ${viestit} ">
