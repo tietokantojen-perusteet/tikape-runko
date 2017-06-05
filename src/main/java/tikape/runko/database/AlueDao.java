@@ -19,13 +19,38 @@ public class AlueDao implements Dao<Alue, Integer>{
 
     @Override
     public Alue findOne(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        Connection connection = database.getConnection();
+        System.out.println("findone with alue_id: " + key);
+        PreparedStatement stmt = connection.prepareStatement("SELECT Alue.alue_id AS id, Alue.kuvaus AS kuvaus, "
+                + "COUNT(Viesti.viesti_id) AS viesteja, MAX(Viesti.ajankohta) AS viimeisin "
+                + "FROM Alue LEFT JOIN Aihe ON Alue.alue_id=Aihe.alue_id LEFT JOIN Viesti ON Aihe.aihe_id=Viesti.aihe_id " 
+                + "WHERE Alue.alue_id = ? GROUP BY Alue.alue_id ORDER BY Alue.kuvaus;");
+        
+        stmt.setObject(1, key);
+        ResultSet rs = stmt.executeQuery();
+        
+        boolean hasOne = rs.next();
+        if (!hasOne) {
+            return null;
+        }
+        
+        int id = rs.getInt("id");
+        String kuvaus = rs.getString("kuvaus");
+        int viesteja = rs.getInt("viesteja");
+        String viimeisin = rs.getString("viimeisin");
+
+        Alue alue = new Alue(id, kuvaus, viesteja, viimeisin);
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return alue;    }
 
     @Override
     public List<Alue> findAll() throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT Alue.Alue_id AS id, Alue.Kuvaus AS kuvaus, "
+        PreparedStatement stmt = connection.prepareStatement("SELECT Alue.alue_id AS id, Alue.kuvaus AS kuvaus, "
                 + "COUNT(Viesti.viesti_id) AS viesteja, MAX(Viesti.ajankohta) AS viimeisin "
                 + "FROM Alue LEFT JOIN Aihe ON Alue.alue_id=Aihe.alue_id LEFT JOIN Viesti ON Aihe.aihe_id=Viesti.aihe_id " 
                 + "GROUP BY Alue.alue_id ORDER BY Alue.kuvaus;");
@@ -33,9 +58,9 @@ public class AlueDao implements Dao<Alue, Integer>{
         ResultSet rs = stmt.executeQuery();
         List<Alue> alueet = new ArrayList<>();
         while (rs.next()) {
-            Integer id = rs.getInt("id");
+            int id = rs.getInt("id");
             String kuvaus = rs.getString("kuvaus");
-            Integer viesteja = rs.getInt("viesteja");
+            int viesteja = rs.getInt("viesteja");
             String viimeisin = rs.getString("viimeisin");
 
             alueet.add(new Alue(id, kuvaus, viesteja, viimeisin));
