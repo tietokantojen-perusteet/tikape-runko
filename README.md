@@ -1,4 +1,4 @@
-# tikape-runko
+# TSJTS Foorumi
 
-Tietokantojen perusteet -kurssilla tehtävän web-sovelluksen pohja.
+
 
