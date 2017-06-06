@@ -6,24 +6,39 @@
         <meta charset="utf-8" />
     </head>
 
-
     <body>
         <h1>TSJTS Foorumi</h1>
-
         <table>
             <tr>
-                <th align="left">Alue: <span th:text="${alue.kuvaus}" > </span></th>
-                <th align="left">Viestejä</th>
-                <th align="left">Viimeisin viesti</th>
+                <td style="align:left; padding-right: 10px; font-weight: bold"> Alue: 
+                    <span th:text="${alue.kuvaus}" > </span></td>
+                <td style="align:left; padding-right: 10px; font-weight: bold">Viestejä</td>
+                <td style="align:left; font-weight: bold">Viimeisin viesti</td>
             </tr>
             <tr th:each="aihe: ${aiheet} ">
-                <td align="left"> <a th:href="${'/aiheet/' + aihe.aihe_id}"> 
+                <td style="align:left; padding-right: 10px"> 
+                    <a th:href="${'/aiheet/' + aihe.aihe_id}"> 
                     <span th:text="${aihe.otsikko}">alue kuvaus </span> 
                     </a> </td> 
-                <td align="left" th:text="${aihe.viesteja}">Alueen viestejä</td>
-                <td align="left" th:text="${aihe.viimeisin}">viimeisin viesti</td>
+                <td style="align:left; padding-right: 10px" 
+                    th:text="${aihe.viesteja}">Alueen viestejä</td>
+                <td style="align:left" th:text="${aihe.viimeisin}">viimeisin viesti</td>
             </tr>
-        </table>
-        
+        </table>  
+
+        <h3>Lisää uusi keskustelun avaus</h3>
+        <form id="uusiaihe" method="POST" th:action="@{~/aihe/{alue_id}(alue_id=${alue.alue_id})}">
+            <table>
+                <tr> <td> Otsikko </td> 
+                     <td> Nimimerkki </td>
+                </tr>
+                <tr> <td> <input type="text" name="otsikko"/> </td> 
+                     <td> <input type="text" name="nimimerkki"/> </td> 
+                     <td> <input type="submit" value="Lisää"/> </td>
+                </tr>
+                <tr> <td> Avausviesti </td> </tr>
+            </table>
+        </form>        
+        <textarea rows="7" cols="75" form="uusiaihe" name="viesti"> </textarea>
     </body>
 </html>
