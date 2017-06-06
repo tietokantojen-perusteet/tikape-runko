@@ -19,6 +19,7 @@ public class Main {
         Database database = new Database("jdbc:sqlite:tsjtsfoorumi.db");
         database.init();
 
+        // Tietokanta rajapinnat Alue, Aihe ja Viesti luokille
         AlueDao alueDao = new AlueDao(database);
         AiheDao aiheDao = new AiheDao(database);
         ViestiDao viestiDao = new ViestiDao(database);
@@ -48,7 +49,6 @@ public class Main {
             HashMap map = new HashMap<>();
             map.put("alue", alueDao.findOne(Integer.parseInt(req.params("id"))));
             map.put("aiheet", aiheDao.alueenAiheet(Integer.parseInt(req.params("id"))));
-
             return new ModelAndView(map, "aiheet");
         }, new ThymeleafTemplateEngine());
         
@@ -75,8 +75,7 @@ public class Main {
             Aihe aihe = aiheDao.findOne(Integer.parseInt(req.params("id")));
             map.put("alue", alueDao.findOne(aihe.getAlue_id()));
             map.put("aihe", aihe);
-            map.put("viestit", viestiDao.aiheenViestit(aihe.getAihe_id()));
-            
+            map.put("viestit", viestiDao.aiheenViestit(aihe.getAihe_id()));           
             return new ModelAndView(map, "viestit");
         }, new ThymeleafTemplateEngine());
         

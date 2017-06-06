@@ -8,8 +8,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import tikape.runko.domain.Aihe;
-import tikape.runko.domain.Alue;
-
 
 public class AiheDao implements Dao<Aihe, Integer>{
     private Database database;
