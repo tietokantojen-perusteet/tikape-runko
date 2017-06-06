@@ -16,16 +16,37 @@ public class AlueDao implements Dao<Alue, Integer>{
     public AlueDao(Database database) {
         this.database = database;
     }
+    
+    public Alue create(Alue uusiAlue) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Alue (kuvaus) VALUES ( ? )");
+        stmt.setObject(1, uusiAlue.getKuvaus());
+        stmt.execute();
+        
+        stmt = connection.prepareStatement("SELECT Alue.alue_id AS id FROM Alue WHERE Alue.kuvaus = ? ;");       
+        stmt.setObject(1, uusiAlue.getKuvaus());
+        ResultSet rs = stmt.executeQuery();
+        
+        boolean hasOne = rs.next();
+        if (!hasOne) {
+            return null;
+        }
+        
+        int id = rs.getInt("id");
+        System.out.println("UUsi ID ON : " + id);
+        Alue luotuAlue = new Alue(id, uusiAlue.getKuvaus(), 0 , "");
+        stmt.close();
+        connection.close();        
+        return luotuAlue;
+    }
 
     @Override
     public Alue findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
-        System.out.println("findone with alue_id: " + key);
         PreparedStatement stmt = connection.prepareStatement("SELECT Alue.alue_id AS id, Alue.kuvaus AS kuvaus, "
                 + "COUNT(Viesti.viesti_id) AS viesteja, MAX(Viesti.ajankohta) AS viimeisin "
                 + "FROM Alue LEFT JOIN Aihe ON Alue.alue_id=Aihe.alue_id LEFT JOIN Viesti ON Aihe.aihe_id=Viesti.aihe_id " 
-                + "WHERE Alue.alue_id = ? GROUP BY Alue.alue_id ORDER BY Alue.kuvaus;");
-        
+                + "WHERE Alue.alue_id = ? GROUP BY Alue.alue_id ORDER BY Alue.kuvaus;");       
         stmt.setObject(1, key);
         ResultSet rs = stmt.executeQuery();
         
