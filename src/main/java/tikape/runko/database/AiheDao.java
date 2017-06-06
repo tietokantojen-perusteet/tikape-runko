@@ -18,6 +18,34 @@ public class AiheDao implements Dao<Aihe, Integer>{
         this.database = database;
     }
 
+    public Aihe create(Aihe uusiAihe) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Aihe (alue_id, otsikko) "
+                + "VALUES ( ? , ? )");
+        stmt.setObject(1, uusiAihe.getAlue_id());
+        stmt.setObject(2, uusiAihe.getOtsikko());       
+        stmt.execute();
+        
+        stmt = connection.prepareStatement("SELECT aihe_id FROM Aihe "
+                + "WHERE alue_id = ? AND otsikko = ? "
+                + "ORDER BY aihe_id DESC;");       
+        stmt.setObject(1, uusiAihe.getAlue_id());
+        stmt.setObject(2, uusiAihe.getOtsikko());
+        ResultSet rs = stmt.executeQuery();
+        
+        boolean hasOne = rs.next();
+        if (!hasOne) {
+            return null;
+        }
+        
+        int id = rs.getInt("aihe_id");
+        Aihe luotuAihe = new Aihe(id, uusiAihe.getOtsikko(), 0, "" , uusiAihe.getAlue_id());
+        stmt.close();
+        connection.close();        
+        return luotuAihe;
+        
+    }
+    
     @Override
     public Aihe findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
