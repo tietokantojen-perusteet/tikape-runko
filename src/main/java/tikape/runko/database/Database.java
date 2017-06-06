@@ -64,7 +64,7 @@ public class Database {
         //lista.add("DROP TABLE Aihe; ");
         //lista.add("DROP TABLE Viesti; ");        
         lista.add("CREATE TABLE Alue (alue_id SERIAL PRIMARY KEY, "
-                + "kuvaus varchar(50) NOT NULL UNIQUE); ");
+                + "kuvaus varchar(50)); ");
         lista.add("INSERT INTO Alue (kuvaus) VALUES ('Postgres');");
         //lista.add("CREATE TABLE Aihe (aihe_id SERIAL PRIMARY KEY, "
         //        + "otsikko varchar(50) NOT NULL, "
