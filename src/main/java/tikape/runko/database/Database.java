@@ -60,6 +60,7 @@ public class Database {
         ArrayList<String> lista = new ArrayList<>();
 
         // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
+        lista.add("SET TimeZone = 'EEST' ");
         lista.add("CREATE TABLE Alue (alue_id SERIAL PRIMARY KEY, "
                 + "kuvaus varchar(50) NOT NULL UNIQUE); ");
         lista.add("INSERT INTO Alue (kuvaus) VALUES ('Ohjelmointi');");
@@ -75,6 +76,7 @@ public class Database {
                 + "ajankohta datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, "
                 + "FOREIGN KEY(aihe_id) REFERENCES Aihe(aihe_id)); ");         
         lista.add("INSERT INTO Viesti (aihe_id, teksti, nimimerkki) VALUES (1, 'Java on ihku', 'Jyrki');");
+      
 
         return lista;
     }
