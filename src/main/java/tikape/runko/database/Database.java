@@ -68,14 +68,14 @@ public class Database {
                 + "otsikko kuvaus varchar(50) NOT NULL, "
                 + "alue_id integer NOT NULL, "
                 + "FOREIGN KEY(alue_id) REFERENCES Alue(alue_id)); ");        
-        lista.add("INSERT INTO Aihe (otsikko, alue_id) VALUES ('Java on jees', 1);");
+        lista.add("INSERT INTO Aihe (otsikko, alue_id) VALUES ('Postgre', 1);");
         lista.add("CREATE TABLE VIESTI (viesti_id SERIAL PRIMARY KEY, "
                 + "aihe_id integer NOT NULL, "
                 + "teksti varchar(500) NOT NULL, "
                 + "nimimerkki varchar(25) NOT NULL, "
-                + "ajankohta datetime NOT NULL DEFAULT LOCALTIME, "
+                + "ajankohta datetime NOT NULL DEFAULT LOCALTIMESTAMP, "
                 + "FOREIGN KEY(aihe_id) REFERENCES Aihe(aihe_id)); ");         
-        lista.add("INSERT INTO Viesti (aihe_id, teksti, nimimerkki) VALUES (1, 'Java on ihku', 'Jyrki');");
+        lista.add("INSERT INTO Viesti (aihe_id, teksti, nimimerkki) VALUES (1, 'Postgre on hankala alkuuun', 'Jyrki');");
       
 
         return lista;
