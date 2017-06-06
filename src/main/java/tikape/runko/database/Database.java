@@ -60,12 +60,11 @@ public class Database {
         ArrayList<String> lista = new ArrayList<>();
 
         // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
-        lista.add("SET TimeZone = 'EEST' ");
         lista.add("CREATE TABLE Alue (alue_id SERIAL PRIMARY KEY, "
                 + "kuvaus varchar(50) NOT NULL UNIQUE); ");
         lista.add("INSERT INTO Alue (kuvaus) VALUES ('Postgres');");
         lista.add("CREATE TABLE Aihe (aihe_id SERIAL PRIMARY KEY, "
-                + "otsikko kuvaus varchar(50) NOT NULL, "
+                + "otsikko varchar(50) NOT NULL, "
                 + "alue_id integer NOT NULL, "
                 + "FOREIGN KEY(alue_id) REFERENCES Alue(alue_id)); ");        
         lista.add("INSERT INTO Aihe (otsikko, alue_id) VALUES ('Miten Postgres toimii', 1);");
