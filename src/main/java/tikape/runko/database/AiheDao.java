@@ -48,7 +48,7 @@ public class AiheDao implements Dao<Aihe, Integer>{
     public Aihe findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT Aihe.aihe_id AS id, Aihe.otsikko AS otsikko, "
-                + "COUNT(Viesti.viesti_id) AS viesteja, DATETIME(MAX(Viesti.ajankohta), 'localtime') AS viimeisin, "
+                + "COUNT(Viesti.viesti_id) AS viesteja, MAX(Viesti.ajankohta) AS viimeisin, "
                 + "Aihe.alue_id AS alue_id "
                 + "FROM Aihe LEFT JOIN Viesti ON Aihe.aihe_id=Viesti.aihe_id WHERE Aihe.aihe_id = ? " 
                 + "GROUP BY Aihe.aihe_id ORDER BY MAX(Viesti.ajankohta) DESC;");
@@ -84,7 +84,7 @@ public class AiheDao implements Dao<Aihe, Integer>{
     public List<Aihe> alueenAiheet(int alue_id) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT Aihe.aihe_id AS id, Aihe.otsikko AS otsikko, "
-                + "COUNT(Viesti.viesti_id) AS viesteja, DATETIME(MAX(Viesti.ajankohta), 'localtime') AS viimeisin "
+                + "COUNT(Viesti.viesti_id) AS viesteja, MAX(Viesti.ajankohta) AS viimeisin "
                 + "FROM Aihe LEFT JOIN Viesti ON Aihe.aihe_id=Viesti.aihe_id WHERE Aihe.alue_id = ? " 
                 + "GROUP BY Aihe.aihe_id ORDER BY MAX(Viesti.ajankohta) DESC;");
         
