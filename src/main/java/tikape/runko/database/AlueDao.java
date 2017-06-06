@@ -72,21 +72,20 @@ public class AlueDao implements Dao<Alue, Integer>{
     @Override
     public List<Alue> findAll() throws SQLException {
         Connection connection = database.getConnection();
-        //PreparedStatement stmt = connection.prepareStatement("SELECT Alue.alue_id AS id, Alue.kuvaus AS kuvaus, "
-        //        + "COUNT(Viesti.viesti_id) AS viesteja, MAX(Viesti.ajankohta) AS viimeisin "
-        //        + "FROM Alue LEFT JOIN Aihe ON Alue.alue_id=Aihe.alue_id LEFT JOIN Viesti ON Aihe.aihe_id=Viesti.aihe_id " 
-        //        + "GROUP BY Alue.alue_id ORDER BY Alue.kuvaus;");
-        PreparedStatement stmt = connection.prepareStatement("SELECT Alue.alue_id AS id, Alue.kuvaus AS kuvaus "
-                + "FROM Alue GROUP BY Alue.alue_id ORDER BY Alue.kuvaus;");        
+        PreparedStatement stmt = connection.prepareStatement("SELECT Alue.alue_id AS id, Alue.kuvaus AS kuvaus, "
+                + "COUNT(Viesti.viesti_id) AS viesteja, MAX(Viesti.ajankohta) AS viimeisin "
+                + "FROM Alue LEFT JOIN Aihe ON Alue.alue_id=Aihe.alue_id LEFT JOIN Viesti ON Aihe.aihe_id=Viesti.aihe_id " 
+                + "GROUP BY Alue.alue_id ORDER BY Alue.kuvaus;");
+      
         ResultSet rs = stmt.executeQuery();
         List<Alue> alueet = new ArrayList<>();
         while (rs.next()) {
             int id = rs.getInt("id");
             String kuvaus = rs.getString("kuvaus");
-            //int viesteja = rs.getInt("viesteja");
-            //String viimeisin = rs.getString("viimeisin");
+            int viesteja = rs.getInt("viesteja");
+            String viimeisin = rs.getString("viimeisin");
 
-            alueet.add(new Alue(id, kuvaus, 0, ""));
+            alueet.add(new Alue(id, kuvaus, viesteja, viimeisin));
         }
 
         rs.close();
