@@ -58,7 +58,7 @@ public class ViestiDao implements Dao<Viesti, Integer>{
     
     public List<Viesti> aiheenViestit(int aihe_id) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM VIESTI "
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti "
                 + "WHERE Viesti.aihe_id = ? ORDER BY Viesti.ajankohta;");
         
         stmt.setObject(1, aihe_id);

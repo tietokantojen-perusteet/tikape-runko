@@ -47,9 +47,9 @@ public class AiheDao implements Dao<Aihe, Integer>{
     @Override
     public Aihe findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
-        String viimeisinAika = "DATETIME(MAX(Viesti.ajankohta), 'localtime')  AS viimeisin ";        
+        String viimeisinAika = "DATETIME(MAX(Viesti.ajankohta), 'localtime')  AS viimeisin, ";        
         if (database.getDatabaseAddress().contains("postgres")) {
-            viimeisinAika = "MAX(Viesti.ajankohta) AT TIME ZONE 'UTC' AT TIME ZONE 'EEST' AS viimeisin ";
+            viimeisinAika = "MAX(Viesti.ajankohta) AT TIME ZONE 'UTC' AT TIME ZONE 'EEST' AS viimeisin, ";
         }         
         PreparedStatement stmt = connection.prepareStatement("SELECT Aihe.aihe_id AS id, Aihe.otsikko AS otsikko, "
                 + "COUNT(Viesti.viesti_id) AS viesteja, "
