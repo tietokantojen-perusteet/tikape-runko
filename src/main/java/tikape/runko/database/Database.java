@@ -60,22 +60,22 @@ public class Database {
         ArrayList<String> lista = new ArrayList<>();
 
         // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
-        lista.add("DROP TABLE Alue; ");
-        lista.add("DROP TABLE Aihe; ");
-        lista.add("DROP TABLE Viesti; ");        
+        //lista.add("DROP TABLE Alue; ");
+        //lista.add("DROP TABLE Aihe; ");
+        //lista.add("DROP TABLE Viesti; ");        
         lista.add("CREATE TABLE Alue (alue_id SERIAL PRIMARY KEY, "
                 + "kuvaus varchar(50) NOT NULL UNIQUE); ");
         lista.add("INSERT INTO Alue (kuvaus) VALUES ('Postgres');");
-        lista.add("CREATE TABLE Aihe (aihe_id SERIAL PRIMARY KEY, "
-                + "otsikko varchar(50) NOT NULL, "
-                + "alue_id integer NOT NULL REFERENCES Alue(alue_id)); ");        
-        lista.add("INSERT INTO Aihe (otsikko, alue_id) VALUES ('Miten Postgres toimii', 1);");
-        lista.add("CREATE TABLE VIESTI (viesti_id SERIAL PRIMARY KEY, "
-                + "aihe_id integer NOT NULL REFERENCES Aihe(aihe_id), "
-                + "teksti varchar(500) NOT NULL, "
-                + "nimimerkki varchar(25) NOT NULL, "
-                + "ajankohta datetime NOT NULL ); ");         
-        lista.add("INSERT INTO Viesti (aihe_id, teksti, nimimerkki) VALUES (1, 'Postgre on hankala alkuuun', 'Jyrki');");
+        //lista.add("CREATE TABLE Aihe (aihe_id SERIAL PRIMARY KEY, "
+        //        + "otsikko varchar(50) NOT NULL, "
+        //        + "alue_id integer NOT NULL REFERENCES Alue(alue_id)); ");        
+        //lista.add("INSERT INTO Aihe (otsikko, alue_id) VALUES ('Miten Postgres toimii', 1);");
+        //lista.add("CREATE TABLE VIESTI (viesti_id SERIAL PRIMARY KEY, "
+        //        + "aihe_id integer NOT NULL REFERENCES Aihe(aihe_id), "
+        //        + "teksti varchar(500) NOT NULL, "
+        //        + "nimimerkki varchar(25) NOT NULL, "
+        //        + "ajankohta datetime NOT NULL ); ");         
+        //lista.add("INSERT INTO Viesti (aihe_id, teksti, nimimerkki) VALUES (1, 'Postgre on hankala alkuuun', 'Jyrki');");
       
 
         return lista;
