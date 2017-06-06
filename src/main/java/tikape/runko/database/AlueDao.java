@@ -73,12 +73,11 @@ public class AlueDao implements Dao<Alue, Integer>{
     public List<Alue> findAll() throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT Alue.alue_id AS id, Alue.kuvaus AS kuvaus, "
-                + "COUNT(Viesti.viesti_id) AS viesteja, MAX(Viesti.ajankohta) AT TIME ZONE 'EEST' AS viimeisin "
+                + "COUNT(Viesti.viesti_id) AS viesteja, MAX(Viesti.ajankohta) AS viimeisin "
                 + "FROM Alue LEFT JOIN Aihe ON Alue.alue_id=Aihe.alue_id LEFT JOIN Viesti ON Aihe.aihe_id=Viesti.aihe_id " 
                 + "GROUP BY Alue.alue_id ORDER BY Alue.kuvaus;");
 
         ResultSet rs = stmt.executeQuery();
-        System.out.println("Test test");
         List<Alue> alueet = new ArrayList<>();
         while (rs.next()) {
             int id = rs.getInt("id");
