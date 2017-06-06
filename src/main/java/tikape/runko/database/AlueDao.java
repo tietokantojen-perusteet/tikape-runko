@@ -43,9 +43,13 @@ public class AlueDao implements Dao<Alue, Integer>{
     @Override
     public Alue findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
+        String viimeisinAika = "DATETIME(MAX(Viesti.ajankohta), 'localtime')  AS viimeisin ";        
+        if (database.getDatabaseAddress().contains("postgres")) {
+            viimeisinAika = "MAX(Viesti.ajankohta) AT TIME ZONE 'UTC' AT TIME ZONE 'EEST' AS viimeisin ";
+        }         
         PreparedStatement stmt = connection.prepareStatement("SELECT Alue.alue_id AS id, Alue.kuvaus AS kuvaus, "
                 + "COUNT(Viesti.viesti_id) AS viesteja, "
-                + "MAX(Viesti.ajankohta) AT TIME ZONE 'UTC' AT TIME ZONE 'EEST' AS viimeisin "
+                + viimeisinAika
                 + "FROM Alue LEFT JOIN Aihe ON Alue.alue_id=Aihe.alue_id LEFT JOIN Viesti ON Aihe.aihe_id=Viesti.aihe_id " 
                 + "WHERE Alue.alue_id = ? GROUP BY Alue.alue_id ORDER BY Alue.kuvaus;");       
         stmt.setObject(1, key);
@@ -73,9 +77,13 @@ public class AlueDao implements Dao<Alue, Integer>{
     @Override
     public List<Alue> findAll() throws SQLException {
         Connection connection = database.getConnection();
+        String viimeisinAika = "DATETIME(MAX(Viesti.ajankohta), 'localtime')  AS viimeisin ";        
+        if (database.getDatabaseAddress().contains("postgres")) {
+            viimeisinAika = "MAX(Viesti.ajankohta) AT TIME ZONE 'UTC' AT TIME ZONE 'EEST' AS viimeisin ";
+        } 
         PreparedStatement stmt = connection.prepareStatement("SELECT Alue.alue_id AS id, Alue.kuvaus AS kuvaus, "
                 + "COUNT(Viesti.viesti_id) AS viesteja, "
-                + "MAX(Viesti.ajankohta) AT TIME ZONE 'UTC' AT TIME ZONE 'EEST' AS viimeisin "
+                + viimeisinAika
                 + "FROM Alue LEFT JOIN Aihe ON Alue.alue_id=Aihe.alue_id LEFT JOIN Viesti ON Aihe.aihe_id=Viesti.aihe_id " 
                 + "GROUP BY Alue.alue_id ORDER BY Alue.kuvaus;");
       

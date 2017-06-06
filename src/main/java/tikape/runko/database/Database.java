@@ -13,6 +13,11 @@ public class Database {
         this.databaseAddress = databaseAddress;
     }
 
+    public String getDatabaseAddress() {
+        return databaseAddress;
+    }
+    
+
     public Connection getConnection() throws SQLException {
         if (this.databaseAddress.contains("postgres")) {
             try {
