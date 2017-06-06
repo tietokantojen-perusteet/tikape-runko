@@ -63,12 +63,12 @@ public class Database {
         lista.add("SET TimeZone = 'EEST' ");
         lista.add("CREATE TABLE Alue (alue_id SERIAL PRIMARY KEY, "
                 + "kuvaus varchar(50) NOT NULL UNIQUE); ");
-        lista.add("INSERT INTO Alue (kuvaus) VALUES ('Ohjelmointi');");
+        lista.add("INSERT INTO Alue (kuvaus) VALUES ('Postgres');");
         lista.add("CREATE TABLE Aihe (aihe_id SERIAL PRIMARY KEY, "
                 + "otsikko kuvaus varchar(50) NOT NULL, "
                 + "alue_id integer NOT NULL, "
                 + "FOREIGN KEY(alue_id) REFERENCES Alue(alue_id)); ");        
-        lista.add("INSERT INTO Aihe (otsikko, alue_id) VALUES ('Postgre', 1);");
+        lista.add("INSERT INTO Aihe (otsikko, alue_id) VALUES ('Miten Postgres toimii', 1);");
         lista.add("CREATE TABLE VIESTI (viesti_id SERIAL PRIMARY KEY, "
                 + "aihe_id integer NOT NULL, "
                 + "teksti varchar(500) NOT NULL, "
@@ -87,19 +87,19 @@ public class Database {
         // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
         lista.add("CREATE TABLE Alue (alue_id integer PRIMARY KEY, "
                 + "kuvaus varchar(50) NOT NULL UNIQUE); ");
-        lista.add("INSERT INTO Alue (kuvaus) VALUES ('Ohjelmointi');");
+        lista.add("INSERT INTO Alue (kuvaus) VALUES ('SQLite');");
         lista.add("CREATE TABLE Aihe (aihe_id integer PRIMARY KEY, "
                 + "otsikko kuvaus varchar(50) NOT NULL, "
                 + "alue_id integer NOT NULL, "
                 + "FOREIGN KEY(alue_id) REFERENCES Alue(alue_id)); ");        
-        lista.add("INSERT INTO Aihe (otsikko, alue_id) VALUES ('Java on jees', 1);");
+        lista.add("INSERT INTO Aihe (otsikko, alue_id) VALUES ('SQLite rules', 1);");
         lista.add("CREATE TABLE VIESTI (viesti_id integer PRIMARY KEY, "
                 + "aihe_id integer NOT NULL, "
                 + "teksti varchar(500) NOT NULL, "
                 + "nimimerkki varchar(25) NOT NULL, "
                 + "ajankohta datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, "
                 + "FOREIGN KEY(aihe_id) REFERENCES Aihe(aihe_id)); ");         
-        lista.add("INSERT INTO Viesti (aihe_id, teksti, nimimerkki) VALUES (1, 'Java on ihku', 'Jyrki');");
+        lista.add("INSERT INTO Viesti (aihe_id, teksti, nimimerkki) VALUES (1, 'SQLite Studio on ihku', 'Jyrki');");
 
         return lista;
     }
