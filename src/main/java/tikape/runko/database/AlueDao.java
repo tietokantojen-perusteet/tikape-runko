@@ -79,7 +79,7 @@ public class AlueDao implements Dao<Alue, Integer>{
         Connection connection = database.getConnection();
         String viimeisinAika = "DATETIME(MAX(Viesti.ajankohta), 'localtime')  AS viimeisin ";        
         if (database.getDatabaseAddress().contains("postgres")) {
-            viimeisinAika = "MAX(Viesti.ajankohta) AT TIME ZONE 'UTC' AT TIME ZONE 'EEST' AS viimeisin ";
+            viimeisinAika = "TO_CHAR(MAX(Viesti.ajankohta) AT TIME ZONE 'UTC' AT TIME ZONE 'EEST', 'YYYY-MM-DD HH24:MI:SS' ) AS viimeisin ";
         } 
         PreparedStatement stmt = connection.prepareStatement("SELECT Alue.alue_id AS id, Alue.kuvaus AS kuvaus, "
                 + "COUNT(Viesti.viesti_id) AS viesteja, "
