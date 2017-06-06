@@ -6,24 +6,35 @@
         <meta charset="utf-8" />
     </head>
 
-
     <body>
         <h1>TSJTS Foorumi</h1>
 
         <table>
             <tr>
-                <th align="left">Alue</th>
-                <th align="left">Viestejä yhteensä</th>
-                <th align="left">Viimeisin viesti</th>
+                <td style="align:left; padding-right: 10px; font-weight: bold" > Alue </td>
+                <td style="align:left; padding-right: 10px; font-weight: bold" > Viestejä </td>
+                <td style="align:left; font-weight: bold" > Viimeisin viesti </td>
             </tr>
             <tr th:each="alue: ${alueet}">
-                <td align="left"> <a th:href="${'/alueet/' + alue.alue_id}"> 
-                    <span th:text="${alue.kuvaus}">alue kuvaus </span> 
+                <td style="align:left; padding-right: 10px"> 
+                    <a th:href="${'/alueet/' + alue.alue_id}"> 
+                    <span th:text="${alue.kuvaus}"> alueen kuvaus </span> 
                     </a> </td> 
-                <td align="left" th:text="${alue.viesteja}">Alueen viestejä</td>
-                <td align="left" th:text="${alue.viimeisin}">viimeisin viesti</td>
+                <td style="align:left; padding-right: 10px" th:text="${alue.viesteja}"> Alueen viestejä </td>
+                <td align="left" th:text="${alue.viimeisin}"> viimeisin viesti </td>
             </tr>
         </table>
         
+        <h3>Lisää uusi alue</h3>
+        <form id="uusialue" method="POST" th:action="@{~/alue}">
+            <table>
+                <tr>
+                    <td><input type="text" name="alue"/></td>
+                    <td>
+                        <input type="submit" value="Lisää"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
     </body>
 </html>
