@@ -1,29 +1,22 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
     <head>
         <title>STJTS-Foorumi</title>
         <meta charset="utf-8" />
     </head>
-
-
     <body>
         <h1>STJTS Foorumi</h1>
-
-        <h3> Alue: <span th:text="${alue.kuvaus}" > alue kuvaus </span>
+        <h3> Alue: <span th:text="${alue.kuvaus}" > Alueen kuvaus </span>
             <span> -> </span>
-            <span th:text = "${aihe.otsikko}" > aiheen otsikko </span>
-
+            <span th:text = "${aihe.otsikko}" > Aiheen otsikko </span>
         </h3>
-        
         <ol start="1">
             <li th:each="viesti: ${viestit} ">
                 <span th:text="${viesti.teksti}"> Viestin teksti </span>
                 <span> t. </span>
-                <span th:text="${viesti.nimimerkki}">  nimimerkki </span>
+                <span th:text="${viesti.nimimerkki}"> Nimimerkki </span>
             </li>
         </ol>
-        
         <h3>Lisää uusi viesti</h3>
         <form id="uusiviesti" method="POST" th:action="@{~/viesti/{aihe_id}(aihe_id=${aihe.aihe_id})}">
             <table>
@@ -35,6 +28,5 @@
             </table>
         </form>        
         <textarea rows="7" cols="75" form="uusiviesti" name="viesti"> </textarea>        
-        
     </body>
 </html>

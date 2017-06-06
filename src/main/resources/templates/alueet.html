@@ -1,14 +1,11 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
     <head>
         <title>STJTS-Foorumi</title>
         <meta charset="utf-8" />
     </head>
-
     <body>
         <h1>STJTS Foorumi</h1>
-
         <table>
             <tr>
                 <td style="align:left; padding-right: 10px; font-weight: bold" > Alue </td>
@@ -20,11 +17,10 @@
                     <a th:href="${'/alueet/' + alue.alue_id}"> 
                     <span th:text="${alue.kuvaus}"> alueen kuvaus </span> 
                     </a> </td> 
-                <td style="align:left; padding-right: 10px" th:text="${alue.viesteja}"> Alueen viestejä </td>
-                <td align="left" th:text="${alue.viimeisin}"> viimeisin viesti </td>
+                <td style="align:left; padding-right: 10px" th:text="${alue.viesteja}"> Alueella viestejä </td>
+                <td align="left" th:text="${alue.viimeisin}"> Viimeisin viesti </td>
             </tr>
         </table>
-        
         <h3>Lisää uusi alue</h3>
         <form id="uusialue" method="POST" th:action="@{~/alue}">
             <table>

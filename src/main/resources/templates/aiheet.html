@@ -1,31 +1,28 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
     <head>
         <title>STJTS-Foorumi</title>
         <meta charset="utf-8" />
     </head>
-
     <body>
         <h1>STJTS Foorumi</h1>
         <table>
             <tr>
                 <td style="align:left; padding-right: 10px; font-weight: bold"> Alue: 
-                    <span th:text="${alue.kuvaus}" > </span></td>
-                <td style="align:left; padding-right: 10px; font-weight: bold">Viestejä</td>
-                <td style="align:left; font-weight: bold">Viimeisin viesti </td>
+                    <span th:text="${alue.kuvaus}" > Alueen kuvaus </span></td>
+                <td style="align:left; padding-right: 10px; font-weight: bold"> Viestejä </td>
+                <td style="align:left; font-weight: bold"> Viimeisin viesti </td>
             </tr>
             <tr th:each="aihe: ${aiheet} ">
                 <td style="align:left; padding-right: 10px"> 
                     <a th:href="${'/aiheet/' + aihe.aihe_id}"> 
-                    <span th:text="${aihe.otsikko}">alue kuvaus </span> 
+                    <span th:text="${aihe.otsikko}"> aiheen otsikko </span> 
                     </a> </td> 
                 <td style="align:left; padding-right: 10px" 
-                    th:text="${aihe.viesteja}">Alueen viestejä</td>
-                <td style="align:left" th:text="${aihe.viimeisin}">viimeisin viesti</td>
+                    th:text="${aihe.viesteja}"> viestejä yhteensä </td>
+                <td style="align:left" th:text="${aihe.viimeisin}"> viimeisin viesti </td>
             </tr>
         </table>  
-
         <h3>Lisää uusi keskustelun avaus</h3>
         <form id="uusiaihe" method="POST" th:action="@{~/aihe/{alue_id}(alue_id=${alue.alue_id})}">
             <table>
