@@ -73,7 +73,7 @@ public class Database {
                 + "aihe_id integer NOT NULL, "
                 + "teksti varchar(500) NOT NULL, "
                 + "nimimerkki varchar(25) NOT NULL, "
-                + "ajankohta datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, "
+                + "ajankohta datetime NOT NULL DEFAULT LOCALTIME, "
                 + "FOREIGN KEY(aihe_id) REFERENCES Aihe(aihe_id)); ");         
         lista.add("INSERT INTO Viesti (aihe_id, teksti, nimimerkki) VALUES (1, 'Java on ihku', 'Jyrki');");
       
