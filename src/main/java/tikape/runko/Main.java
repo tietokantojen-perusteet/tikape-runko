@@ -36,10 +36,16 @@ public class Main {
         }, new ThymeleafTemplateEngine());
         
         // tämä erilaisia testejä varten
-        get("/test", (req, res) -> {
+        get("/test1", (req, res) -> {
             res.redirect("/");
             return "";
         });
+        
+        get("/test2", (req, res) -> {
+            HashMap map = new HashMap<>();
+            map.put("edellinen", "location.href='/'");
+            return new ModelAndView(map, "test");
+        }, new ThymeleafTemplateEngine());       
         
         // Lisätään uusi alue ja palataan pääsivulle
         // LISÄTTÄVÄ TOIMINTO JOKA TARKISTAA ENNEN LUONTIA ONKO SAMANNIMINEN ALUE JO LUOTU
