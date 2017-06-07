@@ -54,10 +54,15 @@ public class Main {
             return "";
         });
 
-        // näytetään alueen "id" avaukset
-        // TÄSTÄ VOI KOPIODA POHJAN KOODILLE JOKA KUUNTELEE KUTSUJA /alueet/:id/sivu/:s
-        // JA TÄMÄ KUTSU OHJAA SIVULLE /alueet/:id/sivu/1
+        // alueen ":id" valittu, ohjataan sivulle /alueet/:id/sivu/1
         get("/alueet/:id", (req, res) -> {
+            res.redirect("/alueet/" + req.params("id") + "/sivu/1");
+            return "";
+        });     
+        
+        // näytetään alueen ":id" avaukset sivu ":s"
+        // TOIMINNALLISUS TEKEMÄTTÄ, NÄYTTÄÄ NYT KAIKKI AIHEET 1-n
+        get("/alueet/:id/sivu/:s", (req, res) -> {
             HashMap map = new HashMap<>();
             Alue alue = alueDao.findOne(Integer.parseInt(req.params("id")));
             if(alue==null) {
@@ -93,10 +98,15 @@ public class Main {
             return "";
         });
         
-        // näytetään aiheen "id" viestit
-        // TÄSTÄ VOI KOPIODA POHJAN KOODIIN JOKA KUUNTELEE OSOITTEITA /aiheet/:id/sivu/:s
-        // JA TÄMÄ OHJAA SIVULLE /aiheet/:id/sivu/1
+        // aihe ":id" valittu, ohjataan sivulle /aiheet/:id/sivu/1
         get("/aiheet/:id", (req, res) -> {
+            res.redirect("/aiheet/" + req.params("id") + "/sivu/1");
+            return "";
+        });     
+        
+        // näytetään aiheen ":id" viestit sivulta ":s"
+        // TOIMINNALLISUUS KESKEN, LISÄTTÄVÄ SIVUJAON TEKEMINEN
+        get("/aiheet/:id/sivu/:s", (req, res) -> {
             HashMap map = new HashMap<>();
             Aihe aihe = aiheDao.findOne(Integer.parseInt(req.params("id")));   
             if(aihe==null) {
