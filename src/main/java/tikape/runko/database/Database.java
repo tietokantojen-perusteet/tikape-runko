@@ -67,9 +67,9 @@ public class Database {
         ArrayList<String> lista = new ArrayList<>();
 
         // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
-        lista.add("DROP TABLE Alue; ");
-        lista.add("DROP TABLE Aihe; ");
-        lista.add("DROP TABLE Viesti; ");        
+        //lista.add("DROP TABLE Alue; ");
+        //lista.add("DROP TABLE Aihe; ");
+        //lista.add("DROP TABLE Viesti; ");        
         lista.add("CREATE TABLE Alue (alue_id SERIAL PRIMARY KEY, "
                 + "kuvaus varchar(50) NOT NULL)"
                 + "UNIQUE(kuvaus); ");
