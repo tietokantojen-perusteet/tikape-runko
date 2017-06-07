@@ -17,7 +17,7 @@ public class Database {
         return databaseAddress;
     }
     
-
+    // luentomateriaalin mukainen yhteyden luonti joko sqlite tai postgresql
     public Connection getConnection() throws SQLException {
         if (this.databaseAddress.contains("postgres")) {
             try {
@@ -33,10 +33,10 @@ public class Database {
                 t.printStackTrace();
             }
         }
-
         return DriverManager.getConnection(databaseAddress);
     }
 
+    // luentomateriaalin mukainen teitokannan alustus joko sqlite tai postgresql
     public void init() {
         List<String> lauseet = null;
         if (this.databaseAddress.contains("postgres")) {
@@ -61,6 +61,7 @@ public class Database {
         }
     }
 
+    // tietokannan luontiin tarvittavat postgresql lauseet
     private List<String> postgreLauseet() {
         ArrayList<String> lista = new ArrayList<>();
 
@@ -75,7 +76,7 @@ public class Database {
         lista.add("CREATE TABLE Aihe (aihe_id SERIAL PRIMARY KEY, "
                 + "otsikko varchar(50) NOT NULL, "
                 + "alue_id integer NOT NULL REFERENCES Alue(alue_id)); ");        
-        lista.add("INSERT INTO Aihe (otsikko, alue_id) VALUES ('Miten Postgres toimii', 1);");
+        lista.add("INSERT INTO Aihe (otsikko, alue_id) VALUES ('Miten Postgres toimii', 1); ");
         lista.add("CREATE TABLE Viesti (viesti_id SERIAL PRIMARY KEY, "
                 + "aihe_id integer NOT NULL REFERENCES Aihe(aihe_id), "
                 + "teksti varchar(500) NOT NULL, "
@@ -83,10 +84,10 @@ public class Database {
                 + "ajankohta timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP); ");         
         lista.add("INSERT INTO Viesti (aihe_id, teksti, nimimerkki) VALUES (1, 'Postgre on hankala alkuuun', 'Jyrki');");
       
-
         return lista;
     }
     
+    // tietokannan luontii tarvittavat sqlite lauseet
     private List<String> sqliteLauseet() {
         ArrayList<String> lista = new ArrayList<>();
 
@@ -98,7 +99,7 @@ public class Database {
                 + "otsikko kuvaus varchar(50) NOT NULL, "
                 + "alue_id integer NOT NULL, "
                 + "FOREIGN KEY(alue_id) REFERENCES Alue(alue_id)); ");        
-        lista.add("INSERT INTO Aihe (otsikko, alue_id) VALUES ('SQLite rules', 1);");
+        lista.add("INSERT INTO Aihe (otsikko, alue_id) VALUES ('SQLite rules', 1); ");
         lista.add("CREATE TABLE Viesti (viesti_id integer PRIMARY KEY, "
                 + "aihe_id integer NOT NULL, "
                 + "teksti varchar(500) NOT NULL, "

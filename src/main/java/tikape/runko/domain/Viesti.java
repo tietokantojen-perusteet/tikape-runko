@@ -2,12 +2,13 @@
 package tikape.runko.domain;
 
 public class Viesti {
-    private int viesti_id;
-    private int aihe_id;
+    private int viesti_id; // viesti taulun pääavain
+    private int aihe_id; // viiteavain aihe tauluun
     private String teksti;
-    private String ajankohta;
+    private String ajankohta; // luontiajankohta, jonka tietokantaa asettaa automaattisesti
     private String nimimerkki;
 
+    // konstruktori kun viesti haetaan tietokannasta
     public Viesti(int viesti_id, int aihe_id, String teksti, String ajankohta, String nimimerkki) {
         this.viesti_id = viesti_id;
         this.aihe_id = aihe_id;
@@ -16,10 +17,12 @@ public class Viesti {
         this.nimimerkki = nimimerkki;
     }
   
-        public Viesti(int aihe_id, String teksti, String nimimerkki) {
+    // konstruktori kun uutta viestiä luodaan
+    public Viesti(int aihe_id, String teksti, String nimimerkki) {
         this.viesti_id = 0;
         this.aihe_id = aihe_id;
         this.teksti = teksti;
+        this.ajankohta = null;
         this.nimimerkki = nimimerkki;
     }
 
@@ -41,8 +44,6 @@ public class Viesti {
 
     public int getViesti_id() {
         return viesti_id;
-    }
-    
-        
+    }      
         
 }

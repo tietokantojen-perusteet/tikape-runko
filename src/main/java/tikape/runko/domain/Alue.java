@@ -2,11 +2,12 @@ package tikape.runko.domain;
 
 
 public class Alue {
-    private int alue_id;
-    private String kuvaus;
-    private int viesteja;
-    private String viimeisin;
+    private int alue_id; // Alue taulun pääavain
+    private String kuvaus; 
+    private int viesteja; // tietokannassa alueeseen kuuluvien viestien kokonaismäärä
+    private String viimeisin; // viimeisimmän veistin ajankohta
 
+    // konstruktori kun alue haetaan tietokannasta
     public Alue(int alue_id, String kuvaus, int viesteja, String viimeisin) {
         this.alue_id = alue_id;
         this.kuvaus = kuvaus;
@@ -14,6 +15,7 @@ public class Alue {
         this.viimeisin = viimeisin;
     }
  
+    // konstruktori kun uutta aluetta luodaan
     public Alue(String kuvaus) {
         this.alue_id = 0;
         this.kuvaus = kuvaus;

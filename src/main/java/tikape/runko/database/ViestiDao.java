@@ -17,7 +17,8 @@ public class ViestiDao implements Dao<Viesti, Integer>{
         this.database = database;
     }
     
-        public Viesti create(Viesti uusiViesti) throws SQLException {
+    // luodaan tietokantaan uusi viesti
+    public Viesti create(Viesti uusiViesti) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("INSERT INTO Viesti (aihe_id, teksti, nimimerkki) "
                 + "VALUES ( ? , ? , ? )");
@@ -26,6 +27,7 @@ public class ViestiDao implements Dao<Viesti, Integer>{
         stmt.setObject(3, uusiViesti.getNimimerkki());        
         stmt.execute();
         
+        // haetaan uuden viestin viesti_id
         stmt = connection.prepareStatement("SELECT viesti_id, ajankohta FROM Viesti "
                 + "WHERE aihe_id = ? AND nimimerkki = ? "
                 + "ORDER BY ajankohta DESC;");       
@@ -33,11 +35,13 @@ public class ViestiDao implements Dao<Viesti, Integer>{
         stmt.setObject(2, uusiViesti.getNimimerkki());
         ResultSet rs = stmt.executeQuery();
         
+        // luonti epäonnistui, palautetaan null
         boolean hasOne = rs.next();
         if (!hasOne) {
             return null;
         }
         
+        // palauetaan luodun viestin viesti_id
         int id = rs.getInt("viesti_id");
         String ajankohta = rs.getString("ajankohta");
         Viesti luotuViesti = new Viesti(id, uusiViesti.getAihe_id(), uusiViesti.getTeksti(), ajankohta , uusiViesti.getNimimerkki());
@@ -46,16 +50,19 @@ public class ViestiDao implements Dao<Viesti, Integer>{
         return luotuViesti;
     }
 
+    // ei tarvetta projektissa, ei tehty
     @Override
     public Viesti findOne(Integer key) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    // ei tarvetta projektissa , ei tehty
     @Override
     public List<Viesti> findAll() throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+    // etsitään yhden aiheen kaikki viestit aihe_id:n perusteella
     public List<Viesti> aiheenViestit(int aihe_id) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti "
@@ -80,6 +87,7 @@ public class ViestiDao implements Dao<Viesti, Integer>{
         return viestit;        
     }    
 
+    // ei tehty koska ei tarvetta
     @Override
     public void delete(Integer key) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

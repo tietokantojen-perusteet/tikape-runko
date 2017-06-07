@@ -4,14 +4,8 @@ import java.util.HashMap;
 import spark.ModelAndView;
 import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
-import tikape.runko.database.AiheDao;
-import tikape.runko.database.AlueDao;
-import tikape.runko.database.Database;
-import tikape.runko.database.OpiskelijaDao;
-import tikape.runko.database.ViestiDao;
-import tikape.runko.domain.Aihe;
-import tikape.runko.domain.Alue;
-import tikape.runko.domain.Viesti;
+import tikape.runko.database.*;
+import tikape.runko.domain.*;
 
 public class Main {
 
@@ -85,7 +79,8 @@ public class Main {
             Aihe aihe = aiheDao.findOne(Integer.parseInt(req.params("id")));        
             map.put("alue", alueDao.findOne(aihe.getAlue_id()));
             map.put("aihe", aihe);
-            map.put("viestit", viestiDao.aiheenViestit(aihe.getAihe_id()));                       
+            map.put("viestit", viestiDao.aiheenViestit(aihe.getAihe_id()));  
+            map.put("aloitusnumero", 1);
             return new ModelAndView(map, "viestit");
         }, new ThymeleafTemplateEngine());
         

@@ -10,7 +10,7 @@
             <span> -> </span>
             <span th:text = "${aihe.otsikko}" > Aiheen otsikko </span>
         </h3>
-        <ol start="1">
+        <ol start="1" th:start="${aloitusnumero}">
             <li th:each="viesti: ${viestit} ">
                 <span th:text="${viesti.teksti}"> Viestin teksti </span>
                 <span> t. </span>
@@ -21,12 +21,12 @@
         <form id="uusiviesti" method="POST" th:action="@{~/viesti/{aihe_id}(aihe_id=${aihe.aihe_id})}">
             <table>
                 <tr> <td> Nimimerkki </td>  </tr>
-                <tr> <td> <input type="text" name="nimimerkki"/> </td> 
+                <tr> <td> <input type="text" size="25" maxlength="25" name="nimimerkki"/> </td> 
                      <td> <input type="submit" value="Lisää"/> </td>
                 </tr>
                 <tr> <td> Uusi viesti </td> </tr>
             </table>
         </form>        
-        <textarea rows="7" cols="75" form="uusiviesti" name="viesti"> </textarea>        
+        <textarea rows="7" cols="75" maxlength="500" form="uusiviesti" name="viesti"> </textarea>        
     </body>
 </html>

@@ -1,13 +1,15 @@
 
 package tikape.runko.domain;
 
+// luokka foorumin aiheita varten
 public class Aihe {
-    private int aihe_id;
-    private String otsikko;
-    private int viesteja;
-    private String viimeisin;
-    private int alue_id;
+    private int aihe_id; // tietokannan aiheen pääaiavin
+    private String otsikko; 
+    private int viesteja; // tietokannassa olevien aiheseen kuuluvien viestien määrä
+    private String viimeisin; // tietokannan viimeisin viesti aiheesta
+    private int alue_id; // Alue taulun alue_id, jolle aihe kuuluu. Aihe taulun viiteavain
 
+    // konstruktori, kun aihe haettu tietokannasta
     public Aihe(int aihe_id, String otsikko, int viesteja, String viimeisin, int alue_id) {
         this.aihe_id = aihe_id;
         this.otsikko = otsikko;
@@ -16,6 +18,7 @@ public class Aihe {
         this.alue_id = alue_id;
     }
 
+    // konstruktori tilanteessa jossa aihetta ei ole vielä tietokannassa
     public Aihe(String otsikko, int alue_id) {
         this.aihe_id = 0;
         this.otsikko = otsikko;

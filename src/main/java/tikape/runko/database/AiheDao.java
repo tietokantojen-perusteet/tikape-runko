@@ -16,6 +16,7 @@ public class AiheDao implements Dao<Aihe, Integer>{
         this.database = database;
     }
 
+    // Luodaan uusi aihe tietokantaan. Tietokanta luo aiheelle aihe_id:n
     public Aihe create(Aihe uusiAihe) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("INSERT INTO Aihe (alue_id, otsikko) "
@@ -24,6 +25,7 @@ public class AiheDao implements Dao<Aihe, Integer>{
         stmt.setObject(2, uusiAihe.getOtsikko());       
         stmt.execute();
         
+        // etsitään luodun uuden aiheen aihe_id
         stmt = connection.prepareStatement("SELECT aihe_id FROM Aihe "
                 + "WHERE alue_id = ? AND otsikko = ? "
                 + "ORDER BY aihe_id DESC;");       
@@ -31,11 +33,13 @@ public class AiheDao implements Dao<Aihe, Integer>{
         stmt.setObject(2, uusiAihe.getOtsikko());
         ResultSet rs = stmt.executeQuery();
         
+        // jos luonti epäonnistui palautuu null
         boolean hasOne = rs.next();
         if (!hasOne) {
             return null;
         }
         
+        // palauetaan Aihe oli, joka sisältää tietokannan tekemän aihe_id:n
         int id = rs.getInt("aihe_id");
         Aihe luotuAihe = new Aihe(id, uusiAihe.getOtsikko(), 0, "" , uusiAihe.getAlue_id());
         stmt.close();
@@ -44,9 +48,11 @@ public class AiheDao implements Dao<Aihe, Integer>{
         
     }
     
+    // etsitään aihe_id:n perusteella yksi Aihe sekä siihen liittyvien viestien määrä ja viimeisin ajankohta
     @Override
     public Aihe findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
+        // luodaan erilasiet hauit sqlite ja postgresql varten jotta kellonaika toimii järkevästi
         String viimeisinAika = "DATETIME(MAX(Viesti.ajankohta), 'localtime')  AS viimeisin, ";        
         if (database.getDatabaseAddress().contains("postgres")) {
             viimeisinAika = "TO_CHAR(MAX(Viesti.ajankohta) AT TIME ZONE 'UTC' AT TIME ZONE 'EEST', 'YYYY-MM-DD HH24:MI:SS' ) AS viimeisin, ";
@@ -61,11 +67,13 @@ public class AiheDao implements Dao<Aihe, Integer>{
         stmt.setObject(1, key);
         ResultSet rs = stmt.executeQuery();
         
+        // aaihe_id:n mukaista aihetta ei ollut tietokannassa , palauetaan null
         boolean hasOne = rs.next();
         if (!hasOne) {
             return null;
         }
         
+        // palauetaan löydetty Aihe
         int id = rs.getInt("id");
         String otsikko = rs.getString("otsikko");
         int viesteja = rs.getInt("viesteja");
@@ -81,13 +89,16 @@ public class AiheDao implements Dao<Aihe, Integer>{
         return aihe; 
     }
 
+    // tätä ei ole valmiina, koska sitä ei tarvittu projektin alkuvaiheessa
     @Override
     public List<Aihe> findAll() throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+    // etsitään alue_id:n perusteella yhden alueen kaikki aiheet sekä viestin määrä niissä ja viimeisen visestin ajankohta
     public List<Aihe> alueenAiheet(int alue_id) throws SQLException {
         Connection connection = database.getConnection();
+        // generoidaan sqliteä ja postgreSQL varten omat hauit, jotta kellon aika menee oikein molemmissa
         String viimeisinAika = "DATETIME(MAX(Viesti.ajankohta), 'localtime')  AS viimeisin ";        
         if (database.getDatabaseAddress().contains("postgres")) {
             viimeisinAika = "TO_CHAR(MAX(Viesti.ajankohta) AT TIME ZONE 'UTC' AT TIME ZONE 'EEST', 'YYYY-MM-DD HH24:MI:SS' ) AS viimeisin ";
@@ -100,6 +111,7 @@ public class AiheDao implements Dao<Aihe, Integer>{
         
         stmt.setObject(1, alue_id);
         ResultSet rs = stmt.executeQuery();
+        
         List<Aihe> aiheet = new ArrayList<>();
         while (rs.next()) {
             int id = rs.getInt("id");
@@ -117,6 +129,7 @@ public class AiheDao implements Dao<Aihe, Integer>{
         return aiheet;        
     }
 
+    // tekemättä koska ei tarvita projektissa
     @Override
     public void delete(Integer key) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
