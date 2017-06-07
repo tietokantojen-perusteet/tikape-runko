@@ -7,13 +7,13 @@
     </head>
 
     <body>
-        <h1>Heippa vaan!</h1>
+        <h1>Aiheet</h1>
 
-        <p>Ja .. <span th:text="${viesti}">jotain?</span></p>
-
-        //<p><a href="/opiskelijat">Tästä opiskelijalistaukseen.</a></p>
-        
-        <p><a href="/alueet">Tästä aluelistaukseen.</a></p>
+        <ol>
+            <li th:each="ketju: ${ketjut}">
+                <span th:text="${ketju.otsikko}">ketjun otsikko</span> <a th:href="${'/ketjut/' + ketju.id}">linkki</a>
+            </li>
+        </ol>
 
     </body>
 </html>

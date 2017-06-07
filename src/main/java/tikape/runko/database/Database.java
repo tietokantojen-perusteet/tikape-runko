@@ -39,6 +39,13 @@ public class Database {
         ArrayList<String> lista = new ArrayList<>();
 
         // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
+
+        //lista.add("DELETE FROM Viesti WHERE id = '1'");
+        //lista.add("DELETE FROM Viesti WHERE id = '2'");
+        
+        lista.add("INSERT INTO Viesti (id, kayttaja, paivamaara, teksti, ketju) VALUES ('1', 'testikayttaja', '2017-01-01 00:00:00.000', 'tassa on tekstia', '1');");
+        lista.add("INSERT INTO Viesti (id, kayttaja, paivamaara, teksti, ketju) VALUES ('2', 'testikayttajakaksi', '2017-01-02 00:00:00.000', 'tassa on enemman tekstia', '2');");
+        
         lista.add("CREATE TABLE Opiskelija (id integer PRIMARY KEY, nimi varchar(255));");
         lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Platon');");
         lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Aristoteles');");

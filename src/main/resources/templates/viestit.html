@@ -7,13 +7,18 @@
     </head>
 
     <body>
-        <h1>Hei opiskelijat!</h1>
+        <h1>Viestit</h1>
 
         <ol>
-            <li th:each="opiskelija: ${opiskelijat}">
-                <span th:text="${opiskelija.nimi}">opiskelijan nimi</span> <a th:href="${'/opiskelijat/' + opiskelija.id}">linkki</a>
+            <li th:each="viesti: ${viestit}">
+                <span th:text="${viesti.teksti}">ketjun otsikko</span> 
             </li>
         </ol>
+        
+        <form action="/" method="GET">
+            <input type="text" name="Viesti"/>
+            <input type="submit"/>
+        </form>
 
     </body>
 </html>
