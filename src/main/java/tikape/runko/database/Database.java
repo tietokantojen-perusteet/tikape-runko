@@ -62,6 +62,7 @@ public class Database {
     }
 
     // tietokannan luontiin tarvittavat postgresql lauseet
+    //NÄMÄ PITÄISI VIELÄ TARKISTAA ETTÄ TOIMIVAT 100%
     private List<String> postgreLauseet() {
         ArrayList<String> lista = new ArrayList<>();
 
