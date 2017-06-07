@@ -1,0 +1,17 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>STJTS-Foorumi</title>
+        <meta charset="utf-8" />
+    </head>
+    <body>
+        <h1>STJTS Foorumi</h1>
+
+        <p> Tapauhtui virhe: 
+        <span th:text="${virhekoodi}"> Virhe koodi </span> 
+        </p>
+        
+        <a href="/" th:href="${uusisivu}" th:text="${sivunnimi}">  Paluu pääsivulle </a>
+
+    </body>
+</html>

@@ -32,11 +32,17 @@ public class Main {
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("alueet", alueDao.findAll());
-
             return new ModelAndView(map, "alueet");
         }, new ThymeleafTemplateEngine());
         
+        // tämä erilaisia testejä varten
+        get("/test", (req, res) -> {
+            res.redirect("/");
+            return "";
+        });
+        
         // Lisätään uusi alue ja palataan pääsivulle
+        // LISÄTTÄVÄ TOIMINTO JOKA TARKISTAA ENNEN LUONTIA ONKO SAMANNIMINEN ALUE JO LUOTU
         post("/alue", (req, res) -> {
             String alueSelite = req.queryParams("alue").trim();
             
@@ -49,14 +55,27 @@ public class Main {
         });
 
         // näytetään alueen "id" avaukset
+        // TÄSTÄ VOI KOPIODA POHJAN KOODILLE JOKA KUUNTELEE KUTSUJA /alueet/:id/sivu/:s
+        // JA TÄMÄ KUTSU OHJAA SIVULLE /alueet/:id/sivu/1
         get("/alueet/:id", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("alue", alueDao.findOne(Integer.parseInt(req.params("id"))));
-            map.put("aiheet", aiheDao.alueenAiheet(Integer.parseInt(req.params("id"))));
-            return new ModelAndView(map, "aiheet");
+            Alue alue = alueDao.findOne(Integer.parseInt(req.params("id")));
+            if(alue==null) {
+                map.put("virhekoodi", "Virheellinen aluevalinta. Aluetta " + req.params("id") + " ei ole tietokannassa.");
+                map.put("uusisivu", "/");
+                map.put("sivunnimi", "Pääsivulle");
+                return new ModelAndView(map, "virhe");
+            } else {
+                // LISÄTTÄVÄ NIIN että vain 10 ekaa. sekä navigointi
+                map.put("alue", alue);
+                map.put("aiheet", aiheDao.alueenAiheet(Integer.parseInt(req.params("id"))));
+                return new ModelAndView(map, "aiheet");
+            }
         }, new ThymeleafTemplateEngine());
         
         // Lisätään uusi aihe alueeseen "id". luodaan aiheeseen myös ensimmäinen viesti
+        // voiko tätä kutsua väärin? LISÄTÄÄN TARKISTUS JOS ALUE_ID väärin, merkkijonot liian pitkiä
+        // virheestä voiaan ohjata virhe sivulle
         post("/aihe/:alue_id", (req, res) -> {
             String viesti = req.queryParams("viesti").trim();
             String nimimerkki = req.queryParams("nimimerkki").trim();
@@ -69,22 +88,35 @@ public class Main {
                 Viesti uusiViesti = new Viesti(luotuAihe.getAihe_id(), viesti, nimimerkki);
                 viestiDao.create(uusiViesti);
             }
+            // uusi aihe tulee listalla ensimmäiseksi joten siirrytään ko alueen listan alkuun.
             res.redirect("/alueet/"+alue_id);
             return "";
         });
         
         // näytetään aiheen "id" viestit
+        // TÄSTÄ VOI KOPIODA POHJAN KOODIIN JOKA KUUNTELEE OSOITTEITA /aiheet/:id/sivu/:s
+        // JA TÄMÄ OHJAA SIVULLE /aiheet/:id/sivu/1
         get("/aiheet/:id", (req, res) -> {
             HashMap map = new HashMap<>();
-            Aihe aihe = aiheDao.findOne(Integer.parseInt(req.params("id")));        
-            map.put("alue", alueDao.findOne(aihe.getAlue_id()));
-            map.put("aihe", aihe);
-            map.put("viestit", viestiDao.aiheenViestit(aihe.getAihe_id()));  
-            map.put("aloitusnumero", 1);
-            return new ModelAndView(map, "viestit");
+            Aihe aihe = aiheDao.findOne(Integer.parseInt(req.params("id")));   
+            if(aihe==null) {
+                map.put("virhekoodi", "Virheellinen aihevalinta. Aihetta " + req.params("id") + " ei ole tietokannassa.");
+                map.put("uusisivu", "/");
+                map.put("sivunnimi", "Pääsivulle");                
+                return new ModelAndView(map, "virhe"); 
+            } else {
+                // lisättävä että max 10 ekaa viestiä sekä navigointi
+                map.put("alue", alueDao.findOne(aihe.getAlue_id()));
+                map.put("aihe", aihe);
+                map.put("viestit", viestiDao.aiheenViestit(aihe.getAihe_id()));  
+                map.put("aloitusnumero", 1);
+                return new ModelAndView(map, "viestit");
+            }
         }, new ThymeleafTemplateEngine());
         
         // Lisätään uusi viesti ja palataan viestilista sivulle
+        // voiko tätä kutsua väärin. Lisätään tarkistus että pituudet ok, aihe_id ok
+        // ohjataan virhe sivulle
         post("/viesti/:aihe_id", (req, res) -> {
             String viesti = req.queryParams("viesti").trim();
             String nimimerkki = req.queryParams("nimimerkki").trim();
@@ -94,6 +126,7 @@ public class Main {
                 Viesti uusiViesti = new Viesti(aihe_id, viesti, nimimerkki);
                 viestiDao.create(uusiViesti);
             }
+            // MUUTETTAVA NIIN ETTÄ SIIRRYTÄÄN VIESTI KETJUN VIIMEISELLE SIVULLE
             res.redirect("/aiheet/"+aihe_id);
             return "";
         });
