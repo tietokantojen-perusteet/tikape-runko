@@ -1,5 +1,6 @@
 package tikape.runko;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import spark.ModelAndView;
 import static spark.Spark.*;
@@ -45,14 +46,18 @@ public class Main {
             HashMap map = new HashMap<>();
             map.put("edellinen", "location.href='/'");
             return new ModelAndView(map, "test");
-        }, new ThymeleafTemplateEngine());       
-        
+        }, new ThymeleafTemplateEngine());      
+         
         // Lisätään uusi alue ja palataan pääsivulle
-        // TODO : LISÄTTÄVÄ TOIMINTO JOKA TARKISTAA ENNEN LUONTIA ONKO SAMANNIMINEN ALUE JO LUOTU, Sofia
         post("/alue", (req, res) -> {
-            String alueSelite = req.queryParams("alue").trim();
-            
-            if (!alueSelite.isEmpty()) {
+            String alueSelite = req.queryParams("alue").trim();           
+            if (!alueSelite.isEmpty()&&alueSelite.length()<26) {
+                for(Alue alue : alueDao.findAll()) {
+                    if(alue.getKuvaus().equals(alueSelite)) {
+                        res.redirect("/virhe/alue/1");
+                        return "";    
+                    }
+                }
                 Alue uusiAlue = new Alue(alueSelite);
                 alueDao.create(uusiAlue);
             }
@@ -67,7 +72,6 @@ public class Main {
         });     
         
         // näytetään alueen ":id" avaukset sivu ":s"
-        // TODO : TOIMINNALLISUS TEKEMÄTTÄ, NÄYTTÄÄ NYT KAIKKI AIHEET 1-n + Navigointi, 
         get("/alueet/:id/sivu/:s", (req, res) -> {
             HashMap map = new HashMap<>();
             Alue alue = alueDao.findOne(Integer.parseInt(req.params("id")));
@@ -77,27 +81,38 @@ public class Main {
                 map.put("sivunnimi", "Pääsivulle");
                 return new ModelAndView(map, "virhe");
             } else {
-                // LISÄTTÄVÄ NIIN että vain 10 ekaa. sekä navigointi
                 map.put("alue", alue);
-                map.put("aiheet", aiheDao.alueenAiheet(Integer.parseInt(req.params("id"))));
+                ArrayList<Aihe> kaikkiAiheet = (ArrayList) aiheDao.alueenAiheet(Integer.parseInt(req.params("id")));
+                int haluttuSivu = Integer.parseInt(req.params("s"));
+                Sivu sivut = new Sivu();
+                sivut.laskeSivu(kaikkiAiheet.size(), haluttuSivu);
+                map.put("aiheet", kaikkiAiheet.subList(sivut.getEkaRivi(), sivut.getVikaRivi()+1));
+                if (sivut.getEdellinenSivu()!=null) {
+                    sivut.setEdellinenSivu("location.href='/alueet/" + alue.getAlue_id() + "/sivu/" + sivut.getEdellinenSivu()+"'");
+                }
+                if(sivut.getSeuraavaSivu()!=null) {
+                    sivut.setSeuraavaSivu("location.href='/alueet/" + alue.getAlue_id() + "/sivu/" + sivut.getSeuraavaSivu()+"'");  
+                }
+                map.put("sivut", sivut);
                 return new ModelAndView(map, "aiheet");
             }
         }, new ThymeleafTemplateEngine());
         
         // Lisätään uusi aihe alueeseen "id". luodaan aiheeseen myös ensimmäinen viesti
-        // TODO : voiko tätä kutsua väärin? LISÄTÄÄN TARKISTUS JOS ALUE_ID väärin, merkkijonot liian pitkiä
-        // virheestä voiaan ohjata virhe sivulle
         post("/aihe/:alue_id", (req, res) -> {
             String viesti = req.queryParams("viesti").trim();
             String nimimerkki = req.queryParams("nimimerkki").trim();
             String otsikko = req.queryParams("otsikko").trim();
             int alue_id = Integer.parseInt(req.params("alue_id"));
             
-            if (!viesti.isEmpty()&&!nimimerkki.isEmpty()&&!otsikko.isEmpty()) {
+            if (!viesti.isEmpty()&&!nimimerkki.isEmpty()&&!otsikko.isEmpty()&&viesti.length()<501&&nimimerkki.length()<26&&otsikko.length()<51&&alueDao.findOne(alue_id)!=null) {
                 Aihe uusiAihe = new Aihe(otsikko, alue_id);
                 Aihe luotuAihe = aiheDao.create(uusiAihe); 
                 Viesti uusiViesti = new Viesti(luotuAihe.getAihe_id(), viesti, nimimerkki);
                 viestiDao.create(uusiViesti);
+            } else {
+                res.redirect("/virhe/aihe/"+alue_id);
+                return "";              
             }
             // uusi aihe tulee listalla ensimmäiseksi joten siirrytään ko alueen listan alkuun.
             res.redirect("/alueet/"+alue_id);
@@ -131,20 +146,45 @@ public class Main {
         }, new ThymeleafTemplateEngine());
         
         // Lisätään uusi viesti ja palataan viestilista sivulle
-        // TODO: voiko tätä kutsua väärin. Lisätään tarkistus että pituudet ok, aihe_id ok
-        // ohjataan virhe sivulle
         post("/viesti/:aihe_id", (req, res) -> {
             String viesti = req.queryParams("viesti").trim();
             String nimimerkki = req.queryParams("nimimerkki").trim();
             int aihe_id = Integer.parseInt(req.params("aihe_id"));
             
-            if (!viesti.isEmpty()&&!nimimerkki.isEmpty()) {
+            if (!viesti.isEmpty()&&!nimimerkki.isEmpty()&&viesti.length()<501&&nimimerkki.length()<26&&aiheDao.findOne(aihe_id)!=null) {
                 Viesti uusiViesti = new Viesti(aihe_id, viesti, nimimerkki);
                 viestiDao.create(uusiViesti);
+            } else {
+                res.redirect("/virhe/viesti/"+aihe_id);
+                return "";              
             }
             // MUUTETTAVA NIIN ETTÄ SIIRRYTÄÄN VIESTI KETJUN VIIMEISELLE SIVULLE
             res.redirect("/aiheet/"+aihe_id);
             return "";
         });
+        
+        // POST kutsuissa tapahtunut virhe, Ohjataan virhe sivulle
+        get("/virhe/:viesti/:id", (req, res) -> {
+            HashMap map = new HashMap<>();
+            String viesti = req.params("viesti");
+            if(viesti.equals("alue")) {
+                map.put("virhekoodi", "Saman niminen alue on jo olemassa.");
+                map.put("uusisivu", "/");
+                map.put("sivunnimi", "Pääsivulle");
+            }
+            if(viesti.equals("aihe")) {
+                map.put("virhekoodi", "Uuden keskustelun avauksen luonti epäonnistui.");
+                map.put("uusisivu", "/alueet/"+req.params("id"));
+                map.put("sivunnimi", "Takaisin aihe alueelle.");
+            }     
+           if(viesti.equals("viesti")) {
+                map.put("virhekoodi", "Uuden viestin luonti epäonnistui.");
+                map.put("uusisivu", "/aiheet/"+req.params("id"));
+                map.put("sivunnimi", "Takaisin viestiketjuun.");
+            }                
+            return new ModelAndView(map, "virhe");
+        }, new ThymeleafTemplateEngine()); 
+        
     }
+    
 }
