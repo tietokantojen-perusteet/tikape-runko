@@ -6,6 +6,7 @@
     </head>
     <body>
         <h1>STJTS Foorumi</h1>
+          
         <table>
             <tr>
                 <td style="align:left; padding-right: 10px; font-weight: bold"> Alue: 
@@ -15,19 +16,13 @@
             </tr>
             <tr th:each="aihe: ${aiheet} ">
                 <td style="align:left; padding-right: 10px"> 
-                    <a th:href="${'/aiheet/' + aihe.aihe_id}"> 
-                    <span th:text="${aihe.otsikko}"> aiheen otsikko </span> 
-                    </a> </td> 
+                    <a th:href="${'/aiheet/' + aihe.aihe_id}">  <span th:text="${aihe.otsikko}"> aiheen otsikko </span> </a> </td> 
                 <td style="align:left; padding-right: 10px" 
                     th:text="${aihe.viesteja}"> viestejä yhteensä </td>
                 <td style="align:left" th:text="${aihe.viimeisin}"> viimeisin viesti </td>
             </tr>
         </table>  
-        
-        <button onclick="location.href='/'" type="button"> pääsivulle </button>
-        <span th:if="${sivut.edellinenSivu != null}"> <button th:onclick="${sivut.edellinenSivu}" type="button"> Edellinen sivu </button> </span>
-        <span th:if="${sivut.seuraavaSivu != null}"> <button th:onclick="${sivut.seuraavaSivu}" type="button"> Seuraava sivu </button>  </span>           
-        
+               
         <h3>Lisää uusi keskustelun avaus</h3>
         <form id="uusiaihe" method="POST" th:action="@{~/aihe/{alue_id}(alue_id=${alue.alue_id})}">
             <table>
@@ -41,6 +36,12 @@
                 <tr> <td> Avausviesti </td> </tr>
             </table>
             <textarea rows="7" cols="85" maxlength="500" name="viesti" required="true"></textarea>
-        </form>               
+        </form>     
+        
+        <button onclick="location.href='/'" type="button"> pääsivulle </button>
+        <span th:if="${sivut.edellinenSivu != null}"> <button th:onclick="${sivut.edellinenSivu}" type="button"> Edellinen sivu </button> </span>
+        <span th:if="${sivut.seuraavaSivu != null}"> <button th:onclick="${sivut.seuraavaSivu}" type="button"> Seuraava sivu </button>  </span>           
+ 
+        
     </body>
 </html>
