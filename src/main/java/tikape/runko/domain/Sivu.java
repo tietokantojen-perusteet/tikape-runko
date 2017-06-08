@@ -7,7 +7,6 @@ public class Sivu {
     private int vikaRivi;
     private String edellinenSivu;
     private String seuraavaSivu;
-    private String ylempiTaso;
 
     // lasketaan sivulle tulevat rivit ja seuraava ja edellinen sivu, kun tiedetään rivien määrä ja haluttuSivu
     public Sivu(int rivit, int haluttuSivu, String urlAlku, String urlLoppu) {
@@ -28,7 +27,6 @@ public class Sivu {
         if(haluttuSivu<sivuja) {
             this.seuraavaSivu = urlAlku + (haluttuSivu+1) + urlLoppu;
         }
-        ylempiTaso=null;
     }
 
     public String getEdellinenSivu() {
@@ -46,13 +44,5 @@ public class Sivu {
     public int getVikaRivi() {
         return vikaRivi;
     } 
-
-    public String getYlempiTaso() {
-        return ylempiTaso;
-    }
-
-    public void setYlempiTaso(String ylempiTaso) {
-        this.ylempiTaso = ylempiTaso;
-    }
     
 }

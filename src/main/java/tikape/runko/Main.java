@@ -123,7 +123,6 @@ public class Main {
                 ArrayList<Aihe> kaikkiViestit = (ArrayList) viestiDao.aiheenViestit(aihe.getAihe_id());
                 int haluttuSivu = Integer.parseInt(req.params("s"));
                 Sivu sivut = new Sivu(kaikkiViestit.size(), haluttuSivu, "location.href='/aiheet/" + aihe.getAihe_id() + "/sivu/", "'");
-                sivut.setYlempiTaso("location.href='/alueet/" + aihe.getAlue_id() + "'");
                 map.put("viestit", kaikkiViestit.subList(sivut.getEkaRivi(), sivut.getVikaRivi()+1));          
                 map.put("sivut", sivut);
                 return new ModelAndView(map, "viestit");
