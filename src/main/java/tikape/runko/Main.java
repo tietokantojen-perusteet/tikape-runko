@@ -48,7 +48,7 @@ public class Main {
         }, new ThymeleafTemplateEngine());       
         
         // Lisätään uusi alue ja palataan pääsivulle
-        // LISÄTTÄVÄ TOIMINTO JOKA TARKISTAA ENNEN LUONTIA ONKO SAMANNIMINEN ALUE JO LUOTU
+        // TODO : LISÄTTÄVÄ TOIMINTO JOKA TARKISTAA ENNEN LUONTIA ONKO SAMANNIMINEN ALUE JO LUOTU, Sofia
         post("/alue", (req, res) -> {
             String alueSelite = req.queryParams("alue").trim();
             
@@ -67,7 +67,7 @@ public class Main {
         });     
         
         // näytetään alueen ":id" avaukset sivu ":s"
-        // TOIMINNALLISUS TEKEMÄTTÄ, NÄYTTÄÄ NYT KAIKKI AIHEET 1-n
+        // TODO : TOIMINNALLISUS TEKEMÄTTÄ, NÄYTTÄÄ NYT KAIKKI AIHEET 1-n + Navigointi, 
         get("/alueet/:id/sivu/:s", (req, res) -> {
             HashMap map = new HashMap<>();
             Alue alue = alueDao.findOne(Integer.parseInt(req.params("id")));
@@ -85,7 +85,7 @@ public class Main {
         }, new ThymeleafTemplateEngine());
         
         // Lisätään uusi aihe alueeseen "id". luodaan aiheeseen myös ensimmäinen viesti
-        // voiko tätä kutsua väärin? LISÄTÄÄN TARKISTUS JOS ALUE_ID väärin, merkkijonot liian pitkiä
+        // TODO : voiko tätä kutsua väärin? LISÄTÄÄN TARKISTUS JOS ALUE_ID väärin, merkkijonot liian pitkiä
         // virheestä voiaan ohjata virhe sivulle
         post("/aihe/:alue_id", (req, res) -> {
             String viesti = req.queryParams("viesti").trim();
@@ -111,7 +111,7 @@ public class Main {
         });     
         
         // näytetään aiheen ":id" viestit sivulta ":s"
-        // TOIMINNALLISUUS KESKEN, LISÄTTÄVÄ SIVUJAON TEKEMINEN
+        // TODO : TOIMINNALLISUUS KESKEN, LISÄTTÄVÄ SIVUJAON TEKEMINEN
         get("/aiheet/:id/sivu/:s", (req, res) -> {
             HashMap map = new HashMap<>();
             Aihe aihe = aiheDao.findOne(Integer.parseInt(req.params("id")));   
@@ -131,7 +131,7 @@ public class Main {
         }, new ThymeleafTemplateEngine());
         
         // Lisätään uusi viesti ja palataan viestilista sivulle
-        // voiko tätä kutsua väärin. Lisätään tarkistus että pituudet ok, aihe_id ok
+        // TODO: voiko tätä kutsua väärin. Lisätään tarkistus että pituudet ok, aihe_id ok
         // ohjataan virhe sivulle
         post("/viesti/:aihe_id", (req, res) -> {
             String viesti = req.queryParams("viesti").trim();

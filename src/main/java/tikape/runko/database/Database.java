@@ -62,14 +62,10 @@ public class Database {
     }
 
     // tietokannan luontiin tarvittavat postgresql lauseet
-    //NÄMÄ PITÄISI VIELÄ TARKISTAA ETTÄ TOIMIVAT 100%
     private List<String> postgreLauseet() {
         ArrayList<String> lista = new ArrayList<>();
 
-        // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
-        //lista.add("DROP TABLE Alue; ");
-        //lista.add("DROP TABLE Aihe; ");
-        //lista.add("DROP TABLE Viesti; ");        
+        // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä      
         lista.add("CREATE TABLE Alue (alue_id SERIAL PRIMARY KEY, "
                 + "kuvaus varchar(50) NOT NULL)"
                 + "UNIQUE(kuvaus); ");
