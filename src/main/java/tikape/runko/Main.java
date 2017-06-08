@@ -35,19 +35,7 @@ public class Main {
             map.put("alueet", alueDao.findAll());
             return new ModelAndView(map, "alueet");
         }, new ThymeleafTemplateEngine());
-        
-        // tämä erilaisia testejä varten
-        get("/test1", (req, res) -> {
-            res.redirect("/");
-            return "";
-        });
-        
-        get("/test2", (req, res) -> {
-            HashMap map = new HashMap<>();
-            map.put("edellinen", "location.href='/'");
-            return new ModelAndView(map, "test");
-        }, new ThymeleafTemplateEngine());      
-         
+                 
         // Lisätään uusi alue ja palataan pääsivulle
         post("/alue", (req, res) -> {
             String alueSelite = req.queryParams("alue").trim();           
@@ -84,15 +72,8 @@ public class Main {
                 map.put("alue", alue);
                 ArrayList<Aihe> kaikkiAiheet = (ArrayList) aiheDao.alueenAiheet(Integer.parseInt(req.params("id")));
                 int haluttuSivu = Integer.parseInt(req.params("s"));
-                Sivu sivut = new Sivu();
-                sivut.laskeSivu(kaikkiAiheet.size(), haluttuSivu);
+                Sivu sivut = new Sivu(kaikkiAiheet.size(), haluttuSivu, "location.href='/alueet/" + alue.getAlue_id() + "/sivu/", "'");
                 map.put("aiheet", kaikkiAiheet.subList(sivut.getEkaRivi(), sivut.getVikaRivi()+1));
-                if (sivut.getEdellinenSivu()!=null) {
-                    sivut.setEdellinenSivu("location.href='/alueet/" + alue.getAlue_id() + "/sivu/" + sivut.getEdellinenSivu()+"'");
-                }
-                if(sivut.getSeuraavaSivu()!=null) {
-                    sivut.setSeuraavaSivu("location.href='/alueet/" + alue.getAlue_id() + "/sivu/" + sivut.getSeuraavaSivu()+"'");  
-                }
                 map.put("sivut", sivut);
                 return new ModelAndView(map, "aiheet");
             }
@@ -138,9 +119,13 @@ public class Main {
             } else {
                 // lisättävä että max 10 ekaa viestiä sekä navigointi
                 map.put("alue", alueDao.findOne(aihe.getAlue_id()));
-                map.put("aihe", aihe);
-                map.put("viestit", viestiDao.aiheenViestit(aihe.getAihe_id()));  
-                map.put("aloitusnumero", 1);
+                map.put("aihe", aihe); 
+                ArrayList<Aihe> kaikkiViestit = (ArrayList) viestiDao.aiheenViestit(aihe.getAihe_id());
+                int haluttuSivu = Integer.parseInt(req.params("s"));
+                Sivu sivut = new Sivu(kaikkiViestit.size(), haluttuSivu, "location.href='/aiheet/" + aihe.getAihe_id() + "/sivu/", "'");
+                sivut.setYlempiTaso("location.href='/alueet/" + aihe.getAlue_id() + "'");
+                map.put("viestit", kaikkiViestit.subList(sivut.getEkaRivi(), sivut.getVikaRivi()+1));          
+                map.put("sivut", sivut);
                 return new ModelAndView(map, "viestit");
             }
         }, new ThymeleafTemplateEngine());
@@ -159,7 +144,8 @@ public class Main {
                 return "";              
             }
             // MUUTETTAVA NIIN ETTÄ SIIRRYTÄÄN VIESTI KETJUN VIIMEISELLE SIVULLE
-            res.redirect("/aiheet/"+aihe_id);
+            int viimeinenSivu = (viestiDao.aiheenViestit(aihe_id).size()-1)/10+1;          
+            res.redirect("/aiheet/"+aihe_id+"/sivu/"+viimeinenSivu);
             return "";
         });
         

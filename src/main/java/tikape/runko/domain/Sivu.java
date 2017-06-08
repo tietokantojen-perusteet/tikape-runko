@@ -1,28 +1,16 @@
 
 package tikape.runko.domain;
 
-import java.util.ArrayList;
-
-
+//apuLuokka rivien jakamiseen usealle sivulle sekä sivuilla navigointiin
 public class Sivu {
     private int ekaRivi;
     private int vikaRivi;
     private String edellinenSivu;
     private String seuraavaSivu;
+    private String ylempiTaso;
 
-    public Sivu(int ekaRivi, int vikaRivi, String edellinenSivu, String seuraavaSivu) {
-        this.ekaRivi = ekaRivi;
-        this.vikaRivi = vikaRivi;
-        this.edellinenSivu = edellinenSivu;
-        this.seuraavaSivu = seuraavaSivu;
-    }
-
-    public Sivu() {
-    }
-
-    
-    
-    public void laskeSivu(int rivit, int haluttuSivu) {
+    // lasketaan sivulle tulevat rivit ja seuraava ja edellinen sivu, kun tiedetään rivien määrä ja haluttuSivu
+    public Sivu(int rivit, int haluttuSivu, String urlAlku, String urlLoppu) {
         int sivuja = (rivit-1)/10+1;
         if (haluttuSivu>sivuja) {
             haluttuSivu = sivuja;
@@ -34,12 +22,13 @@ public class Sivu {
         }        
         this.edellinenSivu = null;
         if(haluttuSivu>1) {
-            this.edellinenSivu = "" + (haluttuSivu-1);
+            this.edellinenSivu = urlAlku + (haluttuSivu-1) + urlLoppu;
         }
         this.seuraavaSivu = null;
         if(haluttuSivu<sivuja) {
-            this.seuraavaSivu = "" + (haluttuSivu+1);
+            this.seuraavaSivu = urlAlku + (haluttuSivu+1) + urlLoppu;
         }
+        ylempiTaso=null;
     }
 
     public String getEdellinenSivu() {
@@ -56,16 +45,14 @@ public class Sivu {
 
     public int getVikaRivi() {
         return vikaRivi;
+    } 
+
+    public String getYlempiTaso() {
+        return ylempiTaso;
     }
 
-    public void setEdellinenSivu(String edellinenSivu) {
-        this.edellinenSivu = edellinenSivu;
+    public void setYlempiTaso(String ylempiTaso) {
+        this.ylempiTaso = ylempiTaso;
     }
-
-    public void setSeuraavaSivu(String seuraavaSivu) {
-        this.seuraavaSivu = seuraavaSivu;
-    }
-   
-    
     
 }
