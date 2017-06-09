@@ -44,6 +44,11 @@ public class Viesti {
 
     public int getViesti_id() {
         return viesti_id;
-    }      
+    } 
+    
+    @Override
+    public String toString() {
+        return "Viesti: " + this.teksti + ", nimimerkki = " + this.nimimerkki + " (" + this.ajankohta + ")";
+    }
         
 }

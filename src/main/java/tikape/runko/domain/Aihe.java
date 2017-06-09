@@ -47,6 +47,11 @@ public class Aihe {
         return viimeisin;
     }
     
+    @Override
+    public String toString() {
+        return "Aihe: " + this.otsikko + " (id = " + this.aihe_id + "), Viestit : " + this.viesteja + "kpl (viimeisin  " + this.viimeisin + ")";
+    }
+    
 }
 
 

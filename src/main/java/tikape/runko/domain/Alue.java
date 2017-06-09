@@ -39,5 +39,10 @@ public class Alue {
         return viimeisin;
     }
     
+    @Override
+    public String toString() {
+        return "Alue: " + this.kuvaus + " (id = " + this.alue_id + "), Viestit : " + this.viesteja + "kpl (viimeisin  " + this.viimeisin + ")";
+    }
+    
 }
 

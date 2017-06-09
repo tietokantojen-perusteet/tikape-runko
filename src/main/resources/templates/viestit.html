@@ -12,9 +12,7 @@
         </h3>
         <ol start="1" th:start="${sivut.ekaRivi}+1">
             <li th:each="viesti: ${viestit} ">
-                <span th:text="${viesti.teksti}"> Viestin teksti </span>
-                <span> t. </span>
-                <span th:text="${viesti.nimimerkki}"> Nimimerkki </span>
+                <span th:text="${viesti.teksti}"> Viestin teksti </span> t. <span th:text="${viesti.nimimerkki}"> Nimimerkki </span>
             </li>
         </ol>
         <h3>Lisää uusi viesti</h3>
