@@ -73,19 +73,19 @@ public class KetjuDao implements Dao<Ketju, Integer> {
     }
 
     
-    public List<Ketju> findAllForKetjuId(int alueenId) throws SQLException {
+    public List<Ketju> findAllForAlueId(int alueenId) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Ketju");
 
         ResultSet rs = stmt.executeQuery();
-        List<Ketju> alueet = new ArrayList<>();
+        List<Ketju> ketjut = new ArrayList<>();
         while (rs.next()) {
             if (rs.getInt("alue") == alueenId) {
                 Integer id = rs.getInt("id");
                 String otsikko = rs.getString("otsikko");
                 Integer alueid = rs.getInt("alue");
             
-                alueet.add(new Ketju(id, otsikko, alueid));
+                ketjut.add(new Ketju(id, otsikko, alueid));
             }
         }
 
@@ -93,7 +93,7 @@ public class KetjuDao implements Dao<Ketju, Integer> {
         stmt.close();
         connection.close();
 
-        return alueet;
+        return ketjut;
     }
     
     

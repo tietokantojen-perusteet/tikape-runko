@@ -32,7 +32,7 @@ public class Main {
         }, new ThymeleafTemplateEngine());
         
         
-        
+        //Listaa kaikki alueet, toteutus html-filussa
         get("/alueet", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("alueet", alueDao.findAll());
@@ -40,21 +40,23 @@ public class Main {
             return new ModelAndView(map, "alueet");
         }, new ThymeleafTemplateEngine());
         
+        //Listaa kaikki tietyn alueen alaisuudessa olevat ketjut ketjuun liittyvnä alue-fk:n mukaan
         get("/alueet/:id", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("ketjut", ketjuDao.findAll());
+            map.put("ketjut", ketjuDao.findAllForAlueId(Integer.parseInt(req.params("id"))));
 
             return new ModelAndView(map, "ketjut");
         }, new ThymeleafTemplateEngine());
         
+        //Listaa kaikki ketjuun liittyvät viestit viestiin liittyvän ketju-fk:n mukaan
         get("/ketjut/:id", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("viestit", viestiDao.findAll());
+            map.put("viestit", viestiDao.findAllForKetjuId(Integer.parseInt(req.params("id"))));
 
             return new ModelAndView(map, "viestit");
         }, new ThymeleafTemplateEngine()); 
 
-        
+        //Vastaanottaa kirjoittajan viesti, ei toimi vielä oikein
         post("/ketjut/:id", (req, res) -> {
             String viesti = req.queryParams("Viesti");
             return viesti;

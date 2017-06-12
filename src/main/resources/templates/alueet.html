@@ -9,6 +9,7 @@
     <body>
         <h1>Keskustelualueet</h1>
 
+        <span>Alue............Viesteja yhteensa.........Viimeisin viesti</span>
         <ol>
             <li th:each="alue: ${alueet}">
                 <span th:text="${alue.aihe}">alueen nimi</span> <a th:href="${'/alueet/' + alue.id}">linkki</a>

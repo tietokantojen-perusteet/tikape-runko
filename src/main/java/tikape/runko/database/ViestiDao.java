@@ -75,6 +75,31 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
         return viestit;
     }
+    
+    public List<Viesti> findAllForKetjuId(int ketjunId) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti");
+
+        ResultSet rs = stmt.executeQuery();
+        List<Viesti> viestit = new ArrayList<>();
+        while (rs.next()) {
+            if (rs.getInt("ketju") == ketjunId) {
+                Integer id = rs.getInt("id");
+                String kayttaja = rs.getString("kayttaja");
+                String teksti = rs.getString("teksti");
+                Date paivamaara = rs.getDate("paivamaara");
+                Integer ketjuid = rs.getInt("ketju");
+            
+                viestit.add(new Viesti(id, kayttaja, teksti, paivamaara, ketjuid));
+            }
+        }
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return viestit;
+    }
 
     @Override
     public void delete(Integer key) throws SQLException {

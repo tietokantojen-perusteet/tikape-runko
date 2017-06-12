@@ -11,14 +11,11 @@
 
         <ol>
             <li th:each="viesti: ${viestit}">
-                <span th:text="${viesti.teksti}">ketjun otsikko</span> 
+                <span th:text="${viesti.teksti}">viestin teksti</span> <span>t.</span> <span th:text= "${viesti.kayttaja}">viestin teksti</span>
             </li>
         </ol>
         
-        <form action="/" method="GET">
-            <input type="text" name="Viesti"/>
-            <input type="submit"/>
-        </form>
+        
 
     </body>
 </html>
