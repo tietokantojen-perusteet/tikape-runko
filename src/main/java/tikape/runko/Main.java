@@ -41,7 +41,7 @@ public class Main {
         // Lisätään uusi alue ja palataan pääsivulle
         post("/alue", (req, res) -> {
             String alueSelite = req.queryParams("alue").trim();           
-            if (!alueSelite.isEmpty()&&alueSelite.length()<26) {
+            if (!alueSelite.isEmpty()&&alueSelite.length()<51) {
                 for(Alue alue : alueDao.findAll()) {
                     if(alue.getKuvaus().equals(alueSelite)) {
                         res.redirect("/virhe/alue/1");
@@ -184,15 +184,23 @@ public class Main {
                 case 2: 
                     System.out.print("Anna alue_id: ");
                     int alue = Integer.parseInt(lukija.nextLine());
-                    for(Aihe aihe: aiheDao.alueenAiheet(alue)) {
-                        System.out.println(aihe);
+                    if(alueDao.findOne(alue)!=null) {
+                        for(Aihe aihe: aiheDao.alueenAiheet(alue)) {
+                            System.out.println(aihe);
+                        }
+                    } else {
+                        System.out.println("EI löydy aluetta: " + alue);
                     }
                     break;
                 case 3:
                     System.out.print("Anna aihe_id: ");
                     int aihe = Integer.parseInt(lukija.nextLine());
-                    for(Viesti viesti: viestiDao.aiheenViestit(aihe)){
-                        System.out.println(viesti);
+                    if(aiheDao.findOne(aihe)!=null) {
+                        for(Viesti viesti: viestiDao.aiheenViestit(aihe)){
+                            System.out.println(viesti);
+                        }
+                    } else {
+                        System.out.println("Ei löydy aihetta: " + aihe);
                     }
                     break;            
             }
