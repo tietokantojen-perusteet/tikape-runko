@@ -89,11 +89,15 @@ public class AlueDao implements Dao<Alue, Integer>{
         if (database.getDatabaseAddress().contains("postgres")) {
             viimeisinAika = "TO_CHAR(MAX(Viesti.ajankohta) AT TIME ZONE 'UTC' AT TIME ZONE 'EEST', 'YYYY-MM-DD HH24:MI:SS' ) AS viimeisin ";
         } 
-        PreparedStatement stmt = connection.prepareStatement("SELECT Alue.alue_id AS id, Alue.kuvaus AS kuvaus, "
+        PreparedStatement stmt = connection.prepareStatement(""
+                + "SELECT Alue.alue_id AS id, Alue.kuvaus AS kuvaus, "
                 + "COUNT(Viesti.viesti_id) AS viesteja, "
                 + viimeisinAika
-                + "FROM Alue LEFT JOIN Aihe ON Alue.alue_id=Aihe.alue_id LEFT JOIN Viesti ON Aihe.aihe_id=Viesti.aihe_id " 
-                + "GROUP BY Alue.alue_id ORDER BY Alue.kuvaus;");
+                + "FROM Alue "
+                + "LEFT JOIN Aihe ON Alue.alue_id=Aihe.alue_id "
+                + "LEFT JOIN Viesti ON Aihe.aihe_id=Viesti.aihe_id " 
+                + "GROUP BY Alue.alue_id "
+                + "ORDER BY Alue.kuvaus;");
       
         ResultSet rs = stmt.executeQuery();
         List<Alue> alueet = new ArrayList<>();
