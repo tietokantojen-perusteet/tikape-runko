@@ -50,34 +50,35 @@ public class ViestiDao implements Dao<Viesti, Integer>{
         return luotuViesti;
     }
 
-    // ei tarvetta projektissa, ei tehty
+    // ei tarvetta projektissa, ei tehty vaiko TODO
     @Override
     public Viesti findOne(Integer key) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    // ei tarvetta projektissa , ei tehty
+    // ei tarvetta projektissa , ei tehty vaiko TODO
     @Override
     public List<Viesti> findAll() throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     // etsitään yhden aiheen kaikki viestit aihe_id:n perusteella
-    public List<Viesti> aiheenViestit(int aihe_id) throws SQLException {
+    @Override
+    public List<Viesti> findAllIn(Integer id) throws SQLException {
+
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti "
-                + "WHERE Viesti.aihe_id = ? ORDER BY Viesti.ajankohta;");
-        
-        stmt.setObject(1, aihe_id);
+                + "WHERE Viesti.aihe_id = ? ORDER BY Viesti.ajankohta;");       
+        stmt.setObject(1, id);
         ResultSet rs = stmt.executeQuery();
         List<Viesti> viestit = new ArrayList<>();
         while (rs.next()) {
-            int id = rs.getInt("viesti_id");
+            int viesti_id = rs.getInt("viesti_id");
             String teksti = rs.getString("teksti");
             String nimimerkki = rs.getString("nimimerkki");
             String ajankohta = rs.getString("ajankohta");
 
-            viestit.add(new Viesti(id, aihe_id, teksti, ajankohta, nimimerkki));
+            viestit.add(new Viesti(viesti_id, id, teksti, ajankohta, nimimerkki));
         }
 
         rs.close();
@@ -87,11 +88,11 @@ public class ViestiDao implements Dao<Viesti, Integer>{
         return viestit;        
     }    
 
-    // ei tehty koska ei tarvetta
+    // ei tehty koska ei tarvetta, vaiko TODO
     @Override
     public void delete(Integer key) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-            
+
             
 }

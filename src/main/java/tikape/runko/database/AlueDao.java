@@ -118,6 +118,12 @@ public class AlueDao implements Dao<Alue, Integer>{
     public void delete(Integer key) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    // ei tarvita, ei tehty
+    @Override
+    public List<Alue> findAllIn(Integer id) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
 }

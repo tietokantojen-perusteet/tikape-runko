@@ -11,7 +11,8 @@ public interface Dao<T, K> {
 
     List<T> findAll() throws SQLException;
     
-    //List<T> findAllIn(K key) throws SQLException;
+    // Jyrki muokkasi ti palaverin jälkeen
+    List<T> findAllIn(K id) throws SQLException;
 
     void delete(K key) throws SQLException;
 }

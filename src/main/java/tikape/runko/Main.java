@@ -31,9 +31,10 @@ public class Main {
         AiheDao aiheDao = new AiheDao(database);
         ViestiDao viestiDao = new ViestiDao(database);
 
+        // TODO tarvitaanko sivuilta "/index" ja "/index.html" ohjaus pääsivulle "/"?
         // Käyttäjä avaa pääsivun-> näytetään kaikki alueet
         get("/", (req, res) -> {
-            HashMap map = new HashMap<>();
+            HashMap map = new HashMap<>(); 
             map.put("alueet", alueDao.findAll());
             return new ModelAndView(map, "alueet");
         }, new ThymeleafTemplateEngine());
@@ -72,7 +73,7 @@ public class Main {
                 return new ModelAndView(map, "virhe");
             } else {
                 map.put("alue", alue);
-                ArrayList<Aihe> kaikkiAiheet = (ArrayList) aiheDao.alueenAiheet(Integer.parseInt(req.params("id")));
+                ArrayList<Aihe> kaikkiAiheet = (ArrayList) aiheDao.findAllIn(Integer.parseInt(req.params("id")));
                 int haluttuSivu = Integer.parseInt(req.params("s"));
                 Sivu sivut = new Sivu(kaikkiAiheet.size(), haluttuSivu, "location.href='/alueet/" + alue.getAlue_id() + "/sivu/", "'");
                 map.put("aiheet", kaikkiAiheet.subList(sivut.getEkaRivi(), sivut.getVikaRivi()+1));
@@ -120,7 +121,7 @@ public class Main {
             } else {
                 map.put("alue", alueDao.findOne(aihe.getAlue_id()));
                 map.put("aihe", aihe); 
-                ArrayList<Aihe> kaikkiViestit = (ArrayList) viestiDao.aiheenViestit(aihe.getAihe_id());
+                ArrayList<Aihe> kaikkiViestit = (ArrayList) viestiDao.findAllIn(aihe.getAihe_id());
                 int haluttuSivu = Integer.parseInt(req.params("s"));
                 Sivu sivut = new Sivu(kaikkiViestit.size(), haluttuSivu, "location.href='/aiheet/" + aihe.getAihe_id() + "/sivu/", "'");
                 map.put("viestit", kaikkiViestit.subList(sivut.getEkaRivi(), sivut.getVikaRivi()+1));          
@@ -142,7 +143,7 @@ public class Main {
                 res.redirect("/virhe/viesti/"+aihe_id);
                 return "";              
             }
-            int viimeinenSivu = (viestiDao.aiheenViestit(aihe_id).size()-1)/10+1;          
+            int viimeinenSivu = (viestiDao.findAllIn(aihe_id).size()-1)/10+1;          
             res.redirect("/aiheet/"+aihe_id+"/sivu/"+viimeinenSivu);
             return "";
         });
@@ -185,7 +186,7 @@ public class Main {
                     System.out.print("Anna alue_id: ");
                     int alue = Integer.parseInt(lukija.nextLine());
                     if(alueDao.findOne(alue)!=null) {
-                        for(Aihe aihe: aiheDao.alueenAiheet(alue)) {
+                        for(Aihe aihe: aiheDao.findAllIn(alue)) {
                             System.out.println(aihe);
                         }
                     } else {
@@ -196,7 +197,7 @@ public class Main {
                     System.out.print("Anna aihe_id: ");
                     int aihe = Integer.parseInt(lukija.nextLine());
                     if(aiheDao.findOne(aihe)!=null) {
-                        for(Viesti viesti: viestiDao.aiheenViestit(aihe)){
+                        for(Viesti viesti: viestiDao.findAllIn(aihe)){
                             System.out.println(viesti);
                         }
                     } else {
