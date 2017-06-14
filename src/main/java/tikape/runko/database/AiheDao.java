@@ -6,13 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import static tikape.runko.database.AlueDao.SARAKEALUEID;
 import tikape.runko.domain.Aihe;
 
 public class AiheDao implements Dao<Aihe, Integer> {
 
     private Database database;
-    private static final String SARAKEAIHEID = "aihe_id";
-    private static final String SARAKEALUEID = "alue_id";
+    protected static final String SARAKEAIHEID = "aihe_id";
 
     public AiheDao(Database database) {
         this.database = database;
