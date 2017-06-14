@@ -6,11 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import static tikape.runko.database.AiheDao.SARAKEAIHEID;
 import tikape.runko.domain.Alue;
 
 public class AlueDao implements Dao<Alue, Integer>{
     private Database database;
-
+    protected static final String SARAKEALUEID = "alue_id";
+    protected static final String SARAKEALUEKUVAUS = "Alue.kuvaus";
+    
     public AlueDao(Database database) {
         this.database = database;
     }
@@ -18,23 +21,25 @@ public class AlueDao implements Dao<Alue, Integer>{
     // luodaan tietokantaan uusi alue . Uuden alueen alue_id saadaan tietokannasta
     public Alue create(Alue uusiAlue) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Alue (kuvaus) VALUES ( ? )");
+        PreparedStatement stmt = connection.prepareStatement(
+                "INSERT INTO Alue (" + "kuvaus" + ") VALUES ( ? )");
         stmt.setObject(1, uusiAlue.getKuvaus());
         stmt.execute();
         
         // etsitään juuri luodun alueen alue_id
-        stmt = connection.prepareStatement("SELECT Alue.alue_id AS id FROM Alue WHERE Alue.kuvaus = ? ;");       
+        stmt = connection.prepareStatement(""
+                + "SELECT " + SARAKEALUEID + " FROM Alue "
+                + "WHERE " + SARAKEALUEKUVAUS + " = ? ;");       
         stmt.setObject(1, uusiAlue.getKuvaus());
         ResultSet rs = stmt.executeQuery();
         
         // jos epäonnistui palautetaan null
-        boolean hasOne = rs.next();
-        if (!hasOne) {
+        if (!rs.next()) {
             return null;
         }
         
         // palautetaan juuri luotu uusi alue 
-        int id = rs.getInt("id");
+        int id = rs.getInt(SARAKEALUEID);
         System.out.println("UUsi ID ON : " + id);
         Alue luotuAlue = new Alue(id, uusiAlue.getKuvaus(), 0 , "");
         stmt.close();
@@ -47,15 +52,23 @@ public class AlueDao implements Dao<Alue, Integer>{
     public Alue findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
         // luodaan erilaiset rivit sqlite ja postgresql varten että kellonaika toimii järkevästi
-        String viimeisinAika = "DATETIME(MAX(Viesti.ajankohta), 'localtime')  AS viimeisin ";        
+        String viimeisinAika = "DATETIME(MAX(Viesti.ajankohta), 'localtime')"
+                + " AS viimeisin ";        
         if (database.getDatabaseAddress().contains("postgres")) {
-            viimeisinAika = "TO_CHAR(MAX(Viesti.ajankohta) AT TIME ZONE 'UTC' AT TIME ZONE 'EEST', 'YYYY-MM-DD HH24:MI:SS' ) AS viimeisin ";
+            viimeisinAika = "TO_CHAR(MAX(Viesti.ajankohta) "
+                    + "AT TIME ZONE 'UTC' AT TIME ZONE 'EEST',"
+                    + " 'YYYY-MM-DD HH24:MI:SS' ) AS viimeisin ";
         }         
-        PreparedStatement stmt = connection.prepareStatement("SELECT Alue.alue_id AS id, Alue.kuvaus AS kuvaus, "
+        PreparedStatement stmt = connection.prepareStatement(""
+                + "SELECT Alue." + SARAKEALUEID + " AS id, " 
+                + SARAKEALUEKUVAUS + ", "
                 + "COUNT(Viesti.viesti_id) AS viesteja, "
                 + viimeisinAika
-                + "FROM Alue LEFT JOIN Aihe ON Alue.alue_id=Aihe.alue_id LEFT JOIN Viesti ON Aihe.aihe_id=Viesti.aihe_id " 
-                + "WHERE Alue.alue_id = ? GROUP BY Alue.alue_id ORDER BY Alue.kuvaus;");       
+                + "FROM Alue LEFT JOIN Aihe ON Alue." + SARAKEALUEID + " = Aihe." + SARAKEALUEID
+                + "LEFT JOIN Viesti ON Aihe." + SARAKEAIHEID + " = Viesti." + SARAKEAIHEID 
+                + " WHERE Alue." + SARAKEALUEID + " = ? "
+                + "GROUP BY Alue." + SARAKEALUEID
+                + "ORDER BY " + SARAKEALUEKUVAUS + ";");       
         stmt.setObject(1, key);
         ResultSet rs = stmt.executeQuery();
         
@@ -67,7 +80,7 @@ public class AlueDao implements Dao<Alue, Integer>{
         
         // palautetaan löytynyt alue
         int id = rs.getInt("id");
-        String kuvaus = rs.getString("kuvaus");
+        String kuvaus = rs.getString(SARAKEALUEKUVAUS);
         int viesteja = rs.getInt("viesteja");
         String viimeisin = rs.getString("viimeisin");
 
