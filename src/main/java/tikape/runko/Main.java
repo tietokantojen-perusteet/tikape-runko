@@ -2,7 +2,6 @@ package tikape.runko;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
 import spark.ModelAndView;
 import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
@@ -12,7 +11,6 @@ import tikape.runko.domain.*;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        Scanner lukija = new Scanner(System.in);
         if (System.getenv("PORT") != null) {
             port(Integer.valueOf(System.getenv("PORT")));
         }
@@ -169,44 +167,8 @@ public class Main {
             }                
             return new ModelAndView(map, "virhe");
         }, new ThymeleafTemplateEngine()); 
-        
-        while(true) {
-            System.out.println("Valitse;");
-            System.out.println("1. Näytä kaikki alueet");
-            System.out.println("2. Näytä halutun alueen kaikki aiheet");
-            System.out.println("3. Näytä halutun aiheen kaikki viestit");
-            int valinta = Integer.parseInt(lukija.nextLine());
-            switch(valinta) {
-                case 1: 
-                    for(Alue alue: alueDao.findAll()) {
-                        System.out.println(alue);
-                    }
-                    break;
-                case 2: 
-                    System.out.print("Anna alue_id: ");
-                    int alue = Integer.parseInt(lukija.nextLine());
-                    if(alueDao.findOne(alue)!=null) {
-                        for(Aihe aihe: aiheDao.findAllIn(alue)) {
-                            System.out.println(aihe);
-                        }
-                    } else {
-                        System.out.println("EI löydy aluetta: " + alue);
-                    }
-                    break;
-                case 3:
-                    System.out.print("Anna aihe_id: ");
-                    int aihe = Integer.parseInt(lukija.nextLine());
-                    if(aiheDao.findOne(aihe)!=null) {
-                        for(Viesti viesti: viestiDao.findAllIn(aihe)){
-                            System.out.println(viesti);
-                        }
-                    } else {
-                        System.out.println("Ei löydy aihetta: " + aihe);
-                    }
-                    break;            
-            }
-        }
-        
+
+        TekstiUI.luoKayttoliittyma(alueDao, aiheDao, viestiDao);
     }
     
 }
