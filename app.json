@@ -1,0 +1,15 @@
+{
+  "name": "STJTS-foorumi",
+  "scripts": {
+  },
+  "env": {
+  },
+  "formation": {
+  },
+  "addons": [
+
+  ],
+  "buildpacks": [
+
+  ]
+}
