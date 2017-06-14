@@ -10,6 +10,19 @@ import tikape.runko.domain.*;
 
 public class Main {
 
+    // tiedostonimet vakiomuuttujiksi
+    private static final String ALUEET_HTML = "alueet";
+    private static final String AIHEET_HTML = "aiheet";
+    private static final String VIESTIT_HTML = "viestit";
+    private static final String VIRHE_HTML = "virhe";
+    private static final String DATABASE_URL = "DATABASE_URL";
+    private static final int MAX_ALUEKUVAUS = 50;
+    private static final int MAX_AIHEKUVAUS = 50;
+    private static final int MAX_VIESTIOTSIKKO = 50;
+    private static final int MAX_VIESTIPITUUS = 500;
+    private static final int MAX_NIMIMERKKIPITUUS = 25;
+    private static final int VIESTEJASIVULLA = 10;
+
     public static void main(String[] args) throws Exception {
         if (System.getenv("PORT") != null) {
             port(Integer.valueOf(System.getenv("PORT")));
@@ -17,9 +30,9 @@ public class Main {
         // käytetään oletuksena paikallista sqlite-tietokantaa
         String jdbcOsoite = "jdbc:sqlite:tsjtsfoorumi.db";
         // jos heroku antaa käyttöömme tietokantaosoitteen, otetaan se käyttöön
-        if (System.getenv("DATABASE_URL") != null) {
-            jdbcOsoite = System.getenv("DATABASE_URL");
-        } 
+        if (System.getenv(DATABASE_URL) != null) {
+            jdbcOsoite = System.getenv(DATABASE_URL);
+        }
 
         Database database = new Database(jdbcOsoite);
         database.init();
@@ -32,19 +45,20 @@ public class Main {
         // TODO tarvitaanko sivuilta "/index" ja "/index.html" ohjaus pääsivulle "/"?
         // Käyttäjä avaa pääsivun-> näytetään kaikki alueet
         get("/", (req, res) -> {
-            HashMap map = new HashMap<>(); 
+            HashMap map = new HashMap<>();
             map.put("alueet", alueDao.findAll());
-            return new ModelAndView(map, "alueet");
+            return new ModelAndView(map, ALUEET_HTML);
         }, new ThymeleafTemplateEngine());
-                 
+
         // Lisätään uusi alue ja palataan pääsivulle
         post("/alue", (req, res) -> {
-            String alueSelite = req.queryParams("alue").trim();           
-            if (!alueSelite.isEmpty()&&alueSelite.length()<51) {
-                for(Alue alue : alueDao.findAll()) {
-                    if(alue.getKuvaus().equals(alueSelite)) {
+            String alueSelite = req.queryParams("alue").trim();
+            if (!alueSelite.isEmpty() 
+                    && alueSelite.length() <= MAX_ALUEKUVAUS) {
+                for (Alue alue : alueDao.findAll()) {
+                    if (alue.getKuvaus().equals(alueSelite)) {
                         res.redirect("/virhe/alue/1");
-                        return "";    
+                        return "";
                     }
                 }
                 Alue uusiAlue = new Alue(alueSelite);
@@ -58,117 +72,127 @@ public class Main {
         get("/alueet/:id", (req, res) -> {
             res.redirect("/alueet/" + req.params("id") + "/sivu/1");
             return "";
-        });     
-        
+        });
+
         // näytetään alueen ":id" avaukset sivu ":s"
         get("/alueet/:id/sivu/:s", (req, res) -> {
             HashMap map = new HashMap<>();
             Alue alue = alueDao.findOne(Integer.parseInt(req.params("id")));
-            if(alue==null) {
-                map.put("virhekoodi", "Virheellinen aluevalinta. Aluetta " + req.params("id") + " ei ole tietokannassa.");
+            if (alue == null) {
+                map.put("virhekoodi", "Virheellinen aluevalinta. Aluetta " 
+                        + req.params("id") + " ei ole tietokannassa.");
                 map.put("uusisivu", "/");
                 map.put("sivunnimi", "Pääsivulle");
-                return new ModelAndView(map, "virhe");
+                return new ModelAndView(map, VIRHE_HTML);
             } else {
                 map.put("alue", alue);
                 ArrayList<Aihe> kaikkiAiheet = (ArrayList) aiheDao.findAllIn(Integer.parseInt(req.params("id")));
                 int haluttuSivu = Integer.parseInt(req.params("s"));
                 Sivu sivut = new Sivu(kaikkiAiheet.size(), haluttuSivu, "location.href='/alueet/" + alue.getAlue_id() + "/sivu/", "'");
-                map.put("aiheet", kaikkiAiheet.subList(sivut.getEkaRivi(), sivut.getVikaRivi()+1));
+                map.put("aiheet", kaikkiAiheet.subList(sivut.getEkaRivi(), sivut.getVikaRivi() + 1));
                 map.put("sivut", sivut);
-                return new ModelAndView(map, "aiheet");
+                return new ModelAndView(map, AIHEET_HTML);
             }
         }, new ThymeleafTemplateEngine());
-        
+
         // Lisätään uusi aihe alueeseen "id". luodaan aiheeseen myös ensimmäinen viesti
         post("/aihe/:alue_id", (req, res) -> {
             String viesti = req.queryParams("viesti").trim();
             String nimimerkki = req.queryParams("nimimerkki").trim();
             String otsikko = req.queryParams("otsikko").trim();
             int alue_id = Integer.parseInt(req.params("alue_id"));
-            
-            if (!viesti.isEmpty()&&!nimimerkki.isEmpty()&&!otsikko.isEmpty()&&viesti.length()<501&&nimimerkki.length()<26&&otsikko.length()<51&&alueDao.findOne(alue_id)!=null) {
+
+            if (!viesti.isEmpty() && !nimimerkki.isEmpty() 
+                    && !otsikko.isEmpty() 
+                    && viesti.length() <= MAX_VIESTIPITUUS 
+                    && nimimerkki.length() <= MAX_NIMIMERKKIPITUUS
+                    && otsikko.length() <= MAX_VIESTIOTSIKKO 
+                    && alueDao.findOne(alue_id) != null) {
                 Aihe uusiAihe = new Aihe(otsikko, alue_id);
-                Aihe luotuAihe = aiheDao.create(uusiAihe); 
+                Aihe luotuAihe = aiheDao.create(uusiAihe);
                 Viesti uusiViesti = new Viesti(luotuAihe.getAihe_id(), viesti, nimimerkki);
                 viestiDao.create(uusiViesti);
             } else {
-                res.redirect("/virhe/aihe/"+alue_id);
-                return "";              
+                res.redirect("/virhe/aihe/" + alue_id);
+                return "";
             }
             // uusi aihe tulee listalla ensimmäiseksi joten siirrytään ko alueen listan alkuun.
-            res.redirect("/alueet/"+alue_id);
+            res.redirect("/alueet/" + alue_id);
             return "";
         });
-        
+
         // aihe ":id" valittu, ohjataan sivulle /aiheet/:id/sivu/1
         get("/aiheet/:id", (req, res) -> {
             res.redirect("/aiheet/" + req.params("id") + "/sivu/1");
             return "";
-        });     
-        
+        });
+
         // näytetään aiheen ":id" viestit sivulta ":s"
         get("/aiheet/:id/sivu/:s", (req, res) -> {
             HashMap map = new HashMap<>();
-            Aihe aihe = aiheDao.findOne(Integer.parseInt(req.params("id")));   
-            if(aihe==null) {
-                map.put("virhekoodi", "Virheellinen aihevalinta. Aihetta " + req.params("id") + " ei ole tietokannassa.");
+            Aihe aihe = aiheDao.findOne(Integer.parseInt(req.params("id")));
+            if (aihe == null) {
+                map.put("virhekoodi", "Virheellinen aihevalinta. Aihetta " 
+                        + req.params("id") + " ei ole tietokannassa.");
                 map.put("uusisivu", "/");
-                map.put("sivunnimi", "Pääsivulle");                
-                return new ModelAndView(map, "virhe"); 
+                map.put("sivunnimi", "Pääsivulle");
+                return new ModelAndView(map, VIRHE_HTML);
             } else {
                 map.put("alue", alueDao.findOne(aihe.getAlue_id()));
-                map.put("aihe", aihe); 
+                map.put("aihe", aihe);
                 ArrayList<Aihe> kaikkiViestit = (ArrayList) viestiDao.findAllIn(aihe.getAihe_id());
                 int haluttuSivu = Integer.parseInt(req.params("s"));
                 Sivu sivut = new Sivu(kaikkiViestit.size(), haluttuSivu, "location.href='/aiheet/" + aihe.getAihe_id() + "/sivu/", "'");
-                map.put("viestit", kaikkiViestit.subList(sivut.getEkaRivi(), sivut.getVikaRivi()+1));          
+                map.put("viestit", kaikkiViestit.subList(sivut.getEkaRivi(), sivut.getVikaRivi() + 1));
                 map.put("sivut", sivut);
-                return new ModelAndView(map, "viestit");
+                return new ModelAndView(map, VIESTIT_HTML);
             }
         }, new ThymeleafTemplateEngine());
-        
+
         // Lisätään uusi viesti ja palataan viestilista sivulle
         post("/viesti/:aihe_id", (req, res) -> {
             String viesti = req.queryParams("viesti").trim();
             String nimimerkki = req.queryParams("nimimerkki").trim();
             int aihe_id = Integer.parseInt(req.params("aihe_id"));
-            
-            if (!viesti.isEmpty()&&!nimimerkki.isEmpty()&&viesti.length()<501&&nimimerkki.length()<26&&aiheDao.findOne(aihe_id)!=null) {
+
+            if (!viesti.isEmpty() && !nimimerkki.isEmpty() 
+                    && viesti.length() <= MAX_VIESTIPITUUS 
+                    && nimimerkki.length() <= MAX_NIMIMERKKIPITUUS 
+                    && aiheDao.findOne(aihe_id) != null) {
                 Viesti uusiViesti = new Viesti(aihe_id, viesti, nimimerkki);
                 viestiDao.create(uusiViesti);
             } else {
-                res.redirect("/virhe/viesti/"+aihe_id);
-                return "";              
+                res.redirect("/virhe/viesti/" + aihe_id);
+                return "";
             }
-            int viimeinenSivu = (viestiDao.findAllIn(aihe_id).size()-1)/10+1;          
-            res.redirect("/aiheet/"+aihe_id+"/sivu/"+viimeinenSivu);
+            int viimeinenSivu = (viestiDao.findAllIn(aihe_id).size() - 1) / VIESTEJASIVULLA + 1;
+            res.redirect("/aiheet/" + aihe_id + "/sivu/" + viimeinenSivu);
             return "";
         });
-        
+
         // POST kutsuissa tapahtunut virhe, Ohjataan siis virhe sivulle
         get("/virhe/:viesti/:id", (req, res) -> {
             HashMap map = new HashMap<>();
             String viesti = req.params("viesti");
-            if(viesti.equals("alue")) {
+            if (viesti.equals("alue")) {
                 map.put("virhekoodi", "Saman niminen alue on jo olemassa.");
                 map.put("uusisivu", "/");
                 map.put("sivunnimi", "Pääsivulle");
             }
-            if(viesti.equals("aihe")) {
+            if (viesti.equals("aihe")) {
                 map.put("virhekoodi", "Uuden keskustelun avauksen luonti epäonnistui.");
-                map.put("uusisivu", "/alueet/"+req.params("id"));
+                map.put("uusisivu", "/alueet/" + req.params("id"));
                 map.put("sivunnimi", "Takaisin aihe alueelle.");
-            }     
-           if(viesti.equals("viesti")) {
+            }
+            if (viesti.equals("viesti")) {
                 map.put("virhekoodi", "Uuden viestin luonti epäonnistui.");
-                map.put("uusisivu", "/aiheet/"+req.params("id"));
+                map.put("uusisivu", "/aiheet/" + req.params("id"));
                 map.put("sivunnimi", "Takaisin viestiketjuun.");
-            }                
-            return new ModelAndView(map, "virhe");
-        }, new ThymeleafTemplateEngine()); 
+            }
+            return new ModelAndView(map, VIRHE_HTML);
+        }, new ThymeleafTemplateEngine());
 
         TekstiUI.luoKayttoliittyma(alueDao, aiheDao, viestiDao);
     }
-    
+
 }
