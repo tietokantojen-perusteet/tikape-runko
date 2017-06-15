@@ -71,6 +71,18 @@ public class KetjuDao implements Dao<Ketju, Integer> {
 
         return alueet;
     }
+    
+    public void lisaaKetju(String otsikko, int alue) throws SQLException {
+        Connection connection = this.database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Ketju (otsikko, alue) "
+                + "VALUES (?, ?)");
+        stmt.setString(1, otsikko);
+        stmt.setInt(2, alue);
+        stmt.execute();
+        
+        stmt.close();
+        connection.close();
+    }
 
     
     public List<Ketju> findAllForAlueId(int alueenId) throws SQLException {

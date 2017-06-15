@@ -9,6 +9,7 @@ import tikape.runko.database.Database;
 import tikape.runko.database.KetjuDao;
 import tikape.runko.database.OpiskelijaDao;
 import tikape.runko.database.ViestiDao;
+import tikape.runko.domain.Alue;
 
 public class Main {
 
@@ -40,6 +41,15 @@ public class Main {
             return new ModelAndView(map, "alueet");
         }, new ThymeleafTemplateEngine());
         
+        //Lisää uuden alueen
+        post("/alue", (req, res) -> {
+            if (!req.queryParams("alueNimi").isEmpty()) {
+                alueDao.lisaaAlue(req.queryParams("alueNimi"));
+            }
+            res.redirect("/");
+            return "";
+        });
+        
         //Listaa kaikki tietyn alueen alaisuudessa olevat ketjut ketjuun liittyvnä alue-fk:n mukaan
         get("/alueet/:id", (req, res) -> {
             HashMap map = new HashMap<>();
@@ -48,8 +58,19 @@ public class Main {
             return new ModelAndView(map, "ketjut");
         }, new ThymeleafTemplateEngine());
         
+        
+        //Lisää uusi ketju ja viesti ketjuun
+        post("/alueet/:id", (req, res) -> {
+            
+            ketjuDao.lisaaKetju(req.queryParams("ketjunNimi"), Integer.parseInt(req.params("id")));
+            
+            res.redirect("/alue");
+            return "";
+        });
+        //LIsää uusi ketju ja viesti ketjuun
+        
         //Listaa kaikki ketjuun liittyvät viestit viestiin liittyvän ketju-fk:n mukaan
-        get("/ketjut/:id", (req, res) -> {
+        get("/alueet/:id/ketjut/:id", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("viestit", viestiDao.findAllForKetjuId(Integer.parseInt(req.params("id"))));
 
@@ -57,15 +78,19 @@ public class Main {
         }, new ThymeleafTemplateEngine()); 
 
         //Vastaanottaa kirjoittajan viesti, ei toimi vielä oikein
-        post("/ketjut/:id", (req, res) -> {
-            String viesti = req.queryParams("Viesti");
-            return viesti;
+        post("/ketjut/1", (req, res) -> {
+            viestiDao.lisaaViesti(req.queryParams("kayttaja"), req.queryParams("viesti"), Integer.parseInt(req.params("1")));
+            res.redirect("/alue");
+            return "";
         });
         
-        
-        
-        
 
+        
+        
+        
+        
+        
+        
         get("/opiskelijat", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("opiskelijat", opiskelijaDao.findAll());

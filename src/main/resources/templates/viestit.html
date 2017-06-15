@@ -2,20 +2,42 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <head>
-        <title>Otsikko</title>
+        <title>Lue viestejä</title>
         <meta charset="utf-8" />
     </head>
 
     <body>
         <h1>Viestit</h1>
 
+        
         <ol>
             <li th:each="viesti: ${viestit}">
-                <span th:text="${viesti.teksti}">viestin teksti</span> <span>t.</span> <span th:text= "${viesti.kayttaja}">viestin teksti</span>
+                <span th:text="${viesti.teksti}">viestin teksti</span> <span>t.</span> <span th:text= "${viesti.kayttaja}">viestin käyttäjä</span>
             </li>
         </ol>
         
         
+        
+        <form action="/ketjut/1" method="POST">
+            <span> Lisää viesti: </span>
+            <br/>
+            <textarea cols="40" rows="5" name="viesti">
+            </textarea>
+            <br/>
+            <br/>
+            <label> Lähettäjä: </label> <input type="text" name="kayttaja" size="11" maxlength="10"/>
+            <br/>
+            <input type="submit" value="Lisää!"/>
+        </form>
+        
+        <!-- Tässä pitäisi mieluiten olla kaksi linkkiä: toinen aluevalintaan ja toinen ketjun valintaan samalta alueelta-->
+        <br/>
+        <br/>
+        <a href="/">Toimimaton linkki ketjun valintaan samalta alueelta, viekin etusivulle</a>
+        <br/>
+        <a href="/alueet">Takaisin aluevalintaan</a>
+        <br/>
+        <a href="/">Takaisin etusivulle</a>
 
     </body>
 </html>

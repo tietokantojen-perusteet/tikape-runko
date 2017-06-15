@@ -100,6 +100,23 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
         return viestit;
     }
+    
+    public void lisaaViesti(String kayttaja, String teksti, int ketju) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmnt = connection.prepareStatement(
+                                    "INSERT INTO Viesti "
+                                    + "(kayttaja, teksti, paivamaara, ketju) "
+                                    + "VALUES (?, ?, DATETIME('now', 'localtime'), ?)");
+        
+        stmnt.setString(1, kayttaja);
+        stmnt.setString(2, teksti);
+        stmnt.setInt(3, ketju);
+
+        stmnt.execute();
+
+        stmnt.close();
+        connection.close();
+}
 
     @Override
     public void delete(Integer key) throws SQLException {

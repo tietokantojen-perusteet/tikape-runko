@@ -2,18 +2,65 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <head>
-        <title>Otsikko</title>
+        <title>Alueen keskustelut</title>
         <meta charset="utf-8" />
     </head>
 
     <body>
         <h1>Ketjut</h1>
 
+        <!--Alkuperäinen koodi
         <ol>
             <li th:each="ketju: ${ketjut}">
                 <span th:text="${ketju.otsikko}">ketjun otsikko</span> <a th:href="${'/ketjut/' + ketju.id}">linkki</a>
             </li>
         </ol>
+        -->
+        
+        <!--Nykyinen versio. Lukumäärien ja aikojen tarkka muotoilu tehdään sitten kun ne voidaan hakea DAOn avulla. 
+        Tarkemmat kommentit alueet.html tiedostossa-->
+        <table cellspacing="30">
+            <tr> 
+                <th>Keskustelut</th>
+                <th>Viestejä yhteensa</th>
+                <th>Viimeisin viesti</th>
+            </tr>
+            <tr>
+                <td>
+                    <ol> 
+                        <li th:each="ketju: ${ketjut}">
+                            <span th:text="${ketju.otsikko}">ketjun nimi</span> <a th:href="${'/alueet/:id/ketjut/' + ketju.id}">linkki</a>
+                        </li> 
+                    </ol>
+                </td>
+                <td>
+                    lkm
+                </td>
+                <td>
+                    aika
+                </td>
+            </tr>
+        </table>
+        
+        <!--Lisää uuden keskustelun-->
+        <form action="/alueet/:id" method="POST">
+            <span> Lisää uusi keskustelu: </span>
+            <br/>
+            <label> Keskustelun nimi: </label> <input type="text" name="ketjunNimi" size="11" maxlength="10"/>
+            <br/>
+            <label> Lähettäjä: </label> <input type="text" name="kayttaja" size="11" maxlength="10"/>
+            <br/>
+            <textarea cols="40" rows="5" name="viesti">Aloitusviesti
+            </textarea>
+            <br/>
+            <input type="submit" value="Lisää!"/>
+        </form>
+        
+        <br/>
+        <br/>
+        <a href="/alueet">Takaisin aluevalintaan</a>
+        <br/>
+        <a href="/">Takaisin etusivulle</a>
 
     </body>
 </html>

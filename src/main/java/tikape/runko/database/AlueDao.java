@@ -69,6 +69,16 @@ public class AlueDao implements Dao<Alue, Integer> {
 
         return alueet;
     }
+    
+    public void lisaaAlue(String aihe) throws SQLException {
+        Connection connection = this.database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Alue(aihe) "
+                + "VALUES (?)");
+        stmt.setString(1, aihe);
+        stmt.execute();
+        stmt.close();
+        connection.close();
+    }
 
     @Override
     public void delete(Integer key) throws SQLException {
