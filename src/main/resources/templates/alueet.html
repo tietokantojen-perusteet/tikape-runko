@@ -1,0 +1,60 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Aluevalikko</title>
+        <meta charset="utf-8" />
+    </head>
+
+    <body>
+        <h1>Keskustelualueet</h1>
+        
+        <!--alkuperäinen koodi
+        <span>Alue............Viesteja yhteensa.........Viimeisin viesti</span>
+        <ol>
+            <li th:each="alue: ${alueet}">
+                <span th:text="${alue.aihe}">alueen nimi</span> <a th:href="${'/alueet/' + alue.id}">linkki</a>
+            </li>
+        </ol>
+        -->
+        
+         <!--Nykyinen versio. Lukumäärien ja aikojen tarkka muotoilu tehdään sitten kun ne voidaan hakea DAOn avulla.
+         Nyt tämä näyttää hieman oudolta, koska nimilista on teknisesti yhdellä rivillä taulukossa.-->
+        <table cellspacing="30">
+            <tr> 
+                <th>Alue</th>
+                <th>Viestejä yhteensä</th>
+                <th>Viimeisin viesti</th>
+            </tr>
+            
+            <tr th:each="alue: ${alueet}">
+                
+                <td>
+                    <span th:text="${alue.aihe}">alueen nimi</span> <a th:href="${'/alueet/' + alue.id}">linkki</a>  
+                </td>
+                
+                <td>
+                    lkm
+                </td>
+                
+                <td>
+                    aika
+                </td>
+            </tr>
+        </table>
+        
+        <!--Tästä lisätään uusi alue-->
+        <form action="/alue" method="POST">
+            <span> Lisää uusi alue: </span>
+            <br/>
+            <label> Alueen nimi: </label> <input type="text" name="alueNimi" size="11" maxlength="10"/>
+            <br/>
+            <input type="submit" value="Lisää!"/>
+        </form>
+        
+        <br/>
+        <br/>
+        <a href="/">Takaisin etusivulle</a>
+
+    </body>
+</html>

@@ -2,15 +2,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <head>
-        <title>Otsikko</title>
+        <title>Keskustelualueen etusivu</title>
         <meta charset="utf-8" />
     </head>
 
     <body>
         <h1>Heippa vaan!</h1>
+        <br/>
 
-        <p>Ja .. <span th:text="${viesti}">jotain?</span></p>
+        <p>Tervetuloa upean keskustelualueemme etusivulle.</p>
+        <p>Minulla ei oikein ole sanottavaa. Mietin vaan, tarvitaanko tätä etusivua lainkaan.</p>
+        
+        <!-- <p><a href="/opiskelijat">Tästä opiskelijalistaukseen.</a></p> -->
+        
+        <a href="/alueet">Tästä pääsee aluelistaukseen.</a>
 
-        <p><a href="/opiskelijat">Tästä opiskelijalistaukseen.</a></p>
     </body>
 </html>
