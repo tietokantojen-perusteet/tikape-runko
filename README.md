@@ -1,4 +1,3 @@
-# tikape-runko
+# elefantti tiimi
 
-Tietokantojen perusteet -kurssilla tehtävän web-sovelluksen pohja.
-
+Meidän tietokantasovellus
