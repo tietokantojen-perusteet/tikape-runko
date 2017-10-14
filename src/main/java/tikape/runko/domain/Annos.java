@@ -1,4 +1,4 @@
-package tikape.runko.database;
+package tikape.runko.domain;
 
 public class Annos {
     
