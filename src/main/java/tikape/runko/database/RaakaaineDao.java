@@ -66,11 +66,6 @@ public class RaakaaineDao implements Dao<Raakaaine, Integer> {
 
         return aineet;
     }
-    
-    @Override
-    public Raakaaine saveOrUpdate(Raakaaine object) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     @Override
     public void delete(Integer key) throws SQLException {
@@ -82,6 +77,7 @@ public class RaakaaineDao implements Dao<Raakaaine, Integer> {
         connection.close();
     }
     
+    @Override
     public Raakaaine saveOrUpdate(Raakaaine aine) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("INSERT INTO Raakaaine (nimi) VALUES('?')" );
