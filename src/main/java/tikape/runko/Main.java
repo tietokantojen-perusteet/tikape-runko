@@ -37,5 +37,19 @@ public class Main {
 
             return new ModelAndView(map, "annos_show");
         }, new ThymeleafTemplateEngine());
+        
+        get("/raakaaine/index", (req, res) -> {
+            HashMap map = new HashMap<>();
+            map.put("raakaaine_index", annosDao.findAll());
+
+            return new ModelAndView(map, "raakaaine_index");
+        }, new ThymeleafTemplateEngine());
+
+        get("/raakaaine/:id", (req, res) -> {
+            HashMap map = new HashMap<>();
+            map.put("raakaaine_show", annosDao.findOne(Integer.parseInt(req.params("id"))));
+
+            return new ModelAndView(map, "raakaaine_show");
+        }, new ThymeleafTemplateEngine());
     }
 }
