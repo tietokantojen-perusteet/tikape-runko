@@ -5,6 +5,7 @@ import spark.ModelAndView;
 import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.runko.database.Database;
+import tikape.runko.database.RaakaaineDao;
 import tikape.runko.database.AnnosDao;
 
 public class Main {
@@ -13,6 +14,7 @@ public class Main {
         Database database = new Database("jdbc:sqlite:smoothiearkisto.db");
         database.init();
 
+        RaakaaineDao raakaaineDao = new RaakaaineDao(database);
         AnnosDao annosDao = new AnnosDao(database);
 
         get("/", (req, res) -> {
