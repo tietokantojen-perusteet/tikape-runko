@@ -1,0 +1,18 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Otsikko</title>
+        <meta charset="utf-8" />
+    </head>
+
+    <body>
+        <h1>Annokset</h1>
+
+        <ol>
+            <li th:each="annos : ${annos_index}">
+                <span th:text="${annos.nimi}">Annos: </span> <a th:href="${'/annos/' + annos.id}">linkki</a>
+            </li>
+        </ol>
+    </body>
+</html>
