@@ -24,7 +24,7 @@ public class RaakaaineDao implements Dao<Raakaaine, Integer> {
     @Override
     public Raakaaine findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Raakaaine WHERE id = ?");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM RaakaAine WHERE id = ?");
         stmt.setObject(1, key);
 
         ResultSet rs = stmt.executeQuery();
@@ -49,7 +49,7 @@ public class RaakaaineDao implements Dao<Raakaaine, Integer> {
     public List<Raakaaine> findAll() throws SQLException {
 
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Raakaaine");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM RaakaAine");
 
         ResultSet rs = stmt.executeQuery();
         List<Raakaaine> aineet = new ArrayList<>();
@@ -66,25 +66,21 @@ public class RaakaaineDao implements Dao<Raakaaine, Integer> {
 
         return aineet;
     }
-    
-    @Override
-    public Raakaaine saveOrUpdate(Raakaaine object) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     @Override
     public void delete(Integer key) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("DELETE FROM Raakaaine WHERE id = ?");
+        PreparedStatement stmt = connection.prepareStatement("DELETE FROM RaakaAine WHERE id = ?");
         stmt.setObject(1, key);
         stmt.executeQuery();
         stmt.close();
         connection.close();
     }
     
+    @Override
     public Raakaaine saveOrUpdate(Raakaaine aine) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Raakaaine (nimi) VALUES('?')" );
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO RaakaAine (nimi) VALUES('?')" );
         stmt.setObject(1, aine.getNimi());
 
         ResultSet rs = stmt.executeQuery();
