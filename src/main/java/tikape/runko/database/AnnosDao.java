@@ -1,5 +1,6 @@
 package tikape.runko.database;
 
+import tikape.runko.domain.Annos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
