@@ -10,8 +10,8 @@ import tikape.runko.database.OpiskelijaDao;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        Database database = new Database("jdbc:sqlite:opiskelijat.db");
-        database.init();
+        Database database = new Database("jdbc:sqlite:smoothies.db");
+        database.createTables();
 
         OpiskelijaDao opiskelijaDao = new OpiskelijaDao(database);
 
