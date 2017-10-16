@@ -1,4 +1,3 @@
-# tikape-runko
+# TiKaPe harjoitustyö
 
-Tietokantojen perusteet -kurssilla tehtävän web-sovelluksen pohja.
-
+// TODO
