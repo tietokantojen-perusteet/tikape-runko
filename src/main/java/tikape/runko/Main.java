@@ -7,6 +7,7 @@ import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.runko.database.Database;
 import tikape.runko.database.RaakaaineDao;
 import tikape.runko.database.AnnosDao;
+import tikape.runko.domain.Annos;
 
 public class Main {
 
@@ -25,7 +26,7 @@ public class Main {
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
 
-        get("/annos/index", (req, res) -> {
+        get("/annos/", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("annos_index", annosDao.findAll());
 
@@ -39,7 +40,27 @@ public class Main {
             return new ModelAndView(map, "annos_show");
         }, new ThymeleafTemplateEngine());
         
-        get("/raakaaine/index", (req, res) -> {
+        post("/annos/", (req, res) -> {
+
+            Annos annos = new Annos(null, req.queryParams("nimi"));
+            
+            
+            try {
+                annosDao.saveOrUpdate(annos);
+                
+            } catch (java.lang.RuntimeException e) {
+                res.status(403);
+                res.body("Virheellinen pyyntö! Lisätietoja:"+e.toString());
+                res.redirect("/annos/");
+                return ""; 
+            }
+            
+            res.redirect("/annos/");
+            return "";
+            
+        });
+        
+        get("/raakaaine/", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("raakaaine_index", raakaaineDao.findAll());
 

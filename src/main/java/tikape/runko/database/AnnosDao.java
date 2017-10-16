@@ -66,6 +66,11 @@ public class AnnosDao implements Dao<Annos, Integer> {
     public Annos saveOrUpdate(Annos object) throws SQLException {
         // jos asiakkaalla ei ole pääavainta, oletetaan, että asiakasta
         // ei ole vielä tallennettu tietokantaan ja tallennetaan asiakas
+        
+        if (object.getNimi() == null || object.getNimi().length() <= 0) {
+            throw new java.lang.RuntimeException("Ei voi luoda annosta jolla ei ole nimeä!");
+        }
+        
         if (object.getId() == null) {
             return save(object);
         } else {
@@ -94,30 +99,26 @@ public class AnnosDao implements Dao<Annos, Integer> {
         stmt.setString(1, annos.getNimi());
 
         stmt.executeUpdate();
-        stmt.close();
+          
+        try (ResultSet rs = stmt.getGeneratedKeys()) {
+            if (rs.next()) {
+                Annos a = new Annos(rs.getInt(1), annos.getNimi());
+                stmt.close(); 
+                conn.close();
+                return a;
+            }
+            else {
+                throw new SQLException("Ei saatu avainta!");
+            }
+        }
 
-        stmt = conn.prepareStatement("SELECT * FROM Annos"
-                + " WHERE tehtava = ?");
-        stmt.setString(1, annos.getNimi());
-
-        ResultSet rs = stmt.executeQuery();
-        rs.next(); // vain 1 tulos
-
-        Annos a = new Annos(rs.getInt("id"), rs.getString("tehtava"));
-
-        stmt.close();
-        rs.close();
-
-        conn.close();
-
-        return a;
     }
 
     private Annos update(Annos annos) throws SQLException {
 
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn.prepareStatement("UPDATE Annos SET"
-                + " tehtava = ?WHERE id = ?");
+                + " nimi = ?WHERE id = ?");
         stmt.setString(1, annos.getNimi());
         stmt.setInt(2, annos.getId());
 
