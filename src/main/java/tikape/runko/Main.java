@@ -18,8 +18,9 @@ public class Main {
         AnnosDao annosDao = new AnnosDao(database);
 
         get("/", (req, res) -> {
+            
             HashMap map = new HashMap<>();
-            map.put("viesti", "tervehdys");
+            map.put("annos_index", annosDao.findAll());
 
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
@@ -40,14 +41,14 @@ public class Main {
         
         get("/raakaaine/index", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("raakaaine_index", annosDao.findAll());
+            map.put("raakaaine_index", raakaaineDao.findAll());
 
             return new ModelAndView(map, "raakaaine_index");
         }, new ThymeleafTemplateEngine());
 
         get("/raakaaine/:id", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("raakaaine_show", annosDao.findOne(Integer.parseInt(req.params("id"))));
+            map.put("raakaaine_show", raakaaineDao.findOne(Integer.parseInt(req.params("id"))));
 
             return new ModelAndView(map, "raakaaine_show");
         }, new ThymeleafTemplateEngine());
