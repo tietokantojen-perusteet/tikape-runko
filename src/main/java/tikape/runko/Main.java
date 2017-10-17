@@ -9,7 +9,7 @@ import tikape.runko.database.Database;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        Database database = new Database("jdbc:sqlite:smoothies.db");
+        Database database = new Database("jdbc:sqlite:smoothietietokanta.db");
         database.createTables();
 
         get("/", (req, res) -> {
