@@ -16,7 +16,7 @@ public class IngredientDAO implements DAO<Ingredient, Integer> {
     @Override
     public void create(Ingredient object) throws SQLException {
         Connection connection = this.database.getConnection();
-        PreparedStatement statement = connection.prepareStatement("INSERT INTO Ingredient (name) VALUES (?);");
+        PreparedStatement statement = connection.prepareStatement("INSERT INTO RaakaAine (nimi) VALUES (?);");
         statement.setString(1, object.getName());
         statement.executeUpdate();
         
@@ -27,7 +27,7 @@ public class IngredientDAO implements DAO<Ingredient, Integer> {
     @Override
     public Ingredient read(Integer key) throws SQLException {
         Connection connection = this.database.getConnection();
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM Ingredient where id = ?;");
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM RaakaAine where id = ?;");
         statement.setInt(1, key);
         
         ResultSet resultSet = statement.executeQuery();
@@ -36,7 +36,7 @@ public class IngredientDAO implements DAO<Ingredient, Integer> {
         
         if (resultSet.next()) {
             int id = resultSet.getInt("id");
-            String name = resultSet.getString("name");
+            String name = resultSet.getString("nimi");
             ingredient = new Ingredient(id, name);
         }
         
@@ -50,7 +50,7 @@ public class IngredientDAO implements DAO<Ingredient, Integer> {
     @Override
     public List<Ingredient> readAll() throws SQLException {
         Connection connection = this.database.getConnection();
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM Ingredient;");
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM RaakaAine;");
         
         ResultSet resultSet = statement.executeQuery();
         
@@ -58,7 +58,7 @@ public class IngredientDAO implements DAO<Ingredient, Integer> {
         
         while (resultSet.next()) {
             int id = resultSet.getInt("id");
-            String name = resultSet.getString("name");
+            String name = resultSet.getString("nimi");
             ingredients.add(new Ingredient(id, name));
         }
         
