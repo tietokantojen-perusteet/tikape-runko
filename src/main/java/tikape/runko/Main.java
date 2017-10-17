@@ -1,6 +1,8 @@
 package tikape.runko;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import spark.ModelAndView;
 import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
@@ -27,7 +29,10 @@ public class Main {
         }, new ThymeleafTemplateEngine());
 
         get("/annos/", (req, res) -> {
+            
             HashMap map = new HashMap<>();
+            
+            map.put("raakaaine_index", raakaaineDao.findAll());
             map.put("annos_index", annosDao.findAll());
 
             return new ModelAndView(map, "annos_index");
@@ -35,6 +40,7 @@ public class Main {
 
         get("/annos/:id", (req, res) -> {
             HashMap map = new HashMap<>();
+            
             map.put("annos_show", annosDao.findOne(Integer.parseInt(req.params("id"))));
 
             return new ModelAndView(map, "annos_show");
@@ -54,6 +60,19 @@ public class Main {
                 res.redirect("/annos/");
                 return ""; 
             }
+            
+            res.redirect("/annos/");
+            return "";
+            
+        });
+        
+        post("/annosraakaaine/", (req, res) -> {
+            
+            System.out.println("Smoothie: "+req.queryParams("smoothie"));
+            System.out.println("Ohje: "+req.queryParams("ohje"));
+            System.out.println("Määrä: "+req.queryParams("maara"));
+            System.out.println("Raaka-aine: "+req.queryParams("raakaAine"));
+            System.out.println("Järjestys: "+req.queryParams("jarjestys"));
             
             res.redirect("/annos/");
             return "";
