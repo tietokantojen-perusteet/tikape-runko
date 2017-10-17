@@ -14,5 +14,42 @@
                 <span th:text="${annos.nimi}">Annos: </span> <a th:href="${'/annos/' + annos.id}">linkki</a>
             </li>
         </ol>
+        
+        
+        <h2>Lisää uusi</h2>
+
+        <form method="POST" action="">
+            Smoothien nimi:<br/>
+            <input type="text" name="nimi"/><br/>
+            <input type="submit" value="Lisää"/>
+        </form>
+
+        <h2>Lisää raaka-aineita</h2>
+
+        <form method="POST" action="">
+            Smoothien nimi:<br/>
+            <select th:each="annos : ${annos_index}" name="smoothie">
+                    <option th:name="${annos.id}" th:text="${annos.nimi}">annos</option>
+                    <option name="2">Aurinkolasit</option>
+                    <option name="1">Mustikkaplorays</option>
+            </select>
+            <br/>
+            Lisättävä raaka-aine<br/>
+            <select name="raakaAine">
+              <option name="1">Appelsiini</option>
+              <option name="2">Banaani</option>
+              <option name="...">...</option>
+            </select>
+            <br/>
+            Järjestys<br/>
+            <input type="text"/><br/>
+            Määrä<br/>
+            <input type="text"/><br/>
+            Ohje<br/>
+            <input type="text"/><br/>
+            <input type="submit" value="Lisää"/>
+        </form>
+        
+        
     </body>
 </html>
