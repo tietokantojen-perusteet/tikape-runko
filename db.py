@@ -17,7 +17,7 @@ cursor = connection.cursor()
 
 statements = [
     'CREATE TABLE Smoothie (id integer PRIMARY KEY, nimi varchar(20), ohje varchar(1000));',
-    'CREATE TABLE RaakaAine (id integer PRIMARY KEY, name varchar(20));',
+    'CREATE TABLE RaakaAine (id integer PRIMARY KEY, nimi varchar(20));',
     'CREATE TABLE SmoothieRaakaAine (smoothie_id integer, raaka_aine_id integer, jarjestys integer, maara varchar(10), FOREIGN KEY(smoothie_id) REFERENCES Smoothie(id), FOREIGN KEY(raaka_aine_id) REFERENCES RaakaAine(id));',
 
     'INSERT INTO Smoothie VALUES(1,\'Hopeinen kuu\',\'Halkaise avokado, poista kivi ja kaavi hedelmäliha lusikalla tehosekoittimeen. Silppua lehtikaali, pilko kurkku ja päärynä ja purista limen mehu sekaan. Surauta. Noin.\');',
