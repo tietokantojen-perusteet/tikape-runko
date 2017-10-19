@@ -13,7 +13,7 @@
     <h1>Smoothiearkisto</h1>
     <ol>
         <li th:each="smoothie : ${smoothiet}">
-            <span th:href="${'/smoothiet/' + smoothie.id}" th:text="${smoothie}">Smoothien nimi</span>
+            <a th:href="${'/smoothiet/' + smoothie.id}" th:text="${smoothie}">Smoothien nimi</a>
         </li>
     </ol>
 
