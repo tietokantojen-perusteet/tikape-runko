@@ -5,14 +5,16 @@ import spark.ModelAndView;
 import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.runko.database.Database;
+import tikape.runko.database.IngredientDAO;
+import tikape.runko.database.SmoothieDAO;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
         Database database = new Database("jdbc:sqlite:smoothietietokanta.db");
         database.createTables();
-        // SmoothieDAO smoothiet = new SmoothieDAO(database);
-        // IngredientDAO raakaaineet = new IngredientDAO(database);
+        SmoothieDAO smoothiet = new SmoothieDAO(database);
+        IngredientDAO raakaaineet = new IngredientDAO(database);
 
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
@@ -37,7 +39,7 @@ public class Main {
         
         get("/raakaaineet", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("raakaaineet", "Tähän lista raaka-aineista");
+            map.put("raakaaineet", raakaaineet.readAll());
 
             return new ModelAndView(map, "raakaaineet");
         }, new ThymeleafTemplateEngine());
