@@ -1,6 +1,8 @@
 package tikape.runko;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import spark.ModelAndView;
 import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
@@ -29,6 +31,15 @@ public class Main {
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
         
+        get("/smoothiet/:id", (req, res) -> {
+            HashMap map = new HashMap<>();
+            map.put("smoothie", smoothieDAO.read(Integer.parseInt(req.params("id"))));
+            map.put("raakaaineet", smoothieDAO.read(Integer.parseInt(req.params("id"))).getIngredients());
+            map.put("ohje", smoothieDAO.read(Integer.parseInt(req.params("id"))).getInstructions());
+            
+            return new ModelAndView(map, "smoothie");
+        }, new ThymeleafTemplateEngine());
+        
         get("/uusismoothie", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("smoothiet", smoothieDAO.readAll());
@@ -37,12 +48,14 @@ public class Main {
             return new ModelAndView(map, "uusismoothie");
         }, new ThymeleafTemplateEngine());
         
-        /*post("/uusismoothie", (req, res) -> {
-            String smoothie = req.queryParams("nimi");
-            smoothies.save(new Smoothie(null, smoothie));
+        // Tämän toteutus vaiheessa, heittää atm 404 erroria:
+        post("/uusismoothie", (req, res) -> {
+            String nimi = req.queryParams("nimi");
+            List<Ingredient> ingredients = new ArrayList<>();
+            smoothieDAO.create(new Smoothie(null, nimi, null, ingredients));
             res.redirect("/uusismoothie");
             return "";
-        });*/
+        });
         
         get("/raakaaineet", (req, res) -> {
             HashMap map = new HashMap<>();
@@ -51,9 +64,16 @@ public class Main {
             return new ModelAndView(map, "raakaaineet");
         }, new ThymeleafTemplateEngine());
         
+        // Tämän toteutus vaiheessa, heittää atm 404 erroria:
         post("/raakaaineet", (req, res) -> {
             String raakaaine = req.queryParams("raakaaine");
             ingredientDAO.create(new Ingredient(null, raakaaine));
+            res.redirect("/raakaaineet");
+            return "";
+        });
+        
+        get("/raakaaineet/:id/poista", (req, res) -> {
+            ingredientDAO.delete(Integer.parseInt(req.params(":id")));
             res.redirect("/raakaaineet");
             return "";
         });
