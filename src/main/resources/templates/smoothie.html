@@ -5,11 +5,103 @@
         <title>Smoothiearkisto</title>
         <meta charset="utf-8" />
 
-        <link rel="stylesheet" type="text/css" href="style.css" />
+        <style>
+            body {
+                background-color: #e1e1e1;
+                font-family: 'Raleway', sans-serif;
+                font-size: 16px;
+            }
+
+            h1 {
+                font-family: 'Raleway',sans-serif;
+                font-size: 50px;
+                text-transform: uppercase;
+                text-align: center;
+                margin-top:10px;
+            }
+
+            h2 {
+                font-family: 'Raleway',sans-serif;
+                font-size: 20px;
+                text-transform: uppercase;
+            }
+
+            ol {
+                list-style-type: circle;
+            }
+
+            a:link, a:visited, a:active {
+                color:#000000;
+                text-decoration: none;
+            }
+
+            a:hover {
+                color:#662d91;
+                text-decoration: none;
+            }
+
+            a:link.block, a:visited.block {
+                font-family: Courier;
+                font-size: 10pt;
+                background-color: #662d91;
+                color: white;
+                padding: 10px 15px;
+                text-align: center; 
+                text-decoration: none;
+                display: inline-block;
+            }
+
+            a:hover.block, a:active.block {
+                background-color: #92278f;
+            }
+
+            .main {
+                margin: auto;
+                background-color: #ffffff;
+                width:50%;
+                padding: 25px;
+            }
+
+            textarea {
+                display : block;
+                padding : 10px;
+                margin  : 10px 0 0 -10px;
+                width   : 340px;
+                height  : 150px;
+            }
+
+            input[type="submit"] {
+                font-family: Courier;
+                font-size: 12px;
+                background-color: #662d91;
+                border: none;
+                color: #ffffff;
+                padding: 6px 10px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+            }
+        </style>
 
     </head>
 
     <body>
-        
+    <section class="main">
+
+        <h1>Smoothiearkisto</h1>
+
+        <h2><span th:text="${smoothie.nimi}">Smoothien nimi</span></h2>
+
+        <ol>
+            <li th:each="raakaaine : ${smoothie.raakaaineet}">
+                <span th:text="${raakaaine}">Raaka-aineen nimi</span>
+            </li>
+        </ol>
+
+        <p><span th:text="${smoothie.ohje}">Smoothien ohje</span></p>
+
+        <p><a href="" class="block">&lt;&lt;</a></p>
+
+    </section> 
     </body>
 </html>

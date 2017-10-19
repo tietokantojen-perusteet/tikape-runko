@@ -5,79 +5,82 @@
         <title>Smoothiearkisto</title>
         <meta charset="utf-8" />
 
-        <style type="text/css">
-        	body {
-        		background-color: #e1e1e1;
-        		font-family: 'Raleway', sans-serif;
-        		font-size: 16px;
-        	}
+        <style>
+            body {
+                background-color: #e1e1e1;
+                font-family: 'Raleway', sans-serif;
+                font-size: 16px;
+            }
 
-			h1 {
-				font-family: 'Raleway',sans-serif;
-				font-size: 50px;
-				text-transform: uppercase;
-				text-align: center;
-				margin-top:10px;
-			}
+            h1 {
+                font-family: 'Raleway',sans-serif;
+                font-size: 50px;
+                text-transform: uppercase;
+                text-align: center;
+                margin-top:10px;
+            }
 
-			h2 {
-				font-family: 'Raleway',sans-serif;
-				font-size: 20px;
-				text-transform: uppercase;
-			}
+            h2 {
+                font-family: 'Raleway',sans-serif;
+                font-size: 20px;
+                text-transform: uppercase;
+            }
 
-			p {
+            ol {
+                list-style-type: circle;
+            }
 
-			}
+            a:link, a:visited, a:active {
+                color:#000000;
+                text-decoration: none;
+            }
 
-			ol {
-   				list-style-type: circle;
-			}
+            a:hover {
+                color:#662d91;
+                text-decoration: none;
+            }
 
-			a:link, a:visited, a:active {
-				color:#000000;
-				text-decoration: none;
-			}
+            a:link.block, a:visited.block {
+                font-family: Courier;
+                font-size: 10pt;
+                background-color: #662d91;
+                color: white;
+                padding: 10px 15px;
+                text-align: center; 
+                text-decoration: none;
+                display: inline-block;
+            }
 
-			a:hover {
-				color:#662d91;
-				text-decoration: none;
-			}
+            a:hover.block, a:active.block {
+                background-color: #92278f;
+            }
 
-			a:link.block, a:visited.block {
-				font-family: Courier;
-				font-size: 10pt;
-    			background-color: #662d91;
-    			color: white;
-    			padding: 10px 15px;
-   				text-align: center; 
-  				text-decoration: none;
-   				display: inline-block;
-			}
+            .main {
+                margin: auto;
+                background-color: #ffffff;
+                width:50%;
+                padding: 25px;
+            }
 
-			a:hover.block, a:active.block {
-			    background-color: #92278f;
-			}
+            textarea {
+                display: block;
+                padding: 10px;
+                margin: 10px 0 0 -10px;
+                width: 340px;
+                height: 150px;
+            }
 
-			.main {
-    			margin: auto;
-				background-color: #ffffff;
-				width:50%;
-				padding: 25px;
-			}
-
-			input[type="submit"] {
-				font-family: Courier;
-				font-size: 12px;
-			    background-color: #662d91;
-			    border: none;
-			    color: #ffffff;
-			    padding: 6px 10px;
-			    text-align: center;
-			    text-decoration: none;
-			    display: inline-block;
-			}
-
+            input[type="submit"] {
+                font-family: Courier;
+                font-size: 12px;
+                background-color: #662d91;
+                border: none;
+                color: #ffffff;
+                padding: 6px 10px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+            }
         </style>
 
     </head>
@@ -94,15 +97,8 @@
             </li>
         </ol>
 
-        <ol>
-            <li><a href="testi.html">Testilinkki</a></li>
-            <li><a href="testi.html">Testilinkki</a></li>
-            <li><a href="testi.html">Testilinkki</a></li>
-        </ol>
-
-        <p>	<a href="/uusismoothie" class="block">Luo uusi smoothie</a>
-        	<a href="/raakaaineet" class="block">Lisää uusi raaka-aine</a>
-        </p>
+        <p><a href="/uusismoothie" class="block">Luo uusi smoothie</a>
+        <a href="/raakaaineet" class="block">Lisää uusi raaka-aine</a></p>
 
     </section>
 
