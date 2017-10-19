@@ -10,7 +10,7 @@ public class Smoothie {
     private String instructions;
     private List<Ingredient> ingredients;
     
-    public Smoothie(Integer id, String name, String instructions, ArrayList ingredients) {
+    public Smoothie(Integer id, String name, String instructions, List<Ingredient> ingredients) {
         this.id = id;
         this.name = name;
         this.instructions = instructions;
@@ -28,4 +28,15 @@ public class Smoothie {
     public String getInstructions() {
         return instructions;
     }
+    
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+    
+    
 }
