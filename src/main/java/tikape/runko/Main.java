@@ -15,20 +15,24 @@ public class Main {
     public static void main(String[] args) throws Exception {
         Database database = new Database("jdbc:sqlite:smoothietietokanta.db");
         database.createTables();
-        SmoothieDAO smoothiet = new SmoothieDAO(database);
-        IngredientDAO raakaaineet = new IngredientDAO(database);
+        
+        SmoothieDAO smoothieDAO = new SmoothieDAO(database);
+        IngredientDAO ingredientDAO = new IngredientDAO(database);
+
+        // Required for routing.
+        staticFileLocation("/static/");
 
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("smoothiet", smoothiet.readAll());
+            map.put("smoothiet", smoothieDAO.readAll());
 
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
         
         get("/uusismoothie", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("smoothiet", smoothiet.readAll());
-            map.put("raakaaineet", raakaaineet.readAll());
+            map.put("smoothiet", smoothieDAO.readAll());
+            map.put("raakaaineet", ingredientDAO.readAll());
 
             return new ModelAndView(map, "uusismoothie");
         }, new ThymeleafTemplateEngine());
@@ -42,14 +46,14 @@ public class Main {
         
         get("/raakaaineet", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("raakaaineet", raakaaineet.readAll());
+            map.put("raakaaineet", ingredientDAO.readAll());
 
             return new ModelAndView(map, "raakaaineet");
         }, new ThymeleafTemplateEngine());
         
         post("/raakaaineet", (req, res) -> {
             String raakaaine = req.queryParams("raakaaine");
-            raakaaineet.create(new Ingredient(null, raakaaine));
+            ingredientDAO.create(new Ingredient(null, raakaaine));
             res.redirect("/raakaaineet");
             return "";
         });

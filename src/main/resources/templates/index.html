@@ -1,106 +1,25 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-    <head>
-        <title>Smoothiearkisto</title>
-        <meta charset="utf-8" />
+<head>
+    <title>Smoothiearkisto</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+</head>
 
-        <style>
-            body {
-                background-color: #e1e1e1;
-                font-family: 'Raleway', sans-serif;
-                font-size: 16px;
-            }
+<body>
 
-            h1 {
-                font-family: 'Raleway',sans-serif;
-                font-size: 50px;
-                text-transform: uppercase;
-                text-align: center;
-                margin-top:10px;
-            }
+<section class="main">
+    <h1>Smoothiearkisto</h1>
+    <ol>
+        <li th:each="smoothie : ${smoothiet}">
+            <span th:href="${'/smoothiet/' + smoothie.id}" th:text="${smoothie}">Smoothien nimi</span>
+        </li>
+    </ol>
 
-            h2 {
-                font-family: 'Raleway',sans-serif;
-                font-size: 20px;
-                text-transform: uppercase;
-            }
+    <p><a href="/uusismoothie" class="block">Luo uusi smoothie</a>
+    <a href="/raakaaineet" class="block">Lisää uusi raaka-aine</a></p>
+</section>
 
-            ol {
-                list-style-type: circle;
-            }
-
-            a:link, a:visited, a:active {
-                color:#000000;
-                text-decoration: none;
-            }
-
-            a:hover {
-                color:#662d91;
-                text-decoration: none;
-            }
-
-            a:link.block, a:visited.block {
-                font-family: Courier;
-                font-size: 10pt;
-                background-color: #662d91;
-                color: white;
-                padding: 10px 15px;
-                text-align: center; 
-                text-decoration: none;
-                display: inline-block;
-            }
-
-            a:hover.block, a:active.block {
-                background-color: #92278f;
-            }
-
-            .main {
-                margin: auto;
-                background-color: #ffffff;
-                width:50%;
-                padding: 25px;
-            }
-
-            textarea {
-                display: block;
-                padding: 10px;
-                margin: 10px 0 0 -10px;
-                width: 340px;
-                height: 150px;
-            }
-
-            input[type="submit"] {
-                font-family: Courier;
-                font-size: 12px;
-                background-color: #662d91;
-                border: none;
-                color: #ffffff;
-                padding: 6px 10px;
-                text-align: center;
-                text-decoration: none;
-                display: inline-block;
-            }
-        </style>
-
-    </head>
-
-    <body>
-
-    <section class="main">
-
-        <h1>Smoothiearkisto</h1>
-
-        <ol>
-            <li th:each="smoothie : ${smoothiet}">
-                <span th:href="${'/smoothiet/' + smoothie.id}" th:text="${smoothie}">Smoothien nimi</span>
-            </li>
-        </ol>
-
-        <p><a href="/uusismoothie" class="block">Luo uusi smoothie</a>
-        <a href="/raakaaineet" class="block">Lisää uusi raaka-aine</a></p>
-
-    </section>
-
-    </body>
+</body>
 </html>
