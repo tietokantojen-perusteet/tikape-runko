@@ -35,7 +35,7 @@ public class Database {
     private String[] createTableStatements() {
         String[] statements = {
             "CREATE TABLE IF NOT EXISTS Smoothie (id integer PRIMARY KEY, nimi varchar(20), ohje varchar(1000));",
-            "CREATE TABLE IF NOT EXISTS RaakaAine (id integer PRIMARY KEY, name varchar(20));",
+            "CREATE TABLE IF NOT EXISTS RaakaAine (id integer PRIMARY KEY, nimi varchar(20));",
             "CREATE TABLE IF NOT EXISTS SmoothieRaakaAine (smoothie_id integer, raaka_aine_id integer, jarjestys integer, maara varchar(10), FOREIGN KEY(smoothie_id) REFERENCES Smoothie(id), FOREIGN KEY(raaka_aine_id) REFERENCES RaakaAine(id));"
             // "CREATE TABLE IF NOT EXISTS ..."
         };
