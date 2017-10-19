@@ -4,9 +4,11 @@
     <head>
         <title>Smoothiearkisto</title>
         <meta charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="style.css" />
 
-        <style type="text/css">
-        	body {
+                <style>
+
+            body {
         		background-color: #e1e1e1;
         		font-family: 'Raleway', sans-serif;
         		font-size: 16px;
@@ -24,10 +26,6 @@
 				font-family: 'Raleway',sans-serif;
 				font-size: 20px;
 				text-transform: uppercase;
-			}
-
-			p {
-
 			}
 
 			ol {
@@ -66,6 +64,18 @@
 				padding: 25px;
 			}
 
+			form {
+
+			}
+
+			textarea {
+				display : block;
+				padding : 10px;
+				margin  : 10px 0 0 -10px;
+				width   : 340px;
+				height  : 150px;
+			}
+
 			input[type="submit"] {
 				font-family: Courier;
 				font-size: 12px;
@@ -78,33 +88,33 @@
 			    display: inline-block;
 			}
 
-        </style>
+		</style>
 
     </head>
 
     <body>
 
     <section class="main">
+    	<h1>Smoothiearkisto</h1>
 
-        <h1>Smoothiearkisto</h1>
+    	<h2>Raaka-aineet</h2>
 
-        <ol>
-            <li th:each="smoothie : ${smoothiet}">
-                <span th:href="${'/smoothiet/' + smoothie.id}" th:text="${smoothie}">Smoothien nimi</span>
+    	<ol>
+            <li th:each="raakaaine : ${raakaaineet}">
+                <span th:text="${raakaaine}">Raaka-aineen nimi</span>
             </li>
         </ol>
 
-        <ol>
-            <li><a href="testi.html">Testilinkki</a></li>
-            <li><a href="testi.html">Testilinkki</a></li>
-            <li><a href="testi.html">Testilinkki</a></li>
-        </ol>
+        <h2>Lisää raaka-aine</h2>
 
-        <p>	<a href="/uusismoothie" class="block">Luo uusi smoothie</a>
-        	<a href="/raakaaineet" class="block">Lisää uusi raaka-aine</a>
-        </p>
+        <form method="POST" action="/">
+            Raaka-aine: 
+            <input type="text" name="raakaaine"/> 
+            <input type="submit" value="Lisää"/>
+        </form>
+
+        <p><a href="" class="block">&lt;&lt;</a></p>
 
     </section>
-
     </body>
 </html>

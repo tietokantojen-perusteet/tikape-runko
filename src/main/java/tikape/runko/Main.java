@@ -7,6 +7,8 @@ import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.runko.database.Database;
 import tikape.runko.database.IngredientDAO;
 import tikape.runko.database.SmoothieDAO;
+import tikape.runko.domain.Ingredient;
+import tikape.runko.domain.Smoothie;
 
 public class Main {
 
@@ -18,21 +20,22 @@ public class Main {
 
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("smoothiet", "Tähän lista smoothieista");
+            map.put("smoothiet", smoothiet.readAll());
 
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
         
         get("/uusismoothie", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("smoothiet", "Tähän lista smoothieista");
+            map.put("smoothiet", smoothiet.readAll());
+            map.put("raakaaineet", raakaaineet.readAll());
 
             return new ModelAndView(map, "uusismoothie");
         }, new ThymeleafTemplateEngine());
         
         /*post("/uusismoothie", (req, res) -> {
             String smoothie = req.queryParams("nimi");
-            smoothies.save(new Smoothie(null, nimi));
+            smoothies.save(new Smoothie(null, smoothie));
             res.redirect("/uusismoothie");
             return "";
         });*/
@@ -44,12 +47,12 @@ public class Main {
             return new ModelAndView(map, "raakaaineet");
         }, new ThymeleafTemplateEngine());
         
-        /*post("/raakaaineet", (req, res) -> {
-            String raakaaine = req.queryParams("nimi");
-            raakaaineet.save(new Ingredient(null, nimi));
+        post("/raakaaineet", (req, res) -> {
+            String raakaaine = req.queryParams("raakaaine");
+            raakaaineet.create(new Ingredient(null, raakaaine));
             res.redirect("/raakaaineet");
             return "";
-        });*/
+        });
 
         /*get("/opiskelijat", (req, res) -> {
             HashMap map = new HashMap<>();
