@@ -72,7 +72,7 @@ public class IngredientDAO implements DAO<Ingredient, Integer> {
     @Override
     public void delete(Integer key) throws SQLException {
         Connection conn = database.getConnection();
-        PreparedStatement stmt = conn.prepareStatement("DELETE FROM Ingredient WHERE id = ?");
+        PreparedStatement stmt = conn.prepareStatement("DELETE FROM RaakaAine WHERE id = ?");
 
         stmt.setInt(1, key);
         stmt.executeUpdate();
