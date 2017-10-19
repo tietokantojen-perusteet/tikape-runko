@@ -6,7 +6,7 @@ public class Smoothie {
     private String name;
     private String instructions;
     
-    public Ingredient(Integer id, String name, String instructions) {
+    public Smoothie(Integer id, String name, String instructions) {
         this.id = id;
         this.name = name;
         this.instructions = instructions;
