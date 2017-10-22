@@ -79,27 +79,55 @@ public class RaakaaineDao implements Dao<Raakaaine, Integer> {
     
     @Override
     public Raakaaine saveOrUpdate(Raakaaine aine) throws SQLException {
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("INSERT INTO RaakaAine (nimi) VALUES('?')" );
-        stmt.setObject(1, aine.getNimi());
+        if (aine.getNimi() == null || aine.getNimi().length() <= 0) {
+            throw new java.lang.RuntimeException("Ei voi luoda raaka-ainetta jolla ei ole nimeä!");
+        }
+        
+        if (aine.getId() == null) {
+            return save(aine);
+        } else {
+            return update(aine);
+        }
+    }
+    
+    private Raakaaine save(Raakaaine aine) throws SQLException {
 
-        ResultSet rs = stmt.executeQuery();
-        boolean hasOne = rs.next();
-        if (!hasOne) {
-            return null;
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("INSERT INTO RaakaAine"
+                + " (nimi)"
+                + " VALUES (?)");
+        stmt.setString(1, aine.getNimi());
+
+        stmt.executeUpdate();
+          
+        try (ResultSet rs = stmt.getGeneratedKeys()) {
+            if (rs.next()) {
+                Raakaaine a = new Raakaaine(rs.getInt(1), aine.getNimi());
+                stmt.close(); 
+                conn.close();
+                return a;
+            }
+            else {
+                throw new SQLException("Ei saatu avainta!");
+            }
         }
 
-        Integer id = rs.getInt("id");
-        String nimi = rs.getString("nimi");
-
-        Raakaaine o = new Raakaaine(id, nimi);
-
-        rs.close();
-        stmt.close();
-        connection.close();
-
-        return o;
-        
     }
 
+    private Raakaaine update(Raakaaine aine) throws SQLException {
+
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("UPDATE RaakaAine SET"
+                + " nimi = ?WHERE id = ?");
+        stmt.setString(1, aine.getNimi());
+        stmt.setInt(2, aine.getId());
+
+        stmt.executeUpdate();
+
+        stmt.close();
+        conn.close();
+
+        return aine;
+    }
+        
 }

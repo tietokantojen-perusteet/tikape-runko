@@ -10,6 +10,7 @@ import tikape.runko.database.Database;
 import tikape.runko.database.RaakaaineDao;
 import tikape.runko.database.AnnosDao;
 import tikape.runko.domain.Annos;
+import tikape.runko.domain.Raakaaine;
 
 public class Main {
 
@@ -79,6 +80,26 @@ public class Main {
             
         });
         
+        post("/raakaaine/", (req, res) -> {
+
+            Raakaaine aine = new Raakaaine(null, req.queryParams("nimi"));
+            
+            
+            try {
+                raakaaineDao.saveOrUpdate(aine);
+                
+            } catch (java.lang.RuntimeException e) {
+                res.status(403);
+                res.body("Virheellinen pyyntö! Lisätietoja:"+e.toString());
+                res.redirect("/raakaaine/");
+                return ""; 
+            }
+            
+            res.redirect("/raakaaine/");
+            return "";
+            
+        });
+        
         get("/raakaaine/", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("raakaaine_index", raakaaineDao.findAll());
@@ -91,6 +112,6 @@ public class Main {
             map.put("raakaaine_show", raakaaineDao.findOne(Integer.parseInt(req.params("id"))));
 
             return new ModelAndView(map, "raakaaine_show");
-        }, new ThymeleafTemplateEngine());
+        }, new ThymeleafTemplateEngine());        
     }
 }

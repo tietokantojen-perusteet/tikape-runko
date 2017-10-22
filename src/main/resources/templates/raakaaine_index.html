@@ -11,8 +11,17 @@
 
         <ol>
             <li th:each="raakaaine : ${raakaaine_index}">
-                <span th:text="${raakaaine.nimi}">Annos: </span> <a th:href="${'/raakaaine/' + raakaaine.id}">linkki</a>
+                <span th:text="${raakaaine.nimi}">Raakaaine: </span> <a th:href="${'/raakaaine/' + raakaaine.id}">linkki</a>
             </li>
         </ol>
+        
+        <h2>Lisää uusi raakaaine</h2>
+
+        <form method="POST" action="/raakaaine/">
+            Lisättävä raakaaine:<br/>
+            <input type="text" name="nimi"/><br/>
+            <input type="submit" value="Lisää"/>
+        </form>
+        
     </body>
 </html>

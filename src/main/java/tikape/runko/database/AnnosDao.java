@@ -38,7 +38,7 @@ public class AnnosDao implements Dao<Annos, Integer> {
         return a;
     }
     
-    // hakee kaikki asiakkaat tietokannasta ja palauttaa ne listalla
+    // hakee kaikki annokset tietokannasta ja palauttaa ne listalla
     @Override
     public List<Annos> findAll() throws SQLException {
         List<Annos> tulos = new ArrayList<>();
@@ -64,8 +64,8 @@ public class AnnosDao implements Dao<Annos, Integer> {
 
     @Override
     public Annos saveOrUpdate(Annos object) throws SQLException {
-        // jos asiakkaalla ei ole pääavainta, oletetaan, että asiakasta
-        // ei ole vielä tallennettu tietokantaan ja tallennetaan asiakas
+        // jos annoksella ei ole pääavainta, oletetaan, että annosta
+        // ei ole vielä tallennettu tietokantaan ja tallennetaan annos
         
         if (object.getNimi() == null || object.getNimi().length() <= 0) {
             throw new java.lang.RuntimeException("Ei voi luoda annosta jolla ei ole nimeä!");
