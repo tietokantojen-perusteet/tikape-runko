@@ -16,7 +16,7 @@ public class IngredientDAO implements DAO<Ingredient, Integer> {
     @Override
     public void create(Ingredient object) throws SQLException {
         Connection connection = this.database.getConnection();
-        PreparedStatement statement = connection.prepareStatement("INSERT INTO RaakaAine (nimi) VALUES (?);");
+        PreparedStatement statement = connection.prepareStatement("INSERT INTO Ingredient (name) VALUES (?);");
         statement.setString(1, object.getName());
         statement.executeUpdate();
         
@@ -27,7 +27,7 @@ public class IngredientDAO implements DAO<Ingredient, Integer> {
     @Override
     public Ingredient read(Integer key) throws SQLException {
         Connection connection = this.database.getConnection();
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM RaakaAine where id = ?;");
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM Ingredient where id = ?;");
         statement.setInt(1, key);
         
         ResultSet resultSet = statement.executeQuery();
@@ -36,7 +36,7 @@ public class IngredientDAO implements DAO<Ingredient, Integer> {
         
         if (resultSet.next()) {
             int id = resultSet.getInt("id");
-            String name = resultSet.getString("nimi");
+            String name = resultSet.getString("name");
             ingredient = new Ingredient(id, name);
         }
         
@@ -50,7 +50,7 @@ public class IngredientDAO implements DAO<Ingredient, Integer> {
     @Override
     public List<Ingredient> readAll() throws SQLException {
         Connection connection = this.database.getConnection();
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM RaakaAine;");
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM Ingredient;");
         
         ResultSet resultSet = statement.executeQuery();
         
@@ -58,7 +58,7 @@ public class IngredientDAO implements DAO<Ingredient, Integer> {
         
         while (resultSet.next()) {
             int id = resultSet.getInt("id");
-            String name = resultSet.getString("nimi");
+            String name = resultSet.getString("name");
             ingredients.add(new Ingredient(id, name));
         }
         
@@ -72,7 +72,7 @@ public class IngredientDAO implements DAO<Ingredient, Integer> {
     @Override
     public void delete(Integer key) throws SQLException {
         Connection conn = database.getConnection();
-        PreparedStatement stmt = conn.prepareStatement("DELETE FROM RaakaAine WHERE id = ?");
+        PreparedStatement stmt = conn.prepareStatement("DELETE FROM Ingredient WHERE id = ?");
 
         stmt.setInt(1, key);
         stmt.executeUpdate();
