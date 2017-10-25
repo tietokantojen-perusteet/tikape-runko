@@ -10,6 +10,7 @@
     </head>
 
     <body>
+
     <section class="main">
     	<h1>Smoothiearkisto</h1>
 
@@ -23,15 +24,15 @@
 
         <h2>Lisää smoothie</h2>
 
-        <form method="POST" action="/" id="smoothie">
-            Nimi: 
+        <form method="POST" action="/uusismoothie" id="smoothie">
+            <label for="nimi">Smoothie: </label>
             <input type="text" name="nimi"/>
             <input type="submit" value="Lisää"/>
         </form>
 
         <h2>Lisää smoothieen raaka-aineita</h2>
 
-        <form method="POST" action="/" id="raakaaineet">
+        <form method="POST" action="/uusismoothie" id="raakaaineet">
         	<label for="smoothie">Smoothie: </label>
         	<select name="smoothie">
             	<option th:each="smoothie : ${smoothiet}" th:value="${smoothie.id}" th:text="${smoothie}"/>
@@ -46,8 +47,7 @@
         </form>
 
         <h2>Lisää smoothielle valmistusohje</h2>
-
-        <form method="POST" action="/" id="ohje">
+        <form method="POST" action="/uusismoothie" id="ohje">
             <label for="smoothie">Smoothie: </label>
             <select name="smoothie">
             	<option th:each="smoothie : ${smoothiet}" th:value="${smoothie.id}" th:text="${smoothie}"/>
@@ -60,5 +60,6 @@
         <p><a href="/" class="block">&lt;&lt;</a></p>
 
     </section>
+
     </body>
 </html>
