@@ -26,7 +26,7 @@ public class SmoothieDAO implements DAO<Smoothie, Integer> {
         connection.close();
         
     }
-
+    
     @Override
     public Smoothie read(Integer key) throws SQLException {
         Connection connection = this.database.getConnection();
@@ -88,4 +88,28 @@ public class SmoothieDAO implements DAO<Smoothie, Integer> {
         conn.close();
     }
     
+    // Vaiheessa, en tiedä kannattaako toteuttaa näin, mutta tässä draftausta:
+    /*
+    // Smoothien etsintä nimen perusteella.
+    public Smoothie findByName(String name) throws SQLException {
+        Connection connection = this.database.getConnection();
+        PreparedStatement statement = connection.prepareStatement("SELECT id, name, instructions FROM Smoothie WHERE name = ?;");
+        statement.setString(1, name);
+
+        ResultSet result = statement.executeQuery();
+        
+        statement.close();
+        connection.close();
+        
+        Smoothie smoothie = new Smoothie(result.getInt("id"), result.getString("name"), result.getString("instructions"), );
+        
+        return smoothie;
+    }
+    
+    // Smoothien päivitys.
+    public void update(Smoothie object) throws SQLException {
+
+    
+    }
+    */
 }
