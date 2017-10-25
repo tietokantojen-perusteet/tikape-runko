@@ -48,7 +48,6 @@ public class Main {
             return new ModelAndView(map, "uusismoothie");
         }, new ThymeleafTemplateEngine());
         
-        // Tämän toteutus vaiheessa, heittää atm 404 erroria:
         post("/uusismoothie", (req, res) -> {
             String nimi = req.queryParams("nimi");
             List<Ingredient> ingredients = new ArrayList<>();
@@ -57,6 +56,31 @@ public class Main {
             return "";
         });
         
+        // Raaka-aineiden päivittäminen (vaiheessa, smoothieDAOon/ingredientDAOon pitäisi lisätä ominaisuuksia):
+        /* 
+        post("/uusismoothie", (req, res) -> {
+            Smoothie muokattava = smoothieDAO.findByName(req.queryParams("smoothie");
+            String lisattava = req.Params("raakaaine");
+            Integer jarjestys = req.Params("jarjestys");
+            String maara = req.Params("maara");
+        
+
+            smoothieDAO.update(muokattava);
+            res.redirect("/uusismoothie");
+            return "";
+        });*/
+        
+        // Valmistusohjeen lisääminen (vaiheessa, smoothieDAOon pitäisi lisätä ominaisuuksia):
+        /* 
+        post("/uusismoothie", (req, res) -> {
+            Smoothie muokattava = smoothieDAO.findByName(req.queryParams("smoothie");
+            String ohje = req.Params("ohje");
+
+            smoothieDAO.update(muokattava);
+            res.redirect("/uusismoothie");
+            return "";
+        });*/
+        
         get("/raakaaineet", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("raakaaineet", ingredientDAO.readAll());
@@ -64,10 +88,9 @@ public class Main {
             return new ModelAndView(map, "raakaaineet");
         }, new ThymeleafTemplateEngine());
         
-        // Tämän toteutus vaiheessa, heittää atm 404 erroria:
         post("/raakaaineet", (req, res) -> {
-            String raakaaine = req.queryParams("raakaaine");
-            ingredientDAO.create(new Ingredient(null, raakaaine));
+            Ingredient raakaaine = new Ingredient(null, req.queryParams("raakaaine"));
+            ingredientDAO.create(raakaaine);
             res.redirect("/raakaaineet");
             return "";
         });
