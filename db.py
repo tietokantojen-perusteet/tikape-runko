@@ -32,7 +32,7 @@ statements = [
     'INSERT INTO Ingredient VALUES(7,\'mustaviinimarja\');',
     'INSERT INTO Ingredient VALUES(8,\'guava\');',
     'INSERT INTO Ingredient VALUES(9,\'porkkana\');',
-    'INSERT INTO Ingredient VALUES(10,\'lime\');',o
+    'INSERT INTO Ingredient VALUES(10,\'lime\');',
     'INSERT INTO Ingredient VALUES(11,\'lohikäärmehedelmä\');',
     'INSERT INTO Ingredient VALUES(12,\'kurkku\');',
     'INSERT INTO Ingredient VALUES(13,\'mango\');',
