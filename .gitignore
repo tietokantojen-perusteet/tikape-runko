@@ -1,1 +1,7 @@
 */target/**
+/target/
+*.xml
+*.db
+.classpath
+.project
+.settings/

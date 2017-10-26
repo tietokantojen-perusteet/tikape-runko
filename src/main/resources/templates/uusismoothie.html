@@ -1,0 +1,65 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Smoothiearkisto</title>
+        <meta charset="utf-8" />
+
+        <link rel="stylesheet" type="text/css" href="css/styles.css" />
+
+    </head>
+
+    <body>
+
+    <section class="main">
+    	<h1>Smoothiearkisto</h1>
+
+    	<h2>Smoothiet</h2>
+
+    	<ol>
+            <li th:each="smoothie : ${smoothiet}">
+                <a th:href="${'/smoothiet/' + smoothie.id}" th:text="${smoothie}">Smoothien nimi</a>
+            </li>
+        </ol>
+
+        <h2>Lisää smoothie</h2>
+
+        <form method="POST" action="/uusismoothie" id="smoothie">
+            <label for="nimi">Smoothie: </label>
+            <input type="text" name="nimi"/>
+            <input type="submit" value="Lisää"/>
+        </form>
+
+        <h2>Lisää smoothieen raaka-aineita</h2>
+
+        <form method="POST" action="/uusismoothie" id="raakaaineet">
+        	<label for="smoothie">Smoothie: </label>
+        	<select name="smoothie">
+            	<option th:each="smoothie : ${smoothiet}" th:value="${smoothie.id}" th:text="${smoothie}"/>
+            </select>
+        	<br><label for="raakaaine">Raaka-aine: </label>
+        	<select name="raakaaine">
+            	<option th:each="raakaaine : ${raakaaineet}" th:value="${raakaaine.id}" th:text="${raakaaine}"/>
+            </select></br>
+            <br>Järjestys: <input type="number" min="1" name="jarjestys"/></br>
+            <br>Määrä: <input type="text" name="maara"/></br>
+            <input type="submit" value="Lisää"/>
+        </form>
+
+        <h2>Lisää smoothielle valmistusohje</h2>
+        <form method="POST" action="/uusismoothie" id="ohje">
+            <label for="smoothie">Smoothie: </label>
+            <select name="smoothie">
+            	<option th:each="smoothie : ${smoothiet}" th:value="${smoothie.id}" th:text="${smoothie}"/>
+            </select>
+            <br><label for="ohje">Ohje: </label></br>
+            <br><textarea name="ohje" form="ohje"/></br>
+            <input type="submit" value="Lisää"/>
+        </form>
+
+        <p><a href="/" class="block">&lt;&lt;</a></p>
+
+    </section>
+
+    </body>
+</html>

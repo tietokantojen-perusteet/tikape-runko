@@ -1,0 +1,32 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Smoothiearkisto</title>
+        <meta charset="utf-8" />
+
+        <link rel="stylesheet" type="text/css" href="css/styles.css" />
+
+    </head>
+
+    <body>
+
+    <section class="main">
+
+        <h1>Smoothiearkisto</h1>
+
+        <h2><span th:text="${smoothie}">Smoothien nimi</span></h2>
+
+        <ol>
+            <li th:each="raakaaine : ${raakaaineet}">
+                <span th:text="${raakaaine}">Raaka-aineen nimi</span>
+            </li>
+        </ol>
+
+        <p><span th:text="${ohje}">Smoothien ohje</span></p>
+
+        <p><a href="/" class="block">&lt;&lt;</a></p>
+
+    </section> 
+    </body>
+</html>

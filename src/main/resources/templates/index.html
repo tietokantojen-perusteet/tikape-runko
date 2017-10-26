@@ -1,16 +1,25 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-    <head>
-        <title>Otsikko</title>
-        <meta charset="utf-8" />
-    </head>
+<head>
+    <title>Smoothiearkisto</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+</head>
 
-    <body>
-        <h1>Heippa vaan!</h1>
+<body>
 
-        <p>Ja .. <span th:text="${viesti}">jotain?</span></p>
+<section class="main">
+    <h1>Smoothiearkisto</h1>
+    <ol>
+        <li th:each="smoothie : ${smoothiet}">
+            <a th:href="${'/smoothiet/' + smoothie.id}" th:text="${smoothie}">Smoothien nimi</a>
+        </li>
+    </ol>
 
-        <p><a href="/opiskelijat">Tästä opiskelijalistaukseen.</a></p>
-    </body>
+    <p><a href="/uusismoothie" class="block">Luo uusi smoothie</a>
+    <a href="/raakaaineet" class="block">Lisää uusi raaka-aine</a></p>
+</section>
+
+</body>
 </html>
