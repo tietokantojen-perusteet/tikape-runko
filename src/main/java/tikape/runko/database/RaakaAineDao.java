@@ -56,7 +56,6 @@ public class RaakaAineDao implements Dao<RaakaAine, Integer> {
         while (rs.next()) {
             Integer id = rs.getInt("id");
             String nimi = rs.getString("nimi");
-
             raakaAineet.add(new RaakaAine(id, nimi));
         }
 
