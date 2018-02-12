@@ -6,7 +6,7 @@
     
   <modelVersion>4.0.0</modelVersion>
   <groupId>tikape</groupId>
-  <artifactId>huonekalut</artifactId>
+  <artifactId>tikape-runko</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
     
@@ -43,7 +43,11 @@
       <artifactId>slf4j-simple</artifactId>
       <version>1.7.25</version>
     </dependency>
-      
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>42.2.1</version>
+    </dependency>
   </dependencies>
 
   <build>
