@@ -9,11 +9,14 @@
     <body>
         <h1>Reseptit</h1>
 
-        <p>Tähän tulee annoksen nimi</p>
-        <ol>
-            <li>Raaka-aineiden listaus</li>
-        </ol>
-
+        <ul>
+            <li th:each="annos: ${annokset}">
+                    <p th:text="${annos.nimi}">1</p>
+                    <p>Raaka-aineet: </p>
+                    <p>Ohje: </p>
+            </li>
+        </ul>
+        
         <p><a href="/etusivu">Linkki etusivulle?</a></p>
     </body>
 </html>
