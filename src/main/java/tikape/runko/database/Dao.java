@@ -1,4 +1,4 @@
-package tikape.runko.database;
+package ryhmatyo.reseptiarkisto;
 
 import java.sql.*;
 import java.util.*;
@@ -9,5 +9,8 @@ public interface Dao<T, K> {
 
     List<T> findAll() throws SQLException;
 
+    T saveOrUpdate(T object) throws SQLException;
+
     void delete(K key) throws SQLException;
 }
+
