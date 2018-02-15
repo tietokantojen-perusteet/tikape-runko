@@ -1,0 +1,23 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Reseptiarkisto</title>
+        <meta charset="utf-8" />
+    </head>
+
+    <body>
+        <h1>Reseptiarkisto: kaiken kotiruuan koti!</h1>
+        <p><a href="/reseptit">Reseptit</a></p>
+        <p><a href="/raakaAineet">Raaka-aineet</a></p>
+        <p><a href="/luoresepti">Luo uusi resepti</a></p>
+        <p></p>
+        
+        <form method="POST" action="/haku">
+            <span>Haku: </span><br/>
+            <input type="text" name="haettava"/><br/>
+            <input type="submit" value="Hae"/>
+        </form>
+        
+    </body>
+</html>
