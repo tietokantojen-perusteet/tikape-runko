@@ -1,8 +1,8 @@
-package ryhmatyo.reseptiarkisto;
+package tikape.runko;
 
 public class Annos {
     String nimi;
-    Integer id;
+    public Integer id;
     
     public Annos(String nimi){
         this.nimi = nimi;

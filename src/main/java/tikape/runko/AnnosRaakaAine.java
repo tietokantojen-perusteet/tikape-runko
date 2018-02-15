@@ -1,8 +1,8 @@
-package ryhmatyo.reseptiarkisto;
+package tikape.runko;
 
 public class AnnosRaakaAine {
-    Integer raakaAineId;
-    Integer annosId;
+    public Integer raakaAineId;
+    public Integer annosId;
     Integer jarjestys;
     Double maara;
     String ohje;

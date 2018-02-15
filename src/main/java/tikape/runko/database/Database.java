@@ -1,4 +1,4 @@
-package ryhmatyo.reseptiarkisto;
+package tikape.runko.database;
 
 import java.sql.*;
 
