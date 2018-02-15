@@ -2,7 +2,7 @@
 package tikape.runko.database;
 import java.sql.*;
 import java.util.*;
-import tikape.runko.domain.RaakaAine;
+import tikape.runko.RaakaAine;
 
 public class RaakaAineDao implements Dao<RaakaAine, Integer> {
     private Database database;
@@ -17,7 +17,7 @@ public class RaakaAineDao implements Dao<RaakaAine, Integer> {
         stmt.setInt(1, key);
         
         ResultSet rs = stmt.executeQuery();
-        if (rs==null) {
+        if (!rs.next()) {
             return null;
         }
         RaakaAine r = new RaakaAine(rs.getInt("id"),rs.getString("nimi"));
