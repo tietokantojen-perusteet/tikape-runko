@@ -1,4 +1,3 @@
-# tikape-runko
+# Drinkkitietokanta
 
-Tietokantojen perusteet -kurssilla tehtävän web-sovelluksen pohja.
-
+Juotavaa kaikille
