@@ -26,7 +26,7 @@ public class AnnosDao implements Dao<Annos, Integer>{
             return null;
         }
 
-        Annos a = new Annos(rs.getString("nimi"));
+        Annos a = new Annos(rs.getString("nimi"), rs.getString("ohje"));
         
         stmt.close();
         rs.close();
@@ -44,7 +44,7 @@ public class AnnosDao implements Dao<Annos, Integer>{
         ResultSet rs = stmt.executeQuery();
         
         while (rs.next()) {
-            Annos a = new Annos(rs.getString("nimi"));
+            Annos a = new Annos(rs.getString("nimi"), rs.getString("ohje"));
             annokset.add(a);
         }
         rs.close();
@@ -78,22 +78,24 @@ public class AnnosDao implements Dao<Annos, Integer>{
 
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn.prepareStatement("INSERT INTO Annos"
-                + " (nimi)"
-                + " VALUES (?)");
+                + " (nimi, ohje)"
+                + " VALUES (?, ?)");
         stmt.setString(1, annos.getNimi());
-
+        stmt.setString(2, annos.getOhje());
 
         stmt.executeUpdate();
         stmt.close();
 
         stmt = conn.prepareStatement("SELECT * FROM Annos"
-                + " WHERE nimi = ?");
+                + " WHERE nimi = ? AND ohje = ?");
         stmt.setString(1, annos.getNimi());
-
+        stmt.setString(2, annos.getOhje());
+        
         ResultSet rs = stmt.executeQuery();
+        
         rs.next(); // vain 1 tulos
 
-        Annos a = new Annos(rs.getString("nimi"));
+        Annos a = new Annos(rs.getString("nimi"), rs.getString("ohje"));
 
         stmt.close();
         rs.close();
@@ -106,8 +108,9 @@ public class AnnosDao implements Dao<Annos, Integer>{
 
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn.prepareStatement("UPDATE Annos SET"
-                + " nimi = ? WHERE id = ?");
-        stmt.setString(1, annos.getNimi());      
+                + " nimi = ?, ohje = ? WHERE id = ?");
+        stmt.setString(1, annos.getNimi());
+        stmt.setString(2, annos.getOhje());
         stmt.setInt(2, annos.getId());
         stmt.executeUpdate();
 

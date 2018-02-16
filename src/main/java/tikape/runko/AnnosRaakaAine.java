@@ -4,15 +4,13 @@ public class AnnosRaakaAine {
     public Integer raakaAineId;
     public Integer annosId;
     Integer jarjestys;
-    Double maara;
-    String ohje;
+    String maara;
     
-    public AnnosRaakaAine(int raakaAineId, int annosId, int jarjestys, double maara, String ohje){
+    public AnnosRaakaAine(int raakaAineId, int annosId, int jarjestys, String maara){
         this.raakaAineId = raakaAineId;
         this.annosId = annosId;
         this.jarjestys = jarjestys;
         this.maara = maara;
-        this.ohje = ohje;
     }
     
     public int getRaakaAineId(){
@@ -27,12 +25,8 @@ public class AnnosRaakaAine {
         return this.jarjestys;
     }
     
-    public Double getMaara(){
+    public String getMaara(){
         return this.maara;
-    }
-    
-    public String getOhje(){
-        return this.ohje;
     }
     
     public void setRaakaAineId(int id){
@@ -47,12 +41,8 @@ public class AnnosRaakaAine {
         this.jarjestys = jarjestys;
     }
     
-    public void setMaara(double maara){
+    public void setMaara(String maara){
         this.maara = maara;
-    }
-    
-    public void setOhje(String ohje){
-        this.ohje = ohje;
     }
     
 }

@@ -27,7 +27,7 @@ public class AnnosRaakaAineDao{
             return null;
         }
 
-        AnnosRaakaAine a = new AnnosRaakaAine(rs.getInt("annos_id"), rs.getInt("raaka_aine_id"), rs.getInt("jarjestys"), rs.getDouble("maara"), rs.getString("ohje"));
+        AnnosRaakaAine a = new AnnosRaakaAine(rs.getInt("annos_id"), rs.getInt("raaka_aine_id"), rs.getInt("jarjestys"), rs.getString("maara"));
         
         stmt.close();
         rs.close();
@@ -45,7 +45,7 @@ public class AnnosRaakaAineDao{
         ResultSet rs = stmt.executeQuery();
         
         while (rs.next()) {
-            AnnosRaakaAine a = new AnnosRaakaAine(rs.getInt("annos_id"), rs.getInt("raaka_aine_id"), rs.getInt("jarjestys"), rs.getDouble("maara"), rs.getString("ohje"));
+            AnnosRaakaAine a = new AnnosRaakaAine(rs.getInt("annos_id"), rs.getInt("raaka_aine_id"), rs.getInt("jarjestys"), rs.getString("maara"));
             annosRaakaAineet.add(a);
         }
         rs.close();
@@ -80,29 +80,27 @@ public class AnnosRaakaAineDao{
 
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn.prepareStatement("INSERT INTO Annos"
-                + " (annos_id, raaka_aine_id, jarjestys, maara, ohje)"
-                + " VALUES (?, ?, ?, ?, ?)");
+                + " (annos_id, raaka_aine_id, jarjestys, maara)"
+                + " VALUES (?, ?, ?, ?)");
         stmt.setInt(1, annosRaakaAine.getAnnosId());
         stmt.setInt(2, annosRaakaAine.getRaakaAineId());
         stmt.setInt(3, annosRaakaAine.getJarjestys());
-        stmt.setDouble(4, annosRaakaAine.getMaara());
-        stmt.setString(5, annosRaakaAine.getOhje());
+        stmt.setString(4, annosRaakaAine.getMaara());
 
         stmt.executeUpdate();
         stmt.close();
 
         stmt = conn.prepareStatement("SELECT * FROM AnnosRaakaAine"
-                + " WHERE annos_id = ? AND raaka_aine_id = ? AND jarjestys = ? AND maara = ? AND ohje = ?");
+                + " WHERE annos_id = ? AND raaka_aine_id = ? AND jarjestys = ? AND maara = ?");
         stmt.setInt(1, annosRaakaAine.getAnnosId());
         stmt.setInt(2, annosRaakaAine.getRaakaAineId());
         stmt.setInt(3, annosRaakaAine.getJarjestys());
-        stmt.setDouble(4, annosRaakaAine.getMaara());
-        stmt.setString(5, annosRaakaAine.getOhje());
+        stmt.setString(4, annosRaakaAine.getMaara());
 
         ResultSet rs = stmt.executeQuery();
         rs.next(); // vain 1 tulos
 
-        AnnosRaakaAine a = new AnnosRaakaAine(rs.getInt("annos_id"), rs.getInt("raaka_aine_id"), rs.getInt("jarjestys"), rs.getDouble("maara"), rs.getString("ohje"));
+        AnnosRaakaAine a = new AnnosRaakaAine(rs.getInt("annos_id"), rs.getInt("raaka_aine_id"), rs.getInt("jarjestys"), rs.getString("maara"));
 
         stmt.close();
         rs.close();
@@ -115,10 +113,9 @@ public class AnnosRaakaAineDao{
 
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn.prepareStatement("UPDATE Annos SET"
-                + "jarjestys = ?, maara = ?, ohje = ? WHERE annos_id = ? AND raaka_aine_id = ?");
+                + "jarjestys = ?, maara = ? WHERE annos_id = ? AND raaka_aine_id = ?");
         stmt.setInt(1, annosRaakaAine.getJarjestys());      
-        stmt.setDouble(2, annosRaakaAine.getMaara());
-        stmt.setString(3, annosRaakaAine.getOhje());
+        stmt.setString(2, annosRaakaAine.getMaara());
         stmt.setInt(4, annosRaakaAine.getAnnosId());
         stmt.setInt(5, annosRaakaAine.getRaakaAineId());
         

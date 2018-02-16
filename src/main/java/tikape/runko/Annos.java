@@ -1,13 +1,15 @@
 package tikape.runko;
 
 public class Annos {
+    String ohje;
     String nimi;
     public Integer id;
     
-    public Annos(String nimi){
+    public Annos(String nimi, String ohje){
         this.nimi = nimi;
+        this.ohje = ohje;
     }
-    public Annos(int id, String nimi){
+    public Annos(int id, String nimi, String ohje){
         this.id = id;
         this.nimi = nimi;
     }
