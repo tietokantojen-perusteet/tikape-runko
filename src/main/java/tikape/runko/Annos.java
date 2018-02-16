@@ -6,12 +6,14 @@ public class Annos {
     public Integer id;
     
     public Annos(String nimi, String ohje){
+        this.id = -1; //Ihan varmuuden vuoksi laitoin jonkin arvon id:lle
         this.nimi = nimi;
         this.ohje = ohje;
     }
     public Annos(int id, String nimi, String ohje){
         this.id = id;
         this.nimi = nimi;
+        this.ohje = ohje;
     }
     
     public void setId(int id){
@@ -28,5 +30,13 @@ public class Annos {
     
     public String getNimi(){
         return this.nimi;
+    }
+    
+    public void setOhje(String ohje) {
+        this.ohje = ohje;
+    }
+
+    public String getOhje() {
+        return this.ohje;
     }
 }
