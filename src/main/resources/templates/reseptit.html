@@ -7,16 +7,21 @@
     </head>
 
     <body>
+        <p><a href="/etusivu">Takaisin</a></p>
         <h1>Reseptit</h1>
 
         <ul>
             <li th:each="annos: ${annokset}">
-                    <p th:text="${annos.nimi}">1</p>
-                    <p>Raaka-aineet: </p>
-                    <p>Ohje: </p>
+                    <span th:text="${annos.id}">id.</span>
+                    <span th:text="${annos.nimi}">nimi</span>
+                    <p>Raaka-aineet: <span th:text="${raakaAineet.get(annos)}">Raaka-aineiden listaus</span></p>
+                    
+                    
+                    <p>Ohje: <span th:text="${annos.ohje}">ohje</span></p>
+                    
             </li>
         </ul>
         
-        <p><a href="/etusivu">Linkki etusivulle?</a></p>
+        
     </body>
 </html>
