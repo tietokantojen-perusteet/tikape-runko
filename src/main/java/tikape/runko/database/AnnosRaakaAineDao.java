@@ -134,43 +134,36 @@ public class AnnosRaakaAineDao{
         AnnosDao annosDao = new AnnosDao(database);
         HashMap<Annos, List<RaakaAine>> raakaAineMap = new HashMap<>();
         
-        Connection conn = database.getConnection();
-        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Annos");
-        
-        List<Annos> annokset = annosDao.findAll();
-        ResultSet rs = stmt.executeQuery();
-        
-        while (rs.next()) {
-            Annos a = new Annos(rs.getString("nimi"), rs.getString("ohje"));
-            annokset.add(a);
-        }
+        Connection conn = database.getConnection();       
+        List<Annos> annokset = annosDao.findAll();     
         
         annokset.stream().forEach(annos -> {
             try{
-                PreparedStatement stmt2 = conn.prepareStatement("SELECT RaakaAine.nimi FROM Annos, RaakaAine, AnnosRaakaAine"
+                PreparedStatement stmt = conn.prepareStatement("SELECT RaakaAine.nimi FROM Annos, RaakaAine, AnnosRaakaAine"
                 + "WHERE AnnosRaakaAine.annos_id = Annos.id AND AnnosRaakaAine.raakaAine_id = RaakaAine.id"
                 + "AND Annos.nimi = ?"
                 );
                 stmt.setString(1, annos.getNimi());
 
-                ResultSet rs2 = stmt2.executeQuery();
+                ResultSet rs = stmt.executeQuery();
                 
                 List<RaakaAine> raakaAineet = new ArrayList<>();
                 
-                while (rs2.next()) {  
-                    RaakaAine raakaAine = new RaakaAine(rs2.getInt("id"), rs2.getString("nimi"));
+                while (rs.next()) {  
+                    RaakaAine raakaAine = new RaakaAine(rs.getInt("id"), rs.getString("nimi"));
                     raakaAineet.add(raakaAine);
                 }
                 
                 raakaAineMap.put(annos, raakaAineet);
+                
+                rs.close();
+                stmt.close();
                 
             }catch(Exception e){
             
             }
         });
         
-        rs.close();
-        stmt.close();
         conn.close();
         
         return raakaAineMap;
