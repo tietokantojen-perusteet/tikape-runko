@@ -28,7 +28,7 @@ public class AnnosDao implements Dao<Annos, Integer>{
             return null;
         }
 
-        Annos a = new Annos(rs.getString("nimi"), rs.getString("ohje"));
+        Annos a = new Annos(key, rs.getString("nimi"), rs.getString("ohje"));
         
         stmt.close();
         rs.close();
@@ -46,7 +46,7 @@ public class AnnosDao implements Dao<Annos, Integer>{
         ResultSet rs = stmt.executeQuery();
         
         while (rs.next()) {
-            Annos a = new Annos(rs.getString("nimi"), rs.getString("ohje"));
+            Annos a = new Annos(rs.getInt("id"), rs.getString("nimi"), rs.getString("ohje"));
             annokset.add(a);
         }
         rs.close();
@@ -97,7 +97,7 @@ public class AnnosDao implements Dao<Annos, Integer>{
         
         rs.next(); // vain 1 tulos
 
-        Annos a = new Annos(rs.getString("nimi"), rs.getString("ohje"));
+        Annos a = new Annos(rs.getInt("id"), rs.getString("nimi"), rs.getString("ohje"));
 
         stmt.close();
         rs.close();

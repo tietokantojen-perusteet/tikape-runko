@@ -140,7 +140,7 @@ public class AnnosRaakaAineDao{
         annokset.stream().forEach(annos -> {
             try{
                 PreparedStatement stmt = conn.prepareStatement("SELECT RaakaAine.id, RaakaAine.nimi FROM Annos, RaakaAine, AnnosRaakaAine"
-                + "WHERE AnnosRaakaAine.annos_id = Annos.id AND AnnosRaakaAine.raakaAine_id = RaakaAine.id"
+                + "WHERE AnnosRaakaAine.annos_id = Annos.id AND AnnosRaakaAine.raaka_aine_id = RaakaAine.id"
                 + "AND Annos.nimi = ?"
                 );
                 stmt.setString(1, annos.getNimi());

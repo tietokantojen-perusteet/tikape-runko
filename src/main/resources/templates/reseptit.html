@@ -14,9 +14,8 @@
             <li th:each="annos: ${annokset}">
                     <span th:text="${annos.id}">id.</span>
                     <span th:text="${annos.nimi}">nimi</span>
-                    <p>Raaka-aineet: <span th:text="${raakaAineet.get(annos)}">Raaka-aineiden listaus</span></p>
-                    
-                    
+                    <p>Raaka-aineet:<span th:text="${raakaAineet.get(annos)}"></span></p>
+
                     <p>Ohje: <span th:text="${annos.ohje}">ohje</span></p>
                     
             </li>

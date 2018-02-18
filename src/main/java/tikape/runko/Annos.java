@@ -5,11 +5,6 @@ public class Annos {
     String nimi;
     public Integer id;
     
-    public Annos(String nimi, String ohje){
-        this.id = -1; //Ihan varmuuden vuoksi laitoin jonkin arvon id:lle
-        this.nimi = nimi;
-        this.ohje = ohje;
-    }
     public Annos(int id, String nimi, String ohje){
         this.id = id;
         this.nimi = nimi;

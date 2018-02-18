@@ -1,5 +1,6 @@
 package tikape.runko;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +16,8 @@ import tikape.runko.database.Database;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        Database database = new Database("osoite");
+        File tiedosto = new File("osoite", "reseptit.db");
+        Database database = new Database("jdbc:sqlite:" + tiedosto.getAbsolutePath());
         
         AnnosDao annosDao = new AnnosDao(database);
         AnnosRaakaAineDao annosRaakaAineDao = new AnnosRaakaAineDao(database);
