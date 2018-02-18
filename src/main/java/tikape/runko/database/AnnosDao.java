@@ -5,8 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import tikape.runko.Annos;
+import tikape.runko.RaakaAine;
 
 public class AnnosDao implements Dao<Annos, Integer>{
     private Database database;
@@ -119,4 +121,5 @@ public class AnnosDao implements Dao<Annos, Integer>{
 
         return annos;
     }
+    
 }

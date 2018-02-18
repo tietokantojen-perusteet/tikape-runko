@@ -8,6 +8,7 @@ import spark.Spark;
 import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.runko.database.AnnosDao;
+import tikape.runko.database.AnnosRaakaAineDao;
 import tikape.runko.database.Database;
 
 
@@ -16,10 +17,8 @@ public class Main {
     public static void main(String[] args) throws Exception {
         Database database = new Database("osoite");
         
-        
-        
-        
         AnnosDao annosDao = new AnnosDao(database);
+        AnnosRaakaAineDao annosRaakaAineDao = new AnnosRaakaAineDao(database);
         
         Spark.get("/reseptit", (req, res) -> {
             List<Annos> annokset = new ArrayList<>();    
@@ -31,7 +30,7 @@ public class Main {
             //Tallennetaan nämä HashMappiin, jossa avaimena on annos ja avaimeen liittyvänä
             //arvona lista, jossa on annokset raaka-aineet
             
-            HashMap<Annos, List<RaakaAine>> raakaAineet = new HashMap<>();
+            HashMap<Annos, List<RaakaAine>> raakaAineet = annosRaakaAineDao.etsiRaakaAineet();
             
             HashMap map = new HashMap<>();
             map.put("annokset", annokset);

@@ -5,8 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import tikape.runko.Annos;
 import tikape.runko.AnnosRaakaAine;
+import tikape.runko.RaakaAine;
 
 public class AnnosRaakaAineDao{
     private Database database;
@@ -125,5 +128,51 @@ public class AnnosRaakaAineDao{
         conn.close();
 
         return annosRaakaAine;
+    }
+    
+    public HashMap<Annos, List<RaakaAine>> etsiRaakaAineet () throws SQLException{
+        AnnosDao annosDao = new AnnosDao(database);
+        HashMap<Annos, List<RaakaAine>> raakaAineMap = new HashMap<>();
+        
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Annos");
+        
+        List<Annos> annokset = annosDao.findAll();
+        ResultSet rs = stmt.executeQuery();
+        
+        while (rs.next()) {
+            Annos a = new Annos(rs.getString("nimi"), rs.getString("ohje"));
+            annokset.add(a);
+        }
+        
+        annokset.stream().forEach(annos -> {
+            try{
+                PreparedStatement stmt2 = conn.prepareStatement("SELECT RaakaAine.nimi FROM Annos, RaakaAine, AnnosRaakaAine"
+                + "WHERE AnnosRaakaAine.annos_id = Annos.id AND AnnosRaakaAine.raakaAine_id = RaakaAine.id"
+                + "AND Annos.nimi = ?"
+                );
+                stmt.setString(1, annos.getNimi());
+
+                ResultSet rs2 = stmt2.executeQuery();
+                
+                List<RaakaAine> raakaAineet = new ArrayList<>();
+                
+                while (rs2.next()) {  
+                    RaakaAine raakaAine = new RaakaAine(rs2.getInt("id"), rs2.getString("nimi"));
+                    raakaAineet.add(raakaAine);
+                }
+                
+                raakaAineMap.put(annos, raakaAineet);
+                
+            }catch(Exception e){
+            
+            }
+        });
+        
+        rs.close();
+        stmt.close();
+        conn.close();
+        
+        return raakaAineMap;
     }
 }
