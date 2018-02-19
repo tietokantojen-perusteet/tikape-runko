@@ -38,12 +38,6 @@ public class Main {
             map.put("annokset", annokset);
             map.put("raakaAineet", raakaAineet);
             
-            annokset.stream().forEach(annos -> {
-                List<RaakaAine> raakaAineLista = new ArrayList<>();
-                raakaAineLista = raakaAineet.get(annos);
-                map.put("raakaAineet"+annos.getNimi(), raakaAineLista);
-            });
-            
             System.out.println(annokset);
             System.out.println(raakaAineet);
             
