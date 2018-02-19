@@ -1,0 +1,78 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="UTF-8"> </meta>
+		<title> Luo uusi resepti </title>
+	</head>
+
+	<body>
+
+		<h1> Luo resepti </h1>
+		<p> Tällä sivulla voit luoda uusi reseptejä. Kirjoita laatikkoon mitä mieli tekee ja painele nappeja. Paina lopuksi tallenna </p>
+
+
+		<hr/>
+
+
+		<h2> Reseptin nimi </h2>
+		<p th:text="${reseptinNimi}"> Ei nimeä vielä </p>
+
+		<h2> Raaka-aineet </h2>
+		<!-- Listaus lisätyistä raaka-aineista -->
+		<ul>
+			<li th:each="raakaAine : ${raakaAineet}">
+				<span th:text="${raakaAine.nimi}"></span>, 
+				<span th:text="${raakaAine.maara}"></span>
+			</li>
+		</ul>
+
+		<h2> Ohje </h2>
+		<!-- kirjoitettu ohje -->
+		<p th:text="${ohje}">Ei ohjetta</p> 
+
+
+		<hr/>
+
+
+		<h2> Muokkaa reseptin nimeä </h2>
+		<!-- nimen anto lomake -->
+		<form method="POST" action="/luo_resepti/lisaa_nimi">
+			Reseptin nimi <input type="text" name="reseptinNimi"> </input>
+			<input type="submit" value="Anna nimi"></input>
+		</form>
+
+		<h2> Lisää raaka-aineita </h2>
+		<!-- raaka-aineiden lisäys lomake -->
+		<form method="POST" action="/luo_resepti/lisaa_raakaAine">
+			Raaka-aine: <input type="text" name="rkaine"> </input>
+			Määrä: <input type="text" name="maara"> </input>
+			<input type="submit" value="Lisää"> </input>
+		</form>
+
+		<h2> Muokkaa ohjetta </h2>
+		<!-- ohjeen muokkaus teksti kenttä -->
+		<form method="POST" action="/luo_resepti/lisaa_ohje" id="ohje">
+			<input type="submit" value="Lisää ohje"> </input>
+		</form>
+		<textarea rows="10" cols="50" name="ohjeTeksti" form="ohje" placeholder="Kirjoita ohjeet tähän"></textarea>
+
+
+		<hr/>
+		
+		
+		<!-- Tallenna nappula -->
+		<form method="POST" action="/luo_resepti/tallenna_ja_poistu">
+			<input type="submit" value="Tallenna"/>
+		</form>
+
+		<!-- Tyhjenna nappula -->
+		<form method="POST" action="/luo_resepti/tyhjenna">
+			<input type="submit" value="Tyhjenna"/>
+		</form>
+
+		
+	</body>
+</html>
+
+
