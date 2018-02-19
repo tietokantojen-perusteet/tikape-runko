@@ -34,4 +34,8 @@ public class Annos {
     public String getOhje() {
         return this.ohje;
     }
+    
+    public String toString(){
+        return this.nimi;
+    }
 }

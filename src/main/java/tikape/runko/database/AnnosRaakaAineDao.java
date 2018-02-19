@@ -137,32 +137,31 @@ public class AnnosRaakaAineDao{
         Connection conn = database.getConnection();       
         List<Annos> annokset = annosDao.findAll();     
         
-        annokset.stream().forEach(annos -> {
-            try{
-                PreparedStatement stmt = conn.prepareStatement("SELECT RaakaAine.id, RaakaAine.nimi FROM Annos, RaakaAine, AnnosRaakaAine"
-                + "WHERE AnnosRaakaAine.annos_id = Annos.id AND AnnosRaakaAine.raaka_aine_id = RaakaAine.id"
-                + "AND Annos.nimi = ?"
-                );
-                stmt.setString(1, annos.getNimi());
-
-                ResultSet rs = stmt.executeQuery();
-                
-                List<RaakaAine> raakaAineet = new ArrayList<>();
-                
-                while (rs.next()) {  
-                    RaakaAine raakaAine = new RaakaAine(rs.getInt("id"), rs.getString("nimi"));
-                    raakaAineet.add(raakaAine);
-                }
-                
-                raakaAineMap.put(annos, raakaAineet);
-                
-                rs.close();
-                stmt.close();
-                
-            }catch(Exception e){
+        int i=0;
+        
+        while(i<annokset.size()){
             
+            PreparedStatement stmt = conn.prepareStatement("SELECT RaakaAine.id, RaakaAine.nimi FROM Annos, RaakaAine, AnnosRaakaAine WHERE Annos.nimi = ? AND AnnosRaakaAine.annos_id = Annos.id AND AnnosRaakaAine.raaka_aine_id = RaakaAine.id");
+            stmt.setString(1, annokset.get(i).getNimi());
+
+            ResultSet rs = stmt.executeQuery();
+
+            List<RaakaAine> raakaAineet = new ArrayList<>();
+
+            while (rs.next()) {  
+                RaakaAine raakaAine = new RaakaAine(rs.getInt("id"), rs.getString("nimi"));
+                raakaAineet.add(raakaAine);
             }
-        });
+
+            raakaAineMap.put(annokset.get(i), raakaAineet);
+
+            rs.close();
+            stmt.close();
+
+            i++;
+        }
+        
+        
         
         conn.close();
         

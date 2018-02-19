@@ -13,8 +13,15 @@
         <ul>
             <li th:each="annos: ${annokset}">
                     <span th:text="${annos.id}">id.</span>
+                    <span>.</span>
                     <span th:text="${annos.nimi}">nimi</span>
-                    <p>Raaka-aineet:<span th:text="${raakaAineet.get(annos)}"></span></p>
+                    <p>Raaka-aineet:</p>
+                    <ul>
+                        <li th:each="raakaAine: ${raakaAineet}">
+                            <span th:text="${raakaAine}">raaka-aine</span>
+                        </li>
+                        
+                    </ul>
 
                     <p>Ohje: <span th:text="${annos.ohje}">ohje</span></p>
                     

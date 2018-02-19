@@ -30,4 +30,8 @@ public class RaakaAine {
     public void setNimi(String nimi) {
         this.nimi=nimi;
     }
+    
+    public String toString(){
+        return this.nimi;
+    }
 }
