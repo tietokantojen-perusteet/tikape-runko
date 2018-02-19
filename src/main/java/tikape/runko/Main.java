@@ -31,7 +31,7 @@ public class Main {
 
 			//Selvitetään seuraavaksi annoksiin sisältyvät raaka-aineet
 			//Tallennetaan nämä HashMappiin, jossa avaimena on annos ja avaimeen liittyvänä
-			//arvona lista, jossa on annokset raaka-aineet
+			//arvona lista, jossa on annoksen raaka-aineet
 			HashMap<Annos, List<RaakaAine>> raakaAineet = annosRaakaAineDao.etsiRaakaAineet();
 
 			HashMap map = new HashMap<>();
@@ -76,6 +76,7 @@ public class Main {
 		Spark.post("luo_resepti/tallenna_ja_poistu", (req, res) -> {
 			// tallennetaan tällä hetkellä vain annos-tauluun
 			annosDao.saveOrUpdate(new Annos(-1,reseptiTMP.getNimi(),reseptiTMP.getOhje()));
+			
 			reseptiTMP.tyhjenna(); 	
 			res.redirect("/etusivu");
 			return "";
