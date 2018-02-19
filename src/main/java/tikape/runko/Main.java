@@ -9,6 +9,7 @@ import spark.Spark;
 import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.runko.database.AnnosDao;
+import tikape.runko.database.RaakaAineDao;
 import tikape.runko.database.AnnosRaakaAineDao;
 import tikape.runko.database.Database;
 
@@ -16,11 +17,22 @@ import tikape.runko.database.Database;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        File tiedosto = new File("osoite", "reseptit.db");
+        File tiedosto = new File("osoite","reseptit.db");
+        System.out.println(tiedosto.getAbsolutePath());
         Database database = new Database("jdbc:sqlite:" + tiedosto.getAbsolutePath());
         
         AnnosDao annosDao = new AnnosDao(database);
+        RaakaAineDao aineDao = new RaakaAineDao(database);
         AnnosRaakaAineDao annosRaakaAineDao = new AnnosRaakaAineDao(database);
+        
+        Spark.get("/raakaAineet", (req, res) -> {
+            
+            
+            HashMap map = new HashMap<>();
+            map.put("aineet",aineDao.findAll());
+             // TODO: Annoksien listaaminen ??
+            return new ModelAndView(map, "raakaAineet");
+        }, new ThymeleafTemplateEngine());
         
         Spark.get("/reseptit", (req, res) -> {
             List<Annos> annokset = new ArrayList<>();    
