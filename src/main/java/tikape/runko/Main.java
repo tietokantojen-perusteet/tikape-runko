@@ -14,7 +14,7 @@ import spark.template.thymeleaf.ThymeleafTemplateEngine;
 public class Main {
 
 	// reseptin luonnin väliaikais tallennus
-	static final Resepti_TMP resepti = new Resepti_TMP();
+	static final Resepti_TMP reseptiTMP = new Resepti_TMP();
 
 	public static void main(String[] args) throws Exception {
 		File tiedosto = new File("reseptit.db");
@@ -56,33 +56,33 @@ public class Main {
 		// ---------- Alla reseptin luontiin liittyvät jutut -----------------
 
 		Spark.post("/luo_resepti/lisaa_nimi", (req, res) -> {
-			resepti.setNimi(req.queryParams("reseptinNimi"));
+			reseptiTMP.setNimi(req.queryParams("reseptinNimi"));
 			res.redirect("/luo_resepti");
 			return "";
 		});
 
 		Spark.post("/luo_resepti/lisaa_raakaAine", (req, res) -> {
-			resepti.lisaaRaakaAine(new RaakaAine_TMP(req.queryParams("rkaine"), req.queryParams("maara")));
+			reseptiTMP.lisaaRaakaAine(new RaakaAine_TMP(req.queryParams("rkaine"), req.queryParams("maara")));
 			res.redirect("/luo_resepti");
 			return "";
 		});
 
 		Spark.post("luo_resepti/lisaa_ohje", (req, res) -> {
-			resepti.setOhje(req.queryParams("ohjeTeksti"));
+			reseptiTMP.setOhje(req.queryParams("ohjeTeksti"));
 			res.redirect("/luo_resepti");
 			return "";
 		});
 
 		Spark.post("luo_resepti/tallenna_ja_poistu", (req, res) -> {
-			// tallennetaan tietokantaan tässä kohtaa
-
-			resepti.tyhjenna(); // tyhjennetään resepti			
+			// tallennetaan tällä hetkellä vain annos-tauluun
+			annosDao.saveOrUpdate(new Annos(-1,reseptiTMP.getNimi(),reseptiTMP.getOhje()));
+			reseptiTMP.tyhjenna(); 	
 			res.redirect("/etusivu");
 			return "";
 		});
 
 		Spark.post("luo_resepti/tyhjenna", (req, res) -> {
-			resepti.tyhjenna(); // tyhjennetään resepti
+			reseptiTMP.tyhjenna(); // tyhjennetään resepti
 			res.redirect("/luo_resepti"); // palataan reseptin luontiin
 			return "";
 		});
@@ -91,11 +91,11 @@ public class Main {
 			HashMap map = new HashMap<>();
 
 			// debuggausta varten
-			System.out.println("\nReseptiolion tila tällä hetkellä: \n" + resepti + "\n");
+			System.out.println("\nReseptiolion tila tällä hetkellä: \n" + reseptiTMP + "\n");
 
-			map.put("reseptinNimi", resepti.getNimi());
-			map.put("raakaAineet", resepti.getRaakaAineet());
-			map.put("ohje", resepti.getOhje());
+			map.put("reseptinNimi", reseptiTMP.getNimi());
+			map.put("raakaAineet", reseptiTMP.getRaakaAineet());
+			map.put("ohje", reseptiTMP.getOhje());
 
 			return new ModelAndView(map, "luo_resepti");
 		}, new ThymeleafTemplateEngine());
