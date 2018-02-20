@@ -11,22 +11,28 @@
         <h1>Reseptit</h1>
 
         <ul>
-            <li th:each="annos: ${annokset}">
-                    <span th:text="${annos.id}">id.</span>
-                    <span>.</span>
-                    <span th:text="${annos.nimi}">nimi</span>
-                    <p>Raaka-aineet:</p>
+            <li th:each="resepti: ${reseptit}">
+                <span th:text="${resepti.id}"></span>
+                <span>. </span>
+                <span style="font-weight:bold;" th:text="${resepti.nimi}"></span>
+                <form th:action="@{~/reseptit/delete/{id}(id=${resepti.id})}" method="POST">
+                    <input type="submit" value="Poista"/>
+                </form>
 
-                    <ul>
-                        <li th:each="raakaAine: ${raakaAineet.values}">
-                            <span th:text="${raakaAine}">raaka-aine</span>
-                        </li>
-                         
-                    </ul>
-                        
-                                       
-                    <p>Ohje: <span th:text="${annos.ohje}">ohje</span></p>
-                    <hr></hr>
+                <p>Raaka-aineet:</p>
+
+                <ul>
+                    <li th:each="raakaAine: ${resepti.raakaAineet}">
+                        <span th:text="${raakaAine.nimi}">raaka-aine</span>
+                        <span>: </span> 
+                        <span th:text="${raakaAine.maara}">määrä</span>
+                    </li>
+
+                </ul>
+
+
+                <p>Ohje: <span th:text="${resepti.ohje}">ohje</span></p>
+                <hr></hr>
             </li>
         </ul>
         

@@ -10,11 +10,13 @@ public class Resepti_TMP {
 	private String nimi;
 	private final List<RaakaAine_TMP> raakaAineet;
 	private String ohje;
+        public Integer id;
 
 	public Resepti_TMP() {
 		this.raakaAineet = new ArrayList();
 		this.nimi = "";
 		this.ohje = "";
+                this.id = -1;
 	}
 	
 	public void lisaaRaakaAine(RaakaAine_TMP rkaine) {
@@ -40,6 +42,10 @@ public class Resepti_TMP {
 	public void setNimi(String nimi) {
 		this.nimi = nimi;
 	}
+        
+        public void setId(int id){
+            this.id = id;
+        }
 	
 	@Override
 	public String toString() {
