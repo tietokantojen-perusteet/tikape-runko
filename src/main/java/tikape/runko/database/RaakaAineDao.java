@@ -10,7 +10,27 @@ public class RaakaAineDao implements Dao<RaakaAine, Integer> {
     public RaakaAineDao(Database database) {
         this.database=database;
     }
-        @Override
+    
+    public RaakaAine findByName(String name) throws SQLException {
+        Connection con = database.getConnection();
+        PreparedStatement stmt = con.prepareStatement("SELECT * FROM RaakaAine WHERE nimi=?");
+        stmt.setString(1,name);
+        
+        ResultSet rs = stmt.executeQuery();
+        if (!rs.next()) {
+            return null;
+        }
+        RaakaAine r = new RaakaAine(rs.getInt("id"),rs.getString("nimi"));
+        
+        rs.close();
+        stmt.close();
+        
+        con.close();
+        
+        return r;
+    }
+    
+    @Override
     public RaakaAine findOne(Integer key) throws SQLException {
         Connection con = database.getConnection();
         PreparedStatement stmt = con.prepareStatement("SELECT * FROM RaakaAine WHERE id=?");
@@ -49,7 +69,7 @@ public class RaakaAineDao implements Dao<RaakaAine, Integer> {
     }
     
     public RaakaAine saveOrUpdate(RaakaAine object) throws SQLException {
-        if (object.getId()==null) {
+        if (object.id==null) {
             return save(object);
         }
         else {
@@ -67,38 +87,38 @@ public class RaakaAineDao implements Dao<RaakaAine, Integer> {
         con.close();
     }
     
-    private RaakaAine save(RaakaAine object) throws SQLException {
+    private RaakaAine save(RaakaAine aine) throws SQLException {
         Connection con = database.getConnection();
         PreparedStatement stmt = con.prepareStatement("INSERT INTO RaakaAine"
                 + " (nimi)"
                 + " VALUES (?)");
-        stmt.setString(1, object.getNimi());
+        stmt.setString(1, aine.nimi);
         
         stmt.executeUpdate();
         stmt.close();
         
         stmt = con.prepareStatement("SELECT * FROM RaakaAine WHERE nimi=?");
-        stmt.setString(1, object.getNimi());
+        stmt.setString(1, aine.nimi);
         
         ResultSet rs = stmt.executeQuery();
         rs.next();
         
-        object.setId(rs.getInt("id"));
+        aine.id=rs.getInt("id");
         
         stmt.close();
         rs.close();
         
         con.close();
         
-        return object;
+        return aine;
     }
     
-    private RaakaAine update(RaakaAine object) throws SQLException {
+    private RaakaAine update(RaakaAine aine) throws SQLException {
         Connection con = database.getConnection();
         
         PreparedStatement stmt = con.prepareStatement("UPDATE RaakaAine SET nimi=? WHERE id=?");
-        stmt.setString(1, object.getNimi());
-        stmt.setInt(2, object.getId());
+        stmt.setString(1, aine.nimi);
+        stmt.setInt(2, aine.id);
         
         stmt.executeUpdate();
         
@@ -106,6 +126,6 @@ public class RaakaAineDao implements Dao<RaakaAine, Integer> {
         
         con.close();
         
-        return object;
+        return aine;
     }
 }

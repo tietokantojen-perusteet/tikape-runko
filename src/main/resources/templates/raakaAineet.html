@@ -1,0 +1,21 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    
+    <head>
+        <title>Raaka-aineet</title>
+        <meta charset="utf-8" />
+    </head>
+    <body>
+        <p><a href="/etusivu">Takaisin</a></p>
+        
+        
+        <h1>Raaka-aineet</h1>
+        <ul>
+            <li th:each="aine: ${aineet}">
+                <span th:text="${aine.id}">id</span>
+                <span th:text="${aine.nimi}">nimi</span>
+                
+            </li>            
+        </ul>
+    </body>
+</html>

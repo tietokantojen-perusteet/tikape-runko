@@ -10,7 +10,6 @@ import spark.ModelAndView;
 import spark.Spark;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
-
 public class Main {
 
     // reseptin luonnin väliaikais tallennus
@@ -19,9 +18,17 @@ public class Main {
         File tiedosto = new File("reseptit.db");
         Database database = new Database("jdbc:sqlite:" + tiedosto.getAbsolutePath());
 
-        AnnosDao annosDao = new AnnosDao(database);
-        AnnosRaakaAineDao annosRaakaAineDao = new AnnosRaakaAineDao(database);
-
+        RaakaAineDao aineDao = new RaakaAineDao(database);
+		    AnnosDao annosDao = new AnnosDao(database);
+		    AnnosRaakaAineDao annosRaakaAineDao = new AnnosRaakaAineDao(database);
+        
+        Spark.get("/raakaAineet", (req, res) -> {
+            HashMap map = new HashMap<>();
+            map.put("aineet", aineDao.findAll());
+             // TODO: Annoksien listaaminen ??
+            return new ModelAndView(map, "raakaAineet");
+        }, new ThymeleafTemplateEngine());
+        
         Spark.get("/reseptit", (req, res) -> {
             List<Annos> annokset = new ArrayList<>();
             List<AnnosRaakaAine> annosRaakaAineet = new ArrayList<>();
@@ -107,4 +114,3 @@ public class Main {
         // --------- yllä reseptin luontiin liittyvät jutut ------------------
 
     }
-}
