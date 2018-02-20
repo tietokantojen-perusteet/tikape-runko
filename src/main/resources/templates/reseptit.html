@@ -16,17 +16,20 @@
                     <span>.</span>
                     <span th:text="${annos.nimi}">nimi</span>
                     <p>Raaka-aineet:</p>
+
                     <ul>
-                        <li th:each="raakaAine: ${raakaAineet}">
+                        <li th:each="raakaAine: ${raakaAineet.values}">
                             <span th:text="${raakaAine}">raaka-aine</span>
                         </li>
-                        
+                         
                     </ul>
-
+                        
+                                       
                     <p>Ohje: <span th:text="${annos.ohje}">ohje</span></p>
-                    
+                    <hr></hr>
             </li>
         </ul>
+        
         
         
     </body>
