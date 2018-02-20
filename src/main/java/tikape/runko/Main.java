@@ -11,13 +11,13 @@ import spark.Spark;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
 
-public class Main {
+	public class Main {
 
-	// reseptin luonnin väliaikais tallennus
-	static final Resepti_TMP reseptiTMP = new Resepti_TMP();
+		// reseptin luonnin väliaikais tallennus
+		static final Resepti_TMP reseptiTMP = new Resepti_TMP();
 
-	public static void main(String[] args) throws Exception {
-		File tiedosto = new File("reseptit.db");
+		public static void main(String[] args) throws Exception {
+			File tiedosto = new File("reseptit.db");
 		Database database = new Database("jdbc:sqlite:" + tiedosto.getAbsolutePath());
 
 		AnnosDao annosDao = new AnnosDao(database);
@@ -75,8 +75,7 @@ public class Main {
 
 		Spark.post("luo_resepti/tallenna_ja_poistu", (req, res) -> {
 			// tallennetaan tällä hetkellä vain annos-tauluun
-			annosDao.saveOrUpdate(new Annos(-1,reseptiTMP.getNimi(),reseptiTMP.getOhje()));
-			
+			Annos luotuAnnos = annosDao.saveOrUpdate(new Annos(reseptiTMP.getNimi(),reseptiTMP.getOhje()));
 			reseptiTMP.tyhjenna(); 	
 			res.redirect("/etusivu");
 			return "";
