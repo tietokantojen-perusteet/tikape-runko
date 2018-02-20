@@ -12,6 +12,13 @@ public class AnnosRaakaAine {
         this.jarjestys = jarjestys;
         this.maara = maara;
     }
+	
+	public AnnosRaakaAine(int jarjestys, String maara){
+        this.raakaAineId = null;
+        this.annosId = null;
+        this.jarjestys = jarjestys;
+        this.maara = maara;
+    }
     
     public int getRaakaAineId(){
         return this.raakaAineId;

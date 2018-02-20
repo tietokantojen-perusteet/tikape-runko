@@ -10,6 +10,12 @@ public class Annos {
         this.nimi = nimi;
         this.ohje = ohje;
     }
+	
+	public Annos(String nimi, String ohje) {
+		this.id = null;
+		this.nimi = nimi;
+		this.ohje = ohje;
+	}
     
     public void setId(int id){
         this.id = id;
@@ -19,7 +25,7 @@ public class Annos {
         this.nimi = nimi;
     }
     
-    public int getId(){
+    public Integer getId(){
         return this.id;
     }
     
