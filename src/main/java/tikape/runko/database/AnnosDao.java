@@ -60,7 +60,7 @@ public class AnnosDao implements Dao<Annos, Integer>{
 		// kun tietokantaan lisätään uusi annos, ei anneta annos olion id:lle arvoa. 
 		// tietokanta itse päättää id:n.
 		
-        if (annos.id == null || annos.id < 0 ) {
+        if (annos.id == null) {
             return save(annos);
         } else {
             // jos id oli, oletetaan että annos on tällöin jo tietokannassa
