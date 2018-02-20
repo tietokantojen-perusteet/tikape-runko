@@ -56,12 +56,15 @@ public class AnnosDao implements Dao<Annos, Integer>{
         return annokset;
     }
     
-    public Annos saveOrUpdate(Annos object) throws SQLException{
-        if (object.id == null) {
-            return save(object);
+    public Annos saveOrUpdate(Annos annos) throws SQLException{
+		// kun tietokantaan lisätään uusi annos, ei anneta annos olion id:lle arvoa. 
+		// tietokanta itse päättää id:n.
+		
+        if (annos.id == null || annos.id < 0 ) {
+            return save(annos);
         } else {
-            // muulloin päivitetään asiakas
-            return update(object);
+            // jos id oli, oletetaan että annos on tällöin jo tietokannassa
+            return update(annos);
         }
     }
     
