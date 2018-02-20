@@ -20,11 +20,11 @@ public class AnnosRaakaAine {
         this.maara = maara;
     }
     
-    public int getRaakaAineId(){
+    public Integer getRaakaAineId(){
         return this.raakaAineId;
     }
     
-    public int getAnnosId(){
+    public Integer getAnnosId(){
         return this.annosId;
     }
     

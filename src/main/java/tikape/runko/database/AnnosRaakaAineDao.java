@@ -10,6 +10,8 @@ import java.util.List;
 import tikape.runko.Annos;
 import tikape.runko.AnnosRaakaAine;
 import tikape.runko.RaakaAine;
+import tikape.runko.tmp.RaakaAine_TMP;
+import tikape.runko.tmp.Resepti_TMP;
 
 public class AnnosRaakaAineDao{
     private Database database;
@@ -130,9 +132,9 @@ public class AnnosRaakaAineDao{
         return annosRaakaAine;
     }
     
-    public HashMap<Annos, List<RaakaAine>> etsiRaakaAineet () throws SQLException{
+    public List<Resepti_TMP> etsiRaakaAineet () throws SQLException{
         AnnosDao annosDao = new AnnosDao(database);
-        HashMap<Annos, List<RaakaAine>> raakaAineMap = new HashMap<>();
+        List<Resepti_TMP> reseptit = new ArrayList<>();
         
         Connection conn = database.getConnection();       
         List<Annos> annokset = annosDao.findAll();     
@@ -141,20 +143,24 @@ public class AnnosRaakaAineDao{
         
         while(i<annokset.size()){
             
-            PreparedStatement stmt = conn.prepareStatement("SELECT RaakaAine.id, RaakaAine.nimi FROM Annos, RaakaAine, AnnosRaakaAine WHERE Annos.nimi = ? AND AnnosRaakaAine.annos_id = Annos.id AND AnnosRaakaAine.raaka_aine_id = RaakaAine.id");
+            PreparedStatement stmt = conn.prepareStatement("SELECT RaakaAine.nimi, Annos.ohje, AnnosRaakaAine.maara FROM Annos, RaakaAine, AnnosRaakaAine WHERE Annos.nimi = ? AND AnnosRaakaAine.annos_id = Annos.id AND AnnosRaakaAine.raaka_aine_id = RaakaAine.id");
             stmt.setString(1, annokset.get(i).getNimi());
 
             ResultSet rs = stmt.executeQuery();
 
             List<RaakaAine> raakaAineet = new ArrayList<>();
-
+            Resepti_TMP resepti = new Resepti_TMP();
+            resepti.setId(annokset.get(i).getId());
+            resepti.setNimi(annokset.get(i).getNimi());
+            resepti.setOhje(annokset.get(i).getOhje());
+            
             while (rs.next()) {  
-                RaakaAine raakaAine = new RaakaAine(rs.getInt("id"), rs.getString("nimi"));
-                raakaAineet.add(raakaAine);
+                RaakaAine_TMP raakaAine = new RaakaAine_TMP(rs.getString("nimi"), rs.getString("maara"));              
+                resepti.lisaaRaakaAine(raakaAine);
             }
-
-            raakaAineMap.put(annokset.get(i), raakaAineet);
-
+            
+            reseptit.add(resepti);
+            
             rs.close();
             stmt.close();
 
@@ -165,7 +171,7 @@ public class AnnosRaakaAineDao{
         
         conn.close();
         
-        return raakaAineMap;
+        return reseptit;
     }
     
 
