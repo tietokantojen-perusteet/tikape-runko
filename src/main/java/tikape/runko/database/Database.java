@@ -39,10 +39,25 @@ public class Database {
         ArrayList<String> lista = new ArrayList<>();
 
         // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
-        lista.add("CREATE TABLE Opiskelija (id integer PRIMARY KEY, nimi varchar(255));");
-        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Platon');");
-        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Aristoteles');");
-        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Homeros');");
+        lista.add("CREATE TABLE Annos (id integer PRIMARY KEY, nimi varchar(255));");
+        lista.add("INSERT INTO Annos (nimi) VALUES ('Lihamakaronilaatikko');");
+        lista.add("INSERT INTO Annos (nimi) VALUES ('Munakas');");
+        
+        lista.add("CREATE TABLE RaakaAine (id integer PRIMARY KEY, nimi varchar(255);");
+        lista.add("INSET INTO RaakaAine (nimi) VALUES ('Makaroni');");
+        lista.add("INSET INTO RaakaAine (nimi) VALUES ('Maito');");
+        lista.add("INSET INTO RaakaAine (nimi) VALUES ('Kananmuna');");
+        lista.add("INSET INTO RaakaAine (nimi) VALUES ('Jauheliha');");
+        lista.add("INSET INTO RaakaAine (nimi) VALUES ('Herkkusieni');");
+        lista.add("INSET INTO RaakaAine (nimi) VALUES ('Vesi');");
+        lista.add("INSET INTO RaakaAine (nimi) VALUES ('Paprika');");
+        lista.add("INSET INTO RaakaAine (nimi) VALUES ('Juusto');");
+        
+        lista.add("CREATE TABLE AnnosRaakaAine (annosId integer FOREIGN KEY REFERENCES Annos(id),"
+                + "raakaAineId integer FOREIGN KEY REFERENCES RaakaAine(id),"
+                + "nimi varchar(255), jarjestys integer, maara varchar(255),"
+                + "ohje varchar(1000));");
+        
 
         return lista;
     }
