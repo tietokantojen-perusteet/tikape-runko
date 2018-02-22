@@ -32,17 +32,21 @@ public class Main {
         Spark.get("/reseptit", (req, res) -> {
             List<Annos> annokset = new ArrayList<>();
             List<AnnosRaakaAine> annosRaakaAineet = new ArrayList<>();
-
+            
+            
             annokset = annosDao.findAll();
-
+            
+            
             //Selvitetään seuraavaksi annoksiin sisältyvät raaka-aineet
             //Tallennetaan nämä HashMappiin, jossa avaimena on annos ja avaimeen liittyvänä
             //arvona lista, jossa on annoksen raaka-aineet
             List<Resepti_TMP> reseptit = annosRaakaAineDao.etsiRaakaAineet();
-
+            
+            int koko = reseptit.size();
             HashMap map = new HashMap<>();
             map.put("annokset", annokset);
             map.put("reseptit", reseptit);
+            map.put("koko", koko);
 
             return new ModelAndView(map, "reseptit");
         }, new ThymeleafTemplateEngine());
@@ -114,3 +118,4 @@ public class Main {
         // --------- yllä reseptin luontiin liittyvät jutut ------------------
 
     }
+}

@@ -9,6 +9,7 @@
     <body>
         <p><a href="/etusivu">Takaisin</a></p>
         <h1>Reseptit</h1>
+        <p>Reseptejä tietokannassa: <span th:text="${koko}"></span></p>
 
         <ul>
             <li th:each="resepti: ${reseptit}">
