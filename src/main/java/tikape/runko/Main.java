@@ -19,8 +19,8 @@ public class Main {
         Database database = new Database("jdbc:sqlite:" + tiedosto.getAbsolutePath());
 
         RaakaAineDao aineDao = new RaakaAineDao(database);
-		    AnnosDao annosDao = new AnnosDao(database);
-		    AnnosRaakaAineDao annosRaakaAineDao = new AnnosRaakaAineDao(database);
+	AnnosDao annosDao = new AnnosDao(database);
+	AnnosRaakaAineDao annosRaakaAineDao = new AnnosRaakaAineDao(database);
         
         Spark.get("/raakaAineet", (req, res) -> {
             HashMap map = new HashMap<>();
@@ -35,11 +35,9 @@ public class Main {
             
             
             annokset = annosDao.findAll();
-            
-            
-            //Selvitetään seuraavaksi annoksiin sisältyvät raaka-aineet
-            //Tallennetaan nämä HashMappiin, jossa avaimena on annos ja avaimeen liittyvänä
-            //arvona lista, jossa on annoksen raaka-aineet
+
+
+            //Haetaan reseptien raaka-aineet Resepti_TMP-listana
             List<Resepti_TMP> reseptit = annosRaakaAineDao.etsiRaakaAineet();
             
             int koko = reseptit.size();
@@ -118,4 +116,5 @@ public class Main {
         // --------- yllä reseptin luontiin liittyvät jutut ------------------
 
     }
+
 }
