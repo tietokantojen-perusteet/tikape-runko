@@ -13,7 +13,7 @@ import tikape.runko.database.OpiskelijaDao;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-
+// Trolololololololol ohohohohooooo
         if (System.getenv("PORT") != null) {
             Spark.port(Integer.valueOf(System.getenv("PORT")));
         }
