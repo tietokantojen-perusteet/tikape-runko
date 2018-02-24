@@ -16,30 +16,69 @@ public class Main {
             Spark.port(Integer.valueOf(System.getenv("PORT")));
         }
         
-        Database database = new Database("jdbc:sqlite:opiskelijat.db");
+        Database database = new Database("jdbc:sqlite:reseptiarkisto.db");
         database.init();
 
-        OpiskelijaDao opiskelijaDao = new OpiskelijaDao(database);
+        AnnosDao annokset = new AnnosDao(database);
+        AnnosRaakaAineDao annosraakaaineet = new AnnosRaakaAineDao(database);
+        RaakaAineDao raakaaineet = new RaakaAineDao(database);
 
+        // Pääsivu
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("viesti", "tervehdys");
 
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
 
-        get("/opiskelijat", (req, res) -> {
+        // Raaka-aineiden listaus
+        get("/raakaaineet", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("opiskelijat", opiskelijaDao.findAll());
+            map.put("raakaaineet", raakaaineet.findAll());
 
-            return new ModelAndView(map, "opiskelijat");
+            return new ModelAndView(map, "raakaaineet");
         }, new ThymeleafTemplateEngine());
+        
+        // Raaka-aineiden lisäys
+        Spark.post("/raakaaineet", (req, res) -> {
+            RaakaAine raakaaine = new RaakaAine(-1, req.queryParams("nimi"));
+            raakaaineet.saveOrUpdate(raakaaine);
 
-        get("/opiskelijat/:id", (req, res) -> {
+            res.redirect("/raakaaineet");
+            return "";
+        });
+        
+        // Raaka-aineiden poisto
+        get("/raakaaineet/:id/poista", (req, res) -> {
+            // Poista eka tässä raaka-aineeseen viittaavat rivit arasta
+            // Sitten poista raaka-aine raakaaineista
+            raakaaineet.delete(Integer.parseInt(req.params("id")));
+            // Mitä tehdään annoksille joissa on käytetty tätä raaka-ainetta?
+
+            res.redirect("/raakaaineet");
+            return "";
+        });
+        
+        // Annosten listaaminen
+        get("/annokset", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("opiskelija", opiskelijaDao.findOne(Integer.parseInt(req.params("id"))));
+            // List<Annos>
+            map.put("annokset", annokset.findAll());
+            map.put("raakaaineet", raakaaineet.findAll());
 
-            return new ModelAndView(map, "opiskelija");
+            return new ModelAndView(map, "annokset");
+        }, new ThymeleafTemplateEngine());
+        
+        // Yksittäisen annoksen näyttäminen
+        get("/annokset/:id", (req, res) -> {
+            HashMap map = new HashMap<>();
+            Annos annos = annokset.findOne(Integer.parseInt(req.params("id")));
+            
+            // Annos
+            map.put("annos", annos);
+            // List<AnnosRaakaAine>
+            map.put("raakaaineet", annosraakaaineet.annoksenRaakaAineet(annos));
+
+            return new ModelAndView(map, "annos");
         }, new ThymeleafTemplateEngine());
     }
 }
