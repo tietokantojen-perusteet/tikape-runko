@@ -43,20 +43,21 @@ public class Database {
         lista.add("INSERT INTO Annos (nimi) VALUES ('Lihamakaronilaatikko');");
         lista.add("INSERT INTO Annos (nimi) VALUES ('Munakas');");
         
-        lista.add("CREATE TABLE RaakaAine (id integer PRIMARY KEY, nimi varchar(255);");
-        lista.add("INSET INTO RaakaAine (nimi) VALUES ('Makaroni');");
-        lista.add("INSET INTO RaakaAine (nimi) VALUES ('Maito');");
-        lista.add("INSET INTO RaakaAine (nimi) VALUES ('Kananmuna');");
-        lista.add("INSET INTO RaakaAine (nimi) VALUES ('Jauheliha');");
-        lista.add("INSET INTO RaakaAine (nimi) VALUES ('Herkkusieni');");
-        lista.add("INSET INTO RaakaAine (nimi) VALUES ('Vesi');");
-        lista.add("INSET INTO RaakaAine (nimi) VALUES ('Paprika');");
-        lista.add("INSET INTO RaakaAine (nimi) VALUES ('Juusto');");
+        lista.add("CREATE TABLE RaakaAine (id integer PRIMARY KEY, nimi varchar(255));");
+        lista.add("INSERT INTO RaakaAine (nimi) VALUES ('Makaroni');");
+        lista.add("INSERT INTO RaakaAine (nimi) VALUES ('Maito');");
+        lista.add("INSERT INTO RaakaAine (nimi) VALUES ('Kananmuna');");
+        lista.add("INSERT INTO RaakaAine (nimi) VALUES ('Jauheliha');");
+        lista.add("INSERT INTO RaakaAine (nimi) VALUES ('Herkkusieni');");
+        lista.add("INSERT INTO RaakaAine (nimi) VALUES ('Vesi');");
+        lista.add("INSERT INTO RaakaAine (nimi) VALUES ('Paprika');");
+        lista.add("INSERT INTO RaakaAine (nimi) VALUES ('Juusto');");
         
-        lista.add("CREATE TABLE AnnosRaakaAine (annosId integer FOREIGN KEY REFERENCES Annos(id),"
-                + "raakaAineId integer FOREIGN KEY REFERENCES RaakaAine(id),"
-                + "nimi varchar(255), jarjestys integer, maara varchar(255),"
-                + "ohje varchar(1000));");
+        lista.add("CREATE TABLE AnnosRaakaAine (annosId integer,"
+                + "raakaAineId integer, nimi varchar(255), jarjestys integer,"
+                + "maara varchar(255), ohje varchar(1000),"
+                + "FOREIGN KEY (annosId) REFERENCES Annos(id),"
+                + "FOREIGN KEY (raakaAineId) REFERENCES RaakaAine(id));");
         
 
         return lista;
