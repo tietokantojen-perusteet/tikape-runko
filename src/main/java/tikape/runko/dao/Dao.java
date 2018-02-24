@@ -1,4 +1,4 @@
-package tikape.runko.database;
+package tikape.runko.dao;
 
 import java.sql.*;
 import java.util.*;

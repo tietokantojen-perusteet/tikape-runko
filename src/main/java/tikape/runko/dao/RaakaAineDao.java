@@ -1,7 +1,8 @@
-package tikape.runko.database;
+package tikape.runko.dao;
 import tikape.runko.domain.*;
 import java.sql.*;
 import java.util.*;
+import tikape.runko.database.Database;
 
 public class RaakaAineDao implements Dao<RaakaAine, Integer> {
     private Database database;
@@ -63,7 +64,7 @@ public class RaakaAineDao implements Dao<RaakaAine, Integer> {
     
     @Override
         public RaakaAine saveOrUpdate(RaakaAine raakaAine) throws SQLException{
-        if (raakaAine.getId() == null){
+        if (findOne(raakaAine.getId()) == null){
             return save(raakaAine);
         } else {
             return update(raakaAine);
@@ -109,6 +110,19 @@ public class RaakaAineDao implements Dao<RaakaAine, Integer> {
         conn.close();
 
         return raakaAine;
+    }
+    
+    public void poistaRaakaAine(RaakaAine raakaAine, AnnosDao aDao, AnnosRaakaAineDao araDao) throws SQLException{
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("DELETE FROM RaakaAine WHERE raakaAineId = ?");
+        stmt.setInt(1, raakaAine.getId());
+        stmt.executeUpdate();
+        stmt.close();
+        conn.close();
+        
+        for (Annos a : aDao.findAll()) {
+            araDao.poistaRaakaAineAnnoksesta(raakaAine, a.getId());
+        }
     }
 
     

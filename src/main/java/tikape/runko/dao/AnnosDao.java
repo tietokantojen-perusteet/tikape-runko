@@ -1,7 +1,8 @@
 
-package tikape.runko.database;
+package tikape.runko.dao;
 import java.sql.*;
 import java.util.*;
+import tikape.runko.database.Database;
 import tikape.runko.domain.*;
 
 public class AnnosDao implements Dao<Annos, Integer> {
@@ -64,7 +65,7 @@ public class AnnosDao implements Dao<Annos, Integer> {
     
     @Override
     public Annos saveOrUpdate(Annos annos) throws SQLException{
-        if (annos.getId() == null){
+        if (findOne(annos.getId()) == null){
             return save(annos);
         } else {
             return update(annos);

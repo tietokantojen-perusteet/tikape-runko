@@ -1,12 +1,15 @@
 package tikape.runko;
 
+import tikape.runko.dao.AnnosDao;
+import tikape.runko.dao.AnnosRaakaAineDao;
+import tikape.runko.dao.RaakaAineDao;
 import java.util.HashMap;
 import spark.ModelAndView;
 import spark.Spark;
 import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
-import tikape.runko.database.Database;
-import tikape.runko.database.OpiskelijaDao;
+import tikape.runko.domain.*;
+import tikape.runko.database.*;
 
 public class Main {
 
@@ -20,8 +23,8 @@ public class Main {
         database.init();
 
         AnnosDao annokset = new AnnosDao(database);
-        AnnosRaakaAineDao annosraakaaineet = new AnnosRaakaAineDao(database);
         RaakaAineDao raakaaineet = new RaakaAineDao(database);
+        AnnosRaakaAineDao annosraakaaineet = new AnnosRaakaAineDao(database, annokset, raakaaineet);
 
         // Pääsivu
         get("/", (req, res) -> {

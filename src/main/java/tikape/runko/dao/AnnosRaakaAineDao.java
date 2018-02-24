@@ -1,8 +1,9 @@
 
-package tikape.runko.database;
+package tikape.runko.dao;
 import tikape.runko.domain.*;
 import java.sql.*;
 import java.util.*;
+import tikape.runko.database.Database;
 
 /* TODO: jos tulee jotain mieleen, niin kirjoita tähän
 */
@@ -19,8 +20,10 @@ public class AnnosRaakaAineDao implements Dao<AnnosRaakaAine, Integer> {
         
         @Override
         public AnnosRaakaAine findOne(Integer Key) throws SQLException{
-            //Ei käytössä
-            return null;
+            /*  AnnosRaakaAine - olioilla ei ole toteutuksessa Primary Keytä
+                Emme siis tue niiden etsintää yhdellä avaimella, sillä niillä ei ole vastaavaa avainta tieokannassa
+            */
+            throw new UnsupportedOperationException("Not supported yet.");
         }
     
         public AnnosRaakaAine findOne(Integer annosID, Integer raakaAineID) throws SQLException {
@@ -99,7 +102,7 @@ public class AnnosRaakaAineDao implements Dao<AnnosRaakaAine, Integer> {
         
         @Override
         public AnnosRaakaAine saveOrUpdate(AnnosRaakaAine ara) throws SQLException{
-            if (ara.getAnnos().getId() == null){
+            if (findOne(ara.getAnnos().getId(), ara.getRaakaAine().getId()) == null){
                 return save(ara);
             } else{
                 return update(ara);
@@ -107,6 +110,7 @@ public class AnnosRaakaAineDao implements Dao<AnnosRaakaAine, Integer> {
         }
         
         public AnnosRaakaAine save(AnnosRaakaAine ara) throws SQLException{
+            // tallentaa uuden raaka-aineen tietokantaan
             Connection conn = database.getConnection();
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO AnnosRaakaAine"
                     + "(annosId, raakaAineId, jarjestys, maara, ohje)"
@@ -137,6 +141,7 @@ public class AnnosRaakaAineDao implements Dao<AnnosRaakaAine, Integer> {
         }
         
         public AnnosRaakaAine update(AnnosRaakaAine ara) throws SQLException{
+            //Korjaa raaka-aineen tiedot halutuiksi tietokannassa
             Connection conn = database.getConnection();
             PreparedStatement stmt = conn.prepareStatement("UPDATE AnnosRaakaAine SET "
                     + "jarjestys = ?, maara = ?, ohje = ?"
@@ -155,6 +160,7 @@ public class AnnosRaakaAineDao implements Dao<AnnosRaakaAine, Integer> {
         }
         
         public void poistaRaakaAineAnnoksesta(RaakaAine raakaAine, Integer key) throws SQLException{
+            //poistaa tietyn raaka-aineen annoksesta, mutta ei raaka-aine taulusta
             Connection conn = database.getConnection();
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM AnnosRaakaAine WHERE annosId = ? AND raakaAineId = ?");
             stmt.setInt(1, key);
@@ -182,6 +188,20 @@ public class AnnosRaakaAineDao implements Dao<AnnosRaakaAine, Integer> {
             conn.close();
             
             return annosRaakaAineet;
+        }
+        
+        public Integer raakaAineenEsiintymat(RaakaAine raakaAine) throws SQLException{
+            // Kertoo, kuinka monessa annoksessa raaka-aine esiintyy, palauttaa integer - luvun.
+            Connection conn = database.getConnection();
+            PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) as lkm FROM AnnosRaakaAine WHERE RaakaAineId = ?");
+            stmt.setInt(1, raakaAine.getId());
+            ResultSet rs = stmt.executeQuery();
+            boolean hasOne = rs.next();
+            if (!hasOne){
+                return 0;
+            }
+            int laskuri = rs.getInt("lkm");
+            return laskuri;
         }
             
         
