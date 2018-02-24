@@ -52,10 +52,10 @@ public class Main {
         
         // Raaka-aineiden poisto
         get("/raakaaineet/:id/poista", (req, res) -> {
-            // Poista eka tässä raaka-aineeseen viittaavat rivit arasta
-            // Sitten poista raaka-aine raakaaineista
-            raakaaineet.delete(Integer.parseInt(req.params("id")));
+            // RaakaAineDao poistaa raaka-aineen sekä RaakaAineista että AnnosRaakaAineista
+            raakaaineet.poistaRaakaAine(raakaaineet.findOne(Integer.parseInt(req.params("id"))), annokset, annosraakaaineet);
             // Mitä tehdään annoksille joissa on käytetty tätä raaka-ainetta?
+            //Toistaiseksi annokset jäävät paikoilleen, mutta raaka-aineen viittaukset poistetaan niistä
 
             res.redirect("/raakaaineet");
             return "";

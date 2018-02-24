@@ -113,6 +113,7 @@ public class RaakaAineDao implements Dao<RaakaAine, Integer> {
     }
     
     public void poistaRaakaAine(RaakaAine raakaAine, AnnosDao aDao, AnnosRaakaAineDao araDao) throws SQLException{
+        //Poistaa raaka-aineen sekä raakaaine taulusta, että annosraakaaine - taulusta
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn.prepareStatement("DELETE FROM RaakaAine WHERE raakaAineId = ?");
         stmt.setInt(1, raakaAine.getId());
