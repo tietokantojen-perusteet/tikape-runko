@@ -1,16 +1,35 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
+<!DOCTYPE html>
+<html>
     <head>
-        <title>Otsikko</title>
         <meta charset="utf-8" />
+        <title>Drinkit</title>
+		<style>
+			h1 {
+				font-family: Arial, sans-serif;
+			}
+			ul {
+				font-family: Arial, sans-serif;
+			}
+		</style>
     </head>
-
     <body>
-        <h1>Heippa vaan!</h1>
 
-        <p>Ja .. <span th:text="${viesti}">jotain?</span></p>
+        <h1>Drinkit</h1>
 
-        <p><a href="/opiskelijat">Tästä opiskelijalistaukseen.</a></p>
+        <ul>
+			<li><a href="1.html">Resepti 1</a></li>
+			<li><a href="2.html">Resepti 2</a></li>
+		</ul>
+		
+		<ul>
+			<li>
+				<a href="reseptit.html">Luo uusi resepti</a>
+			</li>
+			<li>
+				<a href="ainekset.html">Tarkastele ja lisää aineksia</a>
+			</li>
+		</ul>
+
     </body>
 </html>
+
