@@ -48,7 +48,7 @@ public class Main {
 
         // Raaka-aineiden lisäys
         Spark.post("/ainekset", (req, res) -> {
-            RaakaAine raakaaine = new RaakaAine(-1, req.queryParams("nimi"));
+            RaakaAine raakaaine = new RaakaAine(-1, req.queryParams("aine"));
             raakaaineet.saveOrUpdate(raakaaine);
 
             res.redirect("/ainekset");

@@ -14,7 +14,7 @@ public class RaakaAineDao implements Dao<RaakaAine, Integer> {
     @Override
     public RaakaAine findOne(Integer key) throws SQLException {
         Connection conn = database.getConnection();
-        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Annos WHERE id = ?");
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM RaakaAine WHERE id = ?");
         stmt.setInt(1, key);
 
         ResultSet rs = stmt.executeQuery();
@@ -74,17 +74,15 @@ public class RaakaAineDao implements Dao<RaakaAine, Integer> {
     public RaakaAine save(RaakaAine raakaAine) throws SQLException{
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn.prepareStatement("INSERT INTO RaakaAine "
-                + "(id, nimi"
-                + "VALUES (?, ?");
-        stmt.setInt(1, raakaAine.getId());
-        stmt.setString(2, raakaAine.getNimi());
+                + "(nimi)"
+                + "VALUES (?)");
+        stmt.setString(1, raakaAine.getNimi());
         stmt.executeUpdate();
         stmt.close();
         
         stmt = conn.prepareStatement("SELECT * FROM RaakaAine"
-                                + " WHERE id = ? AND nimi = ?");
-        stmt.setInt(1, raakaAine.getId());
-        stmt.setString(2, raakaAine.getNimi());
+                                + " WHERE nimi = ?");
+        stmt.setString(1, raakaAine.getNimi());
 
         ResultSet rs = stmt.executeQuery();
         rs.next();
@@ -114,6 +112,9 @@ public class RaakaAineDao implements Dao<RaakaAine, Integer> {
     
     public void poistaRaakaAine(RaakaAine raakaAine, AnnosDao aDao, AnnosRaakaAineDao araDao) throws SQLException{
         //Poistaa raaka-aineen sekä raakaaine taulusta, että annosraakaaine - taulusta
+        if (raakaAine == null) {
+            return;
+        }
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn.prepareStatement("DELETE FROM RaakaAine WHERE id = ?");
         stmt.setInt(1, raakaAine.getId());
