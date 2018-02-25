@@ -117,7 +117,7 @@ public class Main {
             // List<AnnosRaakaAine>
             map.put("annosraakaaineet", annosraakaaineet.annoksenRaakaAineet(annos));
 
-            return new ModelAndView(map, "annos");
+            return new ModelAndView(map, "resepti");
         }, new ThymeleafTemplateEngine(templateResolver));
         
         // Annosten poisto

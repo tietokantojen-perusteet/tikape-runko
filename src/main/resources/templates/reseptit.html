@@ -21,7 +21,9 @@
 
         <ul>
             <li th:each="annos: ${annokset}">
-                <span th:text="${annos.nimi}">hernekeitto</span>
+                <a th:href="@{'reseptit/' + ${annos.id}}">
+                    <span th:text="${annos.nimi}">hernekeitto</span>
+                </a>
                 <a th:href="@{'reseptit/' + ${annos.id} + '/poista'}">(poista)</a>
             </li>
         </ul>
