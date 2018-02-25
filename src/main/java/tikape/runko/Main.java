@@ -34,45 +34,45 @@ public class Main {
         }, new ThymeleafTemplateEngine());
 
         // Raaka-aineiden listaus
-        get("/raakaaineet", (req, res) -> {
+        get("/ainekset", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("raakaaineet", raakaaineet.findAll());
 
-            return new ModelAndView(map, "raakaaineet");
+            return new ModelAndView(map, "ainekset");
         }, new ThymeleafTemplateEngine());
         
         // Raaka-aineiden lisäys
-        Spark.post("/raakaaineet", (req, res) -> {
+        Spark.post("/ainekset", (req, res) -> {
             RaakaAine raakaaine = new RaakaAine(-1, req.queryParams("nimi"));
             raakaaineet.saveOrUpdate(raakaaine);
 
-            res.redirect("/raakaaineet");
+            res.redirect("/ainekset");
             return "";
         });
         
         // Raaka-aineiden poisto
-        get("/raakaaineet/:id/poista", (req, res) -> {
+        get("/ainekset/:id/poista", (req, res) -> {
             // RaakaAineDao poistaa raaka-aineen sekä RaakaAineista että AnnosRaakaAineista
             raakaaineet.poistaRaakaAine(raakaaineet.findOne(Integer.parseInt(req.params("id"))), annokset, annosraakaaineet);
             // Mitä tehdään annoksille joissa on käytetty tätä raaka-ainetta?
             //Toistaiseksi annokset jäävät paikoilleen, mutta raaka-aineen viittaukset poistetaan niistä
 
-            res.redirect("/raakaaineet");
+            res.redirect("/ainekset");
             return "";
         });
         
         // Annosten listaaminen
-        get("/annokset", (req, res) -> {
+        get("/reseptit", (req, res) -> {
             HashMap map = new HashMap<>();
             // List<Annos>
             map.put("annokset", annokset.findAll());
             map.put("raakaaineet", raakaaineet.findAll());
 
-            return new ModelAndView(map, "annokset");
+            return new ModelAndView(map, "reseptit");
         }, new ThymeleafTemplateEngine());
         
         // Yksittäisen annoksen näyttäminen
-        get("/annokset/:id", (req, res) -> {
+        get("/reseptit/:id", (req, res) -> {
             HashMap map = new HashMap<>();
             Annos annos = annokset.findOne(Integer.parseInt(req.params("id")));
             
