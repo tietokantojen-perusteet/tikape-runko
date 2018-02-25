@@ -114,7 +114,7 @@ public class AnnosRaakaAineDao implements Dao<AnnosRaakaAine, Integer> {
             Connection conn = database.getConnection();
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO AnnosRaakaAine"
                     + "(annosId, raakaAineId, jarjestys, maara, ohje)"
-                    + " VALUES (?, ?, ?, ?, ?");
+                    + " VALUES (?, ?, ?, ?, ?)");
             stmt.setInt(1, ara.getAnnos().getId());
             stmt.setInt(2, ara.getRaakaAine().getId());
             stmt.setInt(3, ara.getJarjestys());

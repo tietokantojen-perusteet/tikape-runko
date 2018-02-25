@@ -92,8 +92,8 @@ public class Main {
         });
         
         // Raaka-aineen lisäys annokseen
-        Spark.post("/reseptit/:annos_id/lisaa/", (req, res) -> {
-            Annos annos = annokset.findOne(Integer.parseInt(req.params("annos_id")));
+        Spark.post("/reseptit/lisaa", (req, res) -> {
+            Annos annos = annokset.findOne(Integer.parseInt(req.queryParams("annos_id")));
             RaakaAine raakaaine = raakaaineet.findOne(Integer.parseInt(req.queryParams("raakaaine_id")));
             AnnosRaakaAine ara = new AnnosRaakaAine(
                     annos, raakaaine,
@@ -101,7 +101,7 @@ public class Main {
                     req.queryParams("maara"),
                     req.queryParams("ohje")
             );
-            annokset.saveOrUpdate(annos);
+            annosraakaaineet.saveOrUpdate(ara);
 
             res.redirect("/reseptit");
             return "";

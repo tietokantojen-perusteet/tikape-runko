@@ -36,26 +36,29 @@
 
         <h4>Lisää raaka-aineita</h4>
 
-        <form method="POST" action="">
+        <form method="POST" action="/reseptit/lisaa">
             Reseptin nimi:<br/>
-            <select name="resepti">
-                <option name="1">resepti 1</option>
-                <option name="2">resepti 2</option>
+            <select name="annos_id">
+                <option th:each="annos: ${annokset}"
+                        th:value="${annos.id}"
+                        th:text="${annos.nimi}">resepti 1
+                </option>
             </select>
             <br/>
             Lisättävä raaka-aine<br/>
-            <select name="raakaAine">
-                <option name="1">Omena</option>
-                <option name="2">Sitruuna</option>
-                <option name="...">...</option>
+            <select name="raakaaine_id">
+                <option th:each="raakaaine: ${raakaaineet}"
+                        th:value="${raakaaine.id}"
+                        th:text="${raakaaine.nimi}">omena
+                </option>
             </select>
             <br/>
             Järjestys<br/>
-            <input type="text" name="järjestys" placeholder="Järjestys"/><br/>
+            <input type="text" name="jarjestys"/><br/>
             Määrä<br/>
-            <input type="text" name="määrä" placeholder="Määrä"/><br/>
+            <input type="text" name="maara"/><br/>
             Ohje<br/>
-            <input type="text" name="ohje" placeholder="Ohje"/><br/>
+            <input type="text" name="ohje"/><br/>
             <input type="submit" value="Lisää"/>
         </form>
 
