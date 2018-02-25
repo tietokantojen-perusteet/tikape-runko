@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="utf-8" />
-        <title>Reseptit</title>
+        <title th:text="${annos.nimi}">Resepti 1</title>
         <style>
             h1 {
                 font-family: Arial, sans-serif;
@@ -14,25 +14,18 @@
     </head>
     <body>
 
-        <h1>Reseptit</h1>
+        <h1 th:text="${annos.nimi}">Resepti 1</h1>
 
         <ul>
-            <li th:each="annos: ${annokset}">
-                <a th:href="@{'reseptit/' + ${annos.id}}">
-                    <span th:text="${annos.nimi}">hernari</span>
-                </a>
+            <li th:each="raakaaine: ${annosraakaaineet}">
+                <span th:text="${raakaaine.nimi} + ','">kurkuma</span>
             </li>
         </ul>
 
         <ul>
             <li>
-                <a href="reseptit">Luo uusi resepti</a>
-            </li>
-            <li>
-                <a href="ainekset">Tarkastele ja lisää aineksia</a>
+                <a href="../../">Reseptilistaan</a>
             </li>
         </ul>
-
     </body>
 </html>
-

@@ -115,16 +115,17 @@ public class RaakaAineDao implements Dao<RaakaAine, Integer> {
         if (raakaAine == null) {
             return;
         }
+        
+        for (Annos a : aDao.findAll()) {
+            araDao.poistaRaakaAineAnnoksesta(raakaAine, a.getId());
+        }
+        
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn.prepareStatement("DELETE FROM RaakaAine WHERE id = ?");
         stmt.setInt(1, raakaAine.getId());
         stmt.executeUpdate();
         stmt.close();
         conn.close();
-        
-        for (Annos a : aDao.findAll()) {
-            araDao.poistaRaakaAineAnnoksesta(raakaAine, a.getId());
-        }
     }
 
     

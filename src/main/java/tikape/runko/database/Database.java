@@ -3,17 +3,22 @@ package tikape.runko.database;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.sqlite.SQLiteConfig;
 
 public class Database {
 
     private String databaseAddress;
+    private SQLiteConfig sqliteconfig;
 
     public Database(String databaseAddress) throws ClassNotFoundException {
         this.databaseAddress = databaseAddress;
+        this.sqliteconfig = new SQLiteConfig();
+        this.sqliteconfig.enforceForeignKeys(true);
     }
 
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(databaseAddress);
+        // Nyt sqlite-spesifinen. Käytännössä sama kuin laittaisi PRAGMA FOREIGN_KEYS = on
+        return DriverManager.getConnection(databaseAddress, sqliteconfig.toProperties());
     }
 
     public void init() {
@@ -54,10 +59,10 @@ public class Database {
         lista.add("INSERT INTO RaakaAine (nimi) VALUES ('Juusto');");
         
         lista.add("CREATE TABLE AnnosRaakaAine (annosId integer,"
-                + "raakaAineId integer, nimi varchar(255), jarjestys integer,"
+                + "raakaAineId integer, jarjestys integer,"
                 + "maara varchar(255), ohje varchar(1000),"
-                + "FOREIGN KEY (annosId) REFERENCES Annos(id),"
-                + "FOREIGN KEY (raakaAineId) REFERENCES RaakaAine(id));");
+                + "FOREIGN KEY (annosId) REFERENCES Annos(id) ON DELETE CASCADE,"
+                + "FOREIGN KEY (raakaAineId) REFERENCES RaakaAine(id) ON DELETE CASCADE);");
         
 
         return lista;

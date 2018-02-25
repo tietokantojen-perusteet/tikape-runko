@@ -1,66 +1,68 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8" />
-		<title>Reseptit</title>
-		<style>
-			h1 {
-				font-family: Arial, sans-serif;
-			}
-			h4 {
-				font-family: Arial, sans-serif;
-			}
-			ul {
-				font-family: Arial, sans-serif;
-			}
-		</style>
-	</head>
-	<body>
-		
-		<h2>Reseptit</h2>
-		
-		<ul>
-			<li><a href="1.html">resepti 1</a> (<a href="1/poista">poista</a>)</li>
-			<li><a href="2.html">resepti 2</a> (<a href="2/poista">poista</a>)</li>
-		</ul>
-		
-		<h4>Lisää uusi</h4>
-		
-		<form method="POST" action="">
-			Reseptin nimi:<br/>
-			<input type="text" name="nimi" placeholder="Nimi"/><br/>
-			<input type="submit" value="Lisää"/>
-		</form>
-		
-		<h4>Lisää raaka-aineita</h4>
-		
-		<form method="POST" action="">
-			Reseptin nimi:<br/>
-			<select name="resepti">
-				<option name="1">resepti 1</option>
-				<option name="2">resepti 2</option>
-			</select>
-			<br/>
-			Lisättävä raaka-aine<br/>
-			<select name="raakaAine">
-				<option name="1">Omena</option>
-				<option name="2">Sitruuna</option>
-				<option name="...">...</option>
-			</select>
-			<br/>
-			Järjestys<br/>
-			<input type="text" name="järjestys" placeholder="Järjestys"/><br/>
-			Määrä<br/>
-			<input type="text" name="määrä" placeholder="Määrä"/><br/>
-			Ohje<br/>
-			<input type="text" name="ohje" placeholder="Ohje"/><br/>
-			<input type="submit" value="Lisää"/>
-		</form>
-		
-		<ul>
-			<li>
-				<a href="../../">Reseptilistaan</a>
-			</li>
-		</ul>
-	</body>
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <title>Reseptit</title>
+        <style>
+            h1 {
+                font-family: Arial, sans-serif;
+            }
+            h4 {
+                font-family: Arial, sans-serif;
+            }
+            ul {
+                font-family: Arial, sans-serif;
+            }
+        </style>
+    </head>
+    <body>
+
+        <h2>Reseptit</h2>
+
+        <ul>
+            <li th:each="annos: ${annokset}">
+                <span th:text="${annos.nimi}">hernekeitto</span>
+                <a th:href="@{'reseptit/' + ${annos.id} + '/poista'}">(poista)</a>
+            </li>
+        </ul>
+
+        <h4>Lisää uusi</h4>
+
+        <form method="POST" action="">
+            Reseptin nimi:<br/>
+            <input type="text" name="nimi"/><br/>
+            <input type="submit" value="Lisää"/>
+        </form>
+
+        <h4>Lisää raaka-aineita</h4>
+
+        <form method="POST" action="">
+            Reseptin nimi:<br/>
+            <select name="resepti">
+                <option name="1">resepti 1</option>
+                <option name="2">resepti 2</option>
+            </select>
+            <br/>
+            Lisättävä raaka-aine<br/>
+            <select name="raakaAine">
+                <option name="1">Omena</option>
+                <option name="2">Sitruuna</option>
+                <option name="...">...</option>
+            </select>
+            <br/>
+            Järjestys<br/>
+            <input type="text" name="järjestys" placeholder="Järjestys"/><br/>
+            Määrä<br/>
+            <input type="text" name="määrä" placeholder="Määrä"/><br/>
+            Ohje<br/>
+            <input type="text" name="ohje" placeholder="Ohje"/><br/>
+            <input type="submit" value="Lisää"/>
+        </form>
+
+        <ul>
+            <li>
+                <a href="../../">Reseptilistaan</a>
+            </li>
+        </ul>
+    </body>
 </html>

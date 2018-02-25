@@ -75,17 +75,15 @@ public class AnnosDao implements Dao<Annos, Integer> {
     public Annos save(Annos annos) throws SQLException{
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn.prepareStatement("INSERT INTO Annos "
-                + "(id, nimi"
-                + "VALUES (?, ?");
-        stmt.setInt(1, annos.getId());
-        stmt.setString(2, annos.getNimi());
+                + "(nimi)"
+                + "VALUES (?)");
+        stmt.setString(1, annos.getNimi());
         stmt.executeUpdate();
         stmt.close();
         
         stmt = conn.prepareStatement("SELECT * FROM Annos"
-                                + " WHERE id = ? AND nimi = ?");
-        stmt.setInt(1, annos.getId());
-        stmt.setString(2, annos.getNimi());
+                                + " WHERE nimi = ?");
+        stmt.setString(1, annos.getNimi());
 
         ResultSet rs = stmt.executeQuery();
         rs.next();

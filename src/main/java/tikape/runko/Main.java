@@ -34,6 +34,10 @@ public class Main {
         // Pääsivu
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
+            // List<Annos>
+            map.put("annokset", annokset.findAll());
+            // List<RaakaAine>
+            map.put("raakaaineet", raakaaineet.findAll());
 
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine(templateResolver));
@@ -57,8 +61,9 @@ public class Main {
 
         // Raaka-aineiden poisto
         get("/ainekset/:id/poista", (req, res) -> {
-            // RaakaAineDao poistaa raaka-aineen sekä RaakaAineista että AnnosRaakaAineista
-            raakaaineet.poistaRaakaAine(raakaaineet.findOne(Integer.parseInt(req.params("id"))), annokset, annosraakaaineet);
+            // fk:t määritelty "CASCADE ON DELETE", joten raaka-aineen poistaminen
+            // poistaa myös raaka-aine-rivit ara:sta
+            raakaaineet.delete(Integer.parseInt(req.params("id")));
             // Mitä tehdään annoksille joissa on käytetty tätä raaka-ainetta?
             //Toistaiseksi annokset jäävät paikoilleen, mutta raaka-aineen viittaukset poistetaan niistä
 
@@ -71,10 +76,36 @@ public class Main {
             HashMap map = new HashMap<>();
             // List<Annos>
             map.put("annokset", annokset.findAll());
+            // List<RaakaAine>
             map.put("raakaaineet", raakaaineet.findAll());
 
             return new ModelAndView(map, "reseptit");
         }, new ThymeleafTemplateEngine(templateResolver));
+        
+        // Annosten lisäys
+        Spark.post("/reseptit", (req, res) -> {
+            Annos annos = new Annos(-1, req.queryParams("nimi"));
+            annokset.saveOrUpdate(annos);
+
+            res.redirect("/reseptit");
+            return "";
+        });
+        
+        // Raaka-aineen lisäys annokseen
+        Spark.post("/reseptit/:annos_id/lisaa/", (req, res) -> {
+            Annos annos = annokset.findOne(Integer.parseInt(req.params("annos_id")));
+            RaakaAine raakaaine = raakaaineet.findOne(Integer.parseInt(req.queryParams("raakaaine_id")));
+            AnnosRaakaAine ara = new AnnosRaakaAine(
+                    annos, raakaaine,
+                    Integer.parseInt(req.queryParams("jarjestys")),
+                    req.queryParams("maara"),
+                    req.queryParams("ohje")
+            );
+            annokset.saveOrUpdate(annos);
+
+            res.redirect("/reseptit");
+            return "";
+        });
 
         // Yksittäisen annoksen näyttäminen
         get("/reseptit/:id", (req, res) -> {
@@ -84,10 +115,20 @@ public class Main {
             // Annos
             map.put("annos", annos);
             // List<AnnosRaakaAine>
-            map.put("raakaaineet", annosraakaaineet.annoksenRaakaAineet(annos));
+            map.put("annosraakaaineet", annosraakaaineet.annoksenRaakaAineet(annos));
 
             return new ModelAndView(map, "annos");
         }, new ThymeleafTemplateEngine(templateResolver));
+        
+        // Annosten poisto
+        get("/reseptit/:id/poista", (req, res) -> {
+            // fk:t määritelty "CASCADE ON DELETE", joten annoksen poistaminen
+            // poistaa myös annos-rivit ara:sta
+            annokset.delete(Integer.parseInt(req.params("id")));
+
+            res.redirect("/reseptit");
+            return "";
+        });
     }
 
     private static ITemplateResolver createDefaultTemplateResolver() {
