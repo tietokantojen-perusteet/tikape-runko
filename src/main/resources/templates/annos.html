@@ -17,8 +17,11 @@
         <h1 th:text="${annos.nimi}">Resepti 1</h1>
 
         <ul>
-            <li th:each="raakaaine: ${annosraakaaineet}">
-                <span th:text="${raakaaine.nimi} + ','">kurkuma</span>
+            <li th:each="annosraakaaine: ${#lists.sort(annosraakaaineet)}">
+                <span th:text="${annosraakaaine.jarjestys} + '.'">1.</span>
+                <span th:text="${annosraakaaine.raakaaine.nimi} + ','">kurkuma</span>
+                <span th:text="${annosraakaaine.maara} + '.'">5 kpl</span>
+                <span th:text="${annosraakaaine.ohje}">pilko palasiksi ja sekoita</span>
             </li>
         </ul>
 

@@ -1,7 +1,7 @@
 
 package tikape.runko.domain;
 
-public class AnnosRaakaAine {
+public class AnnosRaakaAine implements Comparable<AnnosRaakaAine> {
     private Annos annos;
     private RaakaAine raakaAine;
     private int jarjestys;
@@ -55,10 +55,9 @@ public class AnnosRaakaAine {
     public void setOhje(String ohje) {
         this.ohje = ohje;
     }
-    
-    
 
-    
-    
-    
+    @Override
+    public int compareTo(AnnosRaakaAine o) {
+        return this.jarjestys - o.getJarjestys();
+    }
 }
