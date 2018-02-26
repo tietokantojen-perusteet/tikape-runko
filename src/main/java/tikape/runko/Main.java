@@ -81,6 +81,7 @@ public class Main {
             HashMap map = new HashMap<>();
             map.put("raakaaine", raakaaine);
             map.put("annoslkm", annosraakaaineet.raakaAineenEsiintymat(raakaaine));
+            map.put("annokset", annosraakaaineet.raakaAineenAnnokset(raakaaine));
 
             return new ModelAndView(map, "aines");
         }, new ThymeleafTemplateEngine(templateResolver));

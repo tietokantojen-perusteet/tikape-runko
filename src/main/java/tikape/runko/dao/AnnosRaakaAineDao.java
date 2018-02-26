@@ -191,6 +191,27 @@ public class AnnosRaakaAineDao implements Dao<AnnosRaakaAine, Integer> {
         return annosRaakaAineet;
     }
 
+    public List<Annos> raakaAineenAnnokset(RaakaAine raakaAine) throws SQLException {
+        //Palauttaa kaikki tietyn raaka-aineen AnnosRaakaAine - oliot
+        if (raakaAine == null) {
+            return new ArrayList<>();
+        }
+        List<Annos> annokset = new ArrayList<>();
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("SELECT DISTINCT annosId FROM AnnosRaakaAine WHERE RaakaAineId = ?");
+        stmt.setInt(1, raakaAine.getId());
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            annokset.add(annosDao.findOne(rs.getInt("annosId")));
+        }
+        stmt.close();
+        rs.close();
+        conn.close();
+
+        return annokset;
+    }
+    
     public Integer raakaAineenEsiintymat(RaakaAine raakaAine) throws SQLException {
         // Kertoo, kuinka monessa annoksessa raaka-aine esiintyy, palauttaa integer - luvun.
         if (raakaAine == null) {

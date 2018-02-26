@@ -23,6 +23,17 @@
             <span th:text="${annoslkm}">0</span>
         </p>
 
+        <div th:if="${annoslkm} &gt; 0">
+            <h2>Annokset</h2>
+            <ul>
+                <li th:each="annos: ${annokset}">
+                    <a th:href="@{'../reseptit/' + ${annos.id}}">
+                        <span th:text="${annos.nimi}">hernekeitto</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
         <ul>
             <li>
                 <a href="/ainekset">Raaka-ainelistaan</a>
