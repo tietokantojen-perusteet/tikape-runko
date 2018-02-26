@@ -21,7 +21,9 @@
 
         <ul>
             <li th:each="raakaaine: ${raakaaineet}">
-                <span th:text="${raakaaine.nimi}">kurkuma</span>
+                <a th:href="@{'ainekset/' + ${raakaaine.id}}">
+                    <span th:text="${raakaaine.nimi}">kurkuma</span>
+                </a>
                 <a th:href="@{'ainekset/' + ${raakaaine.id} + '/poista'}">(poista)</a>
             </li>
         </ul>

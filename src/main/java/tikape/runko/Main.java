@@ -70,6 +70,20 @@ public class Main {
             res.redirect("/ainekset");
             return "";
         });
+        
+        // Raaka-ainestatistiikka
+        get("/ainekset/:id", (req, res) -> {
+            RaakaAine raakaaine = raakaaineet.findOne(Integer.parseInt(req.params("id")));
+            if (raakaaine == null) {
+                res.redirect("/ainekset");
+            }
+            
+            HashMap map = new HashMap<>();
+            map.put("raakaaine", raakaaine);
+            map.put("annoslkm", annosraakaaineet.raakaAineenEsiintymat(raakaaine));
+
+            return new ModelAndView(map, "aines");
+        }, new ThymeleafTemplateEngine(templateResolver));
 
         // Annosten listaaminen
         get("/reseptit", (req, res) -> {
