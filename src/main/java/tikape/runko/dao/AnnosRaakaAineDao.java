@@ -226,6 +226,9 @@ public class AnnosRaakaAineDao implements Dao<AnnosRaakaAine, Integer> {
             return 0;
         }
         int laskuri = rs.getInt("lkm");
+        
+        stmt.close();
+        conn.close();
         return laskuri;
     }
 
