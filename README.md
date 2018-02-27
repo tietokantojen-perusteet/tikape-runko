@@ -1,4 +1,10 @@
-# tikape-runko
+# Punaisen Lentävän Virtahevon reseptiarkisto
 
-Tietokantojen perusteet -kurssilla tehtävän web-sovelluksen pohja.
+## TIKAPE K2018
 
+Tässä ryhmän Punainen Lentävä Virtahepo 2. ryhmätyön Github-palautus.
+[Materiaalit - kansiosta löydät ohjelman kuvauksen ja tietokantakaavion](tikape-drinkit/Materiaalit)
+
+Ohjelmakoodin löydät SRC kansiosta.
+
+[Ohjelma on nähtävissä verkossa täällä](*insert link here*)
