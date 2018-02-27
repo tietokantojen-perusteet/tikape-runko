@@ -16,7 +16,7 @@ ___
 ## Ohjelmakuvaus
 
 ### Pääsivu
-Avatessaan ohjelman pääsivun, käyttäjä näkee arkiston nimen, ja listauksen ohjelmaan tallennetuista resepteistä. Käyttäjä voi valita minkä tahansa listatuista resepteistä painamalla sen nimeä hiirellä, mikä avaa reseptiä vastaavan reseptisivun selaimessa. Vaihtoehtoisesti käyttäjä voi avata uuden reseptin hallinnointisivun, tai reseptien raaka-aineiden tarkastelu- ja hallinnointisivun.
+Avatessaan ohjelman pääsivun, käyttäjä näkee arkiston nimen, ja listauksen ohjelmaan tallennetuista resepteistä. Käyttäjä voi valita minkä tahansa listatuista resepteistä painamalla sen nimeä hiirellä, mikä avaa reseptiä vastaavan reseptisivun selaimessa. Vaihtoehtoisesti käyttäjä voi avata uuden reseptin hallinnointisivun, tai reseptien raaka-aineiden tarkastelu- ja hallinnointisivun. Raaka-aineiden tarkastelusivulla on jokaisen raaka-aineen kohdalla linkki sivulle, jossa näytetään kuinka monessa reseptissä kyseinen raaka-aine esiintyy.
 ___
 
 ### Reseptisivu
@@ -31,3 +31,7 @@ _____
 ### Raaka-aineiden Hallinnoitisivu
 Raaka-aineiden hallinnointisivulla on listaus kaikista järjestelmän tuntemista raaka-aineista. Jokaista raaka-ainetta vastaa poista - linkki, jonka avulla raaka-aine poistetaan tietokannasta. Samalla raaka-aine poistuu myöskin kaikista niistä resepteistä, joihin se kuuluu. Jokaisella raaka-aineella on myös laskuri, joka kertoo käyttäjälle kuinka monessa tietokantaan tallennetussa reseptissä raaka-aine esiintyy. Sivuilla on myös kyselykenttä, jonka avulla käyttäjä voi syöttää uuden raaka-aineen nimen, ja lisätä sen tietokantaan vastaavalla lisää- painikkeella. Kun raaka-aine on lisätty tietokantaan, se voidaan asettaa eri resepteihin reseptien hallinnointisivulla edellämainitulla tavalla. Hallinnointisivuilla on lopuksi linkki ohjelman pääsivulle.
 
+___
+
+### Raaka-aineiden tarkastelusivu
+Jokaisella raaka-aineella on oma tarkastelusivunsa, jossa näytetään kuinka moneen reseptiin kyseinen raaka-aine kuuluu. Sivulta pääsee linkin avulla takaisin raaka-ainelistaukseen.
