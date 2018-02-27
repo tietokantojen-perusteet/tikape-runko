@@ -1,4 +1,4 @@
-# Lentävän virtahevon reseptiarkisto
+# Punaisen Lentävän Virtahevon reseptiarkisto
 
 ## Tehtävän tavoite
 Projektin tavoitteena on tehdä verkkopohjainen reseptiarkistosovellus.
