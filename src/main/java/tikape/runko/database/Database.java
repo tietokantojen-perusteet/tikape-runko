@@ -18,10 +18,10 @@ public class Database {
 
     public Connection getConnection() throws SQLException {
         //jos Herokun postgre on olemassa, niin käytetään sitä
-        String dbUrl = System.getenv("JDBC_DATABASE_URL");
+        /*String dbUrl = System.getenv("JDBC_DATABASE_URL");
             if (dbUrl != null && dbUrl.length() > 0) {
                 return DriverManager.getConnection(dbUrl);
-        }
+        }*/
         // Nyt sqlite-spesifinen. Käytännössä sama kuin laittaisi PRAGMA FOREIGN_KEYS = on
         return DriverManager.getConnection(databaseAddress, sqliteconfig.toProperties());
     }
