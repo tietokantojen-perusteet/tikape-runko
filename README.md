@@ -3,7 +3,7 @@
 ## TIKAPE K2018
 
 Tässä ryhmän Punainen Lentävä Virtahepo 2. ryhmätyön Github-palautus.
-[Materiaalit - kansiosta löydät ohjelman kuvauksen ja tietokantakaavion](Ohjelman kuvaus.md)
+[Materiaalit - kansiosta löydät ohjelman kuvauksen ja tietokantakaavion](Materiaalit/Ohjelman kuvaus.md)
 
 Ohjelmakoodin löydät SRC kansiosta.
 
