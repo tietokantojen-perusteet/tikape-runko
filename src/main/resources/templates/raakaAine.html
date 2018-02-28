@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>RaakaAine</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body{
+                font-family:helvetica;
+                text-align:center;
+                padding: 15px 32px;
+                margin-top: 20px 20px;
+                align-content: center;
+                color: navy;
+                line-height: 40px;
+                background-color: turquoise;
+            }
+            .button {
+                padding: 15px 32px;
+                margin: 20px 20px;
+                text-decoration: none;
+                background-color: yellow;
+            }
+            .button:hover {
+                baskground-color: plum;
+                padding: 15px 32px;
+                margin-top: 20px 20 px;
+            }
+        </style> 
+    </head>
+    <body>
+        
+        <h3><span th:text="${raakaAine.nimi}">ra</span></h3>
+        <p>_________________________________________________________________________________________________________________</p>
+        
+        <h4>Tätä raaka-ainetta käytetään seuraavissa juomissa:</h4>
+        <ul style="list-style: none;">
+            <li th:each="juomaRaakaAine: ${lista}">
+                <p><span th:text="${juomaRaakaAine.juomienEsitys()}">n</span></p>
+            </li>
+        </ul>
+        <p>_________________________________________________________________________________________________________________</p>
+        <p><a href="/raakaAineet" class="button">Takaisin</a></p>
+        
+    </body>
+</html>
