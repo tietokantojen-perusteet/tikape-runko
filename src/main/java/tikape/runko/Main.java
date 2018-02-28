@@ -15,9 +15,9 @@ public class Main {
         Database db = new Database("jdbc:sqlite:data.db");
         RaakaAineDao raakaAineet = new RaakaAineDao(db);
         AnnosDao juomat = new AnnosDao(db);
-
+        //sldkjfaölsdkfjaölsdkfjasöldkfajslödkfajsödlkfaödslkfajdölkfjaödlfk
         Spark.get("/kahvilaEtuSivu", (req, res) -> {
-
+            
             HashMap map = new HashMap<>();
             map.put("t", "Meillä on seuraavat juomat");
             map.put("kahvilanJuomat", juomat.findAll());
