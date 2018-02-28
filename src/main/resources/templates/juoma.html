@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body{
+                font-family:helvetica;
+                text-align:center;
+                padding: 15px 32px;
+                margin-top: 20px 20px;
+                align-content: center;
+                color: navy;
+                line-height: 40px;
+                background-color: turquoise;
+            }
+            .button {
+                padding: 15px 32px;
+                margin: 20px 20px;
+                text-decoration: none;
+                background-color: yellow;
+            }
+            .button:hover {
+                baskground-color: plum;
+                padding: 15px 32px;
+                margin-top: 20px 20 px;
+            }
+        </style> 
+    </head>
+    <body>
+        
+        <h3><span th:text="${juoma.nimi}">juoma</span></h3>
+        <p>_________________________________________________________________________________________________________________</p>
+        <h4>Tällä juomalla on seuraavat ainekset</h4>
+        
+        <ul style="list-style: none;">
+            <li th:each="juomaRaakaAine: ${lista}">
+                <p><span th:text="${juomaRaakaAine.raakaAineidenEsitys()}">n</span></p>
+            </li>
+        </ul>
+        <p>_________________________________________________________________________________________________________________</p>
+        
+        <h4>Lisää tälle juomalle raaka-aineen</h4>
+        
+        <form method="POST" action="/lisays">
+            <select name="uusiRaakaAine">
+                <p th:each="a: ${lista2}">
+                    <option><span th:text="${a.getNimi()}">1</span></option>
+                </p>
+            </select>
+            
+            <br><br>
+            
+            Määrä (esim: 2 kpl tai 3 tl tai 1 dl):<br/><input type="text" name="maara"/><br/>
+            
+            <p>Syöttää vielä vahvistuksen vuoksi numeron: <span th:text="${juoma.id}">juoma</span></p>
+            <input type="text" name="index" />
+            <input class="button" type="submit" value="Lisää">
+        </form>
+        
+        <p>_________________________________________________________________________________________________________________</p>
+        
+        <p>Valmistusohje:</p>
+        <p><span th:text="${juoma.valmistusOhje}">vO</span></p>
+        <p>_________________________________________________________________________________________________________________</p>
+        
+        <p><a href="/juomat" class="button">Takaisin</a></p>
+        
+    </body>
+</html>

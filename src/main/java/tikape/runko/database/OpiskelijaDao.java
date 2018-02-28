@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import tikape.runko.domain.Opiskelija;
 
 public class OpiskelijaDao implements Dao<Opiskelija, Integer> {
@@ -23,7 +25,12 @@ public class OpiskelijaDao implements Dao<Opiskelija, Integer> {
 
     @Override
     public Opiskelija findOne(Integer key) throws SQLException {
-        Connection connection = database.getConnection();
+        Connection connection = null;
+        try {
+            connection = database.getConnection();
+        } catch (Exception ex) {
+            Logger.getLogger(OpiskelijaDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Opiskelija WHERE id = ?");
         stmt.setObject(1, key);
 
@@ -48,7 +55,12 @@ public class OpiskelijaDao implements Dao<Opiskelija, Integer> {
     @Override
     public List<Opiskelija> findAll() throws SQLException {
 
-        Connection connection = database.getConnection();
+        Connection connection = null;
+        try {
+            connection = database.getConnection();
+        } catch (Exception ex) {
+            Logger.getLogger(OpiskelijaDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Opiskelija");
 
         ResultSet rs = stmt.executeQuery();

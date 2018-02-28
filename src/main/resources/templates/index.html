@@ -1,4 +1,4 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<!--<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <head>
@@ -9,8 +9,50 @@
     <body>
         <h1>Heippa vaan!</h1>
 
-        <p>Ja .. <span th:text="${viesti}">jotain?</span></p>
+        <p>Ja ..Kilroy oli täällä <span th:text="${viesti}">jotain?</span></p>
 
         <p><a href="/opiskelijat">Tästä opiskelijalistaukseen.</a></p>
+    </body>
+</html>-->
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Kahvila</title>
+        <meta charset="utf-8" />
+        <style>
+            body{
+                font-family:helvetica;
+                text-align:center;
+                padding: 15px 32px;
+                margin-top: 20px 20px;
+                align-content: center;
+                color: navy;
+                line-height: 40px;
+                background-color: turquoise;
+            }
+            .button {
+                padding: 15px 32px;
+                margin: 20px 20px;
+                text-decoration: none;
+                background-color: yellow;
+            }
+            .button:hover {
+                baskground-color: plum;
+                padding: 15px 32px;
+                margin-top: 20px 20 px;
+            }
+        </style>    
+    </head>
+
+    <body>
+
+        <h2>Tervetuloa meidän kahvilaan!</h2>
+        <p><a href="/juomat" class="button">Juomat</a></p>
+        <p><a href="/raakaAineet" class="button">Ainekset</a></p>
+        <p><a href="/raakaAineetPoisto" class="button">Poista aineksia</a></p>
+        <p><a href="/juomatPoisto" class="button">Poista juomia</a></p>
+        
+        
     </body>
 </html>
